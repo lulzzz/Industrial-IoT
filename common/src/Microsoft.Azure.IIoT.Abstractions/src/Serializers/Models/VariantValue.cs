@@ -53,28 +53,25 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public virtual TypeCode GetTypeCode() {
+            if (this.IsNull()) {
+                return TypeCode.Empty;
+            }
+            if (IsBoolean()) {
+                return TypeCode.Boolean;
+            }
+            if (IsInteger()) {
+                return TypeCode.Int64;
+            }
             if (IsFloat()) {
                 return TypeCode.Decimal;
             }
-            if (IsBoolean())
-                return TypeCode.Boolean;
-            if (IsString())
-            switch (Type) {
-                case VariantValueType.Primitive:
-                    return TypeCode.String;
-                case VariantValueType.Null:
-                    return TypeCode.Empty;
-                case VariantValueType.Integer:
-                    return TypeCode.Int64;
-                case VariantValueType.Boolean:
-                    return TypeCode.Boolean;
-                case VariantValueType.Float:
-                    return TypeCode.Decimal;
-                case VariantValueType.UtcDateTime:
-                    return TypeCode.DateTime;
-                default:
-                    return TypeCode.Object;
+            if (IsDateTime()) {
+                return TypeCode.DateTime;
             }
+            if (IsObject()) {
+                return TypeCode.Object;
+            }
+            return TypeCode.String;
         }
 
         /// <inheritdoc/>
@@ -400,7 +397,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 return Comparer.Equals(this, v);
             }
             if (o is null) {
-                return value.IsNull();
+                return this.IsNull();
             }
             // Compare to non variant value
             if (TryEqualsValue(o, out var result)) {
@@ -443,193 +440,55 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// </summary>
         /// <returns></returns>
         public bool IsFloat() {
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
-            switch (Value) {
-                case int _:
-                case uint _:
-                case long _:
-                case ulong _:
-                case short _:
-                case ushort _:
-                case sbyte _:
-                case byte _:
-                case char _:
-                case BigInteger _:
-                    return true;
-                case float _:
-                case double _:
-                case decimal _:
-                    return true;
-                case string s:
-                    return decimal.TryParse(s, out _);
-                case IConvertible c:
-                    try {
-                        c.ToDecimal(CultureInfo.InvariantCulture);
-                        return true;
-                    }
-                    catch {
-                        return false;
-                    }
-                default:
-                    return decimal.TryParse(ToString(), out _);
-            }
+            return TryGetFloat(out _);
         }
 
         /// <summary>
-        /// Returns whether the token is a float type
+        /// Returns whether the token is a integer type
         /// </summary>
         /// <returns></returns>
         public bool IsInteger() {
-            if (value.IsNull()) {
-                return false;
-            }
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
-            switch (Value) {
-                case int _:
-                case uint _:
-                case long _:
-                case ulong _:
-                case short _:
-                case ushort _:
-                case sbyte _:
-                case byte _:
-                case char _:
-                case BigInteger _:
-                    return true;
-                case string s:
-                    return BigInteger.TryParse(s, out _);
-                case decimal dec:
-                    return decimal.Floor(dec).Equals(dec);
-                case float f:
-                    return Math.Floor(f).Equals(f);
-                case double d:
-                    return Math.Floor(d).Equals(d);
-                case IConvertible c:
-                    try {
-                        // Handles any float
-                        var dec = c.ToDecimal(CultureInfo.InvariantCulture);
-                        return decimal.Floor(dec) == dec;
-                    }
-                    catch {
-                        return false;
-                    }
-                default:
-                    return BigInteger.TryParse(ToString(), out _);
-            }
+            return TryGetInteger(out _);
         }
 
         /// <summary>
-        /// Returns whether the token is a float type
+        /// Returns whether the token is a duration type
         /// </summary>
         /// <returns></returns>
         public bool IsTimeSpan() {
-            if (value.IsNull()) {
-                return false;
-            }
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
-            switch (Value) {
-                case TimeSpan _:
-                    return true;
-                case string s:
-                    return TimeSpan.TryParse(s, out _);
-                default:
-                    return TimeSpan.TryParse(ToString(), out _);
-            }
+            return TryGetTimeSpan(out _);
         }
 
         /// <summary>
-        /// Returns whether the token is a float type
+        /// Returns whether the token is a date type
         /// </summary>
         /// <returns></returns>
         public bool IsDateTime() {
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
-            switch (Value) {
-                case DateTime _:
-                case DateTimeOffset _:
-                    return true;
-                case string s:
-                    return
-                        DateTime.TryParse(s, out _) ||
-                        DateTimeOffset.TryParse(s, out _);
-                case IConvertible c:
-                    try {
-                        var dt = c.ToDateTime(CultureInfo.InvariantCulture);
-                        return true;
-                    }
-                    catch {
-                        return false;
-                    }
-                default:
-                    return
-                       DateTime.TryParse(ToString(), out _) ||
-                       DateTimeOffset.TryParse(ToString(), out _);
-            }
+            return TryGetDateTime(out _);
         }
 
         /// <summary>
-        /// Returns whether the token is a float type
-        /// </summary>
-        /// <returns></returns>
-        public bool IsBoolean() {
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
-            switch (Value) {
-                case bool _:
-                    return true;
-                case string s:
-                    return bool.TryParse(s, out _);
-                case IConvertible c:
-                    try {
-                        var dt = c.ToBoolean(CultureInfo.InvariantCulture);
-                        return true;
-                    }
-                    catch {
-                        return false;
-                    }
-                default:
-                    return bool.TryParse(ToString(), out _);
-            }
-        }
-
-        /// <summary>
-        /// Returns whether the token is a float type
+        /// Returns whether the token is a Guid type
         /// </summary>
         /// <returns></returns>
         public bool IsGuid() {
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
-            switch (Value) {
-                case Guid _:
-                    return true;
-                case string s:
-                    return Guid.TryParse(s, out _);
-                default:
-                    return Guid.TryParse(ToString(), out _);
-            }
+            return TryGetGuid(out _);
         }
 
         /// <summary>
-        /// Returns whether the token is a float type
+        /// Returns whether the token is a boolean type
+        /// </summary>
+        /// <returns></returns>
+        public bool IsBoolean() {
+            return TryGetBoolean(out _);
+        }
+
+        /// <summary>
+        /// Returns whether the token is a string type
         /// </summary>
         /// <returns></returns>
         public bool IsString() {
-            if (value.IsNull()) {
-                return false;
-            }
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
-            return true;
+            return TryGetString(out _);
         }
 
         /// <summary>
@@ -666,6 +525,298 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Returns floating point value
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        protected bool TryGetFloat(out object o) {
+            o = Value;
+            if (Type != VariantValueType.Primitive) {
+                return false;
+            }
+            switch (Value) {
+                case int _:
+                case uint _:
+                case long _:
+                case ulong _:
+                case short _:
+                case ushort _:
+                case sbyte _:
+                case byte _:
+                case char _:
+                    return true;
+                case BigInteger b:
+                    o = (double)b;
+                    return true;
+                case float _:
+                case double _:
+                case decimal _:
+                    return true;
+                case string s:
+                    var result = decimal.TryParse(s, out var d1);
+                    o = d1;
+                    return result;
+                case IConvertible c:
+                    try {
+                        o = c.ToDecimal(CultureInfo.InvariantCulture);
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                default:
+                    if (decimal.TryParse(ToString(), out var d2)) {
+                        o = d2;
+                        return true;
+                    }
+                    break;
+            }
+            try {
+                o = As<double>();
+                return true;
+            }
+            catch {
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns whether the token is a float type
+        /// </summary>
+        /// <returns></returns>
+        protected bool TryGetInteger(out object o) {
+            o = Value;
+            if (Type != VariantValueType.Primitive) {
+                return false;
+            }
+            switch (Value) {
+                case int _:
+                case uint _:
+                case long _:
+                case ulong _:
+                case short _:
+                case ushort _:
+                case sbyte _:
+                case byte _:
+                case char _:
+                case BigInteger _:
+                    return true;
+                case string s:
+                    var result = BigInteger.TryParse(s, out var b1);
+                    o = b1;
+                    return result;
+                case decimal dec:
+                    o = new BigInteger(dec);
+                    return decimal.Floor(dec).Equals(dec);
+                case float f:
+                    o = new BigInteger(f);
+                    return Math.Floor(f).Equals(f);
+                case double d:
+                    o = new BigInteger(d);
+                    return Math.Floor(d).Equals(d);
+                case IConvertible c:
+                    try {
+                        o = c.ToInt64(CultureInfo.InvariantCulture);
+                        return true;
+                    }
+                    catch {
+                        try {
+                            o = c.ToUInt64(CultureInfo.InvariantCulture);
+                            return true;
+                        }
+                        catch {
+                            return false;
+                        }
+                    }
+                default:
+                    if (BigInteger.TryParse(ToString(), out var b2)) {
+                        o = b2;
+                        return true;
+                    }
+                    break;
+            }
+            try {
+                o = As<BigInteger>();
+                return true;
+            }
+            catch {
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns whether the token is a float type
+        /// </summary>
+        /// <returns></returns>
+        protected bool TryGetTimeSpan(out object o) {
+            o = Value;
+            if (Type != VariantValueType.Primitive) {
+                return false;
+            }
+            switch (Value) {
+                case TimeSpan _:
+                    return true;
+                case string s:
+                    var result = TimeSpan.TryParse(s, out var ts1);
+                    o = ts1;
+                    return result;
+                default:
+                    if (TimeSpan.TryParse(ToString(), out var ts2)) {
+                        o = ts2;
+                        return true;
+                    }
+                    break;
+            }
+            try {
+                o = As<TimeSpan>();
+                return true;
+            }
+            catch {
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns whether the token is a float type
+        /// </summary>
+        /// <returns></returns>
+        protected bool TryGetDateTime(out object o) {
+            o = Value;
+            if (Type != VariantValueType.Primitive) {
+                return false;
+            }
+            switch (Value) {
+                case DateTime _:
+                case DateTimeOffset _:
+                    return true;
+                case string s:
+                    if (DateTime.TryParse(s, out var dt1)) {
+                        o = dt1;
+                        return true;
+                    }
+                    if (DateTimeOffset.TryParse(s, out var dto1)) {
+                        o = dto1;
+                        return true;
+                    }
+                    return false;
+                case IConvertible c:
+                    try {
+                        o = c.ToDateTime(CultureInfo.InvariantCulture);
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                default:
+                    if (DateTime.TryParse(ToString(), out var dt2)) {
+                        o = dt2;
+                        return true;
+                    }
+                    if (DateTimeOffset.TryParse(ToString(), out var dto2)) {
+                        o = dto2;
+                        return true;
+                    }
+                    break;
+            }
+            try {
+                o = As<DateTime>();
+                return true;
+            }
+            catch {
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns whether the token is a float type
+        /// </summary>
+        /// <returns></returns>
+        protected bool TryGetBoolean(out object o) {
+            o = Value;
+            if (Type != VariantValueType.Primitive) {
+                return false;
+            }
+            switch (Value) {
+                case bool _:
+                    return true;
+                case string s:
+                    var result = bool.TryParse(s, out var b1);
+                    o = b1;
+                    return result;
+                case IConvertible c:
+                    try {
+                        o = c.ToBoolean(CultureInfo.InvariantCulture);
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                default:
+                    if (bool.TryParse(ToString(), out var b2)) {
+                        o = b2;
+                        return true;
+                    }
+                    break;
+            }
+            try {
+                o = As<bool>();
+                return true;
+            }
+            catch {
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns whether the token is a float type
+        /// </summary>
+        /// <returns></returns>
+        protected bool TryGetGuid(out object o) {
+            o = Value;
+            if (Type != VariantValueType.Primitive) {
+                return false;
+            }
+            switch (Value) {
+                case Guid _:
+                    return true;
+                case string s:
+                    var result = Guid.TryParse(s, out var g1);
+                    o = g1;
+                    return result;
+                default:
+                    if (Guid.TryParse(ToString(), out var g2)) {
+                        o = g2;
+                        return true;
+                    }
+                    break;
+            }
+            try {
+                o = As<Guid>();
+                return true;
+            }
+            catch {
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns whether the token is a float type
+        /// </summary>
+        /// <returns></returns>
+        protected bool TryGetString(out object o) {
+            o = Value;
+            if (Type != VariantValueType.Primitive) {
+                return false;
+            }
+            switch (Value) {
+                case string s:
+                    return true;
+            }
+            o = ToString();
+            return true;
         }
 
         /// <summary>
@@ -830,6 +981,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         }
                         return false;
                     case VariantValueType.Bytes:
+                        if (y.ToString(SerializeOption.None) ==
+                            x.ToString(SerializeOption.None)) {
+                            return true;
+                        }
+                        break;
                     case VariantValueType.Primitive:
                         if (y.ToString(SerializeOption.None) ==
                             x.ToString(SerializeOption.None)) {
