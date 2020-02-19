@@ -252,11 +252,11 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            protected override string ToString(SerializeOption format) {
-                return Token.ToString(format == SerializeOption.Indented ?
-                    Formatting.Indented :
-                    Formatting.None,
-                    _serializer.Settings.Converters.ToArray());
+            protected override void AppendTo(StringBuilder sb) {
+                if (Token is JValue) {
+                    sb.Append(Token.ToString(Formatting.None,
+                        _serializer.Settings.Converters.ToArray()));
+                }
             }
 
             /// <inheritdoc/>

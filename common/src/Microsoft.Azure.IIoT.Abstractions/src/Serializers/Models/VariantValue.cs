@@ -7,10 +7,10 @@ namespace Microsoft.Azure.IIoT.Serializers {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Diagnostics;
     using System.Globalization;
     using System.Linq;
     using System.Numerics;
+    using System.Text;
 
     /// <summary>
     /// Represents primitive or structurally complex value
@@ -46,77 +46,70 @@ namespace Microsoft.Azure.IIoT.Serializers {
         public abstract int Count { get; }
 
         /// <summary>
-        /// Returns whether the value is a array
+        /// Value is a array
         /// </summary>
-        public bool IsArray {
-            get {
-                if (Type == VariantValueType.Array || IsBytes) {
-                    return true;
-                }
-                if (Value.GetType().IsArray || Count > 0) {
-                    return true;
-                }
-                return false;
-            }
-        }
+        public bool IsArray =>
+            Type == VariantValueType.Array;
 
         /// <summary>
-        /// Returns whether the value is a object type
+        /// Value is a object type
         /// </summary>
-        public bool IsObject {
-            get {
-                if (Type == VariantValueType.Object || Keys.Any()) {
-                    return true;
-                }
-                return false;
-            }
-        }
+        public bool IsObject =>
+            Type == VariantValueType.Object;
 
         /// <summary>
-        /// Returns whether the value is a null type
+        /// Value is a null type
         /// </summary>
         public bool IsNull =>
-            Type == VariantValueType.Null || Value == null;
+            Type == VariantValueType.Null;
 
         /// <summary>
-        /// Returns whether the value is a number type
+        /// Value is a number type
         /// </summary>
-        public bool IsNumber => TryGetNumber(out _);
+        public bool IsNumber =>
+            TryGetNumber(out _);
 
         /// <summary>
-        /// Returns whether the value is a integer type
+        /// Value is a integer type
         /// </summary>
-        public bool IsInteger => TryGetInteger(out _);
+        public bool IsInteger =>
+            TryGetInteger(out _);
 
         /// <summary>
-        /// Returns whether the value is a duration type
+        /// Value is a duration type
         /// </summary>
-        public bool IsTimeSpan => TryGetTimeSpan(out _);
+        public bool IsTimeSpan =>
+            TryGetTimeSpan(out _);
 
         /// <summary>
-        /// Returns whether the value is a date type
+        /// Value is a date type
         /// </summary>
-        public bool IsDateTime => TryGetDateTime(out _);
+        public bool IsDateTime =>
+            TryGetDateTime(out _);
 
         /// <summary>
-        /// Returns whether the value is a Guid type
+        /// Value is a Guid type
         /// </summary>
-        public bool IsGuid => TryGetGuid(out _);
+        public bool IsGuid =>
+            TryGetGuid(out _);
 
         /// <summary>
-        /// Returns whether the value is a boolean type
+        /// Value is a boolean type
         /// </summary>
-        public bool IsBoolean => TryGetBoolean(out _);
+        public bool IsBoolean =>
+            TryGetBoolean(out _);
 
         /// <summary>
-        /// Returns whether the value is a string type
+        /// Value is a string type
         /// </summary>
-        public bool IsString => TryGetString(out _);
+        public bool IsString =>
+            TryGetString(out _);
 
         /// <summary>
-        /// Returns whether the value is a bytes type
+        /// Value is a bytes type
         /// </summary>
-        public bool IsBytes => TryGetBytes(out _);
+        public bool IsBytes =>
+            TryGetBytes(out _);
 
         /// <inheritdoc/>
         public virtual TypeCode GetTypeCode() {
@@ -505,7 +498,9 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public override string ToString() {
-            return ToString(SerializeOption.None);
+            var sb = new StringBuilder();
+            AppendTo(sb);
+            return sb.ToString();
         }
 
         /// <inheritdoc/>
@@ -649,8 +644,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         }
 
                         // Try string comparison
-                        if (y.ToString(SerializeOption.None) ==
-                            x.ToString(SerializeOption.None)) {
+                        if (y.ToString() ==
+                            x.ToString()) {
                             return true;
                         }
                         break;
@@ -674,8 +669,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     return result;
                 }
 
-                var xs = x.ToString(SerializeOption.None);
-                var ys = y.ToString(SerializeOption.None);
+                var xs = x.ToString();
+                var ys = y.ToString();
                 return xs.CompareTo(ys);
             }
 
@@ -1001,20 +996,6 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
 
             /// <inheritdoc/>
-            protected override string ToString(SerializeOption format) {
-                switch (Value) {
-                    case null:
-                        return "null";
-                    case byte[] b:
-                        return Convert.ToBase64String(b);
-                    case string s:
-                        return s;
-                    default:
-                        return Value.ToString();
-                }
-            }
-
-            /// <inheritdoc/>
             public override object ToType(Type conversionType,
                 IFormatProvider provider) {
                 if (Value == null || IsNull) {
@@ -1060,13 +1041,6 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// </summary>
         /// <inheritdoc/>
         protected abstract VariantValueType Type { get; }
-
-        /// <summary>
-        /// Convert to string
-        /// </summary>
-        /// <param name="format"></param>
-        /// <returns></returns>
-        protected abstract string ToString(SerializeOption format);
 
         /// <summary>
         /// Compare to a non variant value object, e.g. the value of
@@ -1129,6 +1103,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
             string s;
             switch (Value) {
+                case null:
+                    return false;
                 case int _:
                 case uint _:
                 case long _:
@@ -1150,7 +1126,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    s = ToString();
+                    s = Value.ToString();
                     break;
             }
             if (double.TryParse(ToString(),
@@ -1167,7 +1143,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         }
 
         /// <summary>
-        /// Returns whether the value is a float type
+        /// Value is a float type
         /// </summary>
         /// <returns></returns>
         protected virtual bool TryGetInteger(out object o) {
@@ -1177,6 +1153,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
             string s;
             switch (Value) {
+                case null:
+                    return false;
                 case int _:
                 case uint _:
                 case long _:
@@ -1201,7 +1179,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    s = ToString();
+                    s = Value.ToString();
                     break;
             }
             var result = BigInteger.TryParse(s, NumberStyles.Integer,
@@ -1211,7 +1189,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         }
 
         /// <summary>
-        /// Returns whether the value is a float type
+        /// Value is a float type
         /// </summary>
         /// <returns></returns>
         protected virtual bool TryGetTimeSpan(out object o) {
@@ -1221,13 +1199,15 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
             string s;
             switch (Value) {
+                case null:
+                    return false;
                 case TimeSpan _:
                     return true;
                 case string str:
                     s = str;
                     break;
                 default:
-                    s = ToString();
+                    s = Value.ToString();
                     break;
             }
             var result = TimeSpan.TryParse(s, CultureInfo.InvariantCulture,
@@ -1237,7 +1217,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         }
 
         /// <summary>
-        /// Returns whether the value is a float type
+        /// Value is a float type
         /// </summary>
         /// <returns></returns>
         protected virtual bool TryGetDateTime(out object o) {
@@ -1247,6 +1227,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
             string s;
             switch (Value) {
+                case null:
+                    return false;
                 case DateTime _:
                 case DateTimeOffset _:
                     return true;
@@ -1254,7 +1236,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    s = ToString();
+                    s = Value.ToString();
                     break;
             }
             if (DateTime.TryParse(s, CultureInfo.InvariantCulture,
@@ -1271,7 +1253,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         }
 
         /// <summary>
-        /// Returns whether the value is a float type
+        /// Value is a float type
         /// </summary>
         /// <returns></returns>
         protected virtual bool TryGetBoolean(out object o) {
@@ -1281,13 +1263,15 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
             string s;
             switch (Value) {
+                case null:
+                    return false;
                 case bool _:
                     return true;
                 case string str:
                     s = str;
                     break;
                 default:
-                    s = ToString();
+                    s = Value.ToString();
                     break;
             }
             var result = bool.TryParse(s, out var b1);
@@ -1296,7 +1280,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         }
 
         /// <summary>
-        /// Returns whether the value is a float type
+        /// Value is a float type
         /// </summary>
         /// <returns></returns>
         protected virtual bool TryGetGuid(out object o) {
@@ -1306,13 +1290,15 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
             string s;
             switch (Value) {
+                case null:
+                    return false;
                 case Guid _:
                     return true;
                 case string str:
                     s = str;
                     break;
                 default:
-                    s = ToString();
+                    s = Value.ToString();
                     break;
             }
             var result = Guid.TryParse(s, out var g1);
@@ -1321,7 +1307,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         }
 
         /// <summary>
-        /// Returns whether the value is a float type
+        /// Value is a bytes type
         /// </summary>
         /// <returns></returns>
         protected virtual bool TryGetBytes(out object o) {
@@ -1346,14 +1332,16 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
             string s;
             switch (Value) {
+                case null:
+                    return false;
                 case byte[] _:
                     return true;
                 case string str:
                     s = str;
                     break;
                 default:
-                    s = ToString();
-                    break;
+                    // Must be string or override
+                    return false;
             }
             try {
                 o = Convert.FromBase64String(s);
@@ -1367,7 +1355,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         }
 
         /// <summary>
-        /// Returns whether the value is a float type
+        /// Value is a string type
         /// </summary>
         /// <returns></returns>
         protected virtual bool TryGetString(out object o) {
@@ -1380,6 +1368,108 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Convert to string
+        /// </summary>
+        /// <returns></returns>
+        protected virtual void AppendTo(StringBuilder builder) {
+            switch (Type) {
+                case VariantValueType.Null:
+                    builder.Append("null");
+                    return;
+                case VariantValueType.Bytes:
+                    if (TryGetBytes(out var b)) {
+                        builder.Append('"');
+                        builder.Append(Convert.ToBase64String((byte[])b));
+                        builder.Append('"');
+                        return;
+                    }
+                    break;
+                case VariantValueType.Primitive:
+                    break;
+                case VariantValueType.Array:
+                    var first = true;
+                    builder.Append('[');
+                    foreach (var value in Values) {
+                        if (!first) {
+                            builder.Append(',');
+                        }
+                        else {
+                            first = false;
+                        }
+                        value.AppendTo(builder);
+                    }
+                    builder.Append(']');
+                    break;
+                case VariantValueType.Object:
+                    var open = true;
+                    builder.Append('{');
+                    var p2 = Keys.OrderBy(k => k);
+                    foreach (var k in p2) {
+                        if (!open) {
+                            builder.Append(',');
+                        }
+                        else {
+                            open = false;
+                        }
+                        builder.Append(k);
+                        builder.Append(':');
+                        this[k].AppendTo(builder);
+                    }
+                    builder.Append('}');
+                    break;
+            }
+            if (!TryGetValue(out var v)) {
+                switch (v) {
+                    case string str:
+                        builder.Append('"');
+                        builder.Append(str);
+                        builder.Append('"');
+                        break;
+                    case byte[] b:
+                        builder.Append('"');
+                        builder.Append(Convert.ToBase64String(b));
+                        builder.Append('"');
+                        break;
+                    case Guid g:
+                        builder.Append('"');
+                        builder.Append(g.ToString());
+                        builder.Append('"');
+                        break;
+                    case DateTime dt:
+                        builder.Append('"');
+                        builder.Append(dt.ToString("O", CultureInfo.InvariantCulture));
+                        builder.Append('"');
+                        break;
+                    case DateTimeOffset dto:
+                        builder.Append('"');
+                        builder.Append(dto.ToString("O", CultureInfo.InvariantCulture));
+                        builder.Append('"');
+                        break;
+                    case TimeSpan ts:
+                        builder.Append('"');
+                        builder.Append(ts.ToString("c", CultureInfo.InvariantCulture));
+                        builder.Append('"');
+                        break;
+                    case BigInteger bi:
+                        builder.Append(bi.ToString("R", CultureInfo.InvariantCulture));
+                        break;
+                    case decimal d:
+                        builder.Append(d.ToString("G", CultureInfo.InvariantCulture));
+                        break;
+                    case double d:
+                        builder.Append(d.ToString("G17", CultureInfo.InvariantCulture));
+                        break;
+                    case float f:
+                        builder.Append(f.ToString("G9", CultureInfo.InvariantCulture));
+                        break;
+                    default:
+                        builder.Append(v.ToString());
+                        break;
+                }
+            }
         }
 
         /// <summary>

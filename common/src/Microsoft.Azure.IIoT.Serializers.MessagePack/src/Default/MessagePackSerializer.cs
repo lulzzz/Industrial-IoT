@@ -281,17 +281,6 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             }
 
             /// <inheritdoc/>
-            protected override string ToString(SerializeOption format) {
-                try {
-                    var buffer = MsgPack.Serialize(_value, _options);
-                    return MsgPack.ConvertToJson(buffer, _options);
-                }
-                catch (MessagePackSerializationException ex) {
-                    throw new SerializerException(ex.Message, ex);
-                }
-            }
-
-            /// <inheritdoc/>
             public override bool TryGetValue(string key, out VariantValue value,
                 StringComparison compare) {
                 if (_value is IDictionary<object, object> o) {
@@ -316,7 +305,8 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             }
 
             /// <inheritdoc/>
-            protected override VariantValue Null => new MessagePackVariantValue(null, _options, false);
+            protected override VariantValue Null =>
+                new MessagePackVariantValue(null, _options, false);
 
             /// <inheritdoc/>
             protected override bool TryCompareToValue(object o, out int result) {
@@ -332,7 +322,6 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
                 }
                 return base.TryCompareToValue(o, out result);
             }
-
 
             /// <inheritdoc/>
             protected override bool TryEqualsValue(object o, out bool equality) {
