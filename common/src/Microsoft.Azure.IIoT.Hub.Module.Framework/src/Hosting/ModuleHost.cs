@@ -226,7 +226,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 if (Client != null) {
                     var collection = new TwinCollection();
                     foreach (var property in properties) {
-                        collection[property.Key] = property.Value?.As<object>();
+                        collection[property.Key] = property.Value?.ConvertTo<object>();
                     }
                     await Client.UpdateReportedPropertiesAsync(collection);
                     foreach (var property in properties) {
@@ -246,7 +246,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 await _lock.WaitAsync();
                 if (Client != null) {
                     var collection = new TwinCollection {
-                        [propertyId] = value?.As<object>()
+                        [propertyId] = value?.ConvertTo<object>()
                     };
                     await Client.UpdateReportedPropertiesAsync(collection);
                     _reported.Remove(propertyId);
@@ -355,7 +355,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             _reported.Clear();
             foreach (KeyValuePair<string, dynamic> property in _twin.Properties.Reported) {
                 var value = (VariantValue)_serializer.FromObject(property.Value);
-                if (value.Type == VariantValueType.Object &&
+                if (value.IsObject &&
                     value.TryGetValue("status", out var val) &&
                     value.Keys.Count() == 1) {
                     // Clear status properties from twin
@@ -411,7 +411,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 _logger.Debug("Reporting initial state.");
                 var collection = new TwinCollection();
                 foreach (var item in reported) {
-                    collection[item.Key] = item.Value?.As<object>();
+                    collection[item.Key] = item.Value?.ConvertTo<object>();
                 }
                 await Client.UpdateReportedPropertiesAsync(collection);
             }
@@ -441,7 +441,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                     if (reporting != null && reporting.Count != 0) {
                         var collection = new TwinCollection();
                         foreach (var item in reporting) {
-                            collection[item.Key] = item.Value?.As<object>();
+                            collection[item.Key] = item.Value?.ConvertTo<object>();
                         }
                         await Client.UpdateReportedPropertiesAsync(collection);
                         _logger.Debug("Internal state updated...", reporting);
@@ -459,7 +459,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                         _logger.Debug("Reporting setting results...");
                         var collection = new TwinCollection();
                         foreach (var item in reported) {
-                            collection[item.Key] = item.Value?.As<object>();
+                            collection[item.Key] = item.Value?.ConvertTo<object>();
                         }
                         await Client.UpdateReportedPropertiesAsync(collection);
                         foreach (var item in reported) {

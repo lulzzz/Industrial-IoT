@@ -69,7 +69,7 @@ namespace Opc.Ua.PubSub {
                 NodeId = decoder.ReadExpandedNodeId(nameof(MonitoredItemMessageContentMask.NodeId));
             }
             Value = new DataValue();
-            
+
             // todo check why Value is not encoded as DataValue type
             if ((MessageContentMask & (uint)MonitoredItemMessageContentMask.ServerTimestamp) != 0) {
                 Value.ServerTimestamp = decoder.ReadDateTime(nameof(MonitoredItemMessageContentMask.ServerTimestamp));
@@ -180,8 +180,8 @@ namespace Opc.Ua.PubSub {
                 if (ExtensionFields != null) {
                     var dictionary = new KeyValuePairCollection();
                     foreach (var item in ExtensionFields) {
-                        dictionary.Add(new Ua.KeyValuePair(){ 
-                            Key = item.Key, 
+                        dictionary.Add(new Ua.KeyValuePair(){
+                            Key = item.Key,
                             Value = item.Value});
                     }
                     encoder.WriteEncodeableArray("ExtensionFields", dictionary.ToArray(), typeof(Ua.KeyValuePair));

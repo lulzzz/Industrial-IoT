@@ -19,8 +19,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(str.ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(str.ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -31,8 +31,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(str.ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(str.ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -43,8 +43,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(str.ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(str.ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -55,8 +55,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(str.ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(str.ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -67,8 +67,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -79,8 +79,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.0);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -91,8 +91,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -103,8 +103,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -126,8 +126,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -140,8 +140,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -163,8 +163,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
         [Fact]
         public void DecodeEncodeDoubleArrayFromStringTypeNullIsDouble() {
@@ -174,8 +174,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -186,8 +186,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -208,8 +208,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
 
         }
 
@@ -221,8 +221,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -233,8 +233,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -245,8 +245,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -260,8 +260,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -275,8 +275,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -304,8 +304,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -319,8 +319,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -334,8 +334,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -349,8 +349,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -378,8 +378,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -393,8 +393,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -408,8 +408,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -423,8 +423,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(-123.123);
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromObject(-123.123).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromObject(-123.123).ToString(),
+                encoded.ToString());
         }
 
         [Fact]
@@ -438,8 +438,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             var expected = new Variant(new double[] { -123.123, 124.124, 0.0 });
             var encoded = codec.Encode(variant);
             Assert.Equal(expected, variant);
-            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(SerializeOption.Indented),
-                encoded.ToString(SerializeOption.Indented));
+            Assert.Equal(_serializer.FromArray(-123.123, 124.124, 0.0).ToString(),
+                encoded.ToString());
         }
 
         [Fact]

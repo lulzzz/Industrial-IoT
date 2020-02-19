@@ -31,10 +31,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Models {
                 SourcePicoseconds = model.SourcePicoseconds,
                 SourceTimestamp = model.SourceTimestamp,
                 Timestamp = model.Timestamp,
-                Value = model.TypeId?.IsPrimitive == true ? 
-                        model.Value : model.Value?.ToString(),
-                TypeId = model?.TypeId?.FullName,
-                Status = model.Status 
+                Value = model.Value.Copy(),
+                TypeId = model.TypeId,
+                Status = model.Status
             };
         }
     }

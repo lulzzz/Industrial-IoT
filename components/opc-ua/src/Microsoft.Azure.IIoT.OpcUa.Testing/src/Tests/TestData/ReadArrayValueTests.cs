@@ -182,12 +182,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Boolean, result.Value[0].Type);
+            Assert.True(result.Value[0].IsBoolean);
             Assert.Equal("Boolean", result.DataType);
         }
 
@@ -211,12 +211,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
             Assert.Equal("SByte", result.DataType);
         }
 
@@ -240,14 +240,14 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            if (result.Value.Type == VariantValueType.Null) {
+            if (result.Value.IsNull()) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Primitive, result.Value.Type);
+            Assert.True(result.Value.IsString);
             // TODO: Returns a bytestring, not byte array.  Investigate.
             // Assert.Equal(VariantValueType.Bytes, result.Value.Type);
-            // Assert.Equal(VariantValueType.Array, result.Value.Type);
+            // Assert.True(result.Value.IsArray);
             // if ((result.Value).Count == 0) return;
             // Assert.Equal(VariantValueType.Integer, (result.Value)[0].Type);
             Assert.Equal("ByteString", result.DataType);
@@ -275,12 +275,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
             Assert.Equal("Int16", result.DataType);
         }
 
@@ -304,12 +304,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
             Assert.Equal("UInt16", result.DataType);
         }
 
@@ -333,12 +333,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
             Assert.Equal("Int32", result.DataType);
         }
 
@@ -362,12 +362,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
             Assert.Equal("UInt32", result.DataType);
         }
 
@@ -391,12 +391,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
             Assert.Equal("Int64", result.DataType);
         }
 
@@ -420,12 +420,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
             Assert.Equal("UInt64", result.DataType);
         }
 
@@ -449,12 +449,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.True(result.Value[0].IsFloat(), $"First is {result.Value}");
+            Assert.True(result.Value[0].IsNumber, $"First is {result.Value}");
             Assert.Equal("Float", result.DataType);
         }
 
@@ -478,12 +478,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.True(result.Value[0].IsFloat());
+            Assert.True(result.Value[0].IsNumber);
             Assert.Equal("Double", result.DataType);
         }
 
@@ -507,12 +507,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Primitive, result.Value[0].Type);
+            Assert.True(result.Value[0].IsString);
             Assert.Equal("String", result.DataType);
         }
 
@@ -536,12 +536,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.UtcDateTime, result.Value[0].Type);
+            Assert.True(result.Value[0].IsDateTime);
             Assert.Equal("DateTime", result.DataType);
         }
 
@@ -565,12 +565,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Guid, result.Value[0].Type);
+            Assert.True(result.Value[0].IsGuid);
             Assert.Equal("Guid", result.DataType);
         }
 
@@ -594,10 +594,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            if (result.Value.Type == VariantValueType.Null) {
+            if (result.Value.IsNull()) {
                 return;
             }
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -626,12 +626,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Object, result.Value[0].Type);
+            Assert.True(result.Value[0].IsObject);
             Assert.Equal("XmlElement", result.DataType);
         }
 
@@ -655,12 +655,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Primitive, result.Value[0].Type);
+            Assert.True(result.Value[0].IsString);
             Assert.Equal("NodeId", result.DataType);
         }
 
@@ -684,12 +684,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Primitive, result.Value[0].Type);
+            Assert.True(result.Value[0].IsString);
             Assert.Equal("ExpandedNodeId", result.DataType);
         }
 
@@ -713,12 +713,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Primitive, result.Value[0].Type);
+            Assert.True(result.Value[0].IsString);
             Assert.Equal("QualifiedName", result.DataType);
         }
 
@@ -742,12 +742,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Object, result.Value[0].Type);
+            Assert.True(result.Value[0].IsObject);
             Assert.Equal("LocalizedText", result.DataType);
         }
 
@@ -771,13 +771,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
             Assert.True(
-               result.Value[0].Type == VariantValueType.Object ||
-               result.Value[0].Type == VariantValueType.Integer);
+               result.Value[0].IsObject ||
+               result.Value[0].IsInteger);
             Assert.Equal("StatusCode", result.DataType);
         }
 
@@ -801,7 +801,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -827,12 +827,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
             Assert.Equal("Int32", result.DataType);
         }
 
@@ -856,12 +856,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Object, result.Value[0].Type);
+            Assert.True(result.Value[0].IsObject);
             // TODO: Assert.Equal(VariantValueType.Bytes, (result.Value)[0].Type);
             Assert.Equal("ExtensionObject", result.DataType);
         }
@@ -886,17 +886,15 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            if (result.Value.Type == VariantValueType.Primitive) {
+            if (result.Value.IsString) {
                 Assert.NotEmpty(((string)result.Value).DecodeAsBase64());
                 return;
             }
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
-            var type = result.Value[0].Type;
-            Assert.True(type == VariantValueType.Integer ||
-                result.Value[0].IsFloat(), $"Got bad type {type}");
+            Assert.True(result.Value[0].IsNumber, $"Not a number {result.Value[0]}");
         }
 
 
@@ -919,16 +917,16 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            if (result.Value.Type == VariantValueType.Primitive) {
+            if (result.Value.IsString) {
                 Assert.NotEmpty(((string)result.Value).DecodeAsBase64());
                 return;
             }
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
         }
 
 
@@ -951,16 +949,16 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            if (result.Value.Type == VariantValueType.Primitive) {
+            if (result.Value.IsString) {
                 Assert.NotEmpty(((string)result.Value).DecodeAsBase64());
                 return;
             }
-            Assert.Equal(VariantValueType.Array, result.Value.Type);
+            Assert.True(result.Value.IsArray);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.Equal(VariantValueType.Integer, result.Value[0].Type);
+            Assert.True(result.Value[0].IsInteger);
         }
 
 
@@ -971,7 +969,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
         /// <param name="value"></param>
         private static void AssertEqualValue(VariantValue expected, VariantValue value) {
             Assert.True(VariantValue.DeepEquals(expected, value),
-                $"Expected: {expected} ({expected?.Type}) != Actual: {value} ({value?.Type})");
+                $"Expected: {expected}  != Actual: {value} ");
         }
 
         private readonly T _endpoint;

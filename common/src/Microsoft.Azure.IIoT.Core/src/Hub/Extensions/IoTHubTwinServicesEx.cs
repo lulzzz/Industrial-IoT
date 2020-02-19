@@ -130,7 +130,7 @@ namespace Microsoft.Azure.IIoT.Hub {
             return new DeviceTwinListModel {
                 ContinuationToken = response.ContinuationToken,
                 Items = response.Result
-                    .Select(j => j.As<DeviceTwinModel>())
+                    .Select(j => j.ConvertTo<DeviceTwinModel>())
                     .ToList()
             };
         }

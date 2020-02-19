@@ -11,6 +11,7 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -263,7 +264,7 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
                     throw new NotSupportedException("Query not supported");
                 }
                 var results = documents
-                    .Select(d => d.Value.As<T>());
+                    .Select(d => d.Value.ConvertTo<T>());
                 var feed = (pageSize is null) ?
                     results.YieldReturn() : results.Batch(pageSize.Value);
                 return new MemoryFeed<T>(this, new Queue<IEnumerable<T>>(feed));
@@ -329,8 +330,8 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
                 /// <summary>
                 /// Returns the size of the document
                 /// </summary>
-                public int Size => System.Text.Encoding.UTF8.GetByteCount(
-                    Value.ToString(SerializeOption.None));
+                public int Size => Encoding.UTF8.GetByteCount(Value.ToString());
+                // TODO: serialize and get number of resulting bytes
 
                 /// <summary>
                 /// Create memory document
@@ -372,7 +373,7 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
 
                 /// <inheritdoc/>
                 public override string ToString() {
-                    return Value.ToString(SerializeOption.Indented);
+                    return Value.ToString();
                 }
 
                 /// <inheritdoc/>
@@ -401,7 +402,7 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
                 }
 
                 /// <inheritdoc/>
-                T IDocumentInfo<T>.Value => Value.As<T>();
+                T IDocumentInfo<T>.Value => Value.ConvertTo<T>();
             }
 
             /// <summary>

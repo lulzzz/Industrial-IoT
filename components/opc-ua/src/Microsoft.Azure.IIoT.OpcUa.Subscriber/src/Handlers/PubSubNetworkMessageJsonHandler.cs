@@ -58,7 +58,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
                                     TypeId = (datapoint.Value?.WrappedValue.TypeInfo != null) ?
                                         TypeInfo.GetSystemType(
                                             datapoint.Value.WrappedValue.TypeInfo.BuiltInType,
-                                            datapoint.Value.WrappedValue.TypeInfo.ValueRank) : null,
+                                            datapoint.Value.WrappedValue.TypeInfo.ValueRank)?.FullName : null,
                                     DataSetId = message.DataSetWriterId,
                                     Timestamp = DateTime.UtcNow,
                                     SubscriptionId = "network message",

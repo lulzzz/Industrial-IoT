@@ -126,9 +126,9 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             var t = type.MakeArrayType();
             var expected = Json.FromArray(o, o, o);
             var result = MsgPack.Parse(MsgPack.Serialize(expected));
-            Assert.True(result.Type == VariantValueType.Array);
+            Assert.True(result.IsArray);
             Assert.True(result.Count == 3);
-            Assert.Equal(expected.Type, result.Type);
+            Assert.Equal(expected.GetTypeCode(), result.GetTypeCode());
             Assert.Equal(expected.Count, result.Count);
             Assert.Equal(expected, result);
         }
@@ -140,11 +140,11 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         public void SerializerArrayVariantToObject(object o, Type type) {
             var t = type.MakeArrayType();
             var expected = Json.FromArray(o, o, o);
-            var result = MsgPack.Parse(MsgPack.Serialize(expected.As(type.MakeArrayType())));
+            var result = MsgPack.Parse(MsgPack.Serialize(expected.ConvertTo(type.MakeArrayType())));
 
-            Assert.True(result.Type == VariantValueType.Array);
+            Assert.True(result.IsArray);
             Assert.True(result.Count == 3);
-            Assert.Equal(expected.Type, result.Type);
+            Assert.Equal(expected.GetTypeCode(), result.GetTypeCode());
             Assert.Equal(expected.Count, result.Count);
             Assert.Equal(expected, result);
         }
@@ -154,8 +154,8 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [MemberData(nameof(GetEmptyArrays))]
         [MemberData(nameof(GetFilledArrays))]
         public void SerializerVariant(object o, Type type) {
-            var expected = Json.FromObject(o).As(type);
-            var result = MsgPack.FromObject(o).As(type);
+            var expected = Json.FromObject(o).ConvertTo(type);
+            var result = MsgPack.FromObject(o).ConvertTo(type);
             Assert.NotNull(expected);
             Assert.NotNull(result);
             Assert.Equal(expected, result);
@@ -170,11 +170,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             var expected = Json.FromObject(v);
             var result = MsgPack.FromObject(v);
 
-            if (!expected.Type.Equals(result.Type)) {
-                Console.WriteLine();
-            }
-
-            Assert.Equal(expected.Type, result.Type);
+            Assert.Equal(expected.GetTypeCode(), result.GetTypeCode());
             Assert.Equal(expected, result);
         }
 

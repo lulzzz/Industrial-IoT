@@ -97,7 +97,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                 VariantValue json;
                 if (builtinType == BuiltInType.Null ||
                     (builtinType == BuiltInType.Variant &&
-                        value.Type == VariantValueType.Object)) {
+                        value.IsObject)) {
                     //
                     // Let the decoder try and decode the json variant.
                     //
@@ -136,16 +136,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             /// <param name="isString"></param>
             /// <returns></returns>
             internal VariantValue Sanitize(VariantValue value, bool isString) {
-                if (value is null || value.Type == VariantValueType.Null) {
+                if (value is null || value.IsNull()) {
                     return value;
                 }
 
-                var asString = value.Type == VariantValueType.Primitive ?
-                    (string)value : value.ToString(SerializeOption.None);
-
-                if (value.Type != VariantValueType.Object &&
-                    value.Type != VariantValueType.Array &&
-                    value.Type != VariantValueType.Primitive) {
+                var asString = value.IsString ? (string)value : value.ToString();
+                if (!value.IsObject && !value.IsArray && !value.IsString) {
                     //
                     // If this should be a string - return as such
                     //
@@ -159,7 +155,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                 //
                 // Try to parse string as json
                 //
-                if (value.Type != VariantValueType.Primitive) {
+                if (!value.IsString) {
                     asString = asString.Replace("\\\"", "\"");
                 }
                 var token = Try.Op(() => Serializer.Parse(asString));
@@ -167,7 +163,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     value = token;
                 }
 
-                if (value.Type == VariantValueType.Primitive) {
+                if (value.IsString) {
 
                     //
                     // try to split the string as comma seperated list
@@ -188,7 +184,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                                 }
                                 array.Add(trimmed);
                             }
-                            return Serializer.FromObject(array); // No need to sanitize contents
+                            // No need to sanitize contents
+                            return Serializer.FromObject(array);
                         }
                     }
                     else {
@@ -221,7 +218,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     }
                 }
 
-                if (value.Type == VariantValueType.Array) {
+                if (value.IsArray) {
                     //
                     // Sanitize each element accordingly
                     //

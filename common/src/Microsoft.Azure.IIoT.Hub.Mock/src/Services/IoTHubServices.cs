@@ -415,7 +415,7 @@ namespace Microsoft.Azure.IIoT.Hub.Mock {
                 if (Connection != null) {
                     var desired = new TwinCollection();
                     foreach (var item in Twin.Properties.Desired) {
-                        desired[item.Key] = item.Value?.As<object>();
+                        desired[item.Key] = item.Value?.ConvertTo<object>();
                     }
                     Connection.SetDesiredProperties(desired);
                 }
@@ -470,14 +470,14 @@ namespace Microsoft.Azure.IIoT.Hub.Mock {
 
                 foreach (var item in source) {
                     if (target.ContainsKey(item.Key)) {
-                        if (item.Value is null || item.Value.Type == VariantValueType.Null) {
+                        if (item.Value is null || item.Value.IsNull()) {
                             target.Remove(item.Key);
                         }
                         else {
                             target[item.Key] = item.Value;
                         }
                     }
-                    else if (item.Value != null && item.Value.Type != VariantValueType.Null) {
+                    else if (item.Value != null && !item.Value.IsNull()) {
                         target.Add(item.Key, item.Value);
                     }
                 }

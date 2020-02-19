@@ -65,7 +65,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
                     TypeId = (message?.Value?.WrappedValue.TypeInfo != null) ?
                         TypeInfo.GetSystemType(
                             message.Value.WrappedValue.TypeInfo.BuiltInType,
-                            message.Value.WrappedValue.TypeInfo.ValueRank) : null,
+                            message.Value.WrappedValue.TypeInfo.ValueRank)?.FullName : null,
                     DataSetId = !string.IsNullOrEmpty(message.DisplayName) ?
                         message.DisplayName : message.NodeId.AsString(null),
                     Timestamp = DateTime.UtcNow,

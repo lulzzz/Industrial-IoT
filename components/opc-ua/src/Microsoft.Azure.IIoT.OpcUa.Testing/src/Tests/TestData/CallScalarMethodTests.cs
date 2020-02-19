@@ -1210,43 +1210,43 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             // Assert
             Assert.Collection(result.Results,
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[0], arg.DataType);
                  },
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[1], arg.DataType);
                  },
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[2], arg.DataType);
                  },
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[3], arg.DataType);
                  },
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[4], arg.DataType);
                  },
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[5], arg.DataType);
                  },
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[6], arg.DataType);
                  },
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[7], arg.DataType);
                  },
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[8], arg.DataType);
                  },
                  arg => {
-                     Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                     Assert.True(arg.Value.IsNull);
                      Assert.Equal(types[9], arg.DataType);
                  });
         }

@@ -645,11 +645,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 "Boolean", "SByte", "ByteString", "Int16", "UInt16",
                 "Int32", "UInt32", "Int64", "UInt64", "Float", "Double"
             }, result.Results.Select(arg => arg.DataType));
-            Assert.Equal(input.Select(arg => arg.Value.ToString(SerializeOption.None)),
-                result.Results.Select(arg => arg.Value.ToString(SerializeOption.None)),
-                StringComparer.InvariantCulture);
+            Assert.Equal(input.Select(arg => arg.Value),
+                result.Results.Select(arg => arg.Value));
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+                arg => Assert.True(arg.Value.IsArray));
         }
 
 
@@ -692,16 +691,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             }, result.Results.Select(arg => arg.DataType));
             Assert.Collection(result.Results,
                 arg => {
-                    Assert.Equal(input[0].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None));
+                    Assert.Equal(input[0].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[1].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None));
+                    Assert.Equal(input[1].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[2].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None));
+                    Assert.Equal(input[2].Value, arg.Value);
                 },
                 arg => {
                     Assert.Empty(arg.Value.Values);
@@ -728,7 +724,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Empty(arg.Value.Values);
                 });
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+                arg => Assert.True(arg.Value.IsArray));
         }
 
 
@@ -753,7 +749,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
                 arg => Assert.Empty(arg.Value.Values));
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+                arg => Assert.True(arg.Value.IsArray));
         }
 
 
@@ -808,12 +804,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             }, result.Results.Select(arg => arg.DataType));
             Assert.Collection(result.Results,
                 arg => {
-                    Assert.Equal(input[0].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[0].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[1].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[1].Value, arg.Value);
                 },
                 arg => {
                     Assert.Equal(_serializer.FromObject(
@@ -842,11 +836,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Empty(arg.Value.Values);
                 },
                 arg => {
-                    Assert.Equal(input[10].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[10].Value, arg.Value);
                 });
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+                arg => Assert.True(arg.Value.IsArray));
         }
 
 
@@ -916,7 +909,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 "Int32", "UInt32", "Int64", "UInt64", "Float", "Double"
             }, result.Results.Select(arg => arg.DataType));
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+                arg => Assert.True(arg.Value.IsArray));
             Assert.Collection(result.Results,
                 arg => {
                     Assert.Empty(arg.Value.Values);
@@ -925,7 +918,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Empty(arg.Value.Values);
                 },
                 arg => {
-                    Assert.Equal(VariantValueType.Null, arg.Value.Type);
+                    Assert.True(arg.Value.IsNull);
                 },
                 arg => {
                     Assert.Empty(arg.Value.Values);
@@ -949,8 +942,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Empty(arg.Value.Values);
                 },
                 arg => {
-                    Assert.Equal(input[10].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[10].Value, arg.Value);
                 });
         }
 
@@ -1087,46 +1079,36 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 result.Results.Select(arg => arg.DataType));
             Assert.Collection(result.Results,
                 arg => {
-                    Assert.Equal(input[0].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[0].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[1].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[1].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[2].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[2].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[3].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[3].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[4].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[4].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[5].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[5].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[6].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[6].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[7].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[7].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[8].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[8].Value, arg.Value);
                 },
                 arg => {
-                    Assert.Equal(input[9].Value.ToString(SerializeOption.None),
-                        arg.Value.ToString(SerializeOption.None), true);
+                    Assert.Equal(input[9].Value, arg.Value);
                 });
-            Assert.All(result.Results, arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
         }
 
 
@@ -1149,7 +1131,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 "XmlElement", "NodeId", "ExpandedNodeId",
                 "QualifiedName","LocalizedText","StatusCode" },
                 result.Results.Select(arg => arg.DataType));
-            Assert.All(result.Results, arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
             Assert.All(result.Results, arg => Assert.Empty(arg.Value.Values));
         }
 
@@ -1193,7 +1175,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 "XmlElement", "NodeId", "ExpandedNodeId",
                 "QualifiedName","LocalizedText","StatusCode" },
                 result.Results.Select(arg => arg.DataType));
-            Assert.All(result.Results, arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
             Assert.Equal(3, result.Results[8].Value.Count);
         }
 
@@ -1261,10 +1243,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 "XmlElement", "NodeId", "ExpandedNodeId",
                 "QualifiedName", "LocalizedText", "StatusCode" },
                 result.Results.Select(arg => arg.DataType));
-            Assert.Equal(input.Select(arg => arg.Value.ToString(SerializeOption.None)),
-                result.Results.Select(arg => arg.Value.ToString(SerializeOption.None)),
-                StringComparer.InvariantCulture);
-            Assert.All(result.Results, arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+            Assert.Equal(input.Select(arg => arg.Value),
+                result.Results.Select(arg => arg.Value));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
             Assert.All(result.Results, arg => Assert.Empty(arg.Value.Values));
         }
 
@@ -1302,10 +1283,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.Equal(new List<string> {
                 "Variant", "Int32", "ExtensionObject"
             }, result.Results.Select(arg => arg.DataType));
-            Assert.Equal(input.Select(arg => arg.Value.ToString(SerializeOption.None)),
-                result.Results.Select(arg => arg.Value.ToString(SerializeOption.None)),
-                StringComparer.InvariantCulture);
-            Assert.All(result.Results, arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+            Assert.Equal(input.Select(arg => arg.Value),
+                result.Results.Select(arg => arg.Value));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
         }
 
 
@@ -1370,10 +1350,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.Equal(new List<string> {
                 "Variant", "Int32", "ExtensionObject"
             }, result.Results.Select(arg => arg.DataType));
-            Assert.Equal(input.Select(arg => arg.Value.ToString(SerializeOption.None)),
-                result.Results.Select(arg => arg.Value.ToString(SerializeOption.None)),
-                StringComparer.InvariantCultureIgnoreCase);
-            Assert.All(result.Results, arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+            Assert.Equal(input.Select(arg => arg.Value),
+                result.Results.Select(arg => arg.Value));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
         }
 
 
@@ -1394,7 +1373,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.Equal(new List<string> {
                 "Variant", "Int32", "ExtensionObject"
             }, result.Results.Select(arg => arg.DataType));
-            Assert.All(result.Results, arg => Assert.Equal(VariantValueType.Array, arg.Value.Type));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
             Assert.All(result.Results, arg => Assert.Empty(arg.Value.Values));
         }
 

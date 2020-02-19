@@ -257,23 +257,23 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Parser {
             }
             if (context.IS_NULL() != null) {
                 return s => VariantValue.FromObject(s != null &&
-                    (((VariantValue)s).Type == VariantValueType.Null));
+                    (((VariantValue)s).IsNull()));
             }
             if (context.IS_BOOL() != null) {
                 return s => VariantValue.FromObject(s != null &&
-                    (((VariantValue)s).Type == VariantValueType.Boolean));
+                    (((VariantValue)s).IsBoolean));
             }
             if (context.IS_NUMBER() != null) {
                 return s => VariantValue.FromObject(s != null &&
-                    (((VariantValue)s).Type == VariantValueType.Float || ((VariantValue)s).Type == VariantValueType.Integer));
+                    (((VariantValue)s).IsFloat || ((VariantValue)s).IsInteger));
             }
             if (context.IS_STRING() != null) {
                 return s => VariantValue.FromObject(s != null &&
-                    (((VariantValue)s).Type == VariantValueType.String));
+                    (((VariantValue)s).IsString));
             }
             if (context.IS_OBJECT() != null) {
                 return s => VariantValue.FromObject(s != null &&
-                    (((VariantValue)s).Type == VariantValueType.Object));
+                    (((VariantValue)s).IsObject));
             }
             return s => VariantValue.FromObject(true);
         }

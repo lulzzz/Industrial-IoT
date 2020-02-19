@@ -126,9 +126,9 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             var t = type.MakeArrayType();
             var expected = MsgPack.FromArray(o, o, o);
             var result = Json.Parse(Json.Serialize(expected));
-            Assert.True(result.Type == VariantValueType.Array);
+            Assert.True(result.IsArray);
             Assert.True(result.Count == 3);
-            Assert.Equal(expected.Type, result.Type);
+            Assert.Equal(expected.GetTypeCode(), result.GetTypeCode());
             Assert.Equal(expected.Count, result.Count);
             Assert.Equal(expected, result);
         }
@@ -136,15 +136,15 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [Fact]
         public void SerializerByteArrayVariantToObject() {
             var expected = MsgPack.FromArray((byte)1, (byte)2, (byte)3);
-            var o1 = expected.As<byte[]>();
+            var o1 = expected.ConvertTo<byte[]>();
             var json = Json.Serialize(o1);
             var result = Json.Parse(json);
 
             // TODO: Coerces to byte[] is not Array nor Bytes, but string
-            Assert.True(result.Type == VariantValueType.Bytes);
+            Assert.True(result.IsBytes);
             // TODO: Should count return the number of bytes in the byte array?
             Assert.True(result.Count == 0);
-            Assert.True(expected.Type == VariantValueType.Array);
+            Assert.True(expected.IsArray);
             Assert.True(expected.Count == 3);
             Assert.Equal(expected, result);
         }
@@ -159,13 +159,13 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                 return; // Special case
             }
             var expected = MsgPack.FromArray(o, o, o);
-            var o1 = expected.As(type.MakeArrayType());
+            var o1 = expected.ConvertTo(type.MakeArrayType());
             var json = Json.Serialize(o1);
             var result = Json.Parse(json);
 
-            Assert.True(result.Type == VariantValueType.Array);
+            Assert.True(result.IsArray);
             Assert.True(result.Count == 3);
-            Assert.Equal(expected.Type, result.Type);
+            Assert.Equal(expected.GetTypeCode(), result.GetTypeCode());
             Assert.Equal(expected.Count, result.Count);
             Assert.Equal(expected, result);
         }
@@ -175,8 +175,8 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [MemberData(nameof(GetEmptyArrays))]
         [MemberData(nameof(GetFilledArrays))]
         public void SerializerVariant(object o, Type type) {
-            var expected = MsgPack.FromObject(o).As(type);
-            var result = Json.FromObject(o).As(type);
+            var expected = MsgPack.FromObject(o).ConvertTo(type);
+            var result = Json.FromObject(o).ConvertTo(type);
             Assert.NotNull(expected);
             Assert.NotNull(result);
             Assert.Equal(expected, result);

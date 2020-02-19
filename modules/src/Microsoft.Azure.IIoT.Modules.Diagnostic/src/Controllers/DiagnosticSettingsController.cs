@@ -62,7 +62,7 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
         /// <returns></returns>
         public VariantValue this[string key] {
             set {
-                if (value is null || value.Type == VariantValueType.Null) {
+                if (value is null || value.IsNull()) {
                     _tempState.AddOrUpdate(key, null);
                     return;
                 }

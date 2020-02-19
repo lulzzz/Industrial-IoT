@@ -784,9 +784,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             var value = await _readExpected(_endpoint, node);
             Assert.NotNull(value);
             Assert.Null(result.ErrorInfo);
-            System.Diagnostics.Trace.WriteLine(value.ToString(SerializeOption.None));
-            Assert.True(VariantValue.DeepEquals(expected, value),
-                $"Expected: {expected} != Actual: {value}");
+
+            Assert.True(expected.Equals(value), $"{expected} != {value}");
+            Assert.Equal(expected, value);
         }
 
         private readonly T _endpoint;

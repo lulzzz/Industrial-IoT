@@ -22,24 +22,23 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Models {
             if (model.CertificateRequest is null) {
                 throw new ArgumentNullException(nameof(model.CertificateRequest));
             }
-            switch (model.CertificateRequest.Type) {
-                case VariantValueType.Bytes:
-                    return (byte[])model.CertificateRequest;
-                case VariantValueType.Primitive:
-                    var request = (string)model.CertificateRequest;
-                    if (request.Contains(certRequestPemHeader,
-                        StringComparison.OrdinalIgnoreCase)) {
-                        var strippedCertificateRequest = request.Replace(
-                            certRequestPemHeader, "", StringComparison.OrdinalIgnoreCase);
-                        strippedCertificateRequest = strippedCertificateRequest.Replace(
-                            certRequestPemFooter, "", StringComparison.OrdinalIgnoreCase);
-                        return Convert.FromBase64String(strippedCertificateRequest);
-                    }
-                    return Convert.FromBase64String(request);
-                default:
-                    throw new ArgumentException("Bad certificate request",
-                nameof(model.CertificateRequest));
+            if (model.CertificateRequest.IsBytes) {
+                return (byte[])model.CertificateRequest;
             }
+            if (model.CertificateRequest.IsString) {
+                var request = (string)model.CertificateRequest;
+                if (request.Contains(certRequestPemHeader,
+                    StringComparison.OrdinalIgnoreCase)) {
+                    var strippedCertificateRequest = request.Replace(
+                        certRequestPemHeader, "", StringComparison.OrdinalIgnoreCase);
+                    strippedCertificateRequest = strippedCertificateRequest.Replace(
+                        certRequestPemFooter, "", StringComparison.OrdinalIgnoreCase);
+                    return Convert.FromBase64String(strippedCertificateRequest);
+                }
+                return Convert.FromBase64String(request);
+            }
+            throw new ArgumentException("Bad certificate request",
+                nameof(model.CertificateRequest));
         }
     }
 }

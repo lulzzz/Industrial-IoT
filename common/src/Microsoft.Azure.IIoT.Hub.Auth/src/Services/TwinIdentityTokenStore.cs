@@ -67,7 +67,7 @@ namespace Microsoft.Azure.IIoT.Hub.Auth {
         private static IdentityTokenModel ConvertFromVariantValue(VariantValue json,
             string identity) {
             try {
-                var identityToken = json.As<IdentityTokenTwinModel>();
+                var identityToken = json.ConvertTo<IdentityTokenTwinModel>();
                 return identityToken?.ToServiceModel();
             }
             catch (Exception ex) {

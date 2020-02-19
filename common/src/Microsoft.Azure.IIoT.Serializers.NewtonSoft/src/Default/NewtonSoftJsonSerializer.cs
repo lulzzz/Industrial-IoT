@@ -4,8 +4,8 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
-    using Microsoft.Azure.IIoT.Serializers;
     using Microsoft.Azure.IIoT.Exceptions;
+    using Microsoft.Azure.IIoT.Serializers;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using System;
@@ -159,7 +159,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            public override VariantValueType Type {
+            protected override VariantValueType Type {
                 get {
                     switch (Token.Type) {
                         case JTokenType.Object:
@@ -168,54 +168,19 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                             return VariantValueType.Array;
                         case JTokenType.Bytes:
                             return VariantValueType.Bytes;
+                        case JTokenType.Boolean:
                         case JTokenType.Integer:
-                            return VariantValueType.Integer;
                         case JTokenType.Float:
-                            if (double.IsInfinity((double)Token) ||
-                                float.IsInfinity((float)Token) ||
-                                double.IsNaN((double)Token) ||
-                                float.IsNaN((float)Token)) {
-                                return VariantValueType.Primitive;
-                            }
-                            return VariantValueType.Float;
                         case JTokenType.Date:
-                            return VariantValueType.UtcDateTime;
                         case JTokenType.TimeSpan:
-                            return VariantValueType.TimeSpan;
                         case JTokenType.Guid:
-                            return VariantValueType.Guid;
                         case JTokenType.Raw:
                         case JTokenType.Uri:
-                            return VariantValueType.Primitive;
                         case JTokenType.String:
-                            var s = (string)Token;
-                            if (string.IsNullOrEmpty(s)) {
-                                return VariantValueType.Primitive;
-                            }
-                          // if (TimeSpan.TryParse(s, out _)) {
-                          //     return VariantValueType.TimeSpan;
-                          // }
-                            if (DateTime.TryParse(s, out _) ||
-                                DateTimeOffset.TryParse(s, out _)) {
-                                return VariantValueType.UtcDateTime;
-                            }
-                          //  if (double.TryParse(s, out _) ||
-                          //      float.TryParse(s, out _)) {
-                          //      return VariantValueType.Float;
-                          //  }
-                          //  if (decimal.TryParse(s, out _)) {
-                          //      return VariantValueType.Float;
-                          //  }
-                            if (Guid.TryParse(s, out _)) {
-                                return VariantValueType.Guid;
-                            }
                             return VariantValueType.Primitive;
-                        case JTokenType.Boolean:
-                            return VariantValueType.Boolean;
                         case JTokenType.Null:
-                            return VariantValueType.Null;
                         default:
-                            return VariantValueType.Undefined;
+                            return VariantValueType.Null;
                     }
                 }
             }
@@ -287,7 +252,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            public override string ToString(SerializeOption format) {
+            protected override string ToString(SerializeOption format) {
                 return Token.ToString(format == SerializeOption.Indented ?
                     Formatting.Indented :
                     Formatting.None,
@@ -319,9 +284,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            protected override VariantValue Null() {
-                return new JsonVariantValue(null, _serializer);
-            }
+            protected override VariantValue Null => new JsonVariantValue(null, _serializer);
 
             /// <inheritdoc/>
             protected override bool TryEqualsValue(object o, out bool equality) {
@@ -450,29 +413,32 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                         json.Token.WriteTo(writer, serializer.Converters.ToArray());
                         break;
                     case VariantValue variant:
-                        switch (variant.Type) {
-                            case VariantValueType.Null:
-                                writer.WriteNull();
-                                break;
-                            case VariantValueType.Array:
-                                writer.WriteStartArray();
-                                foreach (var item in variant.Values) {
-                                    WriteJson(writer, item, serializer);
-                                }
-                                writer.WriteEndArray();
-                                break;
-                            case VariantValueType.Object:
-                                writer.WriteStartObject();
-                                foreach (var key in variant.Keys) {
-                                    writer.WritePropertyName(key);
-                                    // Write value
-                                    WriteJson(writer, variant[key], serializer);
-                                }
-                                writer.WriteEndObject();
-                                break;
-                            default:
-                                serializer.Serialize(writer, variant.Value);
-                                break;
+                        if (variant.IsNull()) {
+                            writer.WriteNull();
+                        }
+                        else if (variant.IsArray) {
+                            writer.WriteStartArray();
+                            foreach (var item in variant.Values) {
+                                WriteJson(writer, item, serializer);
+                            }
+                            writer.WriteEndArray();
+                        }
+                        else if (variant.IsObject) {
+                            writer.WriteStartObject();
+                            foreach (var key in variant.Keys) {
+                                writer.WritePropertyName(key);
+                                // Write value
+                                WriteJson(writer, variant[key], serializer);
+                            }
+                            writer.WriteEndObject();
+                        }
+                        else if (variant.TryGetValue(out var primitive)) {
+                            serializer.Serialize(writer, primitive);
+                            break;
+                        }
+                        else {
+                            serializer.Serialize(writer, variant.Value);
+                            break;
                         }
                         break;
                     default:

@@ -7,10 +7,10 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
     using Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Filters;
     using Microsoft.Azure.IIoT.Modules.Diagnostic.Services;
     using Microsoft.Azure.IIoT.Module.Framework;
+    using Microsoft.Azure.IIoT.Serializers;
     using Serilog;
     using System;
     using System.Threading.Tasks;
-    using Microsoft.Azure.IIoT.Serializers;
 
     /// <summary>
     /// Diagnostic methods controller
@@ -24,10 +24,16 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
         /// Create controller with service
         /// </summary>
         /// <param name="publisher"></param>
+        /// <param name="serializer"></param>
         /// <param name="logger"></param>
-        public DiagnosticMethodsController(ITelemetrySender publisher, ILogger logger) {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _publisher = publisher ?? throw new ArgumentNullException(nameof(publisher));
+        public DiagnosticMethodsController(ITelemetrySender publisher,
+            ISerializer serializer, ILogger logger) {
+            _logger = logger ??
+                throw new ArgumentNullException(nameof(logger));
+            _publisher = publisher ??
+                throw new ArgumentNullException(nameof(publisher));
+            _serializer = serializer ??
+                throw new ArgumentNullException(nameof(serializer));
         }
 
         /// <summary>
@@ -36,7 +42,8 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
         /// <returns></returns>
         public Task<DateTime> PingAsync(DateTime start) {
             var now = DateTime.UtcNow;
-            _logger.Verbose("Processed PING: request timing: {timing}", now - start);
+            _logger.Verbose("Processed PING: request timing: {timing}",
+                now - start);
             return Task.FromResult(now);
         }
 
@@ -44,10 +51,10 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
         /// Handle echo
         /// </summary>
         /// <returns></returns>
-        public Task<VariantValue> EchoAsync(VariantValue token) {
-            _logger.Verbose("Processed ECHO: {token}", 
-                token.ToString(SerializeOption.None));
-            return Task.FromResult(token);
+        public Task<VariantValue> EchoAsync(VariantValue value) {
+            var token = _serializer.SerializePretty(value);
+            _logger.Verbose("Processed ECHO: {token}", token);
+            return Task.FromResult(value);
         }
 
         /// <summary>
@@ -69,5 +76,6 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
 
         private readonly ILogger _logger;
         private readonly ITelemetrySender _publisher;
+        private readonly ISerializer _serializer;
     }
 }

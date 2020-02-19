@@ -409,7 +409,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             /// <returns></returns>
             public Controller Set(string property, VariantValue value) {
                 try {
-                    var cast = value.As(_property.PropertyType);
+                    var cast = value.ConvertTo(_property.PropertyType);
                     if (_indexed) {
                         _property.SetValue(_controller.Target, cast,
                             new object[] { property });

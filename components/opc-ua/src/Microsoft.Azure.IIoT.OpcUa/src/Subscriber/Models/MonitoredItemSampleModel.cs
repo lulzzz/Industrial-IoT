@@ -7,7 +7,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Models {
     using Microsoft.Azure.IIoT.Serializers;
     using System;
 
-
     /// <summary>
     /// Monitored item sample message
     /// </summary>
@@ -24,14 +23,14 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Models {
         public VariantValue Value { get; set; }
 
         /// <summary>
-        /// Value's Status code string representation 
+        /// Value's Status code string representation
         /// </summary>
         public string Status { get; set; }
-        
+
         /// <summary>
         /// Type id
         /// </summary>
-        public Type TypeId { get; set; }
+        public string TypeId { get; set; }
 
         /// <summary>
         /// Source time stamp

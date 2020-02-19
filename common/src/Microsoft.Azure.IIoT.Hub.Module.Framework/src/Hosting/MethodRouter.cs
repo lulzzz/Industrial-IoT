@@ -263,7 +263,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                         inputs = _methodParams.Select(param => {
                             if (data.TryGetValue(param.Name,
                                 out var value, StringComparison.InvariantCultureIgnoreCase)) {
-                                return value.As(param.ParameterType);
+                                return value.ConvertTo(param.ParameterType);
                             }
                             return param.HasDefaultValue ? param.DefaultValue : null;
                         }).ToArray();
