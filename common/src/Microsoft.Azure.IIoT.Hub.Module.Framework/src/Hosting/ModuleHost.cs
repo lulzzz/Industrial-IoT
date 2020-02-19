@@ -104,10 +104,10 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
         /// <inheritdoc/>
         public async Task StartAsync(string type, string siteId, string serviceInfo,
             IProcessControl reset) {
-            if (Client is null) {
+            if (Client == null) {
                 try {
                     await _lock.WaitAsync();
-                    if (Client is null) {
+                    if (Client == null) {
                         // Create client
                         _logger.Debug("Starting Module Host...");
                         Client = await _factory.CreateAsync(serviceInfo, reset);

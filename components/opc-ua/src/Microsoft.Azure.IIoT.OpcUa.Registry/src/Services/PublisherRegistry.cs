@@ -64,7 +64,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             var devices = await _iothub.QueryAllDeviceTwinsAsync(query, ct);
 
             device = devices.SingleOrDefault();
-            if (device is null) {
+            if (device == null) {
                 throw new ResourceNotFoundException(
                     $"No publisher found for {endpointId} in {deviceId}");
             }
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             var device = await _iothub.GetAsync(deviceId, moduleId, ct);
             var registration = device.ToEntityRegistration(onlyServerState)
                 as PublisherRegistration;
-            if (registration is null) {
+            if (registration == null) {
                 throw new ResourceNotFoundException(
                     $"{id} is not a supervisor registration.");
             }
@@ -94,7 +94,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
         /// <inheritdoc/>
         public async Task UpdatePublisherAsync(string publisherId,
             PublisherUpdateModel request, CancellationToken ct) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             if (string.IsNullOrEmpty(publisherId)) {
@@ -113,7 +113,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                     }
 
                     var registration = twin.ToEntityRegistration(true) as PublisherRegistration;
-                    if (registration is null) {
+                    if (registration == null) {
                         throw new ResourceNotFoundException(
                             $"{publisherId} is not a publisher registration.");
                     }
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                     }
 
                     if (request.Configuration != null) {
-                        if (patched.Configuration is null) {
+                        if (patched.Configuration == null) {
                             patched.Configuration = new PublisherConfigModel();
                         }
                         if (request.Configuration.JobOrchestratorUrl != null) {

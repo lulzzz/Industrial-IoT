@@ -35,7 +35,7 @@ namespace Opc.Ua {
         public override void WriteJson(JsonWriter writer, object value,
             JsonSerializer serializer) {
             var variant = value as Variant?;
-            if (variant is null) {
+            if (variant == null) {
                 writer.WriteNull();
             }
             else {

@@ -35,7 +35,7 @@ namespace Microsoft.Azure.IIoT.Hub.Client {
         /// <inheritdoc/>
         public Task SendAsync(string deviceId, string moduleId,
             EventModel message) {
-            if (message is null) {
+            if (message == null) {
                 throw new ArgumentNullException(nameof(message));
             }
             if (string.IsNullOrEmpty(deviceId)) {

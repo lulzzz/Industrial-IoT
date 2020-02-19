@@ -21,7 +21,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Models {
         /// <returns></returns>
         public static SubscriptionConfigurationModel ToSubscriptionConfigurationModel(
             this PublishedDataSetSourceModel dataSetSource) {
-            if (dataSetSource is null) {
+            if (dataSetSource == null) {
                 throw new ArgumentNullException(nameof(dataSetSource));
             }
             return new SubscriptionConfigurationModel {

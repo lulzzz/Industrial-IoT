@@ -47,7 +47,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             var device = await _iothub.GetAsync(deviceId, moduleId, ct);
             var registration = device.ToEntityRegistration(onlyServerState)
                 as SupervisorRegistration;
-            if (registration is null) {
+            if (registration == null) {
                 throw new ResourceNotFoundException(
                     $"{id} is not a supervisor registration.");
             }
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
         /// <inheritdoc/>
         public async Task UpdateSupervisorAsync(string supervisorId,
             SupervisorUpdateModel request, CancellationToken ct) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             if (string.IsNullOrEmpty(supervisorId)) {
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                     }
 
                     var registration = twin.ToEntityRegistration(true) as SupervisorRegistration;
-                    if (registration is null) {
+                    if (registration == null) {
                         throw new ResourceNotFoundException(
                             $"{supervisorId} is not a supervisor registration.");
                     }

@@ -36,7 +36,7 @@ namespace Opc.Ua.Bindings {
         /// Attaches the channel to an existing socket.
         /// </summary>
         public void Attach(uint channelId, IMessageSocket socket) {
-            if (socket is null) {
+            if (socket == null) {
                 throw new ArgumentNullException(nameof(socket));
             }
             lock (DataLock) {
@@ -61,12 +61,12 @@ namespace Opc.Ua.Bindings {
             // requested url then call select.
             //
             var url = Utils.ParseUri(endpointUrl);
-            if (url is null) {
+            if (url == null) {
                 return false;
             }
             foreach (var ep in _endpoints) {
                 var expectedUrl = Utils.ParseUri(ep.EndpointUrl);
-                if (expectedUrl is null) {
+                if (expectedUrl == null) {
                     continue;
                 }
                 if (expectedUrl.Scheme != url.Scheme) {

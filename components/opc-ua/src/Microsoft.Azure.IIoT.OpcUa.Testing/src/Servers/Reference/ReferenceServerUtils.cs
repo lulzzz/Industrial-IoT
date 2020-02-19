@@ -85,7 +85,7 @@ namespace Reference {
         /// Empties the event queue and saves it in the dataset.
         /// </summary>
         public static DataSet EmptyQueue(DataSet dataset) {
-            if (dataset is null) {
+            if (dataset == null) {
                 dataset = new DataSet();
                 dataset.Tables.Add("MonitoredItems");
 
@@ -466,7 +466,7 @@ namespace Reference {
             IServerInternal server,
             OperationContext context,
             ServiceResult error) {
-            if (error is null) {
+            if (error == null) {
                 return null;
             }
 

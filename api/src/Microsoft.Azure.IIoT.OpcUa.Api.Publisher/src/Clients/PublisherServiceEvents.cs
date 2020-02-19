@@ -29,7 +29,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher {
         public async Task<IAsyncDisposable> NodePublishSubscribeByEndpointAsync(string endpointId,
             string userId, Func<MonitoredItemMessageApiModel, Task> callback) {
 
-            if (callback is null) {
+            if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
             var registrar = await _client.GetRegistrarAsync(userId);

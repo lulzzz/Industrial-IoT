@@ -27,7 +27,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// </summary>
         public string LogLevel {
             set {
-                if (value is null) {
+                if (value == null) {
                     // Set default
                     LogControl.Level.MinimumLevel = LogEventLevel.Information;
                     _logger.Information("Setting log level to default level.");

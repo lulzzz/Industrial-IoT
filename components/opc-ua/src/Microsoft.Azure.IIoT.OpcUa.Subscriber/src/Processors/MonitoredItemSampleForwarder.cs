@@ -26,7 +26,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
             ISerializer serializer) {
             _serializer = serializer ??
                 throw new ArgumentNullException(nameof(serializer));
-            if (queue is null) {
+            if (queue == null) {
                 throw new ArgumentNullException(nameof(queue));
             }
             _client = queue.OpenAsync().Result;

@@ -98,7 +98,7 @@ namespace Microsoft.Azure.IIoT.Net.Scanner {
             _timeout = timeout ?? kDefaultProbeTimeout;
             _completion = new TaskCompletionSource<bool>();
             _candidates = new List<uint>();
-            if (addresses is null) {
+            if (addresses == null) {
                 _addresses = NetworkInformationEx.GetAllNetInterfaces(netclass)
                     .Select(t => new AddressRange(t, local)).Distinct().ToList();
             }

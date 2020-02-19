@@ -21,7 +21,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
         /// </summary>
         /// <param name="client"></param>
         public MonitoredItemSampleCdmProcessor(ICdmClient client) {
-            if (client is null) {
+            if (client == null) {
                 throw new ArgumentNullException(nameof(client));
             }
             client.OpenAsync().Wait();

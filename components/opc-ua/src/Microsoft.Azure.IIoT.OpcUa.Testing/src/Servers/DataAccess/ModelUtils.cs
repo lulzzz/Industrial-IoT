@@ -84,13 +84,13 @@ namespace DataAccess {
         /// <param name="namespaceIndex">Index of the namespace.</param>
         /// <returns>The node identifier for a component.</returns>
         public static NodeId ConstructIdForComponent(NodeState component, ushort namespaceIndex) {
-            if (component is null) {
+            if (component == null) {
                 return null;
             }
 
             // components must be instances with a parent.
 
-            if (!(component is BaseInstanceState instance) || instance.Parent is null) {
+            if (!(component is BaseInstanceState instance) || instance.Parent == null) {
                 return component.NodeId;
             }
 

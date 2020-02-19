@@ -21,13 +21,13 @@ namespace Microsoft.Azure.IIoT.App.Data {
         public static void Update(this IList<GatewayApiModel> results,
             GatewayEventApiModel ev) {
             var gateway = results.FirstOrDefault(e => e.Id == ev.Id);
-            if (gateway is null &&
+            if (gateway == null &&
                 ev.EventType != GatewayEventType.New) {
                 return;
             }
             switch (ev.EventType) {
                 case GatewayEventType.New:
-                    if (gateway is null) {
+                    if (gateway == null) {
                         // Add if not already in list
                         results.Add(ev.Gateway);
                     }

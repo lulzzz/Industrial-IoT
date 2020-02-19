@@ -28,7 +28,7 @@ namespace Microsoft.Azure.IIoT.AspNetCore.Auth.Clients {
 
         /// <inheritdoc/>
         public async Task ValidateToken(IdentityTokenModel token) {
-            if (token?.Identity is null) {
+            if (token?.Identity == null) {
                 throw new UnauthorizedAccessException();
             }
             var originalKey = await _distributedCache.GetStringAsync(token.Identity);

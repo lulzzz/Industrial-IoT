@@ -42,12 +42,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <returns></returns>
         public static EventFilter Decode(this IVariantEncoder encoder, EventFilterModel model,
             bool noDefaultFilter = false) {
-            if (model is null || !(model.SelectClauses?.Any() ?? false)) {
+            if (model == null || !(model.SelectClauses?.Any() ?? false)) {
                 return noDefaultFilter ? null : GetDefaultEventFilter();
             }
             return new EventFilter {
                 SelectClauses = new SimpleAttributeOperandCollection(
-                    model.SelectClauses is null ? Enumerable.Empty<SimpleAttributeOperand>() :
+                    model.SelectClauses == null ? Enumerable.Empty<SimpleAttributeOperand>() :
                     model.SelectClauses.Select(c => c.ToStackModel(encoder.Context))),
                 //
                 // Per Part 4 only allow simple attribute operands in where clause
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <param name="encoder"></param>
         /// <returns></returns>
         public static EventFilterModel Encode(this IVariantEncoder encoder, EventFilter model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new EventFilterModel {
@@ -84,11 +84,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <returns></returns>
         public static ContentFilter Decode(this IVariantEncoder encoder, ContentFilterModel model,
             bool onlySimpleAttributeOperands = false) {
-            if (model is null) {
+            if (model == null) {
                 return new ContentFilter();
             }
             return new ContentFilter {
-                Elements = new ContentFilterElementCollection(model.Elements is null ?
+                Elements = new ContentFilterElementCollection(model.Elements == null ?
                     Enumerable.Empty<ContentFilterElement>() : model.Elements
                         .Select(e => encoder.Decode(e, onlySimpleAttributeOperands)))
             };
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <param name="encoder"></param>
         /// <returns></returns>
         public static ContentFilterModel Encode(this IVariantEncoder encoder, ContentFilter model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new ContentFilterModel {
@@ -120,11 +120,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <returns></returns>
         public static ContentFilterElement Decode(this IVariantEncoder encoder,
             ContentFilterElementModel model, bool onlySimpleAttributeOperands = false) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new ContentFilterElement {
-                FilterOperands = new ExtensionObjectCollection(model?.FilterOperands is null ?
+                FilterOperands = new ExtensionObjectCollection(model?.FilterOperands == null ?
                     Enumerable.Empty<ExtensionObject>() : model.FilterOperands
                         .Select(e => new ExtensionObject(
                             encoder.Decode(e, onlySimpleAttributeOperands)))),
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <returns></returns>
         public static ContentFilterElementModel Encode(this IVariantEncoder encoder,
             ContentFilterElement model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new ContentFilterElementModel {
@@ -162,7 +162,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <returns></returns>
         public static FilterOperand Decode(this IVariantEncoder encoder,
             FilterOperandModel model, bool onlySimpleAttributeOperands = false) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             if (model.Index != null) {
@@ -187,7 +187,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
             return new SimpleAttributeOperand {
                 TypeDefinitionId = model.NodeId.ToNodeId(encoder.Context),
                 AttributeId = (uint)(model.AttributeId ?? NodeAttribute.Value),
-                BrowsePath = new QualifiedNameCollection(model.BrowsePath is null ?
+                BrowsePath = new QualifiedNameCollection(model.BrowsePath == null ?
                     Enumerable.Empty<QualifiedName>() :
                     model.BrowsePath?.Select(n => n.ToQualifiedName(encoder.Context))),
                 IndexRange = model.IndexRange
@@ -202,7 +202,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <returns></returns>
         public static FilterOperandModel Encode(this IVariantEncoder encoder,
             FilterOperand model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             switch (model) {

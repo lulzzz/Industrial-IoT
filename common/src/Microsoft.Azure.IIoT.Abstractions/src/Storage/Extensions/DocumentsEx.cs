@@ -25,7 +25,7 @@ namespace Microsoft.Azure.IIoT.Storage {
             this IDocuments documents, string id, CancellationToken ct = default,
             OperationOptions options = null) {
             var result = await documents.FindAsync<T>(id, ct, options);
-            if (result is null) {
+            if (result == null) {
                 throw new ResourceNotFoundException($"Resource {id} not found");
             }
             return result;

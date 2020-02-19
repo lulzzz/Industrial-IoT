@@ -17,7 +17,7 @@ namespace Microsoft.Azure.IIoT.Crypto {
         /// <param name="revoked"></param>
         /// <returns></returns>
         public static RevocationInfo Clone(this RevocationInfo revoked) {
-            if (revoked is null) {
+            if (revoked == null) {
                 return null;
             }
             return new RevocationInfo {
@@ -32,10 +32,10 @@ namespace Microsoft.Azure.IIoT.Crypto {
         /// <param name="other"></param>
         /// <returns></returns>
         public static bool SameAs(this RevocationInfo revoked, RevocationInfo other) {
-            if (revoked is null) {
-                return other is null;
+            if (revoked == null) {
+                return other == null;
             }
-            if (other is null) {
+            if (other == null) {
                 return false;
             }
             if (revoked.Date != other.Date) {

@@ -48,7 +48,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.History.Controllers {
         public async Task<HistoryUpdateResponseApiModel> HistoryInsertValuesAsync(
             string endpointId,
             [FromBody] [Required] HistoryUpdateRequestApiModel<InsertValuesDetailsApiModel> request) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             var writeResult = await _historian.HistoryInsertValuesAsync(
@@ -71,7 +71,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.History.Controllers {
         public async Task<HistoryUpdateResponseApiModel> HistoryInsertEventsAsync(
             string endpointId,
             [FromBody] [Required] HistoryUpdateRequestApiModel<InsertEventsDetailsApiModel> request) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             var writeResult = await _historian.HistoryInsertEventsAsync(

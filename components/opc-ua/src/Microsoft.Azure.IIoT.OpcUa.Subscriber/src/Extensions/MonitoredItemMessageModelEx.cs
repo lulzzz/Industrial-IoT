@@ -16,7 +16,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static MonitoredItemSampleModel Clone(this MonitoredItemSampleModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new MonitoredItemSampleModel {

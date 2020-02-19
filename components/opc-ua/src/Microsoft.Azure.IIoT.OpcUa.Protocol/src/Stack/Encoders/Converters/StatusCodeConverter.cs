@@ -35,7 +35,7 @@ namespace Opc.Ua {
         public override void WriteJson(JsonWriter writer, object value,
             JsonSerializer serializer) {
             var statusCode = value as StatusCode?;
-            if (statusCode is null) {
+            if (statusCode == null) {
                 writer.WriteNull();
             }
             else {

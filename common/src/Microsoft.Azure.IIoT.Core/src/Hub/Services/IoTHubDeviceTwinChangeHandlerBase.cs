@@ -52,14 +52,14 @@ namespace Microsoft.Azure.IIoT.Hub.Services {
 
             var twin = Try.Op(() => _serializer.Deserialize<DeviceTwinModel>(
                 Encoding.UTF8.GetString(payload)));
-            if (twin is null) {
+            if (twin == null) {
                 return;
             }
 
             twin.ModuleId = moduleId;
             twin.Id = deviceId;
             var operation = GetOperation(opType);
-            if (operation is null) {
+            if (operation == null) {
                 return;
             }
 

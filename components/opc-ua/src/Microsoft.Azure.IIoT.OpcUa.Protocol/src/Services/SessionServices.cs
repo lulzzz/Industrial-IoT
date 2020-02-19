@@ -95,7 +95,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                 NodeId id;
                 lock (_lock) {
                     id = _sessions.FirstOrDefault().Value?.Id;
-                    if (id is null) {
+                    if (id == null) {
                         break;
                     }
                 }
@@ -198,7 +198,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         public virtual void CloseSession(NodeId sessionId) {
             var authenticationToken = _sessions.FirstOrDefault(
                 s => s.Value.Id == sessionId);
-            // If not found, key is null
+            // If not found, key == null
             if (_sessions.TryRemove(authenticationToken.Key, out var session)) {
                 // raise session related event.
                 _sessionClosing?.Invoke(session, null);
@@ -209,7 +209,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         /// <inheritdoc/>
         public virtual RequestContextModel GetContext(RequestHeader requestHeader,
             RequestType requestType) {
-            if (requestHeader is null) {
+            if (requestHeader == null) {
                 throw new ArgumentNullException(nameof(requestHeader));
             }
             GatewaySession session = null;
@@ -302,10 +302,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                 X509Certificate2 serverCertificate, byte[] serverNonce,
                 TimeSpan timeout, TimeSpan maxRequestAge, UserIdentityHandler validator) {
 
-                if (context is null) {
+                if (context == null) {
                     throw new ArgumentNullException(nameof(context));
                 }
-                if (context.ChannelContext is null) {
+                if (context.ChannelContext == null) {
                     throw new ServiceResultException(StatusCodes.BadSecureChannelIdInvalid);
                 }
                 _validator = validator;
@@ -337,13 +337,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
 
             /// <inheritdoc/>
             public void ValidateRequest(RequestHeader requestHeader, RequestType requestType) {
-                if (requestHeader is null) {
+                if (requestHeader == null) {
                     throw new ArgumentNullException(nameof(requestHeader));
                 }
                 lock (_lock) {
                     // get the request context for the current thread.
                     var context = SecureChannelContext.Current;
-                    if (context is null || context.SecureChannelId != _secureChannelId) {
+                    if (context == null || context.SecureChannelId != _secureChannelId) {
                         throw new ServiceResultException(StatusCodes.BadSecureChannelIdInvalid);
                     }
                     // verify that session has been activated.
@@ -418,7 +418,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                 SignatureData userTokenSignature) {
 
                 // verify that a secure channel was specified.
-                if (context.ChannelContext is null) {
+                if (context.ChannelContext == null) {
                     throw new ServiceResultException(StatusCodes.BadSecureChannelIdInvalid);
                 }
 
@@ -462,14 +462,14 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
 
                 UserIdentityToken token = null;
                 UserTokenPolicy policy;
-                if (identityToken is null || identityToken.Body is null) {
+                if (identityToken == null || identityToken.Body == null) {
                     if (_activated) {
                         // not changing the token if already activated.
                         return false;
                     }
                     policy = Endpoint.UserIdentityTokens?
                         .FirstOrDefault(t => t.TokenType == UserTokenType.Anonymous);
-                    if (policy is null) {
+                    if (policy == null) {
                         throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
                             "Anonymous user token policy not supported.");
                     }
@@ -486,7 +486,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     token = (UserIdentityToken)identityToken.Body;
                     // find the user token policy.
                     policy = Endpoint.FindUserTokenPolicy(token.PolicyId);
-                    if (policy is null) {
+                    if (policy == null) {
                         throw ServiceResultException.Create(StatusCodes.BadIdentityTokenInvalid,
                             "User token policy not supported.");
                     }
@@ -500,11 +500,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
 
                 if (securityPolicyUri != SecurityPolicies.None) {
                     // decrypt the user identity token.
-                    if (_serverCertificate is null) {
+                    if (_serverCertificate == null) {
                         _serverCertificate = CertificateFactory.Create(
                             Endpoint.ServerCertificate, true);
                         // check for valid certificate.
-                        if (_serverCertificate is null) {
+                        if (_serverCertificate == null) {
                             throw ServiceResultException.Create(StatusCodes.BadConfigurationError,
                                 "ApplicationCertificate cannot be found.");
                         }
@@ -558,7 +558,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                         "Invalid user identity token provided.");
                 }
                 policy = Endpoint.FindUserTokenPolicy(token.PolicyId);
-                if (policy is null) {
+                if (policy == null) {
                     throw ServiceResultException.Create(StatusCodes.BadUserAccessDenied,
                         "User token policy not supported.", "ValidateUserIdentityToken");
                 }

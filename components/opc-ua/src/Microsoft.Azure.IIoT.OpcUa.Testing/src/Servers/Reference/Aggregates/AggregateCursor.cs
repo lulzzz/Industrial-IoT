@@ -170,7 +170,7 @@ namespace Opc.Ua.Aggregates {
         /// </summary>
         /// <param name="rawData"></param>
         public void AddRawData(DataValue rawData) {
-            if (rawData is null) {
+            if (rawData == null) {
                 throw new ArgumentException("Attempted to add null value instead of valid DataValue");
             }
 
@@ -186,7 +186,7 @@ namespace Opc.Ua.Aggregates {
                         CurrentBadPoints = new List<DataValue>();
                         break;
                     case 0:
-                        if (EarlyPoint is null) {
+                        if (EarlyPoint == null) {
                             PriorBadPoints = CurrentBadPoints;
                             EarlyPoint = rawData;
                             CurrentBadPoints = new List<DataValue>();
@@ -203,7 +203,7 @@ namespace Opc.Ua.Aggregates {
                         }
                         break;
                     case 1:
-                        if (LatePoint is null) {
+                        if (LatePoint == null) {
                             LatePoint = rawData;
                         }
 
@@ -214,7 +214,7 @@ namespace Opc.Ua.Aggregates {
                 }
             }
             else {
-                if (LatePoint is null) {
+                if (LatePoint == null) {
                     CurrentBadPoints.Add(rawData);
                     if (relevance >= 0) {
                         _aggregationActor.UpdateProcessedData(rawData, this);

@@ -20,7 +20,7 @@ namespace Microsoft.Azure.IIoT.AspNetCore.OpenApi {
 
         /// <inheritdoc/>
         public void Apply(OpenApiSchema model, SchemaFilterContext context) {
-            if (context.Type is null) {
+            if (context.Type == null) {
                 return;
             }
             AdjustSchema(context.Type, model);
@@ -64,7 +64,7 @@ namespace Microsoft.Azure.IIoT.AspNetCore.OpenApi {
         /// <param name="paramType"></param>
         /// <param name="model"></param>
         internal static void AdjustSchema(Type paramType, OpenApiSchema model) {
-            if (paramType is null || model is null) {
+            if (paramType == null || model == null) {
                 return;
             }
             if (paramType.IsGenericType &&

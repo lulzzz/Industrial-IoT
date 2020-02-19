@@ -24,7 +24,7 @@ namespace Microsoft.Azure.IIoT.Hub.Client {
         /// </summary>
         protected ConnectionString HubConnectionString {
             get {
-                if (_connectionString is null) {
+                if (_connectionString == null) {
                     // Lazy parse and return
                     if (!ConnectionString.TryParse(_config.IoTHubConnString,
                             out _connectionString)) {

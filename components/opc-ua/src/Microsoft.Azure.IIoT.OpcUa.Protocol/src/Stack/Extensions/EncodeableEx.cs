@@ -72,7 +72,7 @@ namespace Opc.Ua.Extensions {
             ExpandedNodeId typeId, ServiceMessageContext context) {
             var systemType = TypeInfo.GetSystemType(typeId.ToNodeId(context.NamespaceUris),
                 context.Factory);
-            if (systemType is null) {
+            if (systemType == null) {
                 return null;
             }
             using (var decoder = new BinaryDecoder(buffer, context)) {

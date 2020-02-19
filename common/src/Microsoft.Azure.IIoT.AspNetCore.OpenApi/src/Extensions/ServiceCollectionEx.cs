@@ -33,7 +33,7 @@ namespace Microsoft.OpenApi.Models {
         public static void AddSwagger(this IServiceCollection services,
             IOpenApiConfig config, string title, string description) {
 
-            if (config is null) {
+            if (config == null) {
                 throw new ArgumentNullException(nameof(config));
             }
 

@@ -22,7 +22,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
             if (model == that) {
                 return true;
             }
-            if (model is null || that is null) {
+            if (model == null || that == null) {
                 return false;
             }
             if ((that.Type ?? CredentialType.None) !=
@@ -32,7 +32,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
             if (that.Value == model.Value) {
                 return true;
             }
-            if (that.Value is null || model.Value is null) {
+            if (that.Value == null || model.Value == null) {
                 return false;
             }
             if (!VariantValue.DeepEquals(that.Value, model.Value)) {
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static CredentialModel Clone(this CredentialModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new CredentialModel {

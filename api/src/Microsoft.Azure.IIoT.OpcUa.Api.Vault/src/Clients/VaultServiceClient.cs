@@ -89,7 +89,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Vault.Clients {
             if (string.IsNullOrEmpty(groupId)) {
                 throw new ArgumentNullException(nameof(groupId));
             }
-            if (model is null) {
+            if (model == null) {
                 throw new ArgumentNullException(nameof(model));
             }
             if (string.IsNullOrEmpty(groupId)) {
@@ -104,7 +104,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Vault.Clients {
         /// <inheritdoc/>
         public async Task<TrustGroupRegistrationResponseApiModel> CreateRootAsync(
             TrustGroupRootCreateRequestApiModel model, CancellationToken ct) {
-            if (model is null) {
+            if (model == null) {
                 throw new ArgumentNullException(nameof(model));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/groups/root", _resourceId);
@@ -117,7 +117,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Vault.Clients {
         /// <inheritdoc/>
         public async Task<TrustGroupRegistrationResponseApiModel> CreateGroupAsync(
             TrustGroupRegistrationRequestApiModel model, CancellationToken ct) {
-            if (model is null) {
+            if (model == null) {
                 throw new ArgumentNullException(nameof(model));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/groups", _resourceId);
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Vault.Clients {
         /// <inheritdoc/>
         public async Task<StartSigningRequestResponseApiModel> StartSigningRequestAsync(
             StartSigningRequestApiModel model, CancellationToken ct) {
-            if (model is null) {
+            if (model == null) {
                 throw new ArgumentNullException(nameof(model));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/requests/sign",
@@ -206,7 +206,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Vault.Clients {
         /// <inheritdoc/>
         public async Task<StartNewKeyPairRequestResponseApiModel> StartNewKeyPairRequestAsync(
             StartNewKeyPairRequestApiModel model, CancellationToken ct) {
-            if (model is null) {
+            if (model == null) {
                 throw new ArgumentNullException(nameof(model));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/requests/keypair",

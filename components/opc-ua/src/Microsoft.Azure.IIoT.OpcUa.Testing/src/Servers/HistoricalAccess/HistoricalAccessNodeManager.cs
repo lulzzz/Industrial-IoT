@@ -53,7 +53,7 @@ namespace HistoricalAccess {
             _configuration = configuration.ParseExtension<HistoricalAccessServerConfiguration>();
 
             // use suitable defaults if no configuration exists.
-            if (_configuration is null) {
+            if (_configuration == null) {
                 _configuration = new HistoricalAccessServerConfiguration {
                     ArchiveRoot = "Historian"
                 };
@@ -256,7 +256,7 @@ namespace HistoricalAccess {
             }
 
             // root is not valid.
-            if (target is null) {
+            if (target == null) {
                 return null;
             }
 
@@ -265,7 +265,7 @@ namespace HistoricalAccess {
                 NodeState component = target.FindChildBySymbolicName(context, pnd.ComponentPath);
 
                 // component does not exist.
-                if (component is null) {
+                if (component == null) {
                     return null;
                 }
 
@@ -301,7 +301,7 @@ namespace HistoricalAccess {
                     // validate node.
                     var source = ValidateNode(context, handle, cache);
 
-                    if (source is null) {
+                    if (source == null) {
                         continue;
                     }
 
@@ -393,7 +393,7 @@ namespace HistoricalAccess {
                 if (root != null) {
 
                     if (root is ArchiveItemState item) {
-                        if (_monitoredItems is null) {
+                        if (_monitoredItems == null) {
                             _monitoredItems = new Dictionary<string, ArchiveItemState>();
                         }
 
@@ -403,7 +403,7 @@ namespace HistoricalAccess {
 
                         item.SubscribeCount++;
 
-                        if (_simulationTimer is null) {
+                        if (_simulationTimer == null) {
                             _simulationTimer = new Timer(DoSimulation, null, 500, 500);
                         }
                     }
@@ -556,7 +556,7 @@ namespace HistoricalAccess {
                     // validate node.
                     var source = ValidateNode(context, handle, cache);
 
-                    if (source is null) {
+                    if (source == null) {
                         continue;
                     }
 
@@ -564,7 +564,7 @@ namespace HistoricalAccess {
                     if (nodeToRead.ContinuationPoint != null) {
                         request = LoadContinuationPoint(context, nodeToRead.ContinuationPoint);
 
-                        if (request is null) {
+                        if (request == null) {
                             errors[handle.Index] = StatusCodes.BadContinuationPointInvalid;
                             continue;
                         }
@@ -650,7 +650,7 @@ namespace HistoricalAccess {
                     // validate node.
                     var source = ValidateNode(context, handle, cache);
 
-                    if (source is null) {
+                    if (source == null) {
                         continue;
                     }
 
@@ -658,7 +658,7 @@ namespace HistoricalAccess {
                     if (nodeToRead.ContinuationPoint != null) {
                         request = LoadContinuationPoint(context, nodeToRead.ContinuationPoint);
 
-                        if (request is null) {
+                        if (request == null) {
                             errors[handle.Index] = StatusCodes.BadContinuationPointInvalid;
                             continue;
                         }
@@ -737,7 +737,7 @@ namespace HistoricalAccess {
                     // validate node.
                     var source = ValidateNode(context, handle, cache);
 
-                    if (source is null) {
+                    if (source == null) {
                         continue;
                     }
 
@@ -745,7 +745,7 @@ namespace HistoricalAccess {
                     if (nodeToRead.ContinuationPoint != null) {
                         request = LoadContinuationPoint(context, nodeToRead.ContinuationPoint);
 
-                        if (request is null) {
+                        if (request == null) {
                             errors[handle.Index] = StatusCodes.BadContinuationPointInvalid;
                             continue;
                         }
@@ -818,7 +818,7 @@ namespace HistoricalAccess {
                     // validate node.
                     var source = ValidateNode(context, handle, cache);
 
-                    if (source is null) {
+                    if (source == null) {
                         continue;
                     }
 
@@ -863,7 +863,7 @@ namespace HistoricalAccess {
                     // validate node.
                     var source = ValidateNode(context, handle, cache);
 
-                    if (source is null) {
+                    if (source == null) {
                         continue;
                     }
 
@@ -875,7 +875,7 @@ namespace HistoricalAccess {
                     // load the archive.
                     var item = Reload(context, handle);
 
-                    if (item is null) {
+                    if (item == null) {
                         continue;
                     }
 
@@ -923,7 +923,7 @@ namespace HistoricalAccess {
                     // validate node.
                     var source = ValidateNode(context, handle, cache);
 
-                    if (source is null) {
+                    if (source == null) {
                         continue;
                     }
 
@@ -964,7 +964,7 @@ namespace HistoricalAccess {
                     // validate node.
                     var source = ValidateNode(context, handle, cache);
 
-                    if (source is null) {
+                    if (source == null) {
                         continue;
                     }
 
@@ -997,7 +997,7 @@ namespace HistoricalAccess {
         private ArchiveItemState Reload(ServerSystemContext context, NodeHandle handle) {
             var item = handle.Node as ArchiveItemState;
 
-            if (item is null) {
+            if (item == null) {
 
                 if (handle.Node is BaseInstanceState property) {
                     item = property.Parent as ArchiveItemState;
@@ -1025,7 +1025,7 @@ namespace HistoricalAccess {
             // find the archive item.
             var item = Reload(context, handle);
 
-            if (item is null) {
+            if (item == null) {
                 throw new ServiceResultException(StatusCodes.BadNotSupported);
             }
 
@@ -1430,7 +1430,7 @@ namespace HistoricalAccess {
                 // find the continuation point.
                 var request = LoadContinuationPoint(context, nodeToRead.ContinuationPoint);
 
-                if (request is null) {
+                if (request == null) {
                     errors[handle.Index] = StatusCodes.BadContinuationPointInvalid;
                     continue;
                 }
@@ -1448,7 +1448,7 @@ namespace HistoricalAccess {
             byte[] continuationPoint) {
             var session = context.OperationContext.Session;
 
-            if (session is null) {
+            if (session == null) {
                 return null;
             }
 
@@ -1468,7 +1468,7 @@ namespace HistoricalAccess {
             HistoryReadRequest request) {
             var session = context.OperationContext.Session;
 
-            if (session is null) {
+            if (session == null) {
                 return null;
             }
 

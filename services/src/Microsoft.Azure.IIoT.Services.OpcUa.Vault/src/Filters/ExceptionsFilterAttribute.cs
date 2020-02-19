@@ -28,7 +28,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Vault.Filters {
 
         /// <inheritdoc />
         public override void OnException(ExceptionContext context) {
-            if (context.Exception is null) {
+            if (context.Exception == null) {
                 base.OnException(context);
                 return;
             }

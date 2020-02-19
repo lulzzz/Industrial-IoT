@@ -44,7 +44,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Models {
                 }
                 throw new ArgumentOutOfRangeException(nameof(hashAlgorithm));
             }
-            if (padding is null) {
+            if (padding == null) {
                 if (hashAlgorithm == HashAlgorithmName.SHA256) {
                     return SignatureType.ES256;
                 }

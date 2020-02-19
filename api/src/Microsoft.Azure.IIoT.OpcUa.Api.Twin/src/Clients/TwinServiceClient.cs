@@ -75,10 +75,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
-            if (content.ContinuationToken is null) {
+            if (content.ContinuationToken == null) {
                 throw new ArgumentNullException(nameof(content.ContinuationToken));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/browse/{endpointId}/next",
@@ -95,11 +95,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
-            if (content.BrowsePaths is null || content.BrowsePaths.Count == 0 ||
-                content.BrowsePaths.Any(p => p is null || p.Length == 0)) {
+            if (content.BrowsePaths == null || content.BrowsePaths.Count == 0 ||
+                content.BrowsePaths.Any(p => p == null || p.Length == 0)) {
                 throw new ArgumentNullException(nameof(content.BrowsePaths));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/browse/{endpointId}/path",
@@ -116,10 +116,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
-            if (content.Attributes is null || content.Attributes.Count == 0) {
+            if (content.Attributes == null || content.Attributes.Count == 0) {
                 throw new ArgumentException(nameof(content.Attributes));
             }
             var request = _httpClient.NewRequest(
@@ -136,10 +136,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
-            if (content.Attributes is null || content.Attributes.Count == 0) {
+            if (content.Attributes == null || content.Attributes.Count == 0) {
                 throw new ArgumentException(nameof(content.Attributes));
             }
             var request = _httpClient.NewRequest(
@@ -156,7 +156,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/read/{endpointId}",
@@ -173,10 +173,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
-            if (content.Value is null) {
+            if (content.Value == null) {
                 throw new ArgumentNullException(nameof(content.Value));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/write/{endpointId}",
@@ -193,7 +193,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/call/{endpointId}/metadata",
@@ -210,7 +210,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
             var request = _httpClient.NewRequest($"{_serviceUri}/v2/call/{endpointId}",

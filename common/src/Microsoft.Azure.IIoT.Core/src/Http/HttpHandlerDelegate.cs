@@ -35,7 +35,7 @@ namespace Microsoft.Azure.IIoT.Http.Default {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             var root = next.GetRoot();
-            if (root is null) {
+            if (root == null) {
                 _logger.Error("Cannot configure root handler, inner " +
                     "most handler is not a configurable client handler");
                 return;
@@ -53,7 +53,7 @@ namespace Microsoft.Azure.IIoT.Http.Default {
                 }
             }
 
-            if (handlers is null) {
+            if (handlers == null) {
                 handlers = Enumerable.Empty<IHttpHandler>();
             }
 

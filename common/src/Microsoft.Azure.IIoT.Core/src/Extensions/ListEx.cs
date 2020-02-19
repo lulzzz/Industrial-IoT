@@ -18,7 +18,7 @@ namespace System.Collections.Generic {
         /// <param name="list"></param>
         /// <returns></returns>
         public static IList<T> Shuffle<T>(this IList<T> list) {
-            if (list is null) {
+            if (list == null) {
                 throw new ArgumentNullException(nameof(list));
             }
             var n = list.Count;
@@ -39,10 +39,10 @@ namespace System.Collections.Generic {
         /// <param name="list"></param>
         /// <param name="range"></param>
         public static void AddRange<T>(this IList<T> list, IEnumerable<T> range) {
-            if (list is null) {
+            if (list == null) {
                 throw new ArgumentNullException(nameof(list));
             }
-            if (range is null) {
+            if (range == null) {
                 return;
             }
             foreach (var item in range) {

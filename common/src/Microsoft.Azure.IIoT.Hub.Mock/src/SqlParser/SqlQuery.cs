@@ -94,7 +94,7 @@ namespace Microsoft.Azure.IIoT.Hub.Mock.SqlParser {
         /// <returns></returns>
         private IEnumerable<VariantValue> Project(IEnumerable<VariantValue> records,
             SqlSelectParser.ParseContext context) {
-            if (context is null) {
+            if (context == null) {
                 throw new ArgumentNullException(nameof(context));
             }
 
@@ -281,7 +281,7 @@ namespace Microsoft.Azure.IIoT.Hub.Mock.SqlParser {
         /// <param name="path"></param>
         /// <returns></returns>
         private VariantValue SelectTargetToken<T>(T target, string path) where T : class {
-            if (target is null) {
+            if (target == null) {
                 return null;
             }
             var root = _serializer.FromObject(target);
@@ -360,7 +360,7 @@ namespace Microsoft.Azure.IIoT.Hub.Mock.SqlParser {
         /// <param name="identifierNode"></param>
         /// <returns></returns>
         private string ParseIdentifier(ITerminalNode identifierNode) {
-            if (identifierNode is null) {
+            if (identifierNode == null) {
                 return null;
             }
             var identifier = identifierNode.GetText();

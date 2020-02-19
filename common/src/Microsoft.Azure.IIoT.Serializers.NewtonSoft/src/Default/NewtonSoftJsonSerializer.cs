@@ -145,7 +145,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             /// <param name="serializer"></param>
             internal JsonVariantValue(NewtonSoftJsonSerializer serializer, object o) {
                 _serializer = serializer;
-                Token = o is null ? JValue.CreateNull() : FromObject(o);
+                Token = o == null ? JValue.CreateNull() : FromObject(o);
             }
 
             /// <summary>
@@ -317,7 +317,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             /// <param name="t2"></param>
             /// <returns></returns>
             internal bool DeepEquals(JToken t1, JToken t2) {
-                if (t1 is null || t2 is null) {
+                if (t1 == null || t2 == null) {
                     return t1 == t2;
                 }
                 if (ReferenceEquals(t1, t2)) {

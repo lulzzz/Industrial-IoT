@@ -23,7 +23,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
             if (model == that) {
                 return true;
             }
-            if (model is null || that is null) {
+            if (model == null || that == null) {
                 return false;
             }
             if (model.Count() != that.Count()) {
@@ -43,7 +43,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
             if (model == that) {
                 return true;
             }
-            if (model is null || that is null) {
+            if (model == null || that == null) {
                 return false;
             }
             return that.Id == model.Id;
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static GatewayModel Clone(this GatewayModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new GatewayModel {

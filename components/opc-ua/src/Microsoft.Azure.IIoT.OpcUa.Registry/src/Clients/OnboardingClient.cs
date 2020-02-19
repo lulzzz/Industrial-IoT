@@ -25,10 +25,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Clients {
 
         /// <inheritdoc/>
         public async Task RegisterAsync(ServerRegistrationRequestModel request) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
-            if (request.DiscoveryUrl is null) {
+            if (request.DiscoveryUrl == null) {
                 throw new ArgumentNullException(nameof(request.DiscoveryUrl));
             }
             if (string.IsNullOrEmpty(request.Id)) {
@@ -46,7 +46,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Clients {
 
         /// <inheritdoc/>
         public async Task DiscoverAsync(DiscoveryRequestModel request) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             await _events.PublishAsync(request);
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Clients {
 
         /// <inheritdoc/>
         public async Task CancelAsync(DiscoveryCancelModel request) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             await _events.PublishAsync(request);

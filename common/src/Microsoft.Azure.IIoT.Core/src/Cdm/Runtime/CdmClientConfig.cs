@@ -64,7 +64,7 @@ namespace Microsoft.Azure.IIoT.Cdm.Runtime {
         /// <returns></returns>
         private string GetAccountNameFromConnectionString(string variable) {
             var cs = GetStringOrDefault(variable, null);
-            return cs is null ? null : ConnectionString.Parse(cs).Endpoint;
+            return cs == null ? null : ConnectionString.Parse(cs).Endpoint;
         }
 
 

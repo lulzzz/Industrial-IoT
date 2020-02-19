@@ -223,8 +223,8 @@ namespace HistoricalEvents {
             switch (browseName.Name) {
                 case HistoricalEvents.BrowseNames.NameWell: {
                         if (createOrReplace) {
-                            if (NameWell is null) {
-                                if (replacement is null) {
+                            if (NameWell == null) {
+                                if (replacement == null) {
                                     NameWell = new PropertyState<string>(this);
                                 }
                                 else {
@@ -239,8 +239,8 @@ namespace HistoricalEvents {
 
                 case HistoricalEvents.BrowseNames.UidWell: {
                         if (createOrReplace) {
-                            if (UidWell is null) {
-                                if (replacement is null) {
+                            if (UidWell == null) {
+                                if (replacement == null) {
                                     UidWell = new PropertyState<string>(this);
                                 }
                                 else {
@@ -255,8 +255,8 @@ namespace HistoricalEvents {
 
                 case HistoricalEvents.BrowseNames.TestDate: {
                         if (createOrReplace) {
-                            if (TestDate is null) {
-                                if (replacement is null) {
+                            if (TestDate == null) {
+                                if (replacement == null) {
                                     TestDate = new PropertyState<DateTime>(this);
                                 }
                                 else {
@@ -271,8 +271,8 @@ namespace HistoricalEvents {
 
                 case HistoricalEvents.BrowseNames.TestReason: {
                         if (createOrReplace) {
-                            if (TestReason is null) {
-                                if (replacement is null) {
+                            if (TestReason == null) {
+                                if (replacement == null) {
                                     TestReason = new PropertyState<string>(this);
                                 }
                                 else {
@@ -460,8 +460,8 @@ namespace HistoricalEvents {
             switch (browseName.Name) {
                 case HistoricalEvents.BrowseNames.FluidLevel: {
                         if (createOrReplace) {
-                            if (FluidLevel is null) {
-                                if (replacement is null) {
+                            if (FluidLevel == null) {
+                                if (replacement == null) {
                                     FluidLevel = new AnalogItemState<double>(this);
                                 }
                                 else {
@@ -476,8 +476,8 @@ namespace HistoricalEvents {
 
                 case HistoricalEvents.BrowseNames.TestedBy: {
                         if (createOrReplace) {
-                            if (TestedBy is null) {
-                                if (replacement is null) {
+                            if (TestedBy == null) {
+                                if (replacement == null) {
                                     TestedBy = new PropertyState<string>(this);
                                 }
                                 else {
@@ -662,8 +662,8 @@ namespace HistoricalEvents {
             switch (browseName.Name) {
                 case HistoricalEvents.BrowseNames.TestDuration: {
                         if (createOrReplace) {
-                            if (TestDuration is null) {
-                                if (replacement is null) {
+                            if (TestDuration == null) {
+                                if (replacement == null) {
                                     TestDuration = new AnalogItemState<double>(this);
                                 }
                                 else {
@@ -678,8 +678,8 @@ namespace HistoricalEvents {
 
                 case HistoricalEvents.BrowseNames.InjectedFluid: {
                         if (createOrReplace) {
-                            if (InjectedFluid is null) {
-                                if (replacement is null) {
+                            if (InjectedFluid == null) {
+                                if (replacement == null) {
                                     InjectedFluid = new PropertyState<string>(this);
                                 }
                                 else {

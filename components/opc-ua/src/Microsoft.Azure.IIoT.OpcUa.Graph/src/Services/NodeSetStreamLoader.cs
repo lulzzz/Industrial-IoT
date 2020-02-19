@@ -68,7 +68,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Services {
                     while (true) {
                         ct.ThrowIfCancellationRequested();
                         var node = decoder.ReadEncodeable<EncodeableNodeModel>(null);
-                        if (node is null) {
+                        if (node == null) {
                             break;
                         }
                         await WriteNodeAsync(node.Node, context);
@@ -85,11 +85,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Services {
         /// <param name="context"></param>
         /// <returns></returns>
         private async Task WriteNodeAsync(BaseNodeModel node, ISystemContext context) {
-            if (node is null) {
+            if (node == null) {
                 return;
             }
             var vertex = node.ToVertex(_source.Id, _revision, _codec);
-            if (vertex is null) {
+            if (vertex == null) {
                 return;
             }
             foreach (var reference in node.GetBrowseReferences(context)) {

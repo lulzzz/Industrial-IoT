@@ -68,7 +68,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
                                     SourceTimestamp = datapoint.Value.SourceTimestamp,
                                     ServerTimestamp = datapoint.Value.ServerTimestamp
                                 };
-                                if (sample is null) {
+                                if (sample == null) {
                                     continue;
                                 }
                                 await Task.WhenAll(_handlers.Select(h => h.HandleSampleAsync(sample)));

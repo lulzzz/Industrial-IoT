@@ -40,7 +40,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Jobs.Edge.Controllers {
         [HttpPost]
         public async Task<HeartbeatResponseApiModel> SendHeartbeatAsync(
             [FromBody] HeartbeatApiModel heartbeat) {
-            if (heartbeat is null) {
+            if (heartbeat == null) {
                 throw new ArgumentNullException(nameof(heartbeat));
             }
             var result = await _orchestrator.SendHeartbeatAsync(

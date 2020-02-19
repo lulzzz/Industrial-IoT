@@ -31,7 +31,7 @@ namespace Microsoft.Azure.IIoT.Messaging.Default {
                 foreach (var itf in handler.GetType().GetInterfaces()) {
                     try {
                         var eventType = itf.GetGenericArguments().FirstOrDefault();
-                        if (eventType is null) {
+                        if (eventType == null) {
                             continue;
                         }
                         var method = register.MakeGenericMethod(eventType);

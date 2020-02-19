@@ -146,7 +146,7 @@ namespace Opc.Ua.Nodeset {
         /// </summary>
         /// <param name="references">The list of references to add.</param>
         public void AddReferences(IEnumerable<IReference> references) {
-            if (references is null) {
+            if (references == null) {
                 throw new ArgumentNullException(nameof(references));
             }
             foreach (var reference in references) {

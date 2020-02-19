@@ -227,7 +227,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             while (true) {
                 try {
                     var registration = await GetRegistrationAsync(applicationId, false, ct);
-                    if (registration is null) {
+                    if (registration == null) {
                         return null;
                     }
                     var application = registration.ToServiceModel();
@@ -271,7 +271,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             // Convert to application registration
             var registration = twin.ToEntityRegistration() as ApplicationRegistration;
-            if (registration is null && throwIfNotFound) {
+            if (registration == null && throwIfNotFound) {
                 throw new ResourceNotFoundException("Not an application registration");
             }
             return registration;

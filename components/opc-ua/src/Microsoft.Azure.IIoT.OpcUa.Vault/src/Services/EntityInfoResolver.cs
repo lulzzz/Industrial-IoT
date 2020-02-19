@@ -54,7 +54,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Services {
                 return null;
             }
             var entity = entities.SingleOrDefault();
-            if (entity is null) {
+            if (entity == null) {
                 throw new ConflictingResourceException(
                     $"Unexpected : Found more than one entity for {entityId}.");
             }
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Services {
         private async Task<EntityInfoModel> FindApplicationAsync(string applicationId,
             CancellationToken ct) {
             var application = await _applications.FindApplicationAsync(applicationId, ct);
-            if (application?.Application is null) {
+            if (application?.Application == null) {
                 return null;
             }
 
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Services {
         private async Task<EntityInfoModel> FindEndpointAsync(string endpointId,
             CancellationToken ct) {
             var ep = await _endpoints.FindEndpointAsync(endpointId, ct);
-            if (ep is null) {
+            if (ep == null) {
                 return null;
             }
             var addresses = new HashSet<string>();
@@ -165,7 +165,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Services {
         private async Task<EntityInfoModel> FindSupervisorAsync(string supervisorId,
             CancellationToken ct) {
             var twinModule = await _supervisors.FindSupervisorAsync(supervisorId, ct);
-            if (twinModule is null) {
+            if (twinModule == null) {
                 return null;
             }
             return new EntityInfoModel {
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Services {
         private async Task<EntityInfoModel> FindPublisherAsync(string publisherId,
             CancellationToken ct) {
             var publisher = await _publishers.FindPublisherAsync(publisherId, ct);
-            if (publisher is null) {
+            if (publisher == null) {
                 return null;
             }
             return new EntityInfoModel {
@@ -211,7 +211,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Services {
         private async Task<EntityInfoModel> FindGroupAsync(string groupId,
             CancellationToken ct) {
             var group = await _groups.FindAsync(groupId, ct);
-            if (group is null) {
+            if (group == null) {
                 return null;
             }
             return new EntityInfoModel {

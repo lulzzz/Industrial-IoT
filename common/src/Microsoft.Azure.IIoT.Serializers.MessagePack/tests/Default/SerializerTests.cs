@@ -235,8 +235,8 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             VariantValue i4 = 0;
             VariantValue i5 = TimeSpan.FromSeconds(1);
 
-            Assert.True(i1 == null);
             Assert.True(i1 is null);
+            Assert.True(i1 == null);
             Assert.True(null == i1);
             Assert.True(i1 == i2);
             Assert.True(i1 != i3);

@@ -42,7 +42,7 @@ namespace Microsoft.Azure.IIoT.Http.Default {
         /// <returns></returns>
         private async Task<HttpResponseMessage> SendOverUnixDomainSocketAsync(string udsPath,
             HttpRequestMessage request, CancellationToken ct) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             if (string.IsNullOrEmpty(udsPath)) {
@@ -69,10 +69,10 @@ namespace Microsoft.Azure.IIoT.Http.Default {
         /// <param name="request"></param>
         /// <returns></returns>
         private byte[] GetRequestBuffer(HttpRequestMessage request) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
-            if (request.RequestUri is null) {
+            if (request.RequestUri == null) {
                 throw new ArgumentNullException(nameof(request.RequestUri));
             }
 
@@ -204,7 +204,7 @@ namespace Microsoft.Azure.IIoT.Http.Default {
             /// </summary>
             /// <param name="socketAddress"></param>
             internal UdsEndPoint(SocketAddress socketAddress) {
-                if (socketAddress is null) {
+                if (socketAddress == null) {
                     throw new ArgumentNullException(nameof(socketAddress));
                 }
 

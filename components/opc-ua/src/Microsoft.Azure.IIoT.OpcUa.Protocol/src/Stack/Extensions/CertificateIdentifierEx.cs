@@ -20,7 +20,7 @@ namespace Opc.Ua {
         /// <param name="certificate"></param>
         public static void RemoveFromStore(this CertificateIdentifier identifier,
             X509Certificate2 certificate) {
-            if (certificate is null) {
+            if (certificate == null) {
                 throw new ArgumentNullException(nameof(certificate));
             }
             using (var store = CertificateStoreIdentifier.CreateStore(identifier.StoreType)) {
@@ -38,7 +38,7 @@ namespace Opc.Ua {
         /// <returns></returns>
         public static void AddToStore(this CertificateIdentifier identifier,
             X509Certificate2 certificate, bool noCopy = false) {
-            if (certificate is null) {
+            if (certificate == null) {
                 throw new ArgumentNullException(nameof(certificate));
             }
             using (var store = CertificateStoreIdentifier.CreateStore(identifier.StoreType)) {

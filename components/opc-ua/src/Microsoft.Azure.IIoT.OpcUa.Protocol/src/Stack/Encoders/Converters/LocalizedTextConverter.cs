@@ -26,7 +26,7 @@ namespace Opc.Ua {
         public override void WriteJson(JsonWriter writer, LocalizedText value,
             JsonSerializer serializer) {
             var str = value.AsString();
-            if (str is null) {
+            if (str == null) {
                 writer.WriteNull();
             }
             else {

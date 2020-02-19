@@ -59,10 +59,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Services {
         public async Task ImportAsync(Stream stream, string sourceId, string contentType,
             IDictionary<string, string> tags, CancellationToken ct) {
 
-            if (sourceId is null) {
+            if (sourceId == null) {
                 throw new ArgumentNullException(nameof(sourceId));
             }
-            if (contentType is null) {
+            if (contentType == null) {
                 throw new ArgumentNullException(nameof(contentType));
             }
             if (contentType != ContentMimeType.UaJson) {

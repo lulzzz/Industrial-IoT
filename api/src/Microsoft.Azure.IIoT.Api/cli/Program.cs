@@ -663,7 +663,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetNodeId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-n", "--nodeid", null);
             if (_nodeId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _nodeId;
                 }
                 _nodeId = null;
@@ -921,7 +921,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetPublisherId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-i", "--id", null);
             if (_publisherId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _publisherId;
                 }
                 _publisherId = null;
@@ -1048,7 +1048,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetGatewayId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-i", "--id", null);
             if (_gatewayId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _gatewayId;
                 }
                 _gatewayId = null;
@@ -1168,7 +1168,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetGroupId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-i", "--id", null);
             if (_groupId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _groupId;
                 }
                 _groupId = null;
@@ -1299,7 +1299,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetJobId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-i", "--id", null);
             if (_jobId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _jobId;
                 }
                 _jobId = null;
@@ -1431,7 +1431,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetSupervisorId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-i", "--id", null);
             if (_supervisorId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _supervisorId;
                 }
                 _supervisorId = null;
@@ -1572,7 +1572,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetDiscovererId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-i", "--id", null);
             if (_discovererId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _discovererId;
                 }
                 _discovererId = null;
@@ -1698,7 +1698,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
                     LogLevel = options.GetValueOrDefault<TraceLogLevel>(
                         "-l", "--log-level", null),
                     Discovery = options.GetValueOrDefault("-d", "--discovery",
-                        config is null ? (DiscoveryMode?)null : DiscoveryMode.Fast),
+                        config == null ? (DiscoveryMode?)null : DiscoveryMode.Fast),
                     DiscoveryConfig = config,
                 });
         }
@@ -1715,8 +1715,8 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
             try {
                 var config = BuildDiscoveryConfig(options);
                 var mode = options.GetValueOrDefault("-d", "--discovery",
-                    config is null ? DiscoveryMode.Fast : DiscoveryMode.Scan);
-                if (config is null) {
+                    config == null ? DiscoveryMode.Fast : DiscoveryMode.Scan);
+                if (config == null) {
                     config = new DiscoveryConfigApiModel();
                 }
                 if (mode == DiscoveryMode.Off) {
@@ -1742,7 +1742,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetApplicationId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-i", "--id", null);
             if (_applicationId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _applicationId;
                 }
                 _applicationId = null;
@@ -2118,7 +2118,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetEndpointId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-i", "--id", null);
             if (_endpointId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _endpointId;
                 }
                 _endpointId = null;
@@ -2302,7 +2302,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private string GetRequestId(CliOptions options, bool shouldThrow = true) {
             var id = options.GetValueOrDefault<string>("-i", "--id", null);
             if (_requestId != null) {
-                if (id is null) {
+                if (id == null) {
                     return _requestId;
                 }
                 _requestId = null;

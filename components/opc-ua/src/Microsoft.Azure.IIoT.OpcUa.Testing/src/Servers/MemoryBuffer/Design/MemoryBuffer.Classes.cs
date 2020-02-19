@@ -288,8 +288,8 @@ namespace MemoryBuffer {
             switch (browseName.Name) {
                 case BrowseNames.StartAddress: {
                         if (createOrReplace) {
-                            if (StartAddress is null) {
-                                if (replacement is null) {
+                            if (StartAddress == null) {
+                                if (replacement == null) {
                                     StartAddress = new PropertyState<uint>(this);
                                 }
                                 else {
@@ -304,8 +304,8 @@ namespace MemoryBuffer {
 
                 case BrowseNames.SizeInBytes: {
                         if (createOrReplace) {
-                            if (SizeInBytes is null) {
-                                if (replacement is null) {
+                            if (SizeInBytes == null) {
+                                if (replacement == null) {
                                     SizeInBytes = new PropertyState<uint>(this);
                                 }
                                 else {

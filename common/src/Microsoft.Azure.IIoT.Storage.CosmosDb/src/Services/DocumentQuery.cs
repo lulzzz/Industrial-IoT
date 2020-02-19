@@ -58,7 +58,7 @@ namespace Microsoft.Azure.IIoT.Storage.CosmosDb.Services {
                     MaxItemCount = pageSize ?? -1,
                     PartitionKey = pk,
 
-                    EnableCrossPartitionQuery = pk is null
+                    EnableCrossPartitionQuery = pk == null
                 });
             return new DocumentInfoFeed<T>(query.AsDocumentQuery(), _logger);
         }
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.IIoT.Storage.CosmosDb.Services {
                     MaxItemCount = pageSize ?? -1,
                     PartitionKey = pk,
                     RequestContinuation = continuationToken,
-                    EnableCrossPartitionQuery = pk is null
+                    EnableCrossPartitionQuery = pk == null
                 });
             return new DocumentInfoFeed<T>(query.AsDocumentQuery(), _logger);
         }

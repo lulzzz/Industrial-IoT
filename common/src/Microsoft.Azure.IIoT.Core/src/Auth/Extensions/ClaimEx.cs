@@ -45,7 +45,7 @@ namespace System.Security.Claims {
         /// <param name="claims"></param>
         /// <returns></returns>
         public static bool IsApplicationToken(this IEnumerable<Claim> claims) {
-            return claims.GetUserIdentifierClaim() is null &&
+            return claims.GetUserIdentifierClaim() == null &&
                 claims.FirstOrDefault(x => string.Equals(x.Type, appIdClaimName,
                     StringComparison.OrdinalIgnoreCase))?.Value != null &&
                 !string.Equals(claims.FirstOrDefault(x => string.Equals(x.Type, applicationTokenScope,

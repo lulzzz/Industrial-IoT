@@ -48,7 +48,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// <returns></returns>
         public static void SerializeToRequest(this ISerializer serializer,
             IHttpRequest request, object o) {
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             request.SetStringContent(serializer.Serialize(o));
@@ -183,7 +183,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// <param name="model"></param>
         /// <returns></returns>
         public static T Map<T>(this ISerializer serializer, object model) {
-            if (model is null) {
+            if (model == null) {
                 return default;
             }
             return serializer.Deserialize<T>(serializer.Serialize(model));

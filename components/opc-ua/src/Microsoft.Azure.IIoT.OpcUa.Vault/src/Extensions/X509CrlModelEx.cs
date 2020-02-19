@@ -38,7 +38,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Models {
         public static byte[] ToRawData(this X509CrlModel model) {
             const string certPemHeader = "-----BEGIN X509 CRL-----";
             const string certPemFooter = "-----END X509 CRL-----";
-            if (model.Crl is null) {
+            if (model.Crl == null) {
                 throw new ArgumentNullException(nameof(model.Crl));
             }
             if (model.Crl.IsBytes) {

@@ -15,7 +15,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Twin {
     public static class BrowseServicesEx {
 
         /// <summary>
-        /// Browse all references if max references is null and user
+        /// Browse all references if max references == null and user
         /// wants all. If user has requested maximum to return use
         /// <see cref="IBrowseServices{T}.NodeBrowseFirstAsync"/>
         /// </summary>

@@ -48,16 +48,16 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Clients {
         public async Task<HistoryReadResponseApiModel<VariantValue>> HistoryReadRawAsync(
             EndpointApiModel endpoint, HistoryReadRequestApiModel<VariantValue> request,
             CancellationToken ct) {
-            if (endpoint is null) {
+            if (endpoint == null) {
                 throw new ArgumentNullException(nameof(endpoint));
             }
             if (string.IsNullOrEmpty(endpoint.Url)) {
                 throw new ArgumentNullException(nameof(endpoint.Url));
             }
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
-            if (request.Details is null) {
+            if (request.Details == null) {
                 throw new ArgumentNullException(nameof(request.Details));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
@@ -72,13 +72,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Clients {
         public async Task<HistoryReadNextResponseApiModel<VariantValue>> HistoryReadRawNextAsync(
             EndpointApiModel endpoint, HistoryReadNextRequestApiModel request,
             CancellationToken ct) {
-            if (endpoint is null) {
+            if (endpoint == null) {
                 throw new ArgumentNullException(nameof(endpoint));
             }
             if (string.IsNullOrEmpty(endpoint.Url)) {
                 throw new ArgumentNullException(nameof(endpoint.Url));
             }
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             if (string.IsNullOrEmpty(request.ContinuationToken)) {
@@ -96,16 +96,16 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Clients {
         public async Task<HistoryUpdateResponseApiModel> HistoryUpdateRawAsync(
             EndpointApiModel endpoint, HistoryUpdateRequestApiModel<VariantValue> request,
             CancellationToken ct) {
-            if (endpoint is null) {
+            if (endpoint == null) {
                 throw new ArgumentNullException(nameof(endpoint));
             }
             if (string.IsNullOrEmpty(endpoint.Url)) {
                 throw new ArgumentNullException(nameof(endpoint.Url));
             }
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
-            if (request.Details is null) {
+            if (request.Details == null) {
                 throw new ArgumentNullException(nameof(request.Details));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,

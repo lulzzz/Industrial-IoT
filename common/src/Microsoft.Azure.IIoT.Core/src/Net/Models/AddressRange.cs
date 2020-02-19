@@ -55,7 +55,7 @@ namespace Microsoft.Azure.IIoT.Net.Models {
         /// <param name="nic"></param>
         public AddressRange(IPAddress address, int suffix,
             string nic = "custom range") {
-            if (address is null) {
+            if (address == null) {
                 throw new ArgumentNullException(nameof(address));
             }
             if (suffix > 32) {
@@ -105,14 +105,14 @@ namespace Microsoft.Azure.IIoT.Net.Models {
         public AddressRange(IPAddress address, IPAddress subnet,
             int? suffix = null, string nic = "custom range") {
 
-            if (address is null) {
+            if (address == null) {
                 throw new ArgumentNullException(nameof(address));
             }
-            if (subnet is null) {
+            if (subnet == null) {
                 throw new ArgumentNullException(nameof(subnet));
             }
 
-            var mask = suffix is null ?
+            var mask = suffix == null ?
                 (uint)new IPv4Address(subnet) :
                     0xffffffff << (32 - suffix.Value);
 

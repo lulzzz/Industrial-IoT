@@ -93,11 +93,11 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Publisher.Cli {
                 }
                 config = connectionString.ToIoTHubConfig();
 
-                if (deviceId is null) {
+                if (deviceId == null) {
                     deviceId = Dns.GetHostName();
                     Console.WriteLine($"Using <deviceId> '{deviceId}'");
                 }
-                if (moduleId is null) {
+                if (moduleId == null) {
                     moduleId = "opcpublisher";
                     Console.WriteLine($"Using <moduleId> '{moduleId}'");
                 }

@@ -22,7 +22,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Client {
         /// <returns></returns>
         public static IModuleConfig Clone(this IModuleConfig config,
             string connectionString = null) {
-            if (config is null) {
+            if (config == null) {
                 return null;
             }
             return new DeviceClientConfig(config, connectionString);

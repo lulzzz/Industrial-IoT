@@ -141,7 +141,7 @@ namespace Microsoft.Azure.IIoT.App.Services {
             try {
                 var value = await _twinService.NodeValueReadAsync(endpointId, model);
 
-                if (value.ErrorInfo is null) {
+                if (value.ErrorInfo == null) {
                     return value.Value?.ToString();
                 }
                 else {
@@ -173,7 +173,7 @@ namespace Microsoft.Azure.IIoT.App.Services {
             try {
                 var response = await _twinService.NodeValueWriteAsync(endpointId, model);
 
-                if (response.ErrorInfo is null) {
+                if (response.ErrorInfo == null) {
                     return string.Format("value successfully written to node '{0}'", nodeId);
                 }
                 else {
@@ -208,7 +208,7 @@ namespace Microsoft.Azure.IIoT.App.Services {
             try {
                 Parameter = await _twinService.NodeMethodGetMetadataAsync(endpointId, model);
 
-                if (Parameter.ErrorInfo is null) {
+                if (Parameter.ErrorInfo == null) {
                     return null;
                 }
                 else {
@@ -257,7 +257,7 @@ namespace Microsoft.Azure.IIoT.App.Services {
 
                 MethodCallResponse = await _twinService.NodeMethodCallAsync(endpointId, model);
 
-                if (MethodCallResponse.ErrorInfo is null) {
+                if (MethodCallResponse.ErrorInfo == null) {
                     return null;
                 }
                 else {

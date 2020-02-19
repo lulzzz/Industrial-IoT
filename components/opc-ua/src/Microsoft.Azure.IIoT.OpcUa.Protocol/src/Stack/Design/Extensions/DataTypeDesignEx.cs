@@ -44,7 +44,7 @@ namespace Opc.Ua.Design.Schema {
         /// <param name="design"></param>
         /// <param name="simpleType"></param>
         public static void SetDataType(this DataTypeDesign design, TypeDeclaration simpleType) {
-            if (simpleType is null) {
+            if (simpleType == null) {
                 return;
             }
             if (simpleType.SourceType != null) {
@@ -58,7 +58,7 @@ namespace Opc.Ua.Design.Schema {
         /// <param name="design"></param>
         /// <param name="complexType"></param>
         public static void SetDataType(this DataTypeDesign design, ComplexType complexType) {
-            if (complexType is null) {
+            if (complexType == null) {
                 return;
             }
             if (complexType.BaseType != null) {
@@ -80,7 +80,7 @@ namespace Opc.Ua.Design.Schema {
         /// <param name="design"></param>
         /// <param name="enumeratedType"></param>
         public static void SetDataType(this DataTypeDesign design, EnumeratedType enumeratedType) {
-            if (enumeratedType is null) {
+            if (enumeratedType == null) {
                 return;
             }
             if (enumeratedType.IsOptionSet) {
@@ -124,7 +124,7 @@ namespace Opc.Ua.Design.Schema {
         /// <param name="field"></param>
         /// <returns></returns>
         private static Parameter ToParameter(this FieldType field) {
-            if (field is null) {
+            if (field == null) {
                 return null;
             }
             var parameter = new Parameter {
@@ -152,7 +152,7 @@ namespace Opc.Ua.Design.Schema {
         /// <param name="value"></param>
         /// <returns></returns>
         private static Parameter ToParameter(this EnumeratedValue value) {
-            if (value is null) {
+            if (value == null) {
                 return null;
             }
             var parameter = new Parameter {

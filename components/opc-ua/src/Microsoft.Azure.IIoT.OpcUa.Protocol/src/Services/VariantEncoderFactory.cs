@@ -136,7 +136,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             /// <param name="isString"></param>
             /// <returns></returns>
             internal VariantValue Sanitize(VariantValue value, bool isString) {
-                if (value is null || value.IsNull()) {
+                if (value == null || value.IsNull()) {
                     return value;
                 }
 

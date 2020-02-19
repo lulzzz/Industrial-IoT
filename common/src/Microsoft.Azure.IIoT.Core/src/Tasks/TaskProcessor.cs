@@ -59,10 +59,10 @@ namespace Microsoft.Azure.IIoT.Tasks.Default {
 
         /// <inheritdoc/>
         public bool TrySchedule(Func<Task> task, Func<Task> checkpoint) {
-            if (task is null) {
+            if (task == null) {
                 throw new ArgumentNullException(nameof(task));
             }
-            if (checkpoint is null) {
+            if (checkpoint == null) {
                 throw new ArgumentNullException(nameof(checkpoint));
             }
             return TrySchedule(new ProcessorWorker.Work {

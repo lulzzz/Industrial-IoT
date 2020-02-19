@@ -19,7 +19,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Models {
         public static byte[] ToRawData(this StartSigningRequestModel model) {
             const string certRequestPemHeader = "-----BEGIN CERTIFICATE REQUEST-----";
             const string certRequestPemFooter = "-----END CERTIFICATE REQUEST-----";
-            if (model.CertificateRequest is null) {
+            if (model.CertificateRequest == null) {
                 throw new ArgumentNullException(nameof(model.CertificateRequest));
             }
             if (model.CertificateRequest.IsBytes) {

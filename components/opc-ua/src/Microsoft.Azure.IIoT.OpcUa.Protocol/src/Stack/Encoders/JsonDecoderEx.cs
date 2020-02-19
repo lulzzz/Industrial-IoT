@@ -467,7 +467,7 @@ namespace Opc.Ua.Encoders {
 
         /// <inheritdoc/>
         public IEncodeable ReadEncodeable(string property, Type systemType) {
-            if (systemType is null) {
+            if (systemType == null) {
                 throw new ArgumentNullException(nameof(systemType));
             }
             if (!TryGetToken(property, out var token)) {
@@ -487,7 +487,7 @@ namespace Opc.Ua.Encoders {
 
         /// <inheritdoc/>
         public Enum ReadEnumerated(string property, Type enumType) {
-            if (enumType is null) {
+            if (enumType == null) {
                 throw new ArgumentNullException(nameof(enumType));
             }
             if (!TryGetToken(property, out var token)) {
@@ -688,7 +688,7 @@ namespace Opc.Ua.Encoders {
         public Array ReadEncodeableArray(string property, Type systemType) {
             var values = ReadArray(property, () => ReadEncodeable(null, systemType))?
                 .ToList();
-            if (values is null) {
+            if (values == null) {
                 return null;
             }
             var array = Array.CreateInstance(systemType, values.Count);
@@ -700,7 +700,7 @@ namespace Opc.Ua.Encoders {
         public Array ReadEnumeratedArray(string property, Type enumType) {
             var values = ReadArray(property, () => ReadEnumerated(null, enumType))?
                 .ToList();
-            if (values is null) {
+            if (values == null) {
                 return null;
             }
             var array = Array.CreateInstance(enumType, values.Count);
@@ -835,7 +835,7 @@ namespace Opc.Ua.Encoders {
                     case ExtensionObjectEncoding.Json:
                         if (systemType != null) {
                             var encodeable = ReadEncodeable(property, systemType);
-                            if (encodeable is null) {
+                            if (encodeable == null) {
                                 break;
                             }
                             return new ExtensionObject(typeId, encodeable);
@@ -850,12 +850,12 @@ namespace Opc.Ua.Encoders {
                             wrapper.TypeId : typeId, wrapper);
                     case ExtensionObjectEncoding.Binary:
                         var bytes = ReadByteString(property);
-                        if (bytes is null) {
+                        if (bytes == null) {
                             break;
                         }
                         if (systemType != null) {
                             var encodeable = bytes.ToEncodeable(typeId, Context);
-                            if (encodeable is null) {
+                            if (encodeable == null) {
                                 break;
                             }
                             return new ExtensionObject(typeId, encodeable);
@@ -870,7 +870,7 @@ namespace Opc.Ua.Encoders {
                         XmlElement xml;
                         try {
                             xml = body.ToObject<XmlElement>();
-                            if (xml is null) {
+                            if (xml == null) {
                                 break;
                             }
                         }
@@ -879,7 +879,7 @@ namespace Opc.Ua.Encoders {
                         }
                         if (systemType != null) {
                             var encodeable = xml.ToEncodeable(typeId, Context);
-                            if (encodeable is null) {
+                            if (encodeable == null) {
                                 break;
                             }
                             return new ExtensionObject(typeId, encodeable);
@@ -1573,12 +1573,12 @@ namespace Opc.Ua.Encoders {
             else {
                 top = _stack.Peek();
             }
-            if (top is null) {
+            if (top == null) {
                 // Hit end of file.
                 token = null;
                 return false;
             }
-            if (property is null) {
+            if (property == null) {
                 // Read top token
                 token = top;
                 return true;
@@ -1611,7 +1611,7 @@ namespace Opc.Ua.Encoders {
         /// </summary>
         /// <returns></returns>
         private JToken ReadNextToken() {
-            if (_reader is null) {
+            if (_reader == null) {
                 return null;
             }
             if (_reader is JsonLoader loader) {

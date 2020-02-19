@@ -32,7 +32,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Models {
         /// <returns></returns>
         public static VaultOperationContextModel Validate(
             this VaultOperationContextModel context) {
-            if (context is null) {
+            if (context == null) {
                 context = new VaultOperationContextModel {
                     AuthorityId = null, // Should throw if configured
                     Time = DateTime.UtcNow

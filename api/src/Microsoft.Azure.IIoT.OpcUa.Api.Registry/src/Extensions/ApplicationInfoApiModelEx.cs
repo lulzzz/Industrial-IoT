@@ -18,7 +18,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <param name="isPatch"></param>
         public static ApplicationInfoApiModel Patch(this ApplicationInfoApiModel update,
             ApplicationInfoApiModel application, bool isPatch = false) {
-            if (application is null) {
+            if (application == null) {
                 return update;
             }
             if (!isPatch || update.ApplicationId != null) {

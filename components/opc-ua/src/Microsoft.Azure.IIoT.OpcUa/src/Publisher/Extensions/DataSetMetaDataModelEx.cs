@@ -18,7 +18,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static DataSetMetaDataModel Clone(this DataSetMetaDataModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new DataSetMetaDataModel {

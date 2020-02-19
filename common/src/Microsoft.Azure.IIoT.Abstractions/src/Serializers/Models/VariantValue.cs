@@ -473,7 +473,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (o is VariantValue v) {
                 return Comparer.Equals(this, v);
             }
-            if (o is null) {
+            if (o == null) {
                 return this.IsNull();
             }
             if (!TryGetValue(out var x)) {
@@ -696,7 +696,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     return true;
                 }
 
-                if (x is null || y is null) {
+                if (x == null || y == null) {
                     return false;
                 }
 
@@ -812,7 +812,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             /// <param name="type"></param>
             internal PrimitiveValue(object value, VariantValueType type) {
                 Value = value;
-                Type = value is null ? VariantValueType.Null : type;
+                Type = value == null ? VariantValueType.Null : type;
             }
 
             /// <inheritdoc/>
@@ -1017,7 +1017,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             /// <inheritdoc/>
             public override object ToType(Type conversionType,
                 IFormatProvider provider) {
-                if (Value is null || IsNull) {
+                if (Value == null || IsNull) {
                     if (conversionType.IsValueType) {
                         return Activator.CreateInstance(conversionType);
                     }
@@ -1127,6 +1127,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (Type != VariantValueType.Primitive) {
                 return false;
             }
+            string s;
             switch (Value) {
                 case int _:
                 case uint _:
@@ -1145,45 +1146,24 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case double _:
                 case decimal _:
                     return true;
-                case string s:
-                    var result = double.TryParse(s, out var db1);
-                    o = db1;
-                    if (!result) {
-                        result = decimal.TryParse(s, out var d1);
-                        o = d1;
-                    }
-                    return result;
-                case IConvertible c:
-                    try {
-                        o = c.ToDecimal(CultureInfo.InvariantCulture);
-                        return true;
-                    }
-                    catch {
-                        return false;
-                    }
+                case string str:
+                    s = str;
+                    break;
                 default:
-                    if (double.TryParse(ToString(), out var db2)) {
-                        o = db2;
-                        return true;
-                    }
-                    if (decimal.TryParse(ToString(), out var d2)) {
-                        o = d2;
-                        return true;
-                    }
+                    s = ToString();
                     break;
             }
-            try {
-                o = ConvertTo<double>();
+            if (double.TryParse(ToString(),
+                NumberStyles.Any, CultureInfo.InvariantCulture, out var db2)) {
+                o = db2;
+                return true;
             }
-            catch {
-                try {
-                    o = ConvertTo<decimal>();
-                }
-                catch {
-                    return false;
-                }
+            if (decimal.TryParse(ToString(),
+                NumberStyles.Any, CultureInfo.InvariantCulture, out var d2)) {
+                o = d2;
+                return true;
             }
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -1195,6 +1175,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (Type != VariantValueType.Primitive) {
                 return false;
             }
+            string s;
             switch (Value) {
                 case int _:
                 case uint _:
@@ -1207,10 +1188,6 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case char _:
                 case BigInteger _:
                     return true;
-                case string s:
-                    var result = BigInteger.TryParse(s, out var b1);
-                    o = b1;
-                    return result;
                 case decimal dec:
                     o = new BigInteger(dec);
                     return decimal.Floor(dec).Equals(dec);
@@ -1220,39 +1197,17 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case double d:
                     o = new BigInteger(d);
                     return Math.Floor(d).Equals(d);
-                case IConvertible c:
-                    try {
-                        o = c.ToInt64(CultureInfo.InvariantCulture);
-                        return true;
-                    }
-                    catch {
-                        try {
-                            o = c.ToUInt64(CultureInfo.InvariantCulture);
-                            return true;
-                        }
-                        catch {
-                            return false;
-                        }
-                    }
+                case string str:
+                    s = str;
+                    break;
                 default:
-                    if (BigInteger.TryParse(ToString(), out var b2)) {
-                        o = b2;
-                        return true;
-                    }
+                    s = ToString();
                     break;
             }
-            try {
-                o = ConvertTo<long>();
-            }
-            catch {
-                try {
-                    o = ConvertTo<ulong>();
-                }
-                catch {
-                    return false;
-                }
-            }
-            return true;
+            var result = BigInteger.TryParse(s, NumberStyles.Integer,
+                CultureInfo.InvariantCulture, out var b1);
+            o = b1;
+            return result;
         }
 
         /// <summary>
@@ -1264,27 +1219,21 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (Type != VariantValueType.Primitive) {
                 return false;
             }
+            string s;
             switch (Value) {
                 case TimeSpan _:
                     return true;
-                case string s:
-                    var result = TimeSpan.TryParse(s, out var ts1);
-                    o = ts1;
-                    return result;
+                case string str:
+                    s = str;
+                    break;
                 default:
-                    if (TimeSpan.TryParse(ToString(), out var ts2)) {
-                        o = ts2;
-                        return true;
-                    }
+                    s = ToString();
                     break;
             }
-            try {
-                o = ConvertTo<TimeSpan>();
-            }
-            catch {
-                return false;
-            }
-            return true;
+            var result = TimeSpan.TryParse(s, CultureInfo.InvariantCulture,
+                out var ts1);
+            o = ts1;
+            return result;
         }
 
         /// <summary>
@@ -1296,46 +1245,29 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (Type != VariantValueType.Primitive) {
                 return false;
             }
+            string s;
             switch (Value) {
                 case DateTime _:
                 case DateTimeOffset _:
                     return true;
-                case string s:
-                    if (DateTime.TryParse(s, out var dt1)) {
-                        o = dt1;
-                        return true;
-                    }
-                    if (DateTimeOffset.TryParse(s, out var dto1)) {
-                        o = dto1;
-                        return true;
-                    }
-                    return false;
-                case IConvertible c:
-                    try {
-                        o = c.ToDateTime(CultureInfo.InvariantCulture);
-                        return true;
-                    }
-                    catch {
-                        return false;
-                    }
+                case string str:
+                    s = str;
+                    break;
                 default:
-                    if (DateTime.TryParse(ToString(), out var dt2)) {
-                        o = dt2;
-                        return true;
-                    }
-                    if (DateTimeOffset.TryParse(ToString(), out var dto2)) {
-                        o = dto2;
-                        return true;
-                    }
+                    s = ToString();
                     break;
             }
-            try {
-                o = ConvertTo<DateTime>();
+            if (DateTime.TryParse(s, CultureInfo.InvariantCulture,
+                DateTimeStyles.AdjustToUniversal, out var dt1)) {
+                o = dt1;
+                return true;
             }
-            catch {
-                return false;
+            if (DateTimeOffset.TryParse(s, CultureInfo.InvariantCulture,
+                DateTimeStyles.AdjustToUniversal, out var dto1)) {
+                o = dto1;
+                return true;
             }
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -1347,35 +1279,20 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (Type != VariantValueType.Primitive) {
                 return false;
             }
+            string s;
             switch (Value) {
                 case bool _:
                     return true;
-                case string s:
-                    var result = bool.TryParse(s, out var b1);
-                    o = b1;
-                    return result;
-                case IConvertible c:
-                    try {
-                        o = c.ToBoolean(CultureInfo.InvariantCulture);
-                        return true;
-                    }
-                    catch {
-                        return false;
-                    }
+                case string str:
+                    s = str;
+                    break;
                 default:
-                    if (bool.TryParse(ToString(), out var b2)) {
-                        o = b2;
-                        return true;
-                    }
+                    s = ToString();
                     break;
             }
-            try {
-                o = ConvertTo<bool>();
-            }
-            catch {
-                return false;
-            }
-            return true;
+            var result = bool.TryParse(s, out var b1);
+            o = b1;
+            return result;
         }
 
         /// <summary>
@@ -1387,27 +1304,20 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (Type != VariantValueType.Primitive) {
                 return false;
             }
+            string s;
             switch (Value) {
                 case Guid _:
                     return true;
-                case string s:
-                    var result = Guid.TryParse(s, out var g1);
-                    o = g1;
-                    return result;
+                case string str:
+                    s = str;
+                    break;
                 default:
-                    if (Guid.TryParse(ToString(), out var g2)) {
-                        o = g2;
-                        return true;
-                    }
+                    s = ToString();
                     break;
             }
-            try {
-                o = ConvertTo<Guid>();
-            }
-            catch {
-                return false;
-            }
-            return true;
+            var result = Guid.TryParse(s, out var g1);
+            o = g1;
+            return result;
         }
 
         /// <summary>
@@ -1434,33 +1344,26 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (Type != VariantValueType.Primitive) {
                 return false;
             }
+            string s;
             switch (Value) {
                 case byte[] _:
                     return true;
-                case string s:
-                    try {
-                        o = Convert.FromBase64String(s);
-                        return true;
-                    }
-                    catch {
-                        return false;
-                    }
+                case string str:
+                    s = str;
+                    break;
                 default:
-                    try {
-                        o = Convert.FromBase64String(ToString());
-                        return true;
-                    }
-                    catch {
-                    }
+                    s = ToString();
                     break;
             }
             try {
-                o = ConvertTo<byte[]>();
+                o = Convert.FromBase64String(s);
+                // Should result in the same string
+                var re = Convert.ToBase64String((byte[])o);
+                return s == re;
             }
             catch {
                 return false;
             }
-            return true;
         }
 
         /// <summary>
@@ -1476,13 +1379,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case string _:
                     return true;
             }
-            try {
-                o = ConvertTo<string>();
-            }
-            catch {
-                return false;
-            }
-            return true;
+            return false;
         }
 
         /// <summary>

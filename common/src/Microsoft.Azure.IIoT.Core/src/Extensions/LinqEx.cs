@@ -14,36 +14,36 @@ namespace System.Linq {
     public static class LinqEx {
 
         /// <summary>
-        /// Creates a hash set from enumerable or null if enumerable is null.
+        /// Creates a hash set from enumerable or null if enumerable == null.
         /// </summary>
         /// <param name="enumerable"></param>
         /// <returns></returns>
         public static HashSet<T> ToHashSetSafe<T>(this IEnumerable<T> enumerable) {
-            if (enumerable is null) {
+            if (enumerable == null) {
                 return null;
             }
             return new HashSet<T>(enumerable);
         }
 
         /// <summary>
-        /// Creates a list from enumerable or null if enumerable is null.
+        /// Creates a list from enumerable or null if enumerable == null.
         /// </summary>
         /// <param name="enumerable"></param>
         /// <returns></returns>
         public static List<T> ToListSafe<T>(this IEnumerable<T> enumerable) {
-            if (enumerable is null) {
+            if (enumerable == null) {
                 return null;
             }
             return new List<T>(enumerable);
         }
 
         /// <summary>
-        /// Creates a sorted set from enumerable or null if enumerable is null.
+        /// Creates a sorted set from enumerable or null if enumerable == null.
         /// </summary>
         /// <param name="enumerable"></param>
         /// <returns></returns>
         public static SortedSet<T> ToSortedSetSafe<T>(this IEnumerable<T> enumerable) {
-            if (enumerable is null) {
+            if (enumerable == null) {
                 return null;
             }
             return new SortedSet<T>(enumerable);
@@ -133,7 +133,7 @@ namespace System.Linq {
         /// <returns></returns>
         public static T OneOrThis<T>(this IEnumerable<T> source,
             T thiz, bool throwIfMoreThanOne = false) {
-            if (source is null) {
+            if (source == null) {
                 return thiz;
             }
             if (source is IList<T> list) {

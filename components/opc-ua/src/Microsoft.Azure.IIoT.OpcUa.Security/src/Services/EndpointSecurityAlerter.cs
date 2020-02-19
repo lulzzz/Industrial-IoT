@@ -136,7 +136,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 #if FALSE
                 // Test endpoint certificate
                 var certEncoded = endpoint.Registration.Endpoint.Certificate;
-                if (certEncoded is null && !unsecure) {
+                if (certEncoded == null && !unsecure) {
                     await SendEndpointAlertAsync(endpoint,
                         "Secure endpoint without certificate found.", "No Certificate");
                     _metrics.TrackEvent("endpointWithoutCertificate");
@@ -178,7 +178,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 #if FALSE
                 // Test application certificate
                 var certEncoded = application.Certificate;
-                if (certEncoded is null) {
+                if (certEncoded == null) {
                     await SendApplicationAlertAsync(application,
                         "Application without certificate found.", "No Certificate");
                 }

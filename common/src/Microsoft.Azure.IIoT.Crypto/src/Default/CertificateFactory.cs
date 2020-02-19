@@ -33,16 +33,16 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
 
             try {
 
-                if (issuer is null) {
+                if (issuer == null) {
                     throw new ArgumentNullException(nameof(issuer));
                 }
-                if (issuer.RawData is null) {
+                if (issuer.RawData == null) {
                     throw new ArgumentNullException(nameof(issuer.RawData));
                 }
-                if (issuer.IssuerPolicies is null) {
+                if (issuer.IssuerPolicies == null) {
                     throw new ArgumentNullException(nameof(issuer.IssuerPolicies));
                 }
-                if (pubKey is null) {
+                if (pubKey == null) {
                     throw new ArgumentNullException(nameof(pubKey));
                 }
 
@@ -67,7 +67,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
                 var keyUsages = X509KeyUsageFlags.None;
                 if (extensions != null) {
                     foreach (var extension in extensions(serialNumber.Value)) {
-                        if (extension is null ||
+                        if (extension == null ||
                             extension is X509BasicConstraintsExtension ||
                             extension is X509CrlDistributionPointsExtension ||
                             extension is X509SubjectKeyIdentifierExtension ||
@@ -134,10 +134,10 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
             DateTime notBefore, DateTime notAfter, SignatureType signatureType,
             bool canIssue, Func<byte[], IEnumerable<X509Extension>> extensions, CancellationToken ct) {
             try {
-                if (signingKey is null) {
+                if (signingKey == null) {
                     throw new ArgumentNullException(nameof(signingKey));
                 }
-                if (pubKey is null) {
+                if (pubKey == null) {
                     throw new ArgumentNullException(nameof(pubKey));
                 }
 
@@ -160,7 +160,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
                 var keyUsages = X509KeyUsageFlags.None;
                 if (extensions != null) {
                     foreach (var extension in extensions(serialNumber.Value)) {
-                        if (extension is null ||
+                        if (extension == null ||
                             extension is X509BasicConstraintsExtension ||
                             extension is X509SubjectKeyIdentifierExtension ||
                             extension is X509AuthorityKeyIdentifierExtension) {
@@ -215,10 +215,10 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         /// <param name="serial"></param>
         /// <returns></returns>
         private static string PatchUrl(string extensionUrl, string serial) {
-            if (extensionUrl is null) {
+            if (extensionUrl == null) {
                 throw new ArgumentNullException(nameof(extensionUrl));
             }
-            if (serial is null) {
+            if (serial == null) {
                 throw new ArgumentNullException(nameof(serial));
             }
             if (extensionUrl.Contains("%serial%")) {

@@ -34,7 +34,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <returns></returns>
         private static SupervisorApiModel ToApiModel(
             this SupervisorModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new SupervisorApiModel {

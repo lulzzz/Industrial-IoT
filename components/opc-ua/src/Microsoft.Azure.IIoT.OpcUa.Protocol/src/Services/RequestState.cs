@@ -31,7 +31,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         /// </summary>
         /// <param name="context"></param>
         public void RequestReceived(RequestContextModel context) {
-            if (context is null) {
+            if (context == null) {
                 throw new ArgumentNullException(nameof(context));
             }
             _requests.TryAdd(context.RequestId, context);
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         /// Called when a request completes (normally or abnormally).
         /// </summary>
         public void RequestCompleted(RequestContextModel context) {
-            if (context is null) {
+            if (context == null) {
                 throw new ArgumentNullException(nameof(context));
             }
 

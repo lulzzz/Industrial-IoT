@@ -17,7 +17,7 @@ namespace System {
         /// <param name="ae"></param>
         /// <returns></returns>
         public static string GetCombinedExceptionMessage(this AggregateException ae) {
-            if (ae is null) {
+            if (ae == null) {
                 return null;
             }
             var sb = new StringBuilder();
@@ -33,7 +33,7 @@ namespace System {
         /// <param name="ae"></param>
         /// <returns></returns>
         public static string GetCombinedExceptionStackTrace(this AggregateException ae) {
-            if (ae is null) {
+            if (ae == null) {
                 return null;
             }
             var sb = new StringBuilder();

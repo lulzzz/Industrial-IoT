@@ -18,7 +18,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Vault.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static EntityInfoModel Clone(this EntityInfoModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new EntityInfoModel {

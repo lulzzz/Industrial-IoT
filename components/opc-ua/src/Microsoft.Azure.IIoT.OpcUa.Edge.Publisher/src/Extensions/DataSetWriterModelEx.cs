@@ -20,19 +20,19 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Models {
         /// <returns></returns>
         public static SubscriptionModel ToSubscriptionModel(
             this DataSetWriterModel dataSetWriter) {
-            if (dataSetWriter is null) {
+            if (dataSetWriter == null) {
                 return null;
             }
-            if (dataSetWriter.DataSetWriterId is null) {
+            if (dataSetWriter.DataSetWriterId == null) {
                 throw new ArgumentNullException(nameof(dataSetWriter.DataSetWriterId));
             }
-            if (dataSetWriter.DataSet is null) {
+            if (dataSetWriter.DataSet == null) {
                 throw new ArgumentNullException(nameof(dataSetWriter.DataSet));
             }
-            if (dataSetWriter.DataSet.DataSetSource is null) {
+            if (dataSetWriter.DataSet.DataSetSource == null) {
                 throw new ArgumentNullException(nameof(dataSetWriter.DataSet.DataSetSource));
             }
-            if (dataSetWriter.DataSet.DataSetSource.Connection is null) {
+            if (dataSetWriter.DataSet.DataSetSource.Connection == null) {
                 throw new ArgumentNullException(
                     nameof(dataSetWriter.DataSet.DataSetSource.Connection));
             }

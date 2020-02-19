@@ -51,7 +51,7 @@ namespace Opc.Ua.Types.Resolver {
         /// <inheritdoc/>
         public Schema.DataType TryResolve(Schema.ImportDirective import,
             XmlQualifiedName typeName) {
-            if (import is null) {
+            if (import == null) {
                 throw new ArgumentNullException(nameof(import));
             }
             if (typeName.IsNullOrEmpty()) {
@@ -60,11 +60,11 @@ namespace Opc.Ua.Types.Resolver {
             if (!_cache.TryGetValue(import, out var types)) {
                 import = import.Copy();
                 types = Load(import);
-                if (types is null) {
+                if (types == null) {
                     // Try any version
                     import.TargetVersion = null;
                     types = Load(import);
-                    if (types is null) {
+                    if (types == null) {
                         return null;
                     }
                 }

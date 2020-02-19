@@ -92,7 +92,8 @@
     /// <summary>
     /// OnInitialized
     /// </summary>
-    protected override void OnInitialized() {
+    protected override void OnInitialized()
+    {
         CommonHelper.Spinner = "loader-big";
     }
 
@@ -153,7 +154,8 @@
     /// action on ApplicationEvent
     /// </summary>
     /// <param name="ev"></param>
-    private Task ApplicationEvent(ApplicationEventApiModel ev) {
+    private Task ApplicationEvent(ApplicationEventApiModel ev) 
+    {
         _applicationList.Results.Update(ev);
         StateHasChanged();
         return Task.CompletedTask;

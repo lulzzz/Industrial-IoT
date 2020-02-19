@@ -18,7 +18,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static WriterGroupModel Clone(this WriterGroupModel model) {
-            if (model?.DataSetWriters is null) {
+            if (model?.DataSetWriters == null) {
                 return null;
             }
             return new WriterGroupModel {

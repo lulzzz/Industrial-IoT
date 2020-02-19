@@ -213,6 +213,10 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             var json = Serializer.Serialize(v);
             var actual = Serializer.Parse(json);
 
+            if (!actual.Equals(expected)) {
+                Console.WriteLine("");
+            }
+
             Assert.True(expected.Equals(actual));
             Assert.Equal(expected, actual);
         }
@@ -260,7 +264,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             VariantValue i5 = TimeSpan.FromSeconds(1);
 
             Assert.True(i1 == null);
-            Assert.True(i1 is null);
+            Assert.True(i1 == null);
             Assert.True(null == i1);
             Assert.True(i1 == i2);
             Assert.True(i1 != i3);

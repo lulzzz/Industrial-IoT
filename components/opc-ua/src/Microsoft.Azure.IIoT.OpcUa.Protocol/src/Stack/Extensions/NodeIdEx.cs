@@ -27,7 +27,7 @@ namespace Opc.Ua.Extensions {
             if (NodeId.IsNull(nodeId)) {
                 return ExpandedNodeId.Null;
             }
-            if (nodeId.NamespaceIndex > 0 && namespaces is null) {
+            if (nodeId.NamespaceIndex > 0 && namespaces == null) {
                 throw new ArgumentNullException(nameof(namespaces));
             }
             return new ExpandedNodeId(nodeId.Identifier, nodeId.NamespaceIndex,
@@ -47,7 +47,7 @@ namespace Opc.Ua.Extensions {
             if (NodeId.IsNull(nodeId)) {
                 return ExpandedNodeId.Null;
             }
-            if (nodeId.NamespaceIndex > 0 && namespaces is null) {
+            if (nodeId.NamespaceIndex > 0 && namespaces == null) {
                 throw new ArgumentNullException(nameof(namespaces));
             }
             return new ExpandedNodeId(nodeId.Identifier, nodeId.NamespaceIndex,
@@ -66,7 +66,7 @@ namespace Opc.Ua.Extensions {
             if (NodeId.IsNull(nodeId)) {
                 return NodeId.Null;
             }
-            if (nodeId.NamespaceIndex > 0 && namespaces is null) {
+            if (nodeId.NamespaceIndex > 0 && namespaces == null) {
                 throw new ArgumentNullException(nameof(namespaces));
             }
             int index = nodeId.NamespaceIndex;
@@ -136,7 +136,7 @@ namespace Opc.Ua.Extensions {
         /// <param name="context"></param>
         /// <returns></returns>
         public static NodeId ToNodeId(this string value, ServiceMessageContext context) {
-            if (value is null) {
+            if (value == null) {
                 return NodeId.Null;
             }
             var parts = value.Split(';');
@@ -157,7 +157,7 @@ namespace Opc.Ua.Extensions {
         /// <param name="context"></param>
         /// <returns></returns>
         public static ExpandedNodeId ToExpandedNodeId(this string value, ServiceMessageContext context) {
-            if (value is null) {
+            if (value == null) {
                 return ExpandedNodeId.Null;
             }
             var parts = value.Split(';');
@@ -195,13 +195,13 @@ namespace Opc.Ua.Extensions {
             }
             switch (idType) {
                 case IdType.Numeric:
-                    if (srvUri is null && nsUri is null &&
+                    if (srvUri == null && nsUri == null &&
                         TryGetDataTypeName(identifier, out var typeName)) {
                         // For readability use data type name here if possible
                         return typeName;
                     }
                     buffer.Append("i=");
-                    if (identifier is null) {
+                    if (identifier == null) {
                         buffer.Append("0"); // null
                         break;
                     }
@@ -210,14 +210,14 @@ namespace Opc.Ua.Extensions {
                     break;
                 case IdType.String:
                     buffer.Append("s=");
-                    if (identifier is null) {
+                    if (identifier == null) {
                         break; // null
                     }
                     buffer.Append(identifier.ToString().UrlEncode());
                     break;
                 case IdType.Guid:
                     buffer.Append("g=");
-                    if (identifier is null) {
+                    if (identifier == null) {
                         buffer.Append(Guid.Empty); // null
                         break;
                     }
@@ -225,7 +225,7 @@ namespace Opc.Ua.Extensions {
                     break;
                 case IdType.Opaque:
                     buffer.Append("b=");
-                    if (identifier is null) {
+                    if (identifier == null) {
                         break; // null
                     }
                     buffer.AppendFormat(CultureInfo.InvariantCulture,
@@ -312,7 +312,7 @@ namespace Opc.Ua.Extensions {
         /// <param name="text"></param>
         /// <returns></returns>
         private static object ParseIdentifier(string text) {
-            if (text is null) {
+            if (text == null) {
                 return null;
             }
             if (text.Length > 1) {

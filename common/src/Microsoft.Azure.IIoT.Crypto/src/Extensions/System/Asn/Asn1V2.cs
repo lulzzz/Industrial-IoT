@@ -281,7 +281,7 @@ namespace System.Security.Cryptography.Asn1 {
         }
 
         public override bool Equals(object obj) {
-            if (obj is null) {
+            if (obj == null) {
                 return false;
             }
 

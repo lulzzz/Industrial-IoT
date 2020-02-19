@@ -21,13 +21,13 @@ namespace Microsoft.Azure.IIoT.App.Data {
         public static void Update(this IList<SupervisorApiModel> results,
             SupervisorEventApiModel ev) {
             var supervisor = results.FirstOrDefault(e => e.Id == ev.Id);
-            if (supervisor is null &&
+            if (supervisor == null &&
                 ev.EventType != SupervisorEventType.New) {
                 return;
             }
             switch (ev.EventType) {
                 case SupervisorEventType.New:
-                    if (supervisor is null) {
+                    if (supervisor == null) {
                         // Add if not already in list
                         results.Add(ev.Supervisor);
                     }

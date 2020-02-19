@@ -108,7 +108,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Transport {
         /// </summary>
         private void ReceiveMessage() {
             // allocate a buffer large enough to a message chunk.
-            if (_receiveBuffer is null) {
+            if (_receiveBuffer == null) {
                 _receiveBuffer = _bufferManager.TakeBuffer(
                     _receiveBufferSize, nameof(ReadNextMessage));
             }

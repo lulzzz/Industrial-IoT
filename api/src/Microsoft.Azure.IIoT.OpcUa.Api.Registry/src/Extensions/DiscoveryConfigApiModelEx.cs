@@ -18,7 +18,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <param name="isPatch"></param>
         public static DiscoveryConfigApiModel Patch(this DiscoveryConfigApiModel update,
             DiscoveryConfigApiModel config, bool isPatch = false) {
-            if (config is null) {
+            if (config == null) {
                 return update;
             }
             if (!isPatch || update.ActivationFilter != null) {

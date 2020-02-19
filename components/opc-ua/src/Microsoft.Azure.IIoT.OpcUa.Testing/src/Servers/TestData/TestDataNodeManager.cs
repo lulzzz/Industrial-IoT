@@ -58,7 +58,7 @@ namespace TestData {
             _configuration = configuration.ParseExtension<TestDataNodeManagerConfiguration>();
 
             // use suitable defaults if no configuration exists.
-            if (_configuration is null) {
+            if (_configuration == null) {
                 _configuration = new TestDataNodeManagerConfiguration();
             }
 
@@ -301,7 +301,7 @@ namespace TestData {
         /// Restores a previously cached history reader.
         /// </summary>
         protected virtual HistoryDataReader RestoreDataReader(ServerSystemContext context, byte[] continuationPoint) {
-            if (context is null || context.OperationContext is null || context.OperationContext.Session is null) {
+            if (context == null || context.OperationContext == null || context.OperationContext.Session == null) {
                 return null;
             }
 
@@ -317,7 +317,7 @@ namespace TestData {
         /// Saves a history data reader.
         /// </summary>
         protected virtual void SaveDataReader(ServerSystemContext context, HistoryDataReader reader) {
-            if (context is null || context.OperationContext is null || context.OperationContext.Session is null) {
+            if (context == null || context.OperationContext == null || context.OperationContext.Session == null) {
                 return;
             }
 
@@ -333,7 +333,7 @@ namespace TestData {
             out IHistoryDataSource datasource) {
             datasource = _system.GetHistoryFile(variable);
 
-            if (datasource is null) {
+            if (datasource == null) {
                 return StatusCodes.BadNotReadable;
             }
 
@@ -360,7 +360,7 @@ namespace TestData {
                 // restore the continuation point.
                 reader = RestoreDataReader(serverContext, nodeToRead.ContinuationPoint);
 
-                if (reader is null) {
+                if (reader == null) {
                     return StatusCodes.BadContinuationPointInvalid;
                 }
 
@@ -424,7 +424,7 @@ namespace TestData {
         /// </summary>
         private bool SystemScanRequired(MonitoredNode2 monitoredNode, IDataChangeMonitoredItem2 monitoredItem) {
             // ingore other types of monitored items.
-            if (monitoredItem is null) {
+            if (monitoredItem == null) {
                 return false;
             }
 
@@ -538,7 +538,7 @@ namespace TestData {
                 try
                 {
                     // create the dialog.
-                    if (_dialog is null)
+                    if (_dialog == null)
                     {
                         _dialog = new DialogConditionState(null);
 

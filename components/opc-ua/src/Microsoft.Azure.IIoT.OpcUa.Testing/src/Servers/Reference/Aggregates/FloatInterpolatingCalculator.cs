@@ -46,12 +46,12 @@ namespace Opc.Ua.Aggregates {
             }
             else {
                 if (EarlyBound.DerivationType != BoundingValueType.Raw) {
-                    if (EarlyBound.EarlyPoint is null) {
+                    if (EarlyBound.EarlyPoint == null) {
                         if ((state.EarlyPoint != null) && (state.EarlyPoint.SourceTimestamp < bucket.From)) {
                             EarlyBound.EarlyPoint = state.EarlyPoint;
                         }
                     }
-                    if (EarlyBound.LatePoint is null) {
+                    if (EarlyBound.LatePoint == null) {
                         if ((state.LatePoint != null) && (state.LatePoint.SourceTimestamp >= bucket.From)) {
                             EarlyBound.LatePoint = state.LatePoint;
                             if (SteppedVariable) {
@@ -69,7 +69,7 @@ namespace Opc.Ua.Aggregates {
                         }
                     }
                 }
-                if (state.HasTerminated && (state.LatePoint is null)) {
+                if (state.HasTerminated && (state.LatePoint == null)) {
                     if (SteppedVariable) {
                         EarlyBound.CurrentBadPoints = new List<DataValue>();
                         foreach (var dv in state.CurrentBadPoints) {
@@ -94,7 +94,7 @@ namespace Opc.Ua.Aggregates {
                         LateBound.EarlyPoint = state.EarlyPoint;
                     }
 
-                    if (LateBound.LatePoint is null) {
+                    if (LateBound.LatePoint == null) {
                         if ((state.LatePoint != null) && (state.LatePoint.SourceTimestamp >= bucket.To)) {
                             LateBound.LatePoint = state.LatePoint;
                             if (SteppedVariable) {
@@ -112,7 +112,7 @@ namespace Opc.Ua.Aggregates {
                         }
                     }
                 }
-                if (state.HasTerminated && (state.LatePoint is null)) {
+                if (state.HasTerminated && (state.LatePoint == null)) {
                     if (SteppedVariable) {
                         LateBound.CurrentBadPoints = new List<DataValue>();
                         foreach (var dv in state.CurrentBadPoints) {

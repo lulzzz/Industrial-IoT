@@ -41,15 +41,15 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Models {
         public static void Validate<T>(string operation,
             List<OperationResultModel> operations, IEnumerable<StatusCode> results,
             DiagnosticInfoCollection diagnostics, IEnumerable<T> requested, bool traceOnly) {
-            if (operations is null) {
+            if (operations == null) {
                 SessionClientEx.Validate(results, diagnostics, requested);
                 return;
             }
-            if (diagnostics is null) {
+            if (diagnostics == null) {
                 diagnostics = new DiagnosticInfoCollection();
             }
             var resultsWithStatus = results?.ToList();
-            if (resultsWithStatus is null || (resultsWithStatus.Count == 0 &&
+            if (resultsWithStatus == null || (resultsWithStatus.Count == 0 &&
                 diagnostics.Count == 0)) {
                 throw new ServiceResultException(StatusCodes.BadUnexpectedError,
                     "The server returned no results or diagnostics information.");
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Models {
             // Add diagnostics
             var ids = requested?.ToArray() ?? new T[0];
             for (var index = resultsWithStatus.Count; index < diagnostics.Count; index++) {
-                resultsWithStatus.Add(diagnostics[index] is null ?
+                resultsWithStatus.Add(diagnostics[index] == null ?
                     StatusCodes.Good : StatusCodes.BadUnexpectedError);
             }
             operations.AddRange(results

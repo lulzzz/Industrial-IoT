@@ -66,10 +66,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
 
         /// <inheritdoc/>
         public async Task StartAsync(IEnumerable<int> ports) {
-            if (_server is null) {
+            if (_server == null) {
                 await _lock.WaitAsync();
                 try {
-                    if (_server is null) {
+                    if (_server == null) {
                         await StartServerInternalAsync(ports);
                         return;
                     }
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             // Use existing certificate, if it is there.
             var cert = await config.SecurityConfiguration.ApplicationCertificate
                 .Find(true);
-            if (cert is null) {
+            if (cert == null) {
                 _logger.Information("Creating new certificate in {path}...",
                     config.SecurityConfiguration.ApplicationCertificate.StorePath);
                 // Create cert

@@ -24,7 +24,7 @@ namespace Microsoft.Azure.IIoT.AspNetCore.Cors {
         /// <param name="builder"></param>
         /// <returns></returns>
         public static IMvcBuilder AddNewtonsoftJsonSerializer(this IMvcBuilder builder) {
-            if (builder is null) {
+            if (builder == null) {
                 throw new ArgumentNullException(nameof(builder));
             }
 
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.IIoT.AspNetCore.Cors {
                 new ConfigureNamedOptions<MvcNewtonsoftJsonOptions>(Options.DefaultName, options => {
                     var provider = services.GetService<IJsonSerializerSettingsProvider>();
                     var settings = provider?.Settings;
-                    if (settings is null) {
+                    if (settings == null) {
                         return;
                     }
 

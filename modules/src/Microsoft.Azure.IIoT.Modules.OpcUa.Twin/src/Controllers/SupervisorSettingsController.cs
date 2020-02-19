@@ -32,7 +32,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Controllers {
         /// </summary>
         public string LogLevel {
             set {
-                if (value is null) {
+                if (value == null) {
                     // Set default
                     LogControl.Level.MinimumLevel = LogEventLevel.Information;
                     _logger.Information("Setting log level to default level.");
@@ -59,7 +59,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Controllers {
         /// <returns></returns>
         public VariantValue this[string endpointId] {
             set {
-                if (value is null || value.IsNull()) {
+                if (value == null || value.IsNull()) {
                     _endpoints.AddOrUpdate(endpointId, null);
                     return;
                 }

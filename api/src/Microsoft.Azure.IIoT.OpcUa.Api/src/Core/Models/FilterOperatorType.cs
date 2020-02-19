@@ -19,7 +19,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         Equals,
 
         /// <summary>
-        /// Element is null
+        /// Element == null
         /// </summary>
         [EnumMember]
         IsNull,

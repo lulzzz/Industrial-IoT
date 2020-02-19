@@ -56,7 +56,7 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             HealthCheckContext context, CancellationToken ct) {
             var hub = _hub;
             try {
-                if (hub is null) {
+                if (hub == null) {
                     hub = await _serviceManager.CreateHubContextAsync(Resource);
                 }
                 await hub.Clients.All.SendCoreAsync("ping", new object[0], ct);
@@ -125,7 +125,7 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             if (string.IsNullOrEmpty(userId)) {
                 throw new ArgumentNullException(nameof(userId));
             }
-            if (lifeTime is null) {
+            if (lifeTime == null) {
                 lifeTime = TimeSpan.FromMinutes(5);
             }
             return new IdentityTokenModel {

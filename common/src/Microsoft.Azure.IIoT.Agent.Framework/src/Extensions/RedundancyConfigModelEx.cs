@@ -15,7 +15,7 @@ namespace Microsoft.Azure.IIoT.Agent.Framework.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static RedundancyConfigModel Clone(this RedundancyConfigModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new RedundancyConfigModel {

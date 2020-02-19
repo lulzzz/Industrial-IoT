@@ -51,7 +51,7 @@ namespace DataAccess {
             _configuration = configuration.ParseExtension<DataAccessServerConfiguration>();
 
             // use suitable defaults if no configuration exists.
-            if (_configuration is null) {
+            if (_configuration == null) {
                 _configuration = new DataAccessServerConfiguration();
             }
 
@@ -190,7 +190,7 @@ namespace DataAccess {
             NodeHandle handle,
             IDictionary<NodeId, NodeState> cache) {
             // not valid if no root.
-            if (handle is null) {
+            if (handle == null) {
                 return null;
             }
 
@@ -205,7 +205,7 @@ namespace DataAccess {
             if (cache != null) {
                 if (cache.TryGetValue(handle.NodeId, out target)) {
                     // nulls mean a NodeId which was previously found to be invalid has been referenced again.
-                    if (target is null) {
+                    if (target == null) {
                         return null;
                     }
 
@@ -230,7 +230,7 @@ namespace DataAccess {
                     var segment = _system.FindSegment(parsedNodeId.RootId);
 
                     // segment does not exist.
-                    if (segment is null) {
+                    if (segment == null) {
                         return null;
                     }
 
@@ -246,7 +246,7 @@ namespace DataAccess {
                     var block = _system.FindBlock(parsedNodeId.RootId);
 
                     // block does not exist.
-                    if (block is null) {
+                    if (block == null) {
                         return null;
                     }
 
@@ -280,7 +280,7 @@ namespace DataAccess {
                 NodeState component = root.FindChildBySymbolicName(context, parsedNodeId.ComponentPath);
 
                 // component does not exist.
-                if (component is null) {
+                if (component == null) {
                     return null;
                 }
 

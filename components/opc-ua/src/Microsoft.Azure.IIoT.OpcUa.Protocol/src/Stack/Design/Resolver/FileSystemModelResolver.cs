@@ -55,7 +55,7 @@ namespace Opc.Ua.Design.Resolver {
 
         /// <inheritdoc/>
         public object TryAssignId(Namespace ns, XmlQualifiedName symbolicId) {
-            if (ns is null) {
+            if (ns == null) {
                 throw new ArgumentNullException(nameof(ns));
             }
             if (symbolicId.IsNullOrEmpty()) {
@@ -63,7 +63,7 @@ namespace Opc.Ua.Design.Resolver {
             }
             if (!_assigners.TryGetValue(ns, out var assigner)) {
                 assigner = LoadIdentifiers(ns) as INodeIdAssigner;
-                if (assigner is null) {
+                if (assigner == null) {
                     return null;
                 }
             }
@@ -72,7 +72,7 @@ namespace Opc.Ua.Design.Resolver {
 
         /// <inheritdoc/>
         public NodeDesign TryResolve(Namespace ns, XmlQualifiedName symbolicId) {
-            if (ns is null) {
+            if (ns == null) {
                 throw new ArgumentNullException(nameof(ns));
             }
             if (symbolicId.IsNullOrEmpty()) {
@@ -80,7 +80,7 @@ namespace Opc.Ua.Design.Resolver {
             }
             if (!_resolvers.TryGetValue(ns, out var resolver)) {
                 resolver = LoadDesign(ns) as INodeResolver;
-                if (resolver is null) {
+                if (resolver == null) {
                     return null;
                 }
                 _resolvers.Add(ns, resolver);

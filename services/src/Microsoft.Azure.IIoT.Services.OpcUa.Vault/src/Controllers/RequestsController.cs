@@ -56,7 +56,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Vault.Controllers {
         [Authorize(Policy = Policies.CanWrite)]
         public async Task<StartSigningRequestResponseApiModel> StartSigningRequestAsync(
             [FromBody] [Required] StartSigningRequestApiModel signingRequest) {
-            if (signingRequest is null) {
+            if (signingRequest == null) {
                 throw new ArgumentNullException(nameof(signingRequest));
             }
             HttpContext.User = null; // TODO: Set service principal
@@ -108,7 +108,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Vault.Controllers {
         [Authorize(Policy = Policies.CanWrite)]
         public async Task<StartNewKeyPairRequestResponseApiModel> StartNewKeyPairRequestAsync(
             [FromBody] [Required] StartNewKeyPairRequestApiModel newKeyPairRequest) {
-            if (newKeyPairRequest is null) {
+            if (newKeyPairRequest == null) {
                 throw new ArgumentNullException(nameof(newKeyPairRequest));
             }
             HttpContext.User = null; // TODO: Set service principal

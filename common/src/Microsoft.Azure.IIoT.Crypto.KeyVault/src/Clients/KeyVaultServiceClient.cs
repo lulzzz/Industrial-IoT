@@ -58,7 +58,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             ICertificateFactory factory, IKeyVaultConfig config, ISerializer serializer,
             IKeyVaultClient client) {
 
-            if (config is null) {
+            if (config == null) {
                 throw new ArgumentNullException(nameof(config));
             }
 
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
                 var secret = await _keyVaultClient.GetSecretAsync(_vaultBaseUrl,
                     key, ct);
                 if (contentType != null) {
-                    if (secret.ContentType is null ||
+                    if (secret.ContentType == null ||
                         !secret.ContentType.EqualsIgnoreCase(contentType)) {
                         throw new ResourceInvalidStateException("Content type mismatch");
                     }
@@ -156,10 +156,10 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             if (string.IsNullOrEmpty(certificateName)) {
                 throw new ArgumentNullException(nameof(certificateName));
             }
-            if (certificate is null) {
+            if (certificate == null) {
                 throw new ArgumentNullException(nameof(certificate));
             }
-            if (privateKey is null) {
+            if (privateKey == null) {
                 certificate = certificate.Clone();
                 certificate.IssuerPolicies = null;
                 await _certificates.AddCertificateAsync(certificateName, certificate, null, ct);
@@ -235,7 +235,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
                 // create the CSR
                 var createResult = await CreateCertificateAsync(certificateName,
                     policyUnknownReuse, attributes, null, ct);
-                if (createResult.Csr is null) {
+                if (createResult.Csr == null) {
                     throw new CryptographicUnexpectedOperationException(
                         "Failed to read CSR from CreateCertificate.");
                 }
@@ -289,7 +289,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             var id = await _certificates.DisableCertificateAsync(certificate, ct);
             try {
                 var cert = await _keyVaultClient.GetCertificateAsync(id, ct);
-                if (cert is null) {
+                if (cert == null) {
                     return;
                 }
                 // Disable in key store - if not already disabled
@@ -317,12 +317,12 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
 
                 var caCertBundle = await _keyVaultClient.GetCertificateAsync(
                     _vaultBaseUrl, rootCertificate, ct);
-                if (caCertBundle is null) {
+                if (caCertBundle == null) {
                     throw new ResourceNotFoundException("Issuer cert not found.");
                 }
                 var caCert = await _certificates.FindCertificateAsync(
                     caCertBundle.CertificateIdentifier.Identifier);
-                if (caCert?.IssuerPolicies is null) {
+                if (caCert?.IssuerPolicies == null) {
                     throw new ArgumentException("Certificate cannot issue.");
                 }
 
@@ -341,7 +341,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
                 var createResult = await CreateCertificateAsync(certificateName,
                     policyUnknownNewExportable, attributes, null, ct);
 
-                if (createResult.Csr is null) {
+                if (createResult.Csr == null) {
                     throw new CryptographicUnexpectedOperationException(
                         "Failed to read CSR from CreateCertificate.");
                 }
@@ -400,19 +400,19 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             if (string.IsNullOrEmpty(certificateName)) {
                 throw new ArgumentNullException(nameof(certificateName));
             }
-            if (publicKey is null) {
+            if (publicKey == null) {
                 throw new ArgumentNullException(nameof(publicKey));
             }
 
             // (0) Retrieve issuer certificate
             var caCertBundle = await _keyVaultClient.GetCertificateAsync(
                 _vaultBaseUrl, rootCertificate, ct);
-            if (caCertBundle is null) {
+            if (caCertBundle == null) {
                 throw new ResourceNotFoundException("Issuer cert not found.");
             }
             var caCert = await _certificates.FindCertificateAsync(
                 caCertBundle.CertificateIdentifier.Identifier);
-            if (caCert?.IssuerPolicies is null) {
+            if (caCert?.IssuerPolicies == null) {
                 throw new ArgumentException("Certificate cannot issue.");
             }
 
@@ -444,12 +444,12 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
                 // (0) Retrieve issuer certificate
                 var caCertBundle = await _keyVaultClient.GetCertificateAsync(
                     _vaultBaseUrl, rootCertificate, ct);
-                if (caCertBundle is null) {
+                if (caCertBundle == null) {
                     throw new ResourceNotFoundException("Issuer cert not found.");
                 }
                 var caCert = await _certificates.FindCertificateAsync(
                     caCertBundle.CertificateIdentifier.Identifier);
-                if (caCert?.IssuerPolicies is null) {
+                if (caCert?.IssuerPolicies == null) {
                     throw new ArgumentException("Certificate cannot issue.");
                 }
 
@@ -463,7 +463,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
                     caCert.IssuerPolicies.IssuedLifetime.Value, caCert.NotAfterUtc);
                 var createResult = await CreateCertificateAsync(certificateName,
                     policyUnknownNewExportable, attributes, null, ct);
-                if (createResult.Csr is null) {
+                if (createResult.Csr == null) {
                     throw new CryptographicUnexpectedOperationException(
                         "Failed to read CSR from CreateCertificate.");
                 }
@@ -517,7 +517,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             if (string.IsNullOrEmpty(name)) {
                 throw new ArgumentNullException(nameof(name));
             }
-            if (keyParams is null) {
+            if (keyParams == null) {
                 throw new ArgumentNullException(nameof(keyParams));
             }
             try {
@@ -551,7 +551,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             if (string.IsNullOrEmpty(name)) {
                 throw new ArgumentNullException(nameof(name));
             }
-            if (key is null) {
+            if (key == null) {
                 throw new ArgumentNullException(nameof(key));
             }
             try {
@@ -587,7 +587,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             }
             // Get key first
             var keyBundle = await Try.Async(() => _keyVaultClient.GetKeyAsync(name, ct));
-            if (keyBundle is null) {
+            if (keyBundle == null) {
                 // If no key - then try getting cert bundle instead
                 var certBundle = await Try.Async(
                     () => _keyVaultClient.GetCertificateAsync(_vaultBaseUrl, name, ct));
@@ -835,7 +835,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
         /// </summary>
         /// <param name="keyParams"></param>
         private static void ValidateKeyParameters(CreateKeyParams keyParams) {
-            if (keyParams is null) {
+            if (keyParams == null) {
                 throw new ArgumentNullException(nameof(keyParams));
             }
             switch (keyParams.Type) {

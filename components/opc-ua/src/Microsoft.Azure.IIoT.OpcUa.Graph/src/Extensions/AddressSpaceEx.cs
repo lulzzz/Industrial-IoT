@@ -107,7 +107,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Models {
         /// <returns></returns>
         public static BaseNodeVertexModel ToVertex(this BaseNodeModel node, string sourceId,
             long revision, IVariantEncoder codec) {
-            if (node is null) {
+            if (node == null) {
                 throw new ArgumentNullException(nameof(node));
             }
             if (NodeId.IsNull(node.NodeId)) {
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Models {
                                 (vNode.AccessLevelEx ?? 0)) : null,
                         MinimumSamplingInterval = vNode.MinimumSamplingInterval,
                         Historizing = vNode.Historizing,
-                        Value = vNode.Value is null ? null : codec.Encode(vNode.Value.Value,
+                        Value = vNode.Value == null ? null : codec.Encode(vNode.Value.Value,
                             out builtInType),
                         BuiltInType = builtInType
                     };
@@ -144,7 +144,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Models {
                                 (vNode.AccessLevelEx ?? 0)) : null,
                         MinimumSamplingInterval = vNode.MinimumSamplingInterval,
                         Historizing = vNode.Historizing,
-                        Value = vNode.Value is null ? null : codec.Encode(vNode.Value.Value,
+                        Value = vNode.Value == null ? null : codec.Encode(vNode.Value.Value,
                             out builtInType),
                         BuiltInType = builtInType
                     };
@@ -170,7 +170,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Models {
                         IsAbstract = vtNode.IsAbstract ?? false,
                         ValueRank = (NodeValueRank?)vtNode.ValueRank,
                         ArrayDimensions = vtNode.ArrayDimensions,
-                        Value = vtNode.Value is null ? null : codec.Encode(vtNode.Value.Value,
+                        Value = vtNode.Value == null ? null : codec.Encode(vtNode.Value.Value,
                             out builtInType),
                         BuiltInType = builtInType
                     };
@@ -180,7 +180,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Models {
                         IsAbstract = vtNode.IsAbstract ?? false,
                         ValueRank = (NodeValueRank?)vtNode.ValueRank,
                         ArrayDimensions = vtNode.ArrayDimensions,
-                        Value = vtNode.Value is null ? null : codec.Encode(vtNode.Value.Value,
+                        Value = vtNode.Value == null ? null : codec.Encode(vtNode.Value.Value,
                             out builtInType),
                         BuiltInType = builtInType
                     };
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Models {
                 case DataTypeNodeModel dtNode:
                     vertex = new DataTypeNodeVertexModel {
                         IsAbstract = dtNode.IsAbstract,
-                        DataTypeDefinition = dtNode.Definition is null ? null :
+                        DataTypeDefinition = dtNode.Definition == null ? null :
                             codec.Encode(new Variant(new ExtensionObject(dtNode.Definition)),
                             out _)
                     };
@@ -271,9 +271,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Models {
                         ValueRank = (int?)uaProperty.ValueRank,
                         ArrayDimensions = uaProperty.ArrayDimensions,
                         AccessLevelEx = (uint?)uaProperty.AccessLevel,
-                        AccessLevel = uaProperty.AccessLevel is null ? null :
+                        AccessLevel = uaProperty.AccessLevel == null ? null :
                             (byte?)((uint)uaProperty.AccessLevel.Value & 0xff),
-                        UserAccessLevel = uaProperty.UserAccessLevel is null ? null :
+                        UserAccessLevel = uaProperty.UserAccessLevel == null ? null :
                             (byte?)((uint)uaProperty.UserAccessLevel.Value & 0xff),
                         MinimumSamplingInterval = uaProperty.MinimumSamplingInterval,
                         Historizing = uaProperty.Historizing,
@@ -287,9 +287,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Models {
                         ValueRank = (int?)uaVariable.ValueRank,
                         ArrayDimensions = uaVariable.ArrayDimensions,
                         AccessLevelEx = (uint?)uaVariable.AccessLevel,
-                        AccessLevel = uaVariable.AccessLevel is null ? null :
+                        AccessLevel = uaVariable.AccessLevel == null ? null :
                             (byte?)((uint)uaVariable.AccessLevel.Value & 0xFF),
-                        UserAccessLevel = uaVariable.UserAccessLevel is null ? null :
+                        UserAccessLevel = uaVariable.UserAccessLevel == null ? null :
                             (byte?)((uint)uaVariable.UserAccessLevel.Value & 0xff),
                         MinimumSamplingInterval = uaVariable.MinimumSamplingInterval,
                         Historizing = uaVariable.Historizing,
@@ -335,7 +335,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Graph.Models {
                 case DataTypeNodeVertexModel uaDataType:
                     decoded = new DataTypeNodeModel {
                         IsAbstract = uaDataType.IsAbstract,
-                        Definition = uaDataType.DataTypeDefinition is null ? null :
+                        Definition = uaDataType.DataTypeDefinition == null ? null :
                             (DataTypeDefinition)(codec.Decode(uaDataType.DataTypeDefinition,
                                 BuiltInType.ExtensionObject).Value as ExtensionObject)?.Body,
                         Purpose = Opc.Ua.Nodeset.Schema.DataTypePurpose.Normal

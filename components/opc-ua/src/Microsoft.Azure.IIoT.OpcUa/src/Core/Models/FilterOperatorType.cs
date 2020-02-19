@@ -15,7 +15,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         Equals,
 
         /// <summary>
-        /// Element is null
+        /// Element == null
         /// </summary>
         IsNull,
 

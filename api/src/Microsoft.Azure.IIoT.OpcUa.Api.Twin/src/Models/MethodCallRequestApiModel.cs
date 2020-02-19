@@ -18,7 +18,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
     /// <li>Specify methodId and objectId node ids and leave the browse
     /// paths null.</li>
     /// <li>Specify an objectBrowsePath to a real object node from
-    /// the node specified with objectId.  If objectId is null, the
+    /// the node specified with objectId.  If objectId == null, the
     /// root node (i=84) is used. </li>
     /// <li>Specify a methodBrowsePath from the above object node
     /// to the actual method node to call on the object.  methodId
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// <summary>
         /// An optional component path from the node identified by
         /// ObjectId to the actual object or objectType node.
-        /// If ObjectId is null, the root node (i=84) is used.
+        /// If ObjectId == null, the root node (i=84) is used.
         /// </summary>
         [DataMember(Name = "objectBrowsePath",
             EmitDefaultValue = false)]

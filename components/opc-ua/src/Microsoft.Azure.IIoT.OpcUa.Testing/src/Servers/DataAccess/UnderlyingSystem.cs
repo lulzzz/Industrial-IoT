@@ -314,7 +314,7 @@ namespace DataAccess {
                 // check for invalid segment.
                 var segment = FindSegment(segmentPath);
 
-                if (segment is null) {
+                if (segment == null) {
                     return null;
                 }
 
@@ -384,7 +384,7 @@ namespace DataAccess {
                 }
 
                 // block not found.
-                if (blockType is null) {
+                if (blockType == null) {
                     return null;
                 }
 

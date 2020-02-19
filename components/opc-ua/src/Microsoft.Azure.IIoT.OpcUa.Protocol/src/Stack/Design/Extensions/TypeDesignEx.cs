@@ -44,7 +44,7 @@ namespace Opc.Ua.Design.Schema {
             if (type is ReferenceTypeDesign || type is DataTypeDesign) {
                 return type;
             }
-            if (type.BaseTypeNode is null) {
+            if (type.BaseTypeNode == null) {
                 // Make copy
                 var copy = type.Copy();
                 copy.NumericId = 0;

@@ -88,7 +88,7 @@ namespace Microsoft.Azure.IIoT.Hub.Client {
         private async Task RunAsync(FileNotificationReceiver<FileNotification> receiver) {
             while (!_cts.IsCancellationRequested) {
                 var notification = await receiver.ReceiveAsync();
-                if (notification is null) {
+                if (notification == null) {
                     continue;
                 }
 

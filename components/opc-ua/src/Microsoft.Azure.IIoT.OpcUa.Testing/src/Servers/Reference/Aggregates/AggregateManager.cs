@@ -111,7 +111,7 @@ namespace Opc.Ua.Aggregates {
         public AggregateConfiguration GetDefaultConfiguration(NodeId variableId) {
             System.Diagnostics.Contracts.Contract.Assume(variableId != null);
             lock (_lock) {
-                if (_defaultConfiguration is null) {
+                if (_defaultConfiguration == null) {
                     _defaultConfiguration = new AggregateConfiguration {
                         PercentDataBad = 0,
                         PercentDataGood = 100,
@@ -163,7 +163,7 @@ namespace Opc.Ua.Aggregates {
 
             var calculator = factory();
 
-            if (calculator is null) {
+            if (calculator == null) {
                 return null;
             }
 

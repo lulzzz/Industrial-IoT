@@ -15,7 +15,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static DataChangeFilterModel Clone(this DataChangeFilterModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new DataChangeFilterModel {
@@ -32,10 +32,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         /// <param name="other"></param>
         /// <returns></returns>
         public static bool IsSameAs(this DataChangeFilterModel model, DataChangeFilterModel other) {
-            if (model is null && other is null) {
+            if (model == null && other == null) {
                 return true;
             }
-            if (model is null || other is null) {
+            if (model == null || other == null) {
                 return false;
             }
             if (model.DataChangeTrigger != other.DataChangeTrigger) {

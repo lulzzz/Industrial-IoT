@@ -50,7 +50,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Migration {
 
         /// <inheritdoc/>
         public async Task MigrateAsync() {
-            if (_source is null) {
+            if (_source == null) {
                 return;
             }
             var query = _source.OpenSqlClient().Query<Application>(
@@ -219,7 +219,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Migration {
         /// <returns></returns>
         internal static RegistryOperationContextModel ToServiceModel(DateTime? time,
             string authorityId) {
-            if (time is null) {
+            if (time == null) {
                 return null;
             }
             return new RegistryOperationContextModel {

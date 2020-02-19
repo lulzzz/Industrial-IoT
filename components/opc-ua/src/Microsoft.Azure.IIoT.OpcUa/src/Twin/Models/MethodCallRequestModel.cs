@@ -40,7 +40,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Twin.Models {
         /// <summary>
         /// An optional component path from the node identified by
         /// ObjectId to the actual object or objectType node.
-        /// If ObjectId is null, the root node (i=84) is used
+        /// If ObjectId == null, the root node (i=84) is used
         /// </summary>
         public string[] ObjectBrowsePath { get; set; }
 

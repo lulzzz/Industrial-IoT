@@ -156,7 +156,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                     }
                     var obj = _serializer.FromObject(value);
                     _cache.TryGetValue(key.ToLowerInvariant(), out var cached);
-                    if (cached is null && value is null) {
+                    if (cached == null && value == null) {
                         // Do not report - both are null and thus equal
                         continue;
                     }
@@ -275,7 +275,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             /// <returns></returns>
             public Task ApplyInternalAsync() {
                 try {
-                    if (_applyMethod is null) {
+                    if (_applyMethod == null) {
                         return Task.CompletedTask;
                     }
                     return (Task)_applyMethod.Invoke(Target, new object[] { });

@@ -154,18 +154,18 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Cli {
                     case Op.Get:
                     case Op.Reset:
                     case Op.Delete:
-                        if (deviceId is null || moduleId is null) {
+                        if (deviceId == null || moduleId == null) {
                             throw new ArgumentException(
                                 "Missing arguments for delete/reset/get command.");
                         }
                         break;
                     case Op.Add:
                     case Op.Host:
-                        if (deviceId is null) {
+                        if (deviceId == null) {
                             deviceId = Dns.GetHostName();
                             Console.WriteLine($"Using <deviceId> '{deviceId}'");
                         }
-                        if (moduleId is null) {
+                        if (moduleId == null) {
                             moduleId = "opctwin";
                             Console.WriteLine($"Using <moduleId> '{moduleId}'");
                         }

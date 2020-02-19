@@ -41,7 +41,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Jobs.Edge.Controllers {
             if (string.IsNullOrEmpty(workerId)) {
                 throw new ArgumentNullException(nameof(workerId));
             }
-            if (request is null) {
+            if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
             var job = await _orchestrator.GetAvailableJobAsync(

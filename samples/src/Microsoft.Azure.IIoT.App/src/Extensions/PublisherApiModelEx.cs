@@ -21,13 +21,13 @@ namespace Microsoft.Azure.IIoT.App.Data {
         public static void Update(this IList<PublisherApiModel> results,
             PublisherEventApiModel ev) {
             var publisher = results.FirstOrDefault(e => e.Id == ev.Id);
-            if (publisher is null &&
+            if (publisher == null &&
                 ev.EventType != PublisherEventType.New) {
                 return;
             }
             switch (ev.EventType) {
                 case PublisherEventType.New:
-                    if (publisher is null) {
+                    if (publisher == null) {
                         // Add if not already in list
                         results.Add(ev.Publisher);
                     }

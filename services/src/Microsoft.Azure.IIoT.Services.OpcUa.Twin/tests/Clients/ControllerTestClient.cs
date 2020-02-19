@@ -54,10 +54,10 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Controllers.Test {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
-            if (content.ContinuationToken is null) {
+            if (content.ContinuationToken == null) {
                 throw new ArgumentNullException(nameof(content.ContinuationToken));
             }
             var path = new UriBuilder($"{_serviceUri}/v2/browse/{endpointId}/next") {
@@ -75,7 +75,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Controllers.Test {
             if (string.IsNullOrEmpty(endpointId)) {
                 throw new ArgumentNullException(nameof(endpointId));
             }
-            if (content is null) {
+            if (content == null) {
                 throw new ArgumentNullException(nameof(content));
             }
             if (string.IsNullOrEmpty(content.NodeId)) {

@@ -58,7 +58,7 @@ namespace Microsoft.Azure.IIoT.Storage.Blob.Services {
         public async Task HandleAsync(byte[] eventData, IDictionary<string, string> properties,
             Func<Task> checkpoint) {
             // Called as a result of an event - allows fan out of blob processing
-            if (eventData is null) {
+            if (eventData == null) {
                 return;
             }
             // Assume the event data is a string representing the uri to process

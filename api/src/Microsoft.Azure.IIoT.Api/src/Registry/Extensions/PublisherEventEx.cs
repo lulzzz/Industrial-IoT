@@ -35,7 +35,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <returns></returns>
         private static PublisherApiModel ToApiModel(
             this PublisherModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new PublisherApiModel {
@@ -55,7 +55,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <returns></returns>
         private static PublisherConfigApiModel ToApiModel(
             this PublisherConfigModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new PublisherConfigApiModel {

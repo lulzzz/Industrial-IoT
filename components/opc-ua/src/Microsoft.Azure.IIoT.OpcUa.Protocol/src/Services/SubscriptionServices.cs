@@ -183,7 +183,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             private void ReviseConfiguration(Subscription rawSubscription,
                 SubscriptionConfigurationModel configuration) {
 
-                if (configuration is null) {
+                if (configuration == null) {
                     return;
                 }
 
@@ -251,7 +251,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             private async Task SetMonitoredItemsAsync(
                 Subscription rawSubscription, IEnumerable<MonitoredItemModel> monitoredItems) {
 
-                if (monitoredItems is null) {
+                if (monitoredItems == null) {
                     return;
                 }
 
@@ -280,7 +280,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
 
                 // Re-associate detached handles
                 foreach (var detached in rawSubscription.MonitoredItems
-                    .Where(m => m.Handle is null)) {
+                    .Where(m => m.Handle == null)) {
 
                     // TODO: Claim monitored item
 
@@ -325,7 +325,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                         }
                     }
 
-                    _logger.Information("Now monitoring {count} nodes in subscription {subscriptionId} (Session: {sessionId}).", rawSubscription.MonitoredItems.Count(m => m.Status.Error is null), rawSubscription.Id, rawSubscription.Session.SessionName);
+                    _logger.Information("Now monitoring {count} nodes in subscription {subscriptionId} (Session: {sessionId}).", rawSubscription.MonitoredItems.Count(m => m.Status.Error == null), rawSubscription.Id, rawSubscription.Session.SessionName);
 
                 }
 
@@ -349,7 +349,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
 
                 // Change monitoring mode of all items if necessary
                 foreach (var change in nowMonitored.GroupBy(i => i.GetMonitoringModeChange())) {
-                    if (change.Key is null) {
+                    if (change.Key == null) {
                         continue;
                     }
                     await rawSubscription.Session.SetMonitoringModeAsync(null,
@@ -391,7 +391,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                 SubscriptionConfigurationModel configuration = null) {
                 var session = await _outer._sessionManager.GetOrCreateSessionAsync(Connection, true);
                 var subscription = session.Subscriptions.SingleOrDefault(s => s.Handle == this);
-                if (subscription is null) {
+                if (subscription == null) {
 
                     if (configuration != null) {
                         // Apply new configuration right here saving us from modifying later
@@ -436,7 +436,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             private void OnSubscriptionDataChanged(Subscription subscription,
                 DataChangeNotification notification, IList<string> stringTable) {
                 try {
-                    if (OnSubscriptionChange is null) {
+                    if (OnSubscriptionChange == null) {
                         return;
                     }
                     var message = new SubscriptionNotificationModel {
@@ -463,10 +463,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             private void OnMonitoredItemChanged(MonitoredItem monitoredItem,
                 MonitoredItemNotificationEventArgs e) {
                 try {
-                    if (OnMonitoredItemChange is null) {
+                    if (OnMonitoredItemChange == null) {
                         return;
                     }
-                    if (e?.NotificationValue is null || monitoredItem?.Subscription?.Session is null) {
+                    if (e?.NotificationValue == null || monitoredItem?.Subscription?.Session == null) {
                         return;
                     }
                     if (!(e.NotificationValue is MonitoredItemNotification notification)) {
@@ -624,7 +624,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             /// <param name="model"></param>
             internal bool MergeWith(MonitoredItemWrapper model) {
 
-                if (model is null || Item is null) {
+                if (model == null || Item == null) {
                     return false;
                 }
 

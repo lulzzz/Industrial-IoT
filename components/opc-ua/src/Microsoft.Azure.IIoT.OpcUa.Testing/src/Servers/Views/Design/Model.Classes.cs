@@ -208,8 +208,8 @@ namespace Model {
             switch (browseName.Name) {
                 case Engineering.BrowseNames.SerialNumber: {
                         if (createOrReplace) {
-                            if (SerialNumber is null) {
-                                if (replacement is null) {
+                            if (SerialNumber == null) {
+                                if (replacement == null) {
                                     SerialNumber = new PropertyState<string>(this);
                                 }
                                 else {
@@ -224,8 +224,8 @@ namespace Model {
 
                 case Engineering.BrowseNames.Manufacturer: {
                         if (createOrReplace) {
-                            if (Manufacturer is null) {
-                                if (replacement is null) {
+                            if (Manufacturer == null) {
+                                if (replacement == null) {
                                     Manufacturer = new PropertyState<string>(this);
                                 }
                                 else {
@@ -240,8 +240,8 @@ namespace Model {
 
                 case Operations.BrowseNames.SetPoint: {
                         if (createOrReplace) {
-                            if (SetPoint is null) {
-                                if (replacement is null) {
+                            if (SetPoint == null) {
+                                if (replacement == null) {
                                     SetPoint = new AnalogItemState<double>(this);
                                 }
                                 else {
@@ -256,8 +256,8 @@ namespace Model {
 
                 case Operations.BrowseNames.Measurement: {
                         if (createOrReplace) {
-                            if (Measurement is null) {
-                                if (replacement is null) {
+                            if (Measurement == null) {
+                                if (replacement == null) {
                                     Measurement = new AnalogItemState<double>(this);
                                 }
                                 else {
@@ -604,8 +604,8 @@ namespace Model {
             switch (browseName.Name) {
                 case Model.BrowseNames.WaterIn: {
                         if (createOrReplace) {
-                            if (WaterIn is null) {
-                                if (replacement is null) {
+                            if (WaterIn == null) {
+                                if (replacement == null) {
                                     WaterIn = new BaseObjectState(this);
                                 }
                                 else {
@@ -620,8 +620,8 @@ namespace Model {
 
                 case Model.BrowseNames.SteamOut: {
                         if (createOrReplace) {
-                            if (SteamOut is null) {
-                                if (replacement is null) {
+                            if (SteamOut == null) {
+                                if (replacement == null) {
                                     SteamOut = new BaseObjectState(this);
                                 }
                                 else {
@@ -636,8 +636,8 @@ namespace Model {
 
                 case Model.BrowseNames.Drum: {
                         if (createOrReplace) {
-                            if (Drum is null) {
-                                if (replacement is null) {
+                            if (Drum == null) {
+                                if (replacement == null) {
                                     Drum = new BaseObjectState(this);
                                 }
                                 else {

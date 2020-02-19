@@ -65,7 +65,7 @@ namespace System.Collections.Generic {
             if (seq == that) {
                 return true;
             }
-            if (seq is null || that is null) {
+            if (seq == null || that == null) {
                 if (!(that?.Any() ?? false)) {
                     return !(seq?.Any() ?? false);
                 }
@@ -87,7 +87,7 @@ namespace System.Collections.Generic {
             if (seq == that) {
                 return true;
             }
-            if (seq is null || that is null) {
+            if (seq == null || that == null) {
                 return false;
             }
             var source = new HashSet<T>(seq, Compare.Using(func));

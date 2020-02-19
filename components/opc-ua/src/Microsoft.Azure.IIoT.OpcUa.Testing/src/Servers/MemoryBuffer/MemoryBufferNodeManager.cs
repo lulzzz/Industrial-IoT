@@ -57,7 +57,7 @@ namespace MemoryBuffer {
             _configuration = configuration.ParseExtension<MemoryBufferConfiguration>();
 
             // use suitable defaults if no configuration exists.
-            if (_configuration is null) {
+            if (_configuration == null) {
                 _configuration = new MemoryBufferConfiguration();
             }
 

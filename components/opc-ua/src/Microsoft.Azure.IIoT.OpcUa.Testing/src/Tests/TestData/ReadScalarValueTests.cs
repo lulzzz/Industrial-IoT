@@ -56,7 +56,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result);
             Assert.NotNull(result.Results);
             Assert.Equal(attributes.Count, result.Results.Count);
-            Assert.True(result.Results.TrueForAll(r => r.ErrorInfo is null));
+            Assert.True(result.Results.TrueForAll(r => r.ErrorInfo == null));
             Assert.True(result.Results.TrueForAll(r => (int)r.Value == (int)expected));
         }
 
@@ -89,7 +89,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result);
             Assert.NotNull(result.Results);
             Assert.Equal(attributes.Count, result.Results.Count);
-            Assert.True(result.Results.TrueForAll(r => r.ErrorInfo is null));
+            Assert.True(result.Results.TrueForAll(r => r.ErrorInfo == null));
             Assert.True(result.Results.TrueForAll(r => (int)r.Value == expected));
         }
 
@@ -122,7 +122,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result);
             Assert.NotNull(result.Results);
             Assert.Equal(attributes.Count, result.Results.Count);
-            Assert.True(result.Results.TrueForAll(r => r.ErrorInfo is null));
+            Assert.True(result.Results.TrueForAll(r => r.ErrorInfo == null));
             Assert.True(result.Results.TrueForAll(r => (int)r.Value == 0));
         }
 
@@ -155,7 +155,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result);
             Assert.NotNull(result.Results);
             Assert.Equal(attributes.Count, result.Results.Count);
-            Assert.True(result.Results.TrueForAll(r => r.ErrorInfo is null));
+            Assert.True(result.Results.TrueForAll(r => r.ErrorInfo == null));
             Assert.True(result.Results.TrueForAll(r => (int)r.Value == 0));
         }
 

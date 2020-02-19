@@ -607,7 +607,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
         public class TestControllerV2 : IMethodController {
 
             public Task<byte[]> Test2Async(byte[] request) {
-                if (request is null) {
+                if (request == null) {
                     throw new ArgumentNullException(nameof(request));
                 }
                 return Task.FromException<byte[]>(
@@ -615,7 +615,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             }
 
             public Task<int> Test3Async(byte[] request, int value) {
-                if (request is null) {
+                if (request == null) {
                     throw new ArgumentNullException(nameof(request));
                 }
                 return Task.FromResult(value);

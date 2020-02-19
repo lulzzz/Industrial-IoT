@@ -17,7 +17,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static SimpleAttributeOperandModel Clone(this SimpleAttributeOperandModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new SimpleAttributeOperandModel {
@@ -35,10 +35,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         /// <param name="other"></param>
         /// <returns></returns>
         public static bool IsSameAs(this SimpleAttributeOperandModel model, SimpleAttributeOperandModel other) {
-            if (model is null && other is null) {
+            if (model == null && other == null) {
                 return true;
             }
-            if (model is null || other is null) {
+            if (model == null || other == null) {
                 return false;
             }
             if (model.AttributeId != other.AttributeId) {

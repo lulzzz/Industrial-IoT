@@ -22,7 +22,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
             if (model == that) {
                 return true;
             }
-            if (model is null || that is null) {
+            if (model == null || that == null) {
                 return false;
             }
             if (!that.HasSameSecurityProperties(model)) {
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
             if (model == that) {
                 return true;
             }
-            if (model is null || that is null) {
+            if (model == null || that == null) {
                 return false;
             }
             if (!that.Certificate.SequenceEqualsSafe(model.Certificate)) {
@@ -86,7 +86,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static IEnumerable<string> GetAllUrls(this EndpointModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             var all = model.Url.YieldReturn();
@@ -103,18 +103,18 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         /// <param name="endpoint"></param>
         public static void UnionWith(this EndpointModel model,
             EndpointModel endpoint) {
-            if (endpoint is null) {
+            if (endpoint == null) {
                 return;
             }
 
-            if (model.AlternativeUrls is null) {
+            if (model.AlternativeUrls == null) {
                 model.AlternativeUrls = endpoint.AlternativeUrls;
             }
             else {
                 model.AlternativeUrls = model.AlternativeUrls.MergeWith(
                     endpoint.AlternativeUrls);
             }
-            if (model.Url is null) {
+            if (model.Url == null) {
                 model.Url = endpoint.Url;
             }
             else {
@@ -129,7 +129,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static EndpointModel Clone(this EndpointModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new EndpointModel {

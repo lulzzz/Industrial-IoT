@@ -48,10 +48,10 @@ namespace Microsoft.Azure.IIoT.Module.Default {
             if (string.IsNullOrEmpty(method)) {
                 throw new ArgumentNullException(nameof(method));
             }
-            if (payload is null) {
+            if (payload == null) {
                 payload = new byte[] { (byte)' ' };
             }
-            if (contentType is null) {
+            if (contentType == null) {
                 contentType = ContentMimeType.Json;
             }
             // Send chunks
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
         /// <returns></returns>
         private static string AsString(byte[] buffer) {
             try {
-                if (buffer is null) {
+                if (buffer == null) {
                     return string.Empty;
                 }
                 return Encoding.UTF8.GetString(buffer);

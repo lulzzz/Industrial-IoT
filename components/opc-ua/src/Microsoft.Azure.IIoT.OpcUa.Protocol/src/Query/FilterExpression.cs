@@ -126,7 +126,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Parser {
 
         private FilterOperand GetLhs(FilterParser.Elem_opContext elem_opContext) {
             FilterOperand lhs = Evaluate(elem_opContext.elem_op()?[0]);
-            if (lhs is null) {
+            if (lhs == null) {
                 lhs = Evaluate(elem_opContext.attr_op().First());
             }
             return lhs;
@@ -134,10 +134,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Parser {
 
         private FilterOperand GetRhs(FilterParser.Elem_opContext elem_opContext) {
             FilterOperand rhs = Evaluate(elem_opContext.lit_op());
-            if (rhs is null) {
+            if (rhs == null) {
                 rhs = Evaluate(elem_opContext.attr_op().Last());
             }
-            if (rhs is null) {
+            if (rhs == null) {
                 var elem = elem_opContext.elem_op();
                 if (elem?.Length == 2) {
                     rhs = Evaluate(elem_opContext.elem_op()?[1]);
@@ -212,7 +212,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Parser {
         /// <returns></returns>
         private IEnumerable<VariantValue> Project(IEnumerable<VariantValue> records,
             FilterParser.ParseContext context) {
-            if (context is null) {
+            if (context == null) {
                 throw new ArgumentNullException(nameof(context));
             }
 
@@ -363,7 +363,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Parser {
         /// <param name="path"></param>
         /// <returns></returns>
         private static JsonToken SelectTargetToken<T>(T target, string path) where T : class {
-            if (target is null) {
+            if (target == null) {
                 return null;
             }
             var root = VariantValue.FromObject(target);
@@ -442,7 +442,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Parser {
         /// <param name="identifierNode"></param>
         /// <returns></returns>
         private string ParseIdentifier(ITerminalNode identifierNode) {
-            if (identifierNode is null) {
+            if (identifierNode == null) {
                 return null;
             }
             var identifier = identifierNode.GetText();
@@ -548,7 +548,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Parser {
 
             /// <inheritdoc/>
             public static bool operator ==(JsonToken helper1, JsonToken helper2) {
-                if (helper1?._VariantValue is null || helper2?._VariantValue is null) {
+                if (helper1?._VariantValue == null || helper2?._VariantValue == null) {
                     return helper1?._VariantValue == helper2?._VariantValue;
                 }
                 return VariantValue.DeepEquals(helper1._VariantValue, helper2._VariantValue);
@@ -561,7 +561,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Parser {
             /// <inheritdoc/>
             public override bool Equals(object obj) {
                 var helper = obj as JsonToken;
-                if (helper?._VariantValue is null || _VariantValue is null) {
+                if (helper?._VariantValue == null || _VariantValue == null) {
                     return helper?._VariantValue == _VariantValue;
                 }
                 return helper != null && VariantValue.DeepEquals(_VariantValue, helper._VariantValue);

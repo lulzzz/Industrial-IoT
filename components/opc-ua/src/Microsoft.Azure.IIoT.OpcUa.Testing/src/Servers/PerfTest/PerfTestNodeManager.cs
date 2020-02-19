@@ -50,7 +50,7 @@ namespace PerfTest {
             _configuration = configuration.ParseExtension<PerfTestServerConfiguration>();
 
             // use suitable defaults if no configuration exists.
-            if (_configuration is null) {
+            if (_configuration == null) {
                 _configuration = new PerfTestServerConfiguration();
             }
         }
@@ -131,7 +131,7 @@ namespace PerfTest {
                 if (registerId == 0) {
                     var register = _system.GetRegister(index);
 
-                    if (register is null) {
+                    if (register == null) {
                         return null;
                     }
 
@@ -142,14 +142,14 @@ namespace PerfTest {
                 else {
                     var register = _system.GetRegister(registerId);
 
-                    if (register is null) {
+                    if (register == null) {
                         return null;
                     }
 
                     // find register variable.
                     var variable = ModelUtils.GetRegisterVariable(register, index, NamespaceIndex);
 
-                    if (variable is null) {
+                    if (variable == null) {
                         return null;
                     }
 
@@ -168,7 +168,7 @@ namespace PerfTest {
             NodeHandle handle,
             IDictionary<NodeId, NodeState> cache) {
             // not valid if no root.
-            if (handle is null) {
+            if (handle == null) {
                 return null;
             }
 
@@ -186,7 +186,7 @@ namespace PerfTest {
             for (var ii = 0; ii < monitoredItems.Count; ii++) {
                 var handle = IsHandleInNamespace(monitoredItems[ii].ManagerHandle);
 
-                if (handle is null) {
+                if (handle == null) {
                     continue;
                 }
 
@@ -202,7 +202,7 @@ namespace PerfTest {
             for (var ii = 0; ii < monitoredItems.Count; ii++) {
                 var handle = IsHandleInNamespace(monitoredItems[ii].ManagerHandle);
 
-                if (handle is null) {
+                if (handle == null) {
                     continue;
                 }
 

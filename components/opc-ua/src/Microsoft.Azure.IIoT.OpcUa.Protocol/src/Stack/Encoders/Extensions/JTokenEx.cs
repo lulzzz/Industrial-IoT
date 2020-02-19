@@ -22,7 +22,7 @@ namespace Newtonsoft.Json.Linq {
             var dimensions = new List<int>();
             type = JTokenType.Undefined;
             while (true) {
-                if (array is null || array.Count == 0) {
+                if (array == null || array.Count == 0) {
                     break;
                 }
                 dimensions.Add(array.Count);

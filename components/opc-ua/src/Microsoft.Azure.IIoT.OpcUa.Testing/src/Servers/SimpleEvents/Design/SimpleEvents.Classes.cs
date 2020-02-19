@@ -174,8 +174,8 @@ namespace SimpleEvents {
             switch (browseName.Name) {
                 case SimpleEvents.BrowseNames.CycleId: {
                         if (createOrReplace) {
-                            if (CycleId is null) {
-                                if (replacement is null) {
+                            if (CycleId == null) {
+                                if (replacement == null) {
                                     CycleId = new PropertyState<string>(this);
                                 }
                                 else {
@@ -190,8 +190,8 @@ namespace SimpleEvents {
 
                 case SimpleEvents.BrowseNames.CurrentStep: {
                         if (createOrReplace) {
-                            if (CurrentStep is null) {
-                                if (replacement is null) {
+                            if (CurrentStep == null) {
+                                if (replacement == null) {
                                     CurrentStep = new PropertyState<CycleStepDataType>(this);
                                 }
                                 else {
@@ -343,8 +343,8 @@ namespace SimpleEvents {
             switch (browseName.Name) {
                 case SimpleEvents.BrowseNames.Steps: {
                         if (createOrReplace) {
-                            if (Steps is null) {
-                                if (replacement is null) {
+                            if (Steps == null) {
+                                if (replacement == null) {
                                     Steps = new PropertyState<CycleStepDataType[]>(this);
                                 }
                                 else {
@@ -495,8 +495,8 @@ namespace SimpleEvents {
             switch (browseName.Name) {
                 case SimpleEvents.BrowseNames.Error: {
                         if (createOrReplace) {
-                            if (Error is null) {
-                                if (replacement is null) {
+                            if (Error == null) {
+                                if (replacement == null) {
                                     Error = new PropertyState<StatusCode>(this);
                                 }
                                 else {

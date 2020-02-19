@@ -66,7 +66,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
         /// <returns></returns>
         public static GatewayRegistration ToGatewayRegistration(this DeviceTwinModel twin,
             Dictionary<string, VariantValue> properties) {
-            if (twin is null) {
+            if (twin == null) {
                 return null;
             }
 
@@ -118,11 +118,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
         public static GatewayRegistration ToGatewayRegistration(this DeviceTwinModel twin,
             out bool connected) {
 
-            if (twin is null) {
+            if (twin == null) {
                 connected = false;
                 return null;
             }
-            if (twin.Tags is null) {
+            if (twin.Tags == null) {
                 twin.Tags = new Dictionary<string, VariantValue>();
             }
 
@@ -139,7 +139,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
         /// <param name="disabled"></param>
         public static GatewayRegistration ToGatewayRegistration(
             this GatewayModel model, bool? disabled = null) {
-            if (model is null) {
+            if (model == null) {
                 throw new ArgumentNullException(nameof(model));
             }
             var deviceId = model.Id;
@@ -157,7 +157,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
         /// <param name="registration"></param>
         /// <returns></returns>
         public static GatewayModel ToServiceModel(this GatewayRegistration registration) {
-            if (registration is null) {
+            if (registration == null) {
                 return null;
             }
             return new GatewayModel {

@@ -34,10 +34,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             var gatewayId = DiscovererModelEx.ParseDeviceId(discovererId, out _);
 
-            if (result is null) {
+            if (result == null) {
                 throw new ArgumentNullException(nameof(result));
             }
-            if (events is null) {
+            if (events == null) {
                 throw new ArgumentNullException(nameof(events));
             }
             if ((result.RegisterOnly ?? false) && !events.Any()) {
@@ -55,12 +55,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             // Merge in global discovery configuration into the one sent
             // by the discoverer.
             //
-            if (result.DiscoveryConfig is null) {
+            if (result.DiscoveryConfig == null) {
                 // Use global discovery configuration
                 result.DiscoveryConfig = gateway.Modules?.Discoverer?.DiscoveryConfig;
             }
             else {
-                if (result.DiscoveryConfig.ActivationFilter is null) {
+                if (result.DiscoveryConfig.ActivationFilter == null) {
                     // Use global activation filter
                     result.DiscoveryConfig.ActivationFilter =
                         gateway.Modules?.Discoverer?.DiscoveryConfig?.ActivationFilter;

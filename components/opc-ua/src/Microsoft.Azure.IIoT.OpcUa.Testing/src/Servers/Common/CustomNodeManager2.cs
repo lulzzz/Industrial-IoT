@@ -477,7 +477,7 @@ namespace Opc.Ua.Sample {
             foreach (var source in PredefinedNodes.Values) {
                 // assign a default value to any variable value.
 
-                if (source is BaseVariableState variable && variable.Value is null) {
+                if (source is BaseVariableState variable && variable.Value == null) {
                     variable.Value = Ua.TypeInfo.GetDefaultValue(variable.DataType, variable.ValueRank, Server.TypeTree);
                 }
 
@@ -598,7 +598,7 @@ namespace Opc.Ua.Sample {
         /// </summary>
         /// <returns>Returns null if not found or not of the correct type.</returns>
         public NodeState FindPredefinedNode(NodeId nodeId, Type expectedType) {
-            if (nodeId is null) {
+            if (nodeId == null) {
                 return null;
             }
 
@@ -701,7 +701,7 @@ namespace Opc.Ua.Sample {
                 // check for valid handle.
                 var source = IsHandleInNamespace(sourceHandle);
 
-                if (source is null) {
+                if (source == null) {
                     return StatusCodes.BadNodeIdUnknown;
                 }
 
@@ -737,7 +737,7 @@ namespace Opc.Ua.Sample {
                 // check for valid handle.
                 var target = IsHandleInNamespace(targetHandle);
 
-                if (target is null) {
+                if (target == null) {
                     return null;
                 }
 
@@ -815,11 +815,11 @@ namespace Opc.Ua.Sample {
             OperationContext context,
             ref ContinuationPoint continuationPoint,
             IList<ReferenceDescription> references) {
-            if (continuationPoint is null) {
+            if (continuationPoint == null) {
                 throw new ArgumentNullException(nameof(continuationPoint));
             }
 
-            if (references is null) {
+            if (references == null) {
                 throw new ArgumentNullException(nameof(references));
             }
 
@@ -834,7 +834,7 @@ namespace Opc.Ua.Sample {
                 // verify that the node exists.
                 var source = IsHandleInNamespace(continuationPoint.NodeToBrowse);
 
-                if (source is null) {
+                if (source == null) {
                     throw new ServiceResultException(StatusCodes.BadNodeIdUnknown);
                 }
 
@@ -864,7 +864,7 @@ namespace Opc.Ua.Sample {
                     // create the type definition reference.
                     var description = GetReferenceDescription(context, reference, continuationPoint);
 
-                    if (description is null) {
+                    if (description == null) {
                         continue;
                     }
 
@@ -919,7 +919,7 @@ namespace Opc.Ua.Sample {
             }
 
             // check for internal reference.
-            if (target is null) {
+            if (target == null) {
                 var targetId = (NodeId)reference.TargetId;
 
                 if (IsNodeIdInNamespace(targetId)) {
@@ -932,7 +932,7 @@ namespace Opc.Ua.Sample {
             // the target may be a reference to a node in another node manager. In these cases
             // the target attributes must be fetched by the caller. The Unfiltered flag tells the
             // caller to do that.
-            if (target is null) {
+            if (target == null) {
                 description.Unfiltered = true;
                 return description;
             }
@@ -982,7 +982,7 @@ namespace Opc.Ua.Sample {
                 // verify that the node exists.
                 var source = IsHandleInNamespace(sourceHandle);
 
-                if (source is null) {
+                if (source == null) {
                     return;
                 }
 
@@ -1018,7 +1018,7 @@ namespace Opc.Ua.Sample {
                             target = referenceInfo.Target;
                         }
 
-                        if (target is null) {
+                        if (target == null) {
                             var targetId = (NodeId)reference.TargetId;
 
                             // the target may be a reference to a node in another node manager.
@@ -1030,7 +1030,7 @@ namespace Opc.Ua.Sample {
                             // look up the target manually.
                             target = GetManagerHandle(systemContext, targetId, operationCache) as NodeState;
 
-                            if (target is null) {
+                            if (target == null) {
                                 continue;
                             }
                         }
@@ -1544,13 +1544,13 @@ namespace Opc.Ua.Sample {
                     // find the method.
                     var method = source.FindMethod(systemContext, methodToCall.MethodId);
 
-                    if (method is null) {
+                    if (method == null) {
                         // check for loose coupling.
                         if (source.ReferenceExists(ReferenceTypeIds.HasComponent, false, methodToCall.MethodId)) {
                             method = (MethodState)FindPredefinedNode(methodToCall.MethodId, typeof(MethodState));
                         }
 
-                        if (method is null) {
+                        if (method == null) {
                             errors[ii] = StatusCodes.BadMethodInvalid;
                             continue;
                         }
@@ -1710,7 +1710,7 @@ namespace Opc.Ua.Sample {
                 // check for valid handle.
                 var source = IsHandleInNamespace(sourceId);
 
-                if (source is null) {
+                if (source == null) {
                     return StatusCodes.BadNodeIdInvalid;
                 }
 
@@ -1735,7 +1735,7 @@ namespace Opc.Ua.Sample {
                 }
 
                 // subscribe to events.
-                if (monitoredNode is null) {
+                if (monitoredNode == null) {
                     instance.Handle = monitoredNode = new MonitoredNode(Server, this, source);
                 }
 
@@ -1800,7 +1800,7 @@ namespace Opc.Ua.Sample {
             }
 
             // subscribe to events.
-            if (monitoredNode is null) {
+            if (monitoredNode == null) {
                 source.Handle = monitoredNode = new MonitoredNode(Server, this, source);
             }
 
@@ -1846,7 +1846,7 @@ namespace Opc.Ua.Sample {
                 for (var ii = 0; ii < monitoredItems.Count; ii++) {
                     var monitoredItem = monitoredItems[ii];
 
-                    if (monitoredItem is null) {
+                    if (monitoredItem == null) {
                         continue;
                     }
 
@@ -1866,7 +1866,7 @@ namespace Opc.Ua.Sample {
                     else {
                         var source = IsHandleInNamespace(monitoredItem.ManagerHandle);
 
-                        if (source is null) {
+                        if (source == null) {
                             continue;
                         }
 
@@ -2025,7 +2025,7 @@ namespace Opc.Ua.Sample {
             // check for valid filter type.
             filter = requestedFilter.Body as DataChangeFilter;
 
-            if (filter is null) {
+            if (filter == null) {
                 return StatusCodes.BadMonitoredItemFilterUnsupported;
             }
 
@@ -2062,7 +2062,7 @@ namespace Opc.Ua.Sample {
 
                 range = euRange.Value as Opc.Ua.Range;
 
-                if (range is null) {
+                if (range == null) {
                     return StatusCodes.BadMonitoredItemFilterUnsupported;
                 }
             }
@@ -2217,7 +2217,7 @@ namespace Opc.Ua.Sample {
         private void CreateSampledItem(DataChangeMonitoredItem monitoredItem) {
             _sampledItems.Add(monitoredItem);
 
-            if (_samplingTimer is null) {
+            if (_samplingTimer == null) {
                 _samplingTimer = new Timer(DoSample, null, (int)_minimumSamplingInterval, (int)_minimumSamplingInterval);
             }
         }
@@ -2328,7 +2328,7 @@ namespace Opc.Ua.Sample {
                 return ServiceResult.Good;
             }
 
-            if (IsHandleInNamespace(monitoredNode.Node) is null) {
+            if (IsHandleInNamespace(monitoredNode.Node) == null) {
                 return ServiceResult.Good;
             }
 
@@ -2451,7 +2451,7 @@ namespace Opc.Ua.Sample {
                 return ServiceResult.Good;
             }
 
-            if (IsHandleInNamespace(monitoredNode.Node) is null) {
+            if (IsHandleInNamespace(monitoredNode.Node) == null) {
                 return ServiceResult.Good;
             }
 
@@ -2540,7 +2540,7 @@ namespace Opc.Ua.Sample {
                 return ServiceResult.Good;
             }
 
-            if (IsHandleInNamespace(monitoredNode.Node) is null) {
+            if (IsHandleInNamespace(monitoredNode.Node) == null) {
                 return ServiceResult.Good;
             }
 

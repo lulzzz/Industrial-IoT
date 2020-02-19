@@ -18,7 +18,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <param name="isPatch"></param>
         public static PublisherConfigApiModel Patch(this PublisherConfigApiModel update,
             PublisherConfigApiModel config, bool isPatch = false) {
-            if (config is null) {
+            if (config == null) {
                 return update;
             }
             if (!isPatch || update.Capabilities != null) {

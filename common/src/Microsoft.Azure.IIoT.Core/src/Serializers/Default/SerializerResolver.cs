@@ -25,7 +25,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public ISerializer GetSerializer(string mimeType = null) {
-            if (mimeType is null) {
+            if (mimeType == null) {
                 return _cache.FirstOrDefault().Value;
             }
             if (_cache.TryGetValue(mimeType, out var serializer)) {

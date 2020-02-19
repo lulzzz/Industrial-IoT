@@ -125,7 +125,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             /// <inheritdoc/>
             protected override VariantValueType Type {
                 get {
-                    if (_value is null) {
+                    if (_value == null) {
                         return VariantValueType.Null;
                     }
                     if (_value is string s) {
@@ -235,7 +235,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
 
             /// <inheritdoc/>
             public override VariantValue Copy(bool shallow) {
-                if (_value is null) {
+                if (_value == null) {
                     return Null;
                 }
                 try {
@@ -248,7 +248,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
 
             /// <inheritdoc/>
             public override object ToType(Type type, IFormatProvider provider) {
-                if (_value is null) {
+                if (_value == null) {
                     return null;
                 }
                 var valueType = _value.GetType();
@@ -372,7 +372,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             /// <param name="t2"></param>
             /// <returns></returns>
             internal bool DeepEquals(object t1, object t2) {
-                if (t1 is null || t2 is null) {
+                if (t1 == null || t2 == null) {
                     return t1 == t2;
                 }
 
@@ -405,7 +405,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             /// <param name="value"></param>
             /// <returns></returns>
             internal object ToTypeLess(object value) {
-                if (value is null) {
+                if (value == null) {
                     return null;
                 }
                 try {

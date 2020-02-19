@@ -21,7 +21,7 @@ namespace Microsoft.Azure.IIoT.App.Data {
         public static void Update(this IList<ApplicationInfoApiModel> results,
             ApplicationEventApiModel ev) {
             var application = results.FirstOrDefault(e => e.ApplicationId == ev.Id);
-            if (application is null &&
+            if (application == null &&
                 ev.EventType != ApplicationEventType.New &&
                 ev.EventType != ApplicationEventType.Enabled) {
                 return;
@@ -29,7 +29,7 @@ namespace Microsoft.Azure.IIoT.App.Data {
             switch (ev.EventType) {
                 case ApplicationEventType.New:
                 case ApplicationEventType.Enabled:
-                    if (application is null) {
+                    if (application == null) {
                         // Add if not already in list
                         results.Add(ev.Application);
                     }

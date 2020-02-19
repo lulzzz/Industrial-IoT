@@ -20,7 +20,7 @@ namespace Microsoft.Azure.IIoT.Agent.Framework.Storage.Database {
         /// <returns></returns>
         public static JobDocument ToDocumentModel(this JobInfoModel job,
             string etag = null) {
-            if (job?.LifetimeData is null) {
+            if (job?.LifetimeData == null) {
                 return null;
             }
             return new JobDocument {
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.IIoT.Agent.Framework.Storage.Database {
         /// <param name="document"></param>
         /// <returns></returns>
         public static JobInfoModel ToFrameworkModel(this JobDocument document) {
-            if (document is null) {
+            if (document == null) {
                 return null;
             }
             return new JobInfoModel {

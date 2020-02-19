@@ -31,7 +31,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
         /// <param name="logger"></param>
         public ApplicationDatabase(IItemContainerFactory db, ILogger logger) {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            if (db is null) {
+            if (db == null) {
                 throw new ArgumentNullException(nameof(db));
             }
             var container = db.OpenAsync("applications").Result;
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             bool throwIfNotFound, CancellationToken ct) {
             var document = await _applications.FindAsync<ApplicationRegistration>(
                 applicationId, ct);
-            if (document is null && throwIfNotFound) {
+            if (document == null && throwIfNotFound) {
                 throw new ResourceNotFoundException("Application does not exist");
             }
             return document?.Value?.ToServiceModel();
@@ -111,7 +111,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             while (true) {
                 try {
                     var document = await _applications.FindAsync<ApplicationRegistration>(applicationId, ct);
-                    if (document is null) {
+                    if (document == null) {
                         throw new ResourceNotFoundException("Application does not exist");
                     }
                     // Update registration from update request
@@ -136,7 +136,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
         /// <inheritdoc/>
         public async Task<ApplicationInfoModel> AddAsync(
             ApplicationInfoModel application, bool? disabled, CancellationToken ct) {
-            if (application is null) {
+            if (application == null) {
                 throw new ArgumentNullException(nameof(application));
             }
             var recordId = await _index.AllocateAsync(ct);
@@ -156,7 +156,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             Func<ApplicationInfoModel, bool> precondition, CancellationToken ct) {
             while (true) {
                 var document = await _applications.FindAsync<ApplicationRegistration>(applicationId, ct);
-                if (document is null) {
+                if (document == null) {
                     return null;
                 }
                 try {
@@ -231,7 +231,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                         request.ServerCapabilities.Count > 0) {
                         var match = true;
                         foreach (var cap in request.ServerCapabilities) {
-                            if (application.Capabilities is null ||
+                            if (application.Capabilities == null ||
                                 !application.Capabilities.Contains(cap)) {
                                 match = false;
                                 break;
@@ -247,7 +247,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                     });
                 }
                 continuationToken = applications.ContinuationToken;
-                if (records.Count != 0 || continuationToken is null) {
+                if (records.Count != 0 || continuationToken == null) {
                     // Done
                     break;
                 }
@@ -256,7 +256,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             return new ApplicationRecordListModel {
                 Applications = records,
                 LastCounterResetTime = lastCounterResetTime,
-                NextRecordId = continuationToken is null ? 0 : nextRecordId + 1
+                NextRecordId = continuationToken == null ? 0 : nextRecordId + 1
             };
         }
 
@@ -269,7 +269,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
         private async Task<ApplicationInfoListModel> QueryRawAsync(
             ApplicationRecordQueryModel request, string continuationToken) {
             // First get the continuation token for the query and starting record id
-            if (continuationToken is null) {
+            if (continuationToken == null) {
                 // Get the raw records
                 var query = new ApplicationRegistrationQueryModel {
                     ApplicationType = request.ApplicationType,
@@ -322,7 +322,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                 var applications = await query.ReadAsync(ct);
                 lastQuery = queryRecords == 0 || applications.Count() < queryRecords;
                 foreach (var application in applications.Select(a => a.Value)) {
-                    if (application.RecordId is null) {
+                    if (application.RecordId == null) {
                         continue; // Unexpected
                     }
                     nextRecordId = application.RecordId.Value + 1;
@@ -398,7 +398,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                         request.ProductUri);
             }
 
-            if (maxRecordsToReturn is null || maxRecordsToReturn < 0) {
+            if (maxRecordsToReturn == null || maxRecordsToReturn < 0) {
                 maxRecordsToReturn = kDefaultRecordsPerQuery;
             }
             var query = CreateServerQuery(0, maxRecordsToReturn.Value);

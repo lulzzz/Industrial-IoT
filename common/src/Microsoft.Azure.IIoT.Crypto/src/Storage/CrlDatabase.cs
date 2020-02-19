@@ -41,7 +41,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Storage {
             CancellationToken ct) {
             var serialNumber = new SerialNumber(serial);
             var document = await TryGetOrAddCrlAsync(serialNumber, TimeSpan.Zero, ct);
-            if (document is null) {
+            if (document == null) {
                 throw new ResourceNotFoundException("Cert for serial number not found.");
             }
 
@@ -57,11 +57,11 @@ namespace Microsoft.Azure.IIoT.Crypto.Storage {
 
                 serialNumber = SerialNumber.Parse(document.IssuerSerialNumber);
                 document = await TryGetOrAddCrlAsync(serialNumber, TimeSpan.Zero, ct);
-                if (document is null) {
+                if (document == null) {
                     throw new ResourceNotFoundException("Cert chain is broken.");
                 }
                 model = document.ToModel();
-                if (model is null) {
+                if (model == null) {
                     throw new ResourceNotFoundException("Crl chain is broken.");
                 }
                 result.Add(model);
@@ -147,12 +147,12 @@ namespace Microsoft.Azure.IIoT.Crypto.Storage {
 
                 // Find issuer certificate.
                 var issuer = await _certificates.FindCertificateAsync(serialNumber.Value, ct);
-                if (issuer?.IssuerPolicies is null || issuer.Revoked != null) {
+                if (issuer?.IssuerPolicies == null || issuer.Revoked != null) {
                     if (crl != null) {
                         // Get rid of crl
                         await Try.Async(() => _crls.DeleteAsync(crl, ct));
                     }
-                    if (issuer is null) {
+                    if (issuer == null) {
                         return null;  // Unknown certificate
                     }
                     // Not an issuer cert
@@ -204,7 +204,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Storage {
                             await TryGetOrAddCrlAsync(new SerialNumber(issuer.SerialNumber),
                                 TimeSpan.FromMinutes(1), ct);
                         }
-                        if (issuers.ContinuationToken is null) {
+                        if (issuers.ContinuationToken == null) {
                             break;
                         }
                         issuers = await _certificates.ListCertificatesAsync(

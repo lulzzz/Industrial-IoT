@@ -53,7 +53,7 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.Services.Default {
         public async Task StopAsync() {
             await _lock.WaitAsync();
             try {
-                if (_task is null) {
+                if (_task == null) {
                     return;
                 }
                 _cts.Cancel();

@@ -34,7 +34,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <returns></returns>
         private static GatewayApiModel ToApiModel(
             this GatewayModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new GatewayApiModel {

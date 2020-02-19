@@ -24,10 +24,10 @@ namespace Autofac {
         /// <returns></returns>
         public static IModuleRegistrar AddDiagnostics(this ContainerBuilder builder,
             IDiagnosticsConfig config, LoggerConfiguration log = null, bool addConsole = true) {
-            if (builder is null) {
+            if (builder == null) {
                 throw new ArgumentNullException(nameof(builder));
             }
-            if (config is null) {
+            if (config == null) {
                 throw new ArgumentNullException(nameof(config));
             }
             // Register metrics logger

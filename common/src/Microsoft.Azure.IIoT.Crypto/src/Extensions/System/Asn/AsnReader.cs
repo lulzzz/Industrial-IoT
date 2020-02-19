@@ -182,7 +182,7 @@ namespace System.Security.Cryptography.Asn1 {
                         throw new CryptographicException(SR.Cryptography_Der_Invalid_Encoding);
                     }
                 }
-                else if (length is null) {
+                else if (length == null) {
                     // T-REC-X.690-201508 sec 8.1.3.2 says primitive encodings must use a definite form.
                     throw new CryptographicException(SR.Cryptography_Der_Invalid_Encoding);
                 }
@@ -236,7 +236,7 @@ namespace System.Security.Cryptography.Asn1 {
 
                 // We found another indefinite length, that means we need to find another
                 // EndOfContents marker to balance it out.
-                if (length is null) {
+                if (length == null) {
                     depth++;
                     tmpReader._data = tmpReader._data.Slice(bytesRead);
                     totalLen += bytesRead;
@@ -268,7 +268,7 @@ namespace System.Security.Cryptography.Asn1 {
         public ReadOnlyMemory<byte> PeekEncodedValue() {
             var tag = ReadTagAndLength(out var length, out var bytesRead);
 
-            if (length is null) {
+            if (length == null) {
                 var contentsLength = SeekEndOfContents(_data.Slice(bytesRead));
                 return Slice(_data, 0, bytesRead + contentsLength + kEndOfContentsEncodedLength);
             }
@@ -289,7 +289,7 @@ namespace System.Security.Cryptography.Asn1 {
         public ReadOnlyMemory<byte> PeekContentBytes() {
             var tag = ReadTagAndLength(out var length, out var bytesRead);
 
-            if (length is null) {
+            if (length == null) {
                 return Slice(_data, bytesRead, SeekEndOfContents(_data.Slice(bytesRead)));
             }
 
@@ -775,7 +775,7 @@ namespace System.Security.Cryptography.Asn1 {
                             throw new CryptographicException(SR.Cryptography_Der_Invalid_Encoding);
                         }
 
-                        if (readerStack is null) {
+                        if (readerStack == null) {
                             readerStack = new Stack<(AsnReader, bool, int)>();
                         }
 
@@ -786,7 +786,7 @@ namespace System.Security.Cryptography.Asn1 {
                             _ruleSet);
 
                         bytesRead = headerLength;
-                        isIndefinite = length is null;
+                        isIndefinite = length == null;
                     }
                     else {
                         // T-REC-X.690-201508 sec 8.6.4.1 (in particular, Note 2)
@@ -983,7 +983,7 @@ namespace System.Security.Cryptography.Asn1 {
             var read = TryCopyConstructedBitStringValue(
                 Slice(_data, headerLength, contentsLength),
                 destination,
-                contentsLength is null,
+                contentsLength == null,
                 out unusedBitCount,
                 out var bytesRead,
                 out bytesWritten);
@@ -1350,7 +1350,7 @@ namespace System.Security.Cryptography.Asn1 {
                             throw new CryptographicException(SR.Cryptography_Der_Invalid_Encoding);
                         }
 
-                        if (readerStack is null) {
+                        if (readerStack == null) {
                             readerStack = new Stack<(AsnReader, bool, int)>();
                         }
 
@@ -1361,7 +1361,7 @@ namespace System.Security.Cryptography.Asn1 {
                             _ruleSet);
 
                         bytesRead = headerLength;
-                        isIndefinite = length is null;
+                        isIndefinite = length == null;
                     }
                     else {
                         // T-REC-X.690-201508 sec 8.6.4.1 (in particular, Note 2)
@@ -1446,7 +1446,7 @@ namespace System.Security.Cryptography.Asn1 {
             var copied = TryCopyConstructedOctetStringContents(
                 Slice(_data, headerLength, contentLength),
                 destination,
-                contentLength is null,
+                contentLength == null,
                 out var bytesRead,
                 out bytesWritten);
 
@@ -1658,7 +1658,7 @@ namespace System.Security.Cryptography.Asn1 {
             while (!contents.IsEmpty) {
                 ReadSubIdentifier(contents, out bytesRead, out smallValue, out largeValue);
                 // Exactly one should be non-null.
-                Debug.Assert(smallValue is null != (largeValue is null));
+                Debug.Assert(smallValue == null != (largeValue == null));
 
                 builder.Append('.');
 
@@ -1735,7 +1735,7 @@ namespace System.Security.Cryptography.Asn1 {
             var copied = TryCopyConstructedOctetStringContents(
                 Slice(_data, headerLength, contentLength),
                 destination,
-                contentLength is null,
+                contentLength == null,
                 out var contentBytesRead,
                 out bytesWritten);
 
@@ -1988,7 +1988,7 @@ namespace System.Security.Cryptography.Asn1 {
 
             var suffix = 0;
 
-            if (length is null) {
+            if (length == null) {
                 length = SeekEndOfContents(_data.Slice(headerLength));
                 suffix = kEndOfContentsEncodedLength;
             }
@@ -2024,7 +2024,7 @@ namespace System.Security.Cryptography.Asn1 {
 
             var suffix = 0;
 
-            if (length is null) {
+            if (length == null) {
                 length = SeekEndOfContents(_data.Slice(headerLength));
                 suffix = kEndOfContentsEncodedLength;
             }
@@ -2061,7 +2061,7 @@ namespace System.Security.Cryptography.Asn1 {
             out int bytesRead,
             ref byte[] rented,
             Span<byte> tmpSpace = default) {
-            Debug.Assert(rented is null);
+            Debug.Assert(rented == null);
 
             if (TryGetPrimitiveOctetStringBytes(
                 expectedTag,
@@ -2077,7 +2077,7 @@ namespace System.Security.Cryptography.Asn1 {
             Debug.Assert(actualTag.IsConstructed);
 
             var source = Slice(_data, headerLength, contentLength);
-            var isIndefinite = contentLength is null;
+            var isIndefinite = contentLength == null;
             var octetStringLength = CountConstructedOctetString(source, isIndefinite);
 
             if (tmpSpace.Length < octetStringLength) {
@@ -2110,7 +2110,7 @@ namespace System.Security.Cryptography.Asn1 {
         private static ReadOnlyMemory<byte> Slice(ReadOnlyMemory<byte> source, int offset, int? length) {
             Debug.Assert(offset >= 0);
 
-            if (length is null) {
+            if (length == null) {
                 return source.Slice(offset);
             }
 

@@ -35,10 +35,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
         /// <inheritdoc/>
         public async Task<byte[]> GetEndpointCertificateAsync(
             EndpointRegistrationModel registration, CancellationToken ct) {
-            if (registration is null) {
+            if (registration == null) {
                 throw new ArgumentNullException(nameof(registration));
             }
-            if (registration.Endpoint is null) {
+            if (registration.Endpoint == null) {
                 throw new ArgumentNullException(nameof(registration.Endpoint));
             }
             if (string.IsNullOrEmpty(registration.SupervisorId)) {

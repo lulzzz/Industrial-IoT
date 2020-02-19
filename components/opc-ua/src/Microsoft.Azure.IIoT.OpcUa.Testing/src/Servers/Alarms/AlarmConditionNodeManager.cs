@@ -58,7 +58,7 @@ namespace Alarms {
             _configuration = configuration.ParseExtension<AlarmConditionServerConfiguration>();
 
             // use suitable defaults if no configuration exists.
-            if (_configuration is null) {
+            if (_configuration == null) {
                 _configuration = new AlarmConditionServerConfiguration {
                     Areas = new AreaConfigurationCollection {
                         new AreaConfiguration {
@@ -337,7 +337,7 @@ namespace Alarms {
             NodeHandle handle,
             IDictionary<NodeId, NodeState> cache) {
             // not valid if no root.
-            if (handle is null) {
+            if (handle == null) {
                 return null;
             }
 
@@ -352,7 +352,7 @@ namespace Alarms {
             if (cache != null) {
                 if (cache.TryGetValue(handle.NodeId, out target)) {
                     // nulls mean a NodeId which was previously found to be invalid has been referenced again.
-                    if (target is null) {
+                    if (target == null) {
                         return null;
                     }
 
@@ -408,7 +408,7 @@ namespace Alarms {
                 NodeState component = root.FindChildBySymbolicName(context, parsedNodeId.ComponentPath);
 
                 // component does not exist.
-                if (component is null) {
+                if (component == null) {
                     return null;
                 }
 

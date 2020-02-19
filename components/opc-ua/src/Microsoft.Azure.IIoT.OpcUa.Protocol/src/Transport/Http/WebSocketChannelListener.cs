@@ -52,7 +52,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Transport {
             IWebListenerConfig config, ILogger logger) {
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
-            if (controller?.Callback is null) {
+            if (controller?.Callback == null) {
                 throw new ArgumentNullException(nameof(controller));
             }
             _listenerId = Guid.NewGuid().ToString();

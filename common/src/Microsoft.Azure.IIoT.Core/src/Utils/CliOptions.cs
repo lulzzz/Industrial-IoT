@@ -50,7 +50,7 @@ namespace Microsoft.Azure.IIoT.Utils {
         public static string[] ParseAsCommandLine(string commandLine) {
             char? quote = null;
             var isEscaping = false;
-            if (commandLine is null) {
+            if (commandLine == null) {
                 return new string[0];
             }
             return commandLine
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.IIoT.Utils {
                         quote = c;
                     }
                     isEscaping = false;
-                    return quote is null && char.IsWhiteSpace(c);
+                    return quote == null && char.IsWhiteSpace(c);
                 }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(arg => arg
                     .Trim()

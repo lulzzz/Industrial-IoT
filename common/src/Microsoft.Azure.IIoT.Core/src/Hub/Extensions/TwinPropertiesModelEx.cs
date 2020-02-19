@@ -17,7 +17,7 @@ namespace Microsoft.Azure.IIoT.Hub.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static TwinPropertiesModel Clone(this TwinPropertiesModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new TwinPropertiesModel {

@@ -47,11 +47,11 @@ namespace Microsoft.Azure.IIoT.Hub.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static DeviceTwinModel Clone(this DeviceTwinModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new DeviceTwinModel {
-                Capabilities = model.Capabilities is null ? null :
+                Capabilities = model.Capabilities == null ? null :
                     new DeviceCapabilitiesModel {
                         IotEdge = model.Capabilities.IotEdge
                     },
@@ -80,7 +80,7 @@ namespace Microsoft.Azure.IIoT.Hub.Models {
 
             var desired = model.Properties?.Desired;
             var reported = model.Properties?.Reported;
-            if (reported is null || desired is null) {
+            if (reported == null || desired == null) {
                 return (reported ?? desired) ??
                     new Dictionary<string, VariantValue>();
             }
@@ -90,7 +90,7 @@ namespace Microsoft.Azure.IIoT.Hub.Models {
             // Merge with reported
             foreach (var prop in reported) {
                 if (properties.TryGetValue(prop.Key, out var existing)) {
-                    if (existing is null || prop.Value is null) {
+                    if (existing == null || prop.Value == null) {
                         if (existing == prop.Value) {
                             continue;
                         }

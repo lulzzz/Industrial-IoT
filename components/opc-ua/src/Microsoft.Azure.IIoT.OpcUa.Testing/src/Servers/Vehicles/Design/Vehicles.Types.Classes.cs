@@ -170,8 +170,8 @@ namespace Vehicles.Types {
             switch (browseName.Name) {
                 case Vehicles.Types.BrowseNames.PrimaryVehicle: {
                         if (createOrReplace) {
-                            if (PrimaryVehicle is null) {
-                                if (replacement is null) {
+                            if (PrimaryVehicle == null) {
+                                if (replacement == null) {
                                     PrimaryVehicle = new PropertyState<VehicleType>(this);
                                 }
                                 else {
@@ -186,8 +186,8 @@ namespace Vehicles.Types {
 
                 case Vehicles.Types.BrowseNames.OwnedVehicles: {
                         if (createOrReplace) {
-                            if (OwnedVehicles is null) {
-                                if (replacement is null) {
+                            if (OwnedVehicles == null) {
+                                if (replacement == null) {
                                     OwnedVehicles = new PropertyState<VehicleType[]>(this);
                                 }
                                 else {

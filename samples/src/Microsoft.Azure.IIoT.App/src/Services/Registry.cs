@@ -77,7 +77,7 @@ namespace Microsoft.Azure.IIoT.App.Services {
                             var info = new DiscovererInfo {
                                 DiscovererModel = discoverer,
                                 HasApplication = false,
-                                ScanStatus = (discoverer.Discovery == DiscoveryMode.Off) || (discoverer.Discovery is null) ? false : true
+                                ScanStatus = (discoverer.Discovery == DiscoveryMode.Off) || (discoverer.Discovery == null) ? false : true
                             };
                             applicationModel.DiscovererId = discoverer.Id;
                             var applications = await _registryService.QueryAllApplicationsAsync(applicationModel);
@@ -146,7 +146,7 @@ namespace Microsoft.Azure.IIoT.App.Services {
             var model = discoverer.DiscovererModel.DiscoveryConfig;
             DiscoveryMode discoveryMode;
 
-            if (model is null) {
+            if (model == null) {
                 model = new DiscoveryConfigApiModel();
             }
 

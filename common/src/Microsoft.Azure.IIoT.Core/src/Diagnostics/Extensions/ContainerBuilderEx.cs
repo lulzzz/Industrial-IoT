@@ -22,7 +22,7 @@ namespace Autofac {
         /// <returns></returns>
         public static IModuleRegistrar AddConsoleLogger(this ContainerBuilder builder,
             LoggerConfiguration configuration = null) {
-            if (builder is null) {
+            if (builder == null) {
                 throw new ArgumentNullException(nameof(builder));
             }
             return builder.RegisterModule(

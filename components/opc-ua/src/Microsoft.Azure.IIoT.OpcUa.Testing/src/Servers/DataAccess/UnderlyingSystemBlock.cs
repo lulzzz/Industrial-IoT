@@ -181,7 +181,7 @@ namespace DataAccess {
                 // find the tag.
                 tag = FindTag(tagName);
 
-                if (tag is null) {
+                if (tag == null) {
                     return StatusCodes.BadNodeIdUnknown;
                 }
 
@@ -255,7 +255,7 @@ namespace DataAccess {
                     onTagsChanged = _onTagsChanged;
 
                     // do nothing if not monitored.
-                    if (onTagsChanged is null) {
+                    if (onTagsChanged == null) {
                         return;
                     }
 

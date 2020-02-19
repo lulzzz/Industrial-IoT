@@ -245,8 +245,10 @@
     /// OnAfterRenderAsync
     /// </summary>
     /// <param name="firstRender"></param>
-    protected override async Task OnAfterRenderAsync(bool firstRender) {
-        if (firstRender) {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
             discovererList = await RegistryHelper.GetDiscovererListAsync();
             Page = "1";
             pagedDiscovererList = discovererList.GetPaged(Int32.Parse(Page), CommonHelper.PageLength, discovererList.Error);
@@ -265,28 +267,34 @@
     /// <param name="forceScan"></param>
     /// <param name="ipMask"></param>
     /// <param name="portRange"></param>
-    private async Task SetScanAsync(DiscovererInfo discoverer) {
+    private async Task SetScanAsync(DiscovererInfo discoverer)
+    {
         _discovery = await RegistryServiceEvents.SubscribeDiscoveryProgressByDiscovererIdAsync(
-                discoverer.DiscovererModel.Id, null, async data => {
+                discoverer.DiscovererModel.Id, null, async data =>
+                {
                     await InvokeAsync(() => ScanProgress(data));
                 });
 
-        try {
+        try
+        {
             _eventResult = string.Empty;
 
-            if (discoverer.ScanStatus == true) {
+            if (discoverer.ScanStatus == true)
+            {
                 discoverer.IsSearching = true;
                 _scanResult = "visible";
                 DiscovererData = discoverer;
             }
-            else {
+            else
+            {
                 discoverer.IsSearching = false;
                 _scanResult = "hidden";
                 await _discovery.DisposeAsync();
             }
             Status = await RegistryHelper.SetDiscoveryAsync(discoverer);
         }
-        catch {
+        catch
+        {
             await _discovery.DisposeAsync();
         }
     }
@@ -301,7 +309,8 @@
     /// Open then Drawer
     /// </summary>
     /// <param name="OpenDrawer"></param>
-    private void OpenDrawer(DiscovererInfo discoverer) {
+    private void OpenDrawer(DiscovererInfo discoverer)
+    {
         IsOpened = true;
         if (discoverer.DiscovererModel.DiscoveryConfig == null)
         {
@@ -313,7 +322,8 @@
     /// <summary>
     /// Close the Drawer
     /// </summary>
-    private void CloseDrawer() {
+    private void CloseDrawer()
+    {
         IsOpened = false;
         this.StateHasChanged();
     }
@@ -322,8 +332,10 @@
     /// display discoverers scan events
     /// </summary>
     /// <param name="ev"></param>
-    private void ScanProgress(DiscoveryProgressApiModel ev) {
-        switch (ev.EventType) {
+    private void ScanProgress(DiscoveryProgressApiModel ev)
+    {
+        switch (ev.EventType)
+        {
             case DiscoveryProgressType.Pending:
                 _eventResult += string.Format("{0}: {1} waiting...", ev.DiscovererId, ev.Total) + System.Environment.NewLine;
                 break;
@@ -370,21 +382,24 @@
             case DiscoveryProgressType.Cancelled:
                 _eventResult += "==========================================" + System.Environment.NewLine;
                 _eventResult += string.Format("{0}: Cancelled.", ev.DiscovererId) + System.Environment.NewLine;
-                if (DiscovererData != null) {
+                if (DiscovererData != null)
+                {
                     DiscovererData.IsSearching = false;
                 }
                 break;
             case DiscoveryProgressType.Error:
                 _eventResult += "==========================================" + System.Environment.NewLine;
                 _eventResult += string.Format("{0}: Failure.", ev.DiscovererId) + System.Environment.NewLine;
-                if (DiscovererData != null) {
+                if (DiscovererData != null)
+                {
                     DiscovererData.IsSearching = false;
                 }
                 break;
             case DiscoveryProgressType.Finished:
                 _eventResult += "==========================================" + System.Environment.NewLine;
                 _eventResult += string.Format("{0}: Completed.", ev.DiscovererId) + System.Environment.NewLine;
-                if (DiscovererData != null) {
+                if (DiscovererData != null)
+                {
                     DiscovererData.IsSearching = false;
                 }
                 break;
@@ -396,14 +411,16 @@
     /// refresh UI on DiscovererEvent
     /// </summary>
     /// <param name="ev"></param>
-    private Task DiscovererEvent(DiscovererEventApiModel ev) {
-        discovererList.Results.Update(ev);
+    private Task DiscovererEvent(DiscovererEventApiModel ev)
+    {
         StateHasChanged();
         return Task.CompletedTask;
     }
 
-    public async void Dispose() {
-        if (_discovererEvent != null) {
+    public async void Dispose()
+    {
+        if (_discovererEvent != null)
+        {
             await _discovererEvent.DisposeAsync();
         }
     }

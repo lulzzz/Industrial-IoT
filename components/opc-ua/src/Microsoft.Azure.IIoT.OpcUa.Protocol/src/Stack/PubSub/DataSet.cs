@@ -175,7 +175,7 @@ namespace Opc.Ua.PubSub {
 
             var payload = jsonDecoder.ReadDataValueDictionary("Payload");
 
-            if (payload is null) {
+            if (payload == null) {
                 return;
             }
 

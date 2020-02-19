@@ -15,7 +15,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Core.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static EnumDescriptionModel Clone(this EnumDescriptionModel model) {
-            if (model is null) {
+            if (model == null) {
                 return null;
             }
             return new EnumDescriptionModel {

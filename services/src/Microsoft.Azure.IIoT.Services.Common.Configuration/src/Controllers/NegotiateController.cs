@@ -37,10 +37,10 @@ namespace Microsoft.Azure.IIoT.Services.Common.Configuration.Controllers {
         [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
         public IActionResult Index(string hub, string user) {
             if (string.IsNullOrEmpty(user)) {
-                return BadRequest("User ID is null or empty.");
+                return BadRequest("User ID == null or empty.");
             }
             if (string.IsNullOrEmpty(hub)) {
-                return BadRequest("Hub is null or empty.");
+                return BadRequest("Hub == null or empty.");
             }
             if (!hub.EqualsIgnoreCase(_endpoint.Resource)) {
                 return BadRequest("Hub not found.");

@@ -19,26 +19,26 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <param name="securityConfig"></param>
         /// <returns></returns>
         public static SecurityConfiguration ToSecurityConfiguration(this ISecurityConfig securityConfig) {
-            if (securityConfig is null) {
+            if (securityConfig == null) {
                 throw new ArgumentNullException(nameof(securityConfig));
             }
 
-            if (securityConfig.TrustedIssuerCertificates is null) {
+            if (securityConfig.TrustedIssuerCertificates == null) {
                 throw new ArgumentNullException(
                     $"{nameof(securityConfig)}.{nameof(SecurityConfig.TrustedIssuerCertificates)}");
             }
 
-            if (securityConfig.TrustedPeerCertificates is null) {
+            if (securityConfig.TrustedPeerCertificates == null) {
                 throw new ArgumentNullException(
                     $"{nameof(securityConfig)}.{nameof(SecurityConfig.TrustedPeerCertificates)}");
             }
 
-            if (securityConfig.RejectedCertificateStore is null) {
+            if (securityConfig.RejectedCertificateStore == null) {
                 throw new ArgumentNullException(
                     $"{nameof(securityConfig)}.{nameof(SecurityConfig.RejectedCertificateStore)}");
             }
 
-            if (securityConfig.ApplicationCertificate is null) {
+            if (securityConfig.ApplicationCertificate == null) {
                 throw new ArgumentNullException(
                     $"{nameof(securityConfig)}.{nameof(SecurityConfig.ApplicationCertificate)}");
             }

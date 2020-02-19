@@ -294,7 +294,7 @@ Operations (Mutually exclusive):
                 var ev = JsonConvert.DeserializeObject<DiscoveryEventModel>(
                     Encoding.UTF8.GetString(data));
                 var endpoint = ev.Registration?.Endpoint;
-                if (endpoint is null) {
+                if (endpoint == null) {
                     return;
                 }
                 try {
@@ -620,7 +620,7 @@ Operations (Mutually exclusive):
             /// <param name="endpoint"></param>
             public ServerWrapper(EndpointModel endpoint, StackLogger logger) {
                 _cts = new CancellationTokenSource();
-                if (endpoint.Url is null) {
+                if (endpoint.Url == null) {
                     _server = RunSampleServerAsync(_cts.Token, logger.Logger);
                     endpoint.Url = "opc.tcp://" + Utils.GetHostName() +
                         ":51210/UA/SampleServer";

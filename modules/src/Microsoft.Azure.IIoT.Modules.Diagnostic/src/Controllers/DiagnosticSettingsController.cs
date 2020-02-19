@@ -35,7 +35,7 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
         /// </summary>
         public string LogLevel {
             set {
-                if (value is null) {
+                if (value == null) {
                     // Set default
                     LogControl.Level.MinimumLevel = LogEventLevel.Information;
                     _logger.Information("Setting log level to default level.");
@@ -62,7 +62,7 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
         /// <returns></returns>
         public VariantValue this[string key] {
             set {
-                if (value is null || value.IsNull()) {
+                if (value == null || value.IsNull()) {
                     _tempState.AddOrUpdate(key, null);
                     return;
                 }
@@ -91,7 +91,7 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
         /// <returns></returns>
         public Task ApplyAsync() {
             foreach (var item in _tempState.ToList()) {
-                if (item.Value is null) {
+                if (item.Value == null) {
                     _logger.Information("Removed {Key}", item.Key);
                 }
                 else {

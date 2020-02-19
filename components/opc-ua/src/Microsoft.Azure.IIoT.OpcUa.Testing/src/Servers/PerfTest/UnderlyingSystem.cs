@@ -87,14 +87,14 @@ namespace PerfTest {
 
         public void Subscribe(int index, IDataChangeMonitoredItem2 monitoredItem) {
             lock (_lock) {
-                if (_timer is null) {
+                if (_timer == null) {
                     _timer = new Timer(OnUpdate, null, 45, 45);
                 }
 
                 if (index >= 0 && index < _values.Length) {
                     var monitoredItems = _monitoredItems[index];
 
-                    if (monitoredItems is null) {
+                    if (monitoredItems == null) {
                         _monitoredItems[index] = monitoredItems = new IDataChangeMonitoredItem2[1];
                     }
                     else {
