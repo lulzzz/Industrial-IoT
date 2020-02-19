@@ -30,6 +30,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Gateway {
     using System;
     using ILogger = Serilog.ILogger;
     using Microsoft.Extensions.Hosting;
+    using Prometheus;
 
     /// <summary>
     /// Webservice startup
@@ -123,7 +124,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Gateway {
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
-
+            app.UseMetricServer();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/healthz");

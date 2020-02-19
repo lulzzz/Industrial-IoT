@@ -26,6 +26,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Hub.Edgemanager {
     using Autofac.Extensions.DependencyInjection;
     using System;
     using ILogger = Serilog.ILogger;
+    using Prometheus;
 
     /// <summary>
     /// Webservice startup
@@ -127,7 +128,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Hub.Edgemanager {
 
             app.UseCorrelation();
             app.UseSwagger();
-
+            app.UseMetricServer();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/healthz");

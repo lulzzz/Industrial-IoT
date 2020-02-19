@@ -17,6 +17,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Configuration {
     using Microsoft.OpenApi.Models;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
+    using Prometheus;
     using System;
 
     /// <summary>
@@ -117,6 +118,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Configuration {
             }
 
             app.UseSwagger();
+            app.UseMetricServer();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/healthz");

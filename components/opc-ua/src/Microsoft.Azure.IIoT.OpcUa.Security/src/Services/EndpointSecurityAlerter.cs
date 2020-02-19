@@ -11,14 +11,15 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
     using Microsoft.Azure.IIoT.Hub;
     using Microsoft.Azure.IIoT.Hub.Models;
     using Microsoft.Azure.IIoT.Diagnostics;
-    using Newtonsoft.Json;
     using Microsoft.Azure.IIoT.Serializers;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using Prometheus;
     using Serilog;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Sending security notifications for unsecure endpoints
@@ -128,6 +129,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
                     await SendEndpointAlertAsync(endpoint, "Unsecured endpoint found.",
                         $"SecurityMode: {mode}, SecurityProfile: {policy}");
                     _metrics.TrackEvent("endpointSecurityPolicyNone");
+                    _endpointSecurityPolicyNone.Inc();
                 }
 
                 // TODO Retrieve certificate from edge.
@@ -138,6 +140,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
                     await SendEndpointAlertAsync(endpoint,
                         "Secure endpoint without certificate found.", "No Certificate");
                     _metrics.TrackEvent("endpointWithoutCertificate");
+                    _endpointWithoutCertificate.Inc();
                 }
                 else {
                     using (var cert = new X509Certificate2(certEncoded)) {
@@ -158,7 +161,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
                         }
                         else {
                             _logger.Verbose("Application certificate is valid.");
-                        }
                     }
                 }
 #endif
@@ -320,5 +322,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
         private readonly ILogger _logger;
         private readonly ISerializer _serializer;
         private readonly IMetricsLogger _metrics;
+        private static readonly Counter _endpointSecurityPolicyNone = Metrics.CreateCounter(
+            "iiot_endpointSecurityAlerter_endpointSecurityPolicyNone", "unsecured endpoint found");
+        private static readonly Counter _endpointWithoutCertificate = Metrics.CreateCounter(
+            "iiot_endpointSecurityAlerter_endpointWithoutCertificate", "secure endpoint without certificate found");
+
     }
 }

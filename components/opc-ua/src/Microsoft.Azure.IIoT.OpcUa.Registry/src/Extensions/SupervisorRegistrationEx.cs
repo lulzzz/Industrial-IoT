@@ -232,7 +232,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
                 return other is null;
             }
             return
-                   other != null &&
+                other != null &&
                 registration.SiteId == other.SiteId &&
                 registration.LogLevel == other.LogLevel;
         }

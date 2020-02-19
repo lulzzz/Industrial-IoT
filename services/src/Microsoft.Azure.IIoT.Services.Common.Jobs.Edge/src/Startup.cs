@@ -26,6 +26,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Jobs.Edge {
     using Microsoft.Extensions.Logging;
     using Microsoft.OpenApi.Models;
     using Autofac;
+    using Prometheus;
     using Autofac.Extensions.DependencyInjection;
     using System;
     using ILogger = Serilog.ILogger;
@@ -125,7 +126,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Jobs.Edge {
 
             app.UseCorrelation();
             app.UseSwagger();
-
+            app.UseMetricServer();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/healthz");

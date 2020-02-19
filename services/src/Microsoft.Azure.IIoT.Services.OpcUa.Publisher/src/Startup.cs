@@ -35,6 +35,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Publisher {
     using Autofac.Extensions.DependencyInjection;
     using System;
     using ILogger = Serilog.ILogger;
+    using Prometheus;
 
     /// <summary>
     /// Webservice startup
@@ -140,7 +141,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Publisher {
 
             app.UseCorrelation();
             app.UseSwagger();
-
+            app.UseMetricServer();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/healthz");
