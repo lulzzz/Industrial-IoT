@@ -423,9 +423,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
             switch (authentication?.Type ?? CredentialType.None) {
                 case CredentialType.UserName:
                     if (authentication.Value.IsObject &&
-                        authentication.Value.TryGetValue("user", out var user) &&
+                        authentication.Value.TryGetProperty("user", out var user) &&
                             user.IsString &&
-                        authentication.Value.TryGetValue("password", out var password) &&
+                        authentication.Value.TryGetProperty("password", out var password) &&
                             password.IsString) {
                         return new UserIdentity((string)user, (string)password);
                     }
@@ -455,9 +455,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
             switch (authentication?.Type ?? CredentialType.None) {
                 case CredentialType.UserName:
                     if (authentication.Value.IsObject &&
-                        authentication.Value.TryGetValue("user", out var user) &&
+                        authentication.Value.TryGetProperty("user", out var user) &&
                             user.IsString &&
-                        authentication.Value.TryGetValue("password", out var password) &&
+                        authentication.Value.TryGetProperty("password", out var password) &&
                             password.IsString) {
                         return new UserNameIdentityToken {
                             DecryptedPassword = (string)password,

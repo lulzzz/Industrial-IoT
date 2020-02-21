@@ -260,7 +260,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            public override bool TryGetValue(string key, out VariantValue value,
+            public override bool TryGetProperty(string key, out VariantValue value,
                 StringComparison compare) {
                 if (Token is JObject o) {
                     var success = o.TryGetValue(key, compare, out var token);
@@ -274,7 +274,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            public override bool TryGetValue(int index, out VariantValue value) {
+            public override bool TryGetElement(int index, out VariantValue value) {
                 if (index >= 0 && Token is JArray o && index < o.Count) {
                     value = new JsonVariantValue(o[index], _serializer);
                     return true;

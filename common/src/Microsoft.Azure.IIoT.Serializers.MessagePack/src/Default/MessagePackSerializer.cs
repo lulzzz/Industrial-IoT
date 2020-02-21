@@ -281,7 +281,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             }
 
             /// <inheritdoc/>
-            public override bool TryGetValue(string key, out VariantValue value,
+            public override bool TryGetProperty(string key, out VariantValue value,
                 StringComparison compare) {
                 if (_value is IDictionary<object, object> o) {
                     var success = o.FirstOrDefault(kv => key.Equals((string)kv.Key, compare));
@@ -295,7 +295,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             }
 
             /// <inheritdoc/>
-            public override bool TryGetValue(int index, out VariantValue value) {
+            public override bool TryGetElement(int index, out VariantValue value) {
                 if (index >= 0 && _value is IList<object> o && index < o.Count) {
                     value = new MessagePackVariantValue(o[index], _options, false);
                     return true;

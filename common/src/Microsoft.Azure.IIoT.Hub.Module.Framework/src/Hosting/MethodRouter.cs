@@ -261,7 +261,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                     else {
                         var data = _serializer.Parse(Encoding.UTF8.GetString(payload));
                         inputs = _methodParams.Select(param => {
-                            if (data.TryGetValue(param.Name,
+                            if (data.TryGetProperty(param.Name,
                                 out var value, StringComparison.InvariantCultureIgnoreCase)) {
                                 return value.ConvertTo(param.ParameterType);
                             }

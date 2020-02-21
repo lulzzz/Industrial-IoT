@@ -111,7 +111,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             string key, Func<T> defaultValue,
             StringComparison compare = StringComparison.Ordinal) {
             if (t.IsObject &&
-                t.TryGetValue(key, out var value, compare) &&
+                t.TryGetProperty(key, out var value, compare) &&
                 !(value is null)) {
                 try {
                     return value.ConvertTo<T>();
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             string key, Func<T?> defaultValue,
             StringComparison compare = StringComparison.Ordinal) where T : struct {
             if (t.IsObject &&
-                t.TryGetValue(key, out var value, compare) &&
+                t.TryGetProperty(key, out var value, compare) &&
                 !(value is null)) {
                 try {
                     // Handle enumerations serialized as string

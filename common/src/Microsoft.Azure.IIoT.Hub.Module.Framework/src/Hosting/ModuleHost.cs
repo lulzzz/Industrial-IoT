@@ -356,7 +356,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             foreach (KeyValuePair<string, dynamic> property in _twin.Properties.Reported) {
                 var value = (VariantValue)_serializer.FromObject(property.Value);
                 if (value.IsObject &&
-                    value.TryGetValue("status", out var val) &&
+                    value.TryGetProperty("status", out var val) &&
                     value.Keys.Count() == 1) {
                     // Clear status properties from twin
                     _reported.AddOrUpdate(property.Key, null);

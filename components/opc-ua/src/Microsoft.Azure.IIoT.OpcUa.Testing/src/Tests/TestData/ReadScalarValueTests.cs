@@ -941,7 +941,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             // Assert
             Assert.NotNull(results.ErrorInfo.Diagnostics);
             Assert.True(results.ErrorInfo.Diagnostics.IsObject);
-            results.ErrorInfo.Diagnostics.TryGetValue("BadNodeIdUnknown", out var item);
+            results.ErrorInfo.Diagnostics.TryGetProperty("BadNodeIdUnknown", out var item);
             Assert.NotNull(item);
             Assert.True(item.IsArray);
             Assert.NotEqual(0, item.Count);
