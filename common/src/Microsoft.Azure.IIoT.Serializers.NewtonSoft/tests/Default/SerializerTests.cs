@@ -255,6 +255,33 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         }
 
         [Fact]
+        public void SerializeEndpointString1() {
+            var expected = "Endpoint";
+            var json = Serializer.Serialize(expected);
+            var actual = Serializer.Parse(json);
+            VariantValue expected1 = "Endpoint";
+
+            Assert.True(actual == expected);
+            Assert.Equal(expected, actual);
+            Assert.Equal(expected1, actual);
+            Assert.Equal(expected, actual.ConvertTo<string>());
+            Assert.Equal(expected, expected1.ConvertTo<string>());
+        }
+
+        [Fact]
+        public void SerializeEndpointString2() {
+            VariantValue expected = "Endpoint";
+            var json = Serializer.Serialize(expected);
+            var actual = Serializer.Parse(json);
+            var expected1 = "Endpoint";
+
+            Assert.True(actual.Equals(expected));
+            Assert.Equal(expected, actual);
+            Assert.Equal(expected1, actual);
+            Assert.Equal(expected, actual.ConvertTo<string>());
+        }
+
+        [Fact]
         public void NullCompareTests() {
             VariantValue i1 = null;
             VariantValue i2 = null;

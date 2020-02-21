@@ -257,13 +257,13 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
 
             /// <inheritdoc/>
             protected override void AppendTo(StringBuilder sb) {
-                if (Token is JValue) {
+               // if (Token is JValue) {
                     sb.Append(Token.ToString(Formatting.None,
                         _serializer.Settings.Converters.ToArray()));
-                }
-                else {
-                    base.AppendTo(sb);
-                }
+                // }
+                // else {
+                // base.AppendTo(sb);
+                //}
             }
 
             /// <inheritdoc/>

@@ -138,24 +138,19 @@ namespace Microsoft.Azure.IIoT.Hub.Mock.SqlParser {
                 return s => _serializer.FromObject(s != null);
             }
             if (context.IS_NULL() != null) {
-                return s => _serializer.FromObject(s != null &&
-                    (s.IsNull()));
+                return s => _serializer.FromObject(s != null && s.IsNull);
             }
             if (context.IS_BOOL() != null) {
-                return s => _serializer.FromObject(s != null &&
-                    s.IsBoolean);
+                return s => _serializer.FromObject(s != null && s.IsBoolean);
             }
             if (context.IS_NUMBER() != null) {
-                return s => _serializer.FromObject(s != null &&
-                    s.IsDecimal);
+                return s => _serializer.FromObject(s != null && s.IsDecimal);
             }
             if (context.IS_STRING() != null) {
-                return s => _serializer.FromObject(s != null &&
-                    s.IsString);
+                return s => _serializer.FromObject(s != null && s.IsString);
             }
             if (context.IS_OBJECT() != null) {
-                return s => _serializer.FromObject(s != null &&
-                    s.IsObject);
+                return s => _serializer.FromObject(s != null && s.IsObject);
             }
             return s => _serializer.FromObject(true);
         }

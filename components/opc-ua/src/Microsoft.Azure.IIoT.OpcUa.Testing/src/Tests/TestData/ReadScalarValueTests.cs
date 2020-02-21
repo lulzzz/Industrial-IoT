@@ -486,7 +486,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result);
             Assert.NotNull(result.SourceTimestamp);
             Assert.NotNull(result.ServerTimestamp);
-            Assert.True(result.Value.IsDecimal);
+            Assert.True(result.Value.IsFloat);
             AssertEqualValue(expected, result.Value);
             Assert.Equal("Float", result.DataType);
         }
@@ -507,7 +507,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result);
             Assert.NotNull(result.SourceTimestamp);
             Assert.NotNull(result.ServerTimestamp);
-            Assert.True(result.Value.IsDecimal);
+            Assert.True(result.Value.IsDouble);
             AssertEqualValue(expected, result.Value);
             Assert.Equal("Double", result.DataType);
         }

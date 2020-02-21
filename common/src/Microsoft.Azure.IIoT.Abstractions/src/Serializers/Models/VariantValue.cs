@@ -127,7 +127,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// <summary>
         /// Value is a float type
         /// </summary>
-        public bool IsSingle =>
+        public bool IsFloat =>
             TryGetSingle(out _, false);
 
         /// <summary>

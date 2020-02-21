@@ -483,7 +483,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 return;
             }
 
-            Assert.True(result.Value[0].IsDecimal);
+            Assert.True(result.Value[0].IsDouble);
             Assert.Equal("Double", result.DataType);
         }
 
