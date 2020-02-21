@@ -1649,7 +1649,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("Boolean", reference.Target.DataType);
                     Assert.Equal("BooleanValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1658,7 +1658,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("SByte", reference.Target.DataType);
                     Assert.Equal("SByteValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1678,7 +1678,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("Int16", reference.Target.DataType);
                     Assert.Equal("Int16Value", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1687,7 +1687,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("UInt16", reference.Target.DataType);
                     Assert.Equal("UInt16Value", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1696,7 +1696,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("Int32", reference.Target.DataType);
                     Assert.Equal("Int32Value", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1705,7 +1705,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("UInt32", reference.Target.DataType);
                     Assert.Equal("UInt32Value", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1714,7 +1714,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("Int64", reference.Target.DataType);
                     Assert.Equal("Int64Value", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1723,7 +1723,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("UInt64", reference.Target.DataType);
                     Assert.Equal("UInt64Value", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1732,7 +1732,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("Float", reference.Target.DataType);
                     Assert.Equal("FloatValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1741,7 +1741,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("Double", reference.Target.DataType);
                     Assert.Equal("DoubleValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1750,7 +1750,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("String", reference.Target.DataType);
                     Assert.Equal("StringValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1759,7 +1759,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("DateTime", reference.Target.DataType);
                     Assert.Equal("DateTimeValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1768,7 +1768,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("Guid", reference.Target.DataType);
                     Assert.Equal("GuidValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1777,7 +1777,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("ByteString", reference.Target.DataType);
                     Assert.Equal("ByteStringValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1786,7 +1786,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("XmlElement", reference.Target.DataType);
                     Assert.Equal("XmlElementValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1795,7 +1795,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("NodeId", reference.Target.DataType);
                     Assert.Equal("NodeIdValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1804,7 +1804,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("ExpandedNodeId", reference.Target.DataType);
                     Assert.Equal("ExpandedNodeIdValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1813,7 +1813,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("QualifiedName", reference.Target.DataType);
                     Assert.Equal("QualifiedNameValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1822,7 +1822,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("LocalizedText", reference.Target.DataType);
                     Assert.Equal("LocalizedTextValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1831,7 +1831,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("StatusCode", reference.Target.DataType);
                     Assert.Equal("StatusCodeValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1840,7 +1840,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("Variant", reference.Target.DataType);
                     Assert.Equal("VariantValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1849,7 +1849,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("Enumeration", reference.Target.DataType);
                     Assert.Equal("EnumerationValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -1858,7 +1858,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal("ExtensionObject", reference.Target.DataType);
                     Assert.Equal("StructureValue", reference.Target.DisplayName);
                     Assert.NotNull(reference.Target.Value);
-                    Assert.True(reference.Target.Value.IsArray);
+                    Assert.True(reference.Target.Value.IsListOfValues);
                 },
                 reference => {
                     Assert.Equal(NodeClass.Variable, reference.Target.NodeClass);
@@ -2166,7 +2166,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
 
             // Assert
             Assert.NotNull(results.ErrorInfo.Diagnostics);
-            Assert.True(results.ErrorInfo.Diagnostics.IsArray);
+            Assert.True(results.ErrorInfo.Diagnostics.IsListOfValues);
             Assert.Collection(results.ErrorInfo.Diagnostics.Values, j => {
                 Assert.True(j.IsString);
                 Assert.Equal("BadNodeIdUnknown", (string)j);
@@ -2195,7 +2195,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.True(results.ErrorInfo.Diagnostics.IsObject);
             results.ErrorInfo.Diagnostics.TryGetProperty("BadNodeIdUnknown", out var item);
             Assert.NotNull(item);
-            Assert.True(item.IsArray);
+            Assert.True(item.IsListOfValues);
             Assert.NotEqual(0, item.Count);
             Assert.NotEmpty(item.Values);
             Assert.Equal("Browse_ns=9;s=unknown", (string)item[0]);
@@ -2220,7 +2220,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
 
             // Assert
             Assert.NotNull(results.ErrorInfo.Diagnostics);
-            Assert.True(results.ErrorInfo.Diagnostics.IsArray);
+            Assert.True(results.ErrorInfo.Diagnostics.IsListOfValues);
         }
 
         private readonly T _endpoint;

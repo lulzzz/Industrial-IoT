@@ -486,7 +486,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result);
             Assert.NotNull(result.SourceTimestamp);
             Assert.NotNull(result.ServerTimestamp);
-            Assert.True(result.Value.IsNumber);
+            Assert.True(result.Value.IsDecimal);
             AssertEqualValue(expected, result.Value);
             Assert.Equal("Float", result.DataType);
         }
@@ -507,7 +507,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result);
             Assert.NotNull(result.SourceTimestamp);
             Assert.NotNull(result.ServerTimestamp);
-            Assert.True(result.Value.IsNumber);
+            Assert.True(result.Value.IsDecimal);
             AssertEqualValue(expected, result.Value);
             Assert.Equal("Double", result.DataType);
         }
@@ -914,7 +914,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
 
             // Assert
             Assert.NotNull(results.ErrorInfo.Diagnostics);
-            Assert.True(results.ErrorInfo.Diagnostics.IsArray);
+            Assert.True(results.ErrorInfo.Diagnostics.IsListOfValues);
             Assert.Collection(results.ErrorInfo.Diagnostics.Values, j => {
                 Assert.True(j.IsString);
                 Assert.Equal("BadNodeIdUnknown", (string)j);
@@ -943,7 +943,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.True(results.ErrorInfo.Diagnostics.IsObject);
             results.ErrorInfo.Diagnostics.TryGetProperty("BadNodeIdUnknown", out var item);
             Assert.NotNull(item);
-            Assert.True(item.IsArray);
+            Assert.True(item.IsListOfValues);
             Assert.NotEqual(0, item.Count);
             Assert.NotEmpty(item.Values);
             Assert.Equal("ReadValue_ns=9;s=unknown", (string)item[0]);
@@ -968,7 +968,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
 
             // Assert
             Assert.NotNull(results.ErrorInfo.Diagnostics);
-            Assert.True(results.ErrorInfo.Diagnostics.IsArray);
+            Assert.True(results.ErrorInfo.Diagnostics.IsListOfValues);
         }
 
         /// <summary>

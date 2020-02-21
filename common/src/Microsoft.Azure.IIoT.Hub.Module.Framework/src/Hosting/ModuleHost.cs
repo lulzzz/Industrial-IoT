@@ -357,7 +357,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 var value = (VariantValue)_serializer.FromObject(property.Value);
                 if (value.IsObject &&
                     value.TryGetProperty("status", out var val) &&
-                    value.Keys.Count() == 1) {
+                    value.PropertyNames.Count() == 1) {
                     // Clear status properties from twin
                     _reported.AddOrUpdate(property.Key, null);
                     continue;

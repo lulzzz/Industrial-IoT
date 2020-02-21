@@ -18,17 +18,12 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// <summary>
         /// Array
         /// </summary>
-        Array,
+        Values,
 
         /// <summary>
         /// Object
         /// </summary>
         Object,
-
-        /// <summary>
-        /// Byte array
-        /// </summary>
-        Bytes,
 
         /// <summary>
         /// String

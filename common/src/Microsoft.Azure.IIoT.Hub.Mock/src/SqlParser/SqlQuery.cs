@@ -147,7 +147,7 @@ namespace Microsoft.Azure.IIoT.Hub.Mock.SqlParser {
             }
             if (context.IS_NUMBER() != null) {
                 return s => _serializer.FromObject(s != null &&
-                    s.IsNumber);
+                    s.IsDecimal);
             }
             if (context.IS_STRING() != null) {
                 return s => _serializer.FromObject(s != null &&

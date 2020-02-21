@@ -140,7 +140,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             var expected = type.MakeArrayType();
             var result = Serializer.FromArray(o, o, o);
             Assert.NotNull(result);
-            Assert.True(result.IsArray);
+            Assert.True(result.IsListOfValues);
             Assert.True(result.Count == 3);
         }
 
@@ -176,7 +176,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
 
         [Theory]
         [MemberData(nameof(GetVariantValueAndValue))]
-        public void SerializerSerialzeValueToStringAndCompare(VariantValue v, object o) {
+        public void SerializerSerializeValueToStringAndCompare(VariantValue v, object o) {
             var actual = Serializer.Serialize(v);
             var expected = Serializer.Serialize(o);
 

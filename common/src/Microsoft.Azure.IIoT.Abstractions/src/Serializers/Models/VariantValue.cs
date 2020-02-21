@@ -17,21 +17,6 @@ namespace Microsoft.Azure.IIoT.Serializers {
     /// </summary>
     public abstract class VariantValue : ICloneable, IConvertible, IComparable {
 
-        /// <summary>
-        /// Property names of object
-        /// </summary>
-        public abstract IEnumerable<string> Keys { get; }
-
-        /// <summary>
-        /// Values of array
-        /// </summary>
-        public abstract IEnumerable<VariantValue> Values { get; }
-
-        /// <summary>
-        /// Provide raw value or null
-        /// </summary>
-        public abstract object Value { get; }
-
         /// <inheritdoc/>
         public VariantValue this[string key] =>
             TryGetProperty(key, out var result) ? result : Null;
@@ -41,15 +26,61 @@ namespace Microsoft.Azure.IIoT.Serializers {
             TryGetElement(index, out var result) ? result : null;
 
         /// <summary>
-        /// Length of array
+        /// Property names of object
         /// </summary>
-        public abstract int Count { get; }
+        public IEnumerable<string> PropertyNames {
+            get {
+                return ObjectProperties;
+            }
+        }
 
         /// <summary>
-        /// Value is a array
+        /// The primitive value
+        /// </summary>
+        public object Value {
+            get {
+                if (!TryGetValue(out var v)) {
+                    return null;
+                }
+                return v;
+            }
+        }
+
+        /// <summary>
+        /// Array elements
+        /// </summary>
+        public IEnumerable<VariantValue> Values {
+            get {
+                if (TryGetBytes(out var bytes)) {
+                    return bytes.Select(b => new PrimitiveValue(b));
+                }
+                return ArrayElements;
+            }
+        }
+
+        /// <summary>
+        /// Length of array
+        /// </summary>
+        public int Count {
+            get {
+                if (TryGetBytes(out var bytes)) {
+                    return bytes.Length;
+                }
+                return ArrayCount;
+            }
+        }
+
+        /// <summary>
+        /// Value is a list
+        /// </summary>
+        public bool IsListOfValues =>
+            Type == VariantValueType.Values;
+
+        /// <summary>
+        /// Value is a array - includes bytes
         /// </summary>
         public bool IsArray =>
-            Type == VariantValueType.Array;
+            Type == VariantValueType.Values || IsBytes;
 
         /// <summary>
         /// Value is a object type
@@ -64,69 +95,93 @@ namespace Microsoft.Azure.IIoT.Serializers {
             Type == VariantValueType.Null;
 
         /// <summary>
-        /// Value is a number type
+        /// Value is a decimal type
         /// </summary>
-        public bool IsNumber =>
-            TryGetNumber(out _);
+        public bool IsDecimal =>
+            TryGetDecimal(out _, false);
 
         /// <summary>
         /// Value is a integer type
         /// </summary>
         public bool IsInteger =>
-            TryGetInteger(out _);
+            TryGetBigInteger(out _, false);
+
+        /// <summary>
+        /// Value is a int64 type
+        /// </summary>
+        public bool IsInt64 =>
+            TryGetInt64(out _, false);
+
+        /// <summary>
+        /// Value is a uint64 type
+        /// </summary>
+        public bool IsUInt64 =>
+            TryGetInt64(out _, false);
+
+        /// <summary>
+        /// Value is a double type
+        /// </summary>
+        public bool IsDouble =>
+            TryGetDouble(out _, false);
+
+        /// <summary>
+        /// Value is a float type
+        /// </summary>
+        public bool IsSingle =>
+            TryGetSingle(out _, false);
 
         /// <summary>
         /// Value is a duration type
         /// </summary>
         public bool IsTimeSpan =>
-            TryGetTimeSpan(out _);
+            TryGetTimeSpan(out _, false);
 
         /// <summary>
         /// Value is a date type
         /// </summary>
         public bool IsDateTime =>
-            TryGetDateTime(out _);
+            TryGetDateTime(out _, false);
 
         /// <summary>
         /// Value is a Guid type
         /// </summary>
         public bool IsGuid =>
-            TryGetGuid(out _);
+            TryGetGuid(out _, false);
 
         /// <summary>
         /// Value is a boolean type
         /// </summary>
         public bool IsBoolean =>
-            TryGetBoolean(out _);
+            TryGetBoolean(out _, false);
 
         /// <summary>
         /// Value is a string type
         /// </summary>
         public bool IsString =>
-            TryGetString(out _);
+            TryGetString(out _, false);
 
         /// <summary>
         /// Value is a bytes type
         /// </summary>
         public bool IsBytes =>
-            TryGetBytes(out _);
+            TryGetBytes(out _, false);
 
         /// <inheritdoc/>
         public virtual TypeCode GetTypeCode() {
             if (this.IsNull()) {
                 return TypeCode.Empty;
             }
-            if (IsBoolean) {
+            if (TryGetBoolean(out _, true)) {
                 return TypeCode.Boolean;
             }
-            if (IsInteger) {
-                return TypeCode.Int64;
+            if (TryGetSingle(out _, true)) {
+                return TypeCode.Single;
             }
-            if (IsNumber) {
+            if (TryGetDouble(out _, true)) {
+                return TypeCode.Double;
+            }
+            if (TryGetDecimal(out _, false)) {
                 return TypeCode.Decimal;
-            }
-            if (IsDateTime) {
-                return TypeCode.DateTime;
             }
             if (IsObject) {
                 return TypeCode.Object;
@@ -136,14 +191,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public bool ToBoolean(IFormatProvider provider) {
+            if (TryGetBoolean(out var value, false, provider)) {
+                return value;
+            }
             return ConvertTo<bool>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator bool(VariantValue value) =>
-            value.ConvertTo<bool>();
+            value.ToBoolean(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator bool?(VariantValue value) =>
-            value.IsNull() ? (bool?)null : value.ConvertTo<bool>();
+            value.IsNull() ? (bool?)null :
+                value.ToBoolean(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(bool value) =>
             new PrimitiveValue(value);
@@ -153,14 +212,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public byte ToByte(IFormatProvider provider) {
+            if (TryGetUInt64(out var value, false, provider)) {
+                return (byte)value;
+            }
             return ConvertTo<byte>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator byte(VariantValue value) =>
-            value.ConvertTo<byte>();
+            value.ToByte(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator byte?(VariantValue value) =>
-            value.IsNull() ? (byte?)null : value.ConvertTo<byte>();
+            value.IsNull() ? (byte?)null :
+                value.ToByte(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(byte value) =>
             new PrimitiveValue(value);
@@ -170,14 +233,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public char ToChar(IFormatProvider provider) {
+            if (TryGetChar(out var value, false, provider)) {
+                return value;
+            }
             return ConvertTo<char>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator char(VariantValue value) =>
-            value.ConvertTo<char>();
+            value.ToChar(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator char?(VariantValue value) =>
-            value.IsNull() ? (char?)null : value.ConvertTo<char>();
+            value.IsNull() ? (char?)null :
+                value.ToChar(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(char value) =>
             new PrimitiveValue(value);
@@ -187,14 +254,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public DateTime ToDateTime(IFormatProvider provider) {
+            if (TryGetDateTime(out var value, false, provider)) {
+                return value;
+            }
             return ConvertTo<DateTime>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator DateTime(VariantValue value) =>
-            value.ConvertTo<DateTime>();
+            value.ToDateTime(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator DateTime?(VariantValue value) =>
-            value.IsNull() ? (DateTime?)null : value.ConvertTo<DateTime>();
+            value.IsNull() ? (DateTime?)null :
+                value.ToDateTime(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(DateTime value) =>
             new PrimitiveValue(value);
@@ -203,11 +274,19 @@ namespace Microsoft.Azure.IIoT.Serializers {
             new PrimitiveValue(value);
 
         /// <inheritdoc/>
+        public DateTimeOffset ToDateTimeOffset(IFormatProvider provider) {
+            if (TryGetDateTimeOffset(out var value, false, provider)) {
+                return value;
+            }
+            return ConvertTo<DateTimeOffset>(provider);
+        }
+        /// <inheritdoc/>
         public static explicit operator DateTimeOffset(VariantValue value) =>
-            value.ConvertTo<DateTimeOffset>();
+            value.ToDateTimeOffset(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator DateTimeOffset?(VariantValue value) =>
-            value.IsNull() ? (DateTimeOffset?)null : value.ConvertTo<DateTimeOffset>();
+            value.IsNull() ? (DateTimeOffset?)null :
+                value.ToDateTimeOffset(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(DateTimeOffset value) =>
             new PrimitiveValue(value);
@@ -217,14 +296,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public decimal ToDecimal(IFormatProvider provider) {
+            if (TryGetDecimal(out var value, false, provider)) {
+                return value;
+            }
             return ConvertTo<decimal>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator decimal(VariantValue value) =>
-            value.ConvertTo<decimal>();
+            value.ToDecimal(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator decimal?(VariantValue value) =>
-            value.IsNull() ? (decimal?)null : value.ConvertTo<decimal>();
+            value.IsNull() ? (decimal?)null :
+                value.ToDecimal(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(decimal value) =>
             new PrimitiveValue(value);
@@ -234,14 +317,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public double ToDouble(IFormatProvider provider) {
+            if (TryGetDouble(out var value, false, provider)) {
+                return value;
+            }
             return ConvertTo<double>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator double(VariantValue value) =>
-            value.ConvertTo<double>();
+            value.ToDouble(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator double?(VariantValue value) =>
-            value.IsNull() ? (double?)null : value.ConvertTo<double>();
+            value.IsNull() ? (double?)null :
+                value.ToDouble(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(double value) =>
             new PrimitiveValue(value);
@@ -251,14 +338,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public short ToInt16(IFormatProvider provider) {
+            if (TryGetInt64(out var value, false, provider)) {
+                return (short)value;
+            }
             return ConvertTo<short>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator short(VariantValue value) =>
-            value.ConvertTo<short>();
+            value.ToInt16(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator short?(VariantValue value) =>
-            value.IsNull() ? (short?)null : value.ConvertTo<short>();
+            value.IsNull() ? (short?)null :
+                value.ToInt16(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(short value) =>
             new PrimitiveValue(value);
@@ -268,14 +359,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public int ToInt32(IFormatProvider provider) {
+            if (TryGetInt64(out var value, false, provider)) {
+                return (int)value;
+            }
             return ConvertTo<int>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator int(VariantValue value) =>
-            value.ConvertTo<int>();
+            value.ToInt32(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator int?(VariantValue value) =>
-            value.IsNull() ? (int?)null : value.ConvertTo<int>();
+            value.IsNull() ? (int?)null :
+                value.ToInt32(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(int value) =>
             new PrimitiveValue(value);
@@ -285,14 +380,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public long ToInt64(IFormatProvider provider) {
+            if (TryGetInt64(out var value, false, provider)) {
+                return value;
+            }
             return ConvertTo<long>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator long(VariantValue value) =>
-            value.ConvertTo<long>();
+            value.ToInt64(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator long?(VariantValue value) =>
-            value.IsNull() ? (long?)null : value.ConvertTo<long>();
+            value.IsNull() ? (long?)null :
+                value.ToInt64(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(long value) =>
             new PrimitiveValue(value);
@@ -302,14 +401,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public ushort ToUInt16(IFormatProvider provider) {
+            if (TryGetUInt64(out var value, false, provider)) {
+                return (ushort)value;
+            }
             return ConvertTo<ushort>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator ushort(VariantValue value) =>
-            value.ConvertTo<ushort>();
+            value.ToUInt16(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator ushort?(VariantValue value) =>
-            value.IsNull() ? (ushort?)null : value.ConvertTo<ushort>();
+            value.IsNull() ? (ushort?)null :
+                value.ToUInt16(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(ushort value) =>
             new PrimitiveValue(value);
@@ -319,14 +422,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public uint ToUInt32(IFormatProvider provider) {
+            if (TryGetUInt64(out var value, false, provider)) {
+                return (uint)value;
+            }
             return ConvertTo<uint>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator uint(VariantValue value) =>
-            value.ConvertTo<uint>();
+            value.ToUInt32(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator uint?(VariantValue value) =>
-            value.IsNull() ? (uint?)null : value.ConvertTo<uint>();
+            value.IsNull() ? (uint?)null :
+                value.ToUInt32(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(uint value) =>
             new PrimitiveValue(value);
@@ -336,14 +443,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public ulong ToUInt64(IFormatProvider provider) {
+            if (TryGetUInt64(out var value, false, provider)) {
+                return value;
+            }
             return ConvertTo<ulong>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator ulong(VariantValue value) =>
-            value.ConvertTo<ulong>();
+            value.ToUInt64(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator ulong?(VariantValue value) =>
-            value.IsNull() ? (ulong?)null : value.ConvertTo<ulong>();
+            value.IsNull() ? (ulong?)null :
+                value.ToUInt64(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(ulong value) =>
             new PrimitiveValue(value);
@@ -353,14 +464,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public sbyte ToSByte(IFormatProvider provider) {
+            if (TryGetInt64(out var value, false, provider)) {
+                return (sbyte)value;
+            }
             return ConvertTo<sbyte>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator sbyte(VariantValue value) =>
-            value.ConvertTo<sbyte>();
+            value.ToSByte(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator sbyte?(VariantValue value) =>
-            value.IsNull() ? (sbyte?)null : value.ConvertTo<sbyte>();
+            value.IsNull() ? (sbyte?)null :
+                value.ToSByte(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(sbyte value) =>
             new PrimitiveValue(value);
@@ -370,14 +485,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public float ToSingle(IFormatProvider provider) {
+            if (TryGetSingle(out var value, false, provider)) {
+                return value;
+            }
             return ConvertTo<float>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator float(VariantValue value) =>
-            value.ConvertTo<float>();
+            value.ToSingle(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator float?(VariantValue value) =>
-            value.IsNull() ? (float?)null : value.ConvertTo<float>();
+            value.IsNull() ? (float?)null :
+                value.ToSingle(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(float value) =>
             new PrimitiveValue(value);
@@ -387,28 +506,46 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public string ToString(IFormatProvider provider) {
+            if (TryGetString(out var value, false, provider)) {
+                return value;
+            }
             return ConvertTo<string>(provider);
         }
         /// <inheritdoc/>
         public static explicit operator string(VariantValue value) =>
-            value.ConvertTo<string>();
+            value.ToString(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(string value) =>
             new PrimitiveValue(value);
 
         /// <inheritdoc/>
+        public byte[] ToBytes(IFormatProvider provider) {
+            if (TryGetBytes(out var value, false, provider)) {
+                return value;
+            }
+            return ConvertTo<byte[]>(provider);
+        }
+        /// <inheritdoc/>
         public static explicit operator byte[](VariantValue value) =>
-            value.ConvertTo<byte[]>();
+            value.ToBytes(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(byte[] value) =>
             new PrimitiveValue(value);
 
         /// <inheritdoc/>
+        public Guid ToGuid(IFormatProvider provider) {
+            if (TryGetGuid(out var value, false, provider)) {
+                return value;
+            }
+            return ConvertTo<Guid>(provider);
+        }
+        /// <inheritdoc/>
         public static explicit operator Guid(VariantValue value) =>
-            value.ConvertTo<Guid>();
+            value.ToGuid(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator Guid?(VariantValue value) =>
-            value.IsNull() ? (Guid?)null : value.ConvertTo<Guid>();
+            value.IsNull() ? (Guid?)null :
+                value.ToGuid(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(Guid value) =>
             new PrimitiveValue(value);
@@ -417,11 +554,19 @@ namespace Microsoft.Azure.IIoT.Serializers {
             new PrimitiveValue(value);
 
         /// <inheritdoc/>
+        public TimeSpan ToTimeSpan(IFormatProvider provider) {
+            if (TryGetTimeSpan(out var value, false, provider)) {
+                return value;
+            }
+            return ConvertTo<TimeSpan>(provider);
+        }
+        /// <inheritdoc/>
         public static explicit operator TimeSpan(VariantValue value) =>
-            value.ConvertTo<TimeSpan>();
+            value.ToTimeSpan(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static explicit operator TimeSpan?(VariantValue value) =>
-            value.IsNull() ? (TimeSpan?)null : value.ConvertTo<TimeSpan>();
+            value.IsNull() ? (TimeSpan?)null :
+                value.ToTimeSpan(CultureInfo.InvariantCulture);
         /// <inheritdoc/>
         public static implicit operator VariantValue(TimeSpan value) =>
             new PrimitiveValue(value);
@@ -466,18 +611,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (o is VariantValue v) {
                 return Comparer.Equals(this, v);
             }
-            if (o == null) {
-                return this.IsNull();
-            }
-            if (!TryGetValue(out var x)) {
-                try {
-                    x = ConvertTo(o.GetType());
-                }
-                catch {
-                    return false;
-                }
-            }
-            return VariantValueComparer.EqualValues(x, o);
+            return VariantValueComparer.EqualValues(this, o);
         }
 
         /// <inheritdoc/>
@@ -485,15 +619,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (o is VariantValue v) {
                 return Comparer.Compare(this, v);
             }
-            if (!TryGetValue(out var x)) {
-                try {
-                    x = ConvertTo(o.GetType());
-                }
-                catch {
-                    x = null;
-                }
-            }
-            return VariantValueComparer.CompareValues(x, o);
+            return VariantValueComparer.CompareValues(this, o);
         }
 
         /// <inheritdoc/>
@@ -574,98 +700,16 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// Try get primitive value
         /// </summary>
         /// <param name="o"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        public virtual bool TryGetValue(out object o) {
-            if (Type == VariantValueType.Primitive) {
-                o = Value;
-                switch (Value) {
-                    case null:
-                        return false;
-                    case bool _:
-                    case int _:
-                    case long _:
-                    case short _:
-                    case uint _:
-                    case ushort _:
-                    case sbyte _:
-                    case byte _:
-                    case char _:
-                    case ulong _:
-                    case float _:
-                    case double _:
-                    case decimal _:
-                    case BigInteger _:
-                    case TimeSpan _:
-                    case DateTime _:
-                    case DateTimeOffset _:
-                    case Guid _:
-                    case byte[] _:
-                        return true;
-                }
-            }
-
-            // Parse string
-            if (TryGetBoolean(out var b)) {
-                o = b;
-                return true;
-            }
-            if (TryGetInt64(out var l)) {
-                o = l;
-                return true;
-            }
-            if (TryGetInteger(out var bi)) {
-                o = bi;
-                return true;
-            }
-            if (TryGetDouble(out var d)) {
-                o = d;
-                return true;
-            }
-            if (TryGetDecimal(out var dec)) {
-                o = dec;
-                return true;
-            }
-            if (TryGetTimeSpan(out var ts)) {
-                o = ts;
-                return true;
-            }
-            if (TryGetDateTime(out var dt)) {
-                o = dt;
-                return true;
-            }
-            if (TryGetDateTimeOffset(out var dto)) {
-                o = dto;
-                return true;
-            }
-            if (TryGetGuid(out var g)) {
-                o = g;
-                return true;
-            }
-            if (TryGetBytes(out var buffer)) {
-                o = buffer;
-                return true;
-            }
-            if (TryGetString(out var s)) {
-                o = s;
-                return true;
-            }
-            o = null;
-            return false;
-        }
-        /// <summary>
-        /// Returns signed integer
-        /// </summary>
-        /// <param name="o"></param>
-        /// <returns></returns>
-        protected virtual bool TryGetInt64(out long o) {
-            o = 0L;
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
-            string s;
-            switch (Value) {
+        public virtual bool TryGetValue(out object o,
+            IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
+            switch (RawValue) {
                 case null:
+                    o = null;
                     return false;
+                case bool _:
                 case int _:
                 case long _:
                 case short _:
@@ -674,52 +718,97 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case sbyte _:
                 case byte _:
                 case char _:
-                    o = (long)Value;
-                    return true;
-                case ulong v:
-                    if (v > long.MaxValue) {
-                        return false;
-                    }
-                    o = (long)v;
-                    return true;
+                case ulong _:
                 case float _:
                 case double _:
                 case decimal _:
-                    try {
-                        o = Convert.ToInt64(Value);
-                        return true;
-                    }
-                    catch {
-                        return false;
-                    }
-                case BigInteger b:
-                    o = (long)b;
-                    return b.Equals(o);
-                case string str:
-                    s = str;
-                    break;
-                default:
-                    s = Value.ToString();
-                    break;
+                case BigInteger _:
+                case TimeSpan _:
+                case DateTime _:
+                case DateTimeOffset _:
+                case Guid _:
+                case byte[] _:
+                    o = RawValue;
+                    return true;
             }
-            return long.TryParse(s,
-                NumberStyles.Integer, CultureInfo.InvariantCulture, out o);
+            // Parse string
+            if (TryGetBoolean(out var b, true, provider)) {
+                o = b;
+                return true;
+            }
+            if (TryGetUInt64(out var ul, true, provider)) {
+                o = ul;
+                return true;
+            }
+            if (TryGetInt64(out var l, true, provider)) {
+                o = l;
+                return true;
+            }
+            if (TryGetSingle(out var f, true, provider)) {
+                o = f;
+                return true;
+            }
+            if (TryGetDouble(out var d, true, provider)) {
+                o = d;
+                return true;
+            }
+            if (TryGetDecimal(out var dec, true, provider)) {
+                o = dec;
+                return true;
+            }
+            if (TryGetBigInteger(out var bi, true, provider)) {
+                o = bi;
+                return true;
+            }
+            if (TryGetTimeSpan(out var ts, true, provider)) {
+                o = ts;
+                return true;
+            }
+            if (TryGetDateTime(out var dt, true, provider)) {
+                o = dt;
+                return true;
+            }
+            if (TryGetDateTimeOffset(out var dto, true, provider)) {
+                o = dto;
+                return true;
+            }
+            if (TryGetGuid(out var g, true, provider)) {
+                o = g;
+                return true;
+            }
+            if (TryGetBytes(out var buffer, true, provider)) {
+                o = buffer;
+                return true;
+            }
+            if (TryGetString(out var s, true, provider)) {
+                o = s;
+                return true;
+            }
+            o = null;
+            return false;
         }
 
         /// <summary>
-        /// Returns decimal value
+        /// Returns double value
         /// </summary>
         /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        protected virtual bool TryGetDouble(out double o) {
+        protected virtual bool TryGetDouble(out double o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
             o = 0.0;
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
             string s;
-            switch (Value) {
+            switch (RawValue) {
                 case null:
                     return false;
+                case TimeSpan _:
+                case DateTime _:
+                case DateTimeOffset _:
+                case Guid _:
+                    return false;
+                case char _:
                 case int _:
                 case uint _:
                 case long _:
@@ -728,16 +817,28 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case ushort _:
                 case sbyte _:
                 case byte _:
-                case char _:
+                    if (strict) {
+                        return false;
+                    }
+                    try {
+                        o = Convert.ToDouble(RawValue, provider);
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
                 case decimal _:
                     try {
-                        o = Convert.ToDouble(Value);
+                        o = Convert.ToDouble(RawValue, provider);
                         return true;
                     }
                     catch {
                         return false;
                     }
                 case BigInteger b:
+                    if (strict) {
+                        return false;
+                    }
                     o = (double)b;
                     return b.Equals(o);
                 case float f:
@@ -750,26 +851,61 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    s = Value.ToString();
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable fmt ?
+                        fmt.ToString("G", provider) : RawValue.ToString();
                     break;
             }
-            return double.TryParse(s,
-                NumberStyles.Any, CultureInfo.InvariantCulture, out o);
+            var result = true;
+            if (s == kDoubleMinValue) {
+                o = double.MinValue;
+            }
+            else if (s == kDoubleMaxValue) {
+                o = double.MaxValue;
+            }
+            else if (s == CultureInfo.InvariantCulture.NumberFormat.NaNSymbol) {
+                o = double.NaN;
+            }
+            else if (s == CultureInfo.InvariantCulture.NumberFormat.PositiveInfinitySymbol) {
+                o = double.PositiveInfinity;
+            }
+            else if (s == CultureInfo.InvariantCulture.NumberFormat.NegativeInfinitySymbol) {
+                o = double.NegativeInfinity;
+            }
+            else {
+                result = double.TryParse(s, NumberStyles.Float, provider, out o);
+                // Since .net 3 infinite means overflow
+                result = result && !double.IsInfinity(o);
+            }
+            return result;
         }
+        private static readonly string kDoubleMinValue =
+            double.MinValue.ToString(CultureInfo.InvariantCulture);
+        private static readonly string kDoubleMaxValue =
+            double.MaxValue.ToString(CultureInfo.InvariantCulture);
 
         /// <summary>
-        /// Returns decimal value
+        /// Returns float value
         /// </summary>
         /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        protected virtual bool TryGetDecimal(out decimal o) {
-            o = 0m;
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
+        protected virtual bool TryGetSingle(out float o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
+            o = 0.0f;
             string s;
-            switch (Value) {
+            switch (RawValue) {
                 case null:
+                case char _:
+                    return false;
+                case Guid _:
+                case TimeSpan _:
+                case DateTime _:
+                case DateTimeOffset _:
                     return false;
                 case int _:
                 case uint _:
@@ -779,19 +915,154 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case ushort _:
                 case sbyte _:
                 case byte _:
-                case char _:
-                case float _:
-                case double _:
+                    if (strict) {
+                        return false;
+                    }
                     try {
-                        o = Convert.ToDecimal(Value);
+                        o = Convert.ToSingle(RawValue, provider);
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                case decimal _:
+                    try {
+                        o = Convert.ToSingle(RawValue, provider);
                         return true;
                     }
                     catch {
                         return false;
                     }
                 case BigInteger b:
-                    o = (decimal)b;
+                    if (strict) {
+                        return false;
+                    }
+                    o = (float)b;
                     return b.Equals(o);
+                case float f:
+                    o = f;
+                    return true;
+                case double d:
+                    if (d > float.MaxValue || d < float.MinValue) {
+                        s = d.ToString("G9", provider);
+                        break;
+                    }
+                    o = (float)d;
+                    return true;
+                case string str:
+                    s = str;
+                    break;
+                default:
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable fmt ?
+                        fmt.ToString("G", provider) : RawValue.ToString();
+                    break;
+            }
+            var result = true;
+                 if (s == kFloatMinValue) {
+                o = float.MinValue;
+            }
+            else if (s == kFloatMaxValue) {
+                o = float.MaxValue;
+            }
+            else if (s == CultureInfo.InvariantCulture.NumberFormat.NaNSymbol) {
+                o = float.NaN;
+            }
+            else if (s == CultureInfo.InvariantCulture.NumberFormat.PositiveInfinitySymbol) {
+                o = float.PositiveInfinity;
+            }
+            else if (s == CultureInfo.InvariantCulture.NumberFormat.NegativeInfinitySymbol) {
+                o = float.NegativeInfinity;
+            }
+            else {
+                result = float.TryParse(s, NumberStyles.Float, provider, out o);
+                // Since .net 3 infinite means overflow
+                result = result && !float.IsInfinity(o);
+            }
+            return result;
+        }
+        private static readonly string kFloatMinValue =
+            float.MinValue.ToString(CultureInfo.InvariantCulture);
+        private static readonly string kFloatMaxValue =
+            float.MaxValue.ToString(CultureInfo.InvariantCulture);
+
+        /// <summary>
+        /// Returns decimal value
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        protected virtual bool TryGetDecimal(out decimal o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
+            o = 0m;
+            string s;
+            switch (RawValue) {
+                case null:
+                    return false;
+                case Guid _:
+                    return false;
+                case TimeSpan ts:
+                    if (strict) {
+                        return false;
+                    }
+                    o = Convert.ToDecimal(ts.Ticks, provider);
+                    return true;
+                case DateTime dt:
+                    if (strict) {
+                        return false;
+                    }
+                    o = Convert.ToDecimal(dt.Ticks, provider);
+                    return true;
+                case DateTimeOffset dto:
+                    if (strict) {
+                        return false;
+                    }
+                    o = Convert.ToDecimal(dto.UtcTicks, provider);
+                    return true;
+                case bool _:
+                case char _:
+                case int _:
+                case uint _:
+                case long _:
+                case ulong _:
+                case short _:
+                case ushort _:
+                case sbyte _:
+                case byte _:
+                    if (strict) {
+                        return false;
+                    }
+                    try {
+                        o = Convert.ToDecimal(RawValue, provider);
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                case BigInteger b:
+                    if (strict) {
+                        return false;
+                    }
+                    try {
+                        o = (decimal)b;
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                case float _:
+                case double _:
+                    try {
+                        o = Convert.ToDecimal(RawValue, provider);
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
                 case decimal dec:
                     o = dec;
                     return true;
@@ -799,75 +1070,417 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    s = Value.ToString();
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable f ?
+                        f.ToString("G", provider) : RawValue.ToString();
                     break;
             }
-            return decimal.TryParse(s,
-                NumberStyles.Any, CultureInfo.InvariantCulture, out o);
+            return decimal.TryParse(s, strict ? NumberStyles.Float : NumberStyles.Any,
+                provider, out o);
+        }
+
+        /// <summary>
+        /// Returns signed signed integer
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        protected virtual bool TryGetInt64(out long o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
+            o = 0L;
+            string s;
+            switch (RawValue) {
+                case null:
+                    return false;
+                case Guid _:
+                case char _:
+                    return false;
+                case TimeSpan ts:
+                    if (strict) {
+                        return false;
+                    }
+                    o = ts.Ticks;
+                    return true;
+                case DateTime dt:
+                    if (strict) {
+                        return false;
+                    }
+                    o = dt.Ticks;
+                    return true;
+                case DateTimeOffset dto:
+                    if (strict) {
+                        return false;
+                    }
+                    o = dto.UtcTicks;
+                    return true;
+                case int _:
+                case long _:
+                case short _:
+                case uint _:
+                case ushort _:
+                case sbyte _:
+                case byte _:
+                    o = Convert.ToInt64(RawValue, provider);
+                    return true;
+                case ulong v:
+                    if (v > long.MaxValue) {
+                        return false;
+                    }
+                    o = (long)v;
+                    return true;
+                case float _:
+                case double _:
+                case decimal _:
+                    if (strict) {
+                        return false;
+                    }
+                    try {
+                        o = Convert.ToInt64(RawValue, provider);
+                        return o.Equals(RawValue);
+                    }
+                    catch {
+                        return false;
+                    }
+                case BigInteger b:
+                    try {
+                        o = (long)b;
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                case string str:
+                    s = str;
+                    break;
+                default:
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable f ?
+                        f.ToString("G", provider) : RawValue.ToString();
+                    break;
+            }
+            return long.TryParse(s,
+                NumberStyles.Integer, provider, out o);
+        }
+
+        /// <summary>
+        /// Returns signed signed integer
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        protected virtual bool TryGetUInt64(out ulong o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
+            o = 0UL;
+            string s;
+            switch (RawValue) {
+                case null:
+                    return false;
+                case Guid _:
+                case char _:
+                    return false;
+                case TimeSpan _:
+                case DateTime _:
+                case DateTimeOffset _:
+                    return false;
+                case int _:
+                case long _:
+                case short _:
+                case sbyte _:
+                    var signed = Convert.ToInt64(RawValue, provider);
+                    if (signed < 0) {
+                        return false;
+                    }
+                    o = Convert.ToUInt64(RawValue, provider);
+                    return true;
+                case uint _:
+                case ushort _:
+                case byte _:
+                    o = Convert.ToUInt64(RawValue, provider);
+                    return true;
+                case ulong v:
+                    o = v;
+                    return true;
+                case float _:
+                case double _:
+                case decimal _:
+                    if (strict) {
+                        return false;
+                    }
+                    try {
+                        o = Convert.ToUInt64(RawValue, provider);
+                        return o.Equals(RawValue);
+                    }
+                    catch {
+                        return false;
+                    }
+                case BigInteger b:
+                    try {
+                        o = (ulong)b;
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                case string str:
+                    s = str;
+                    break;
+                default:
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable f ?
+                        f.ToString("G", provider) : RawValue.ToString();
+                    break;
+            }
+            return ulong.TryParse(s, NumberStyles.Integer, provider, out o);
+        }
+
+        /// <summary>
+        /// Returns byte
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        protected virtual bool TryGetByte(out byte o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
+            o = 0;
+            string s;
+            switch (RawValue) {
+                case null:
+                    return false;
+                case Guid _:
+                case char _:
+                    return false;
+                case TimeSpan _:
+                case DateTime _:
+                case DateTimeOffset _:
+                    return false;
+                case int _:
+                case long _:
+                case short _:
+                case sbyte _:
+                case uint _:
+                case ushort _:
+                case ulong _:
+                    if (strict) {
+                        return false;
+                    }
+                    try {
+                        o = Convert.ToByte(RawValue, provider);
+                        return o.Equals(RawValue);
+                    }
+                    catch {
+                        return false;
+                    }
+
+                case byte b:
+                    o = b;
+                    return true;
+                case float _:
+                case double _:
+                case decimal _:
+                case BigInteger b:
+                    if (strict) {
+                        return false;
+                    }
+                    try {
+                        o = (byte)b;
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                case string str:
+                    s = str;
+                    break;
+                default:
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable f ?
+                        f.ToString("G", provider) : RawValue.ToString();
+                    break;
+            }
+            return byte.TryParse(s, NumberStyles.Integer, provider, out o);
+        }
+
+        /// <summary>
+        /// Returns character
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        protected virtual bool TryGetChar(out char o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
+            o = char.MinValue;
+            string s;
+            switch (RawValue) {
+                case null:
+                    return false;
+                case Guid _:
+                case TimeSpan _:
+                case DateTime _:
+                case DateTimeOffset _:
+                    return false;
+                case char c:
+                    o = c;
+                    return true;
+                case int _:
+                case long _:
+                case short _:
+                case sbyte _:
+                case uint _:
+                case ushort _:
+                case byte _:
+                case ulong _:
+                    if (strict) {
+                        return false;
+                    }
+                    try {
+                        o = Convert.ToChar(RawValue, provider);
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
+                case float _:
+                case double _:
+                case decimal _:
+                    return false;
+                case BigInteger b:
+                    return false;
+                case string str:
+                    s = str;
+                    break;
+                default:
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable f ?
+                        f.ToString("G", provider) : RawValue.ToString();
+                    break;
+            }
+            if (char.TryParse(s, out o)) {
+                return true;
+            }
+            if (s.Length == 1) {
+                o = s[0];
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
         /// Get value as integer
         /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        protected virtual bool TryGetInteger(out BigInteger o) {
+        protected virtual bool TryGetBigInteger(out BigInteger o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
             o = BigInteger.Zero;
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
             string s;
-            switch (Value) {
+            switch (RawValue) {
                 case null:
+                    return false;
+                case Guid _:
+                case char _:
+                    return false;
+                case TimeSpan _:
+                case DateTime _:
+                case DateTimeOffset _:
                     return false;
                 case uint _:
                 case ulong _:
                 case ushort _:
                 case byte _:
-                    o = new BigInteger((ulong)Value);
+                    o = new BigInteger(Convert.ToUInt64(RawValue, provider));
                     return true;
-                case char _:
                 case int _:
                 case long _:
                 case short _:
                 case sbyte _:
-                    o = new BigInteger((long)Value);
+                    o = new BigInteger(Convert.ToInt64(RawValue, provider));
                     return true;
                 case BigInteger b:
                     o = b;
                     return true;
                 case decimal dec:
+                    if (strict) {
+                        return false;
+                    }
                     o = new BigInteger(dec);
                     return decimal.Floor(dec).Equals(dec);
                 case float f:
+                    if (strict) {
+                        return false;
+                    }
+                    if (float.IsNaN(f) || float.IsInfinity(f)) {
+                        return false;
+                    }
                     o = new BigInteger(f);
                     return Math.Floor(f).Equals(f);
                 case double d:
+                    if (strict) {
+                        return false;
+                    }
+                    if (double.IsNaN(d) || double.IsInfinity(d)) {
+                        return false;
+                    }
                     o = new BigInteger(d);
                     return Math.Floor(d).Equals(d);
                 case string str:
                     s = str;
                     break;
                 default:
-                    s = Value.ToString();
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable fmt ?
+                        fmt.ToString("G", provider) : RawValue.ToString();
                     break;
             }
             return BigInteger.TryParse(s, NumberStyles.Integer,
-                CultureInfo.InvariantCulture, out o);
+                provider, out o);
         }
 
         /// <summary>
         /// Get value as timespan
         /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        protected virtual bool TryGetTimeSpan(out TimeSpan o) {
+        protected virtual bool TryGetTimeSpan(out TimeSpan o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
             o = TimeSpan.MinValue;
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
             string s;
-            switch (Value) {
+            switch (RawValue) {
                 case null:
                     return false;
+                case Guid _:
+                    return false;
+                case long l:
+                    if (strict) {
+                        return false;
+                    }
+                    o = TimeSpan.FromTicks(l);
+                    return true;
                 case TimeSpan ts:
                     o = ts;
                     return true;
@@ -875,57 +1488,88 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    s = Value.ToString();
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable fmt ?
+                        fmt.ToString("G", provider) : RawValue.ToString();
                     break;
             }
-            return TimeSpan.TryParse(s, CultureInfo.InvariantCulture, out o);
+            return TimeSpan.TryParse(s, provider, out o);
         }
 
         /// <summary>
-        /// Value is a float type
+        /// Get value as date
         /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        protected virtual bool TryGetDateTime(out DateTime o) {
+        protected virtual bool TryGetDateTime(out DateTime o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
             o = DateTime.MinValue;
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
             string s;
-            switch (Value) {
+            switch (RawValue) {
                 case null:
+                    return false;
+                case Guid _:
                     return false;
                 case DateTime dt:
                     o = dt;
                     return true;
+                case long l:
+                    if (strict) {
+                        return false;
+                    }
+                    o = DateTime.FromBinary(l);
+                    return true;
                 case DateTimeOffset dto:
-                    o = dto.DateTime;
+                    o = dto.UtcDateTime;
                     return true;
                 case string str:
                     s = str;
                     break;
                 default:
-                    s = Value.ToString();
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable fmt ?
+                        fmt.ToString("G", provider) : RawValue.ToString();
                     break;
             }
-            return DateTime.TryParse(s, CultureInfo.InvariantCulture,
+            return DateTime.TryParse(s, provider,
                 DateTimeStyles.AdjustToUniversal, out o);
         }
 
         /// <summary>
-        /// Value is a float type
+        /// Get value as date time offset
         /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        public virtual bool TryGetDateTimeOffset(out DateTimeOffset o) {
+        public virtual bool TryGetDateTimeOffset(out DateTimeOffset o,
+            bool strict = true, IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
             o = DateTimeOffset.MinValue;
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
             string s;
-            switch (Value) {
+            switch (RawValue) {
                 case null:
                     return false;
+                case Guid _:
+                    return false;
                 case DateTime dt:
+                    if (strict) {
+                        return false;
+                    }
                     o = dt;
+                    return true;
+                case long l:
+                    if (strict) {
+                        return false;
+                    }
+                    o = DateTimeOffset.FromUnixTimeMilliseconds(l);
                     return true;
                 case DateTimeOffset dto:
                     o = dto;
@@ -934,49 +1578,64 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    s = Value.ToString();
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable fmt ?
+                        fmt.ToString("G", provider) : RawValue.ToString();
                     break;
             }
-            return DateTimeOffset.TryParse(s, CultureInfo.InvariantCulture,
+            return DateTimeOffset.TryParse(s, provider,
                 DateTimeStyles.AdjustToUniversal, out o);
         }
 
         /// <summary>
-        /// Value is a float type
+        /// Get value as boolean
         /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        public virtual bool TryGetBoolean(out bool o) {
+        public virtual bool TryGetBoolean(out bool o, bool strict = true,
+            IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
             o = false;
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
             string s;
-            switch (Value) {
+            switch (RawValue) {
                 case null:
                     return false;
-                case bool _:
+                case Guid _:
+                    return false;
+                case bool b:
+                    o = b;
                     return true;
                 case string str:
                     s = str;
                     break;
                 default:
-                    s = Value.ToString();
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable fmt ?
+                        fmt.ToString("G", provider) : RawValue.ToString();
                     break;
             }
             return bool.TryParse(s, out o);
         }
 
         /// <summary>
-        /// Value is a float type
+        /// Get Value as guid
         /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        public virtual bool TryGetGuid(out Guid o) {
+        public virtual bool TryGetGuid(out Guid o, bool strict = true,
+            IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
             o = Guid.Empty;
-            if (Type != VariantValueType.Primitive) {
-                return false;
-            }
             string s;
-            switch (Value) {
+            switch (RawValue) {
                 case null:
                     return false;
                 case Guid g:
@@ -986,43 +1645,58 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    s = Value.ToString();
+                    if (Type != VariantValueType.Primitive) {
+                        return false;
+                    }
+                    s = RawValue is IFormattable fmt ?
+                        fmt.ToString("G", provider) : RawValue.ToString();
                     break;
             }
             return Guid.TryParse(s, out o);
         }
 
         /// <summary>
-        /// Value is a bytes type
+        /// Get Value as a bytes type
         /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        public virtual bool TryGetBytes(out byte[] o) {
+        public virtual bool TryGetBytes(out byte[] o, bool strict = true,
+            IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
             o = null;
-            if (Type == VariantValueType.Array) {
+            if (Type == VariantValueType.Values) {
                 // Convert array to bytes
                 var buffer = new List<byte>();
-                foreach (var item in Values) {
-                    if (!item.TryGetInteger(out var value)) {
-                        return false;
-                    }
-                    var b = (byte)value;
-                    if (!value.Equals(b)) {
+                foreach (var item in ArrayElements) {
+                    if (!item.TryGetByte(out var b)) {
                         return false;
                     }
                     buffer.Add(b);
                 }
                 o = buffer.ToArray();
+                return true;
             }
-            if (Type != VariantValueType.Primitive) {
+            if (Type == VariantValueType.Object) {
                 return false;
             }
-            switch (Value) {
+            switch (RawValue) {
                 case null:
                     return false;
+                case Guid g:
+                    if (strict) {
+                        return false;
+                    }
+                    o = g.ToByteArray();
+                    return true;
                 case byte[] b:
                     o = b;
                     return true;
                 case string s:
+                    if (strict && s.Length == 0) {
+                        return false;
+                    }
                     try {
                         o = Convert.FromBase64String(s);
                         return true;
@@ -1039,12 +1713,17 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// <summary>
         /// Value is a string type
         /// </summary>
+        /// <param name="o"></param>
+        /// <param name="strict"></param>
+        /// <param name="provider"></param>
         /// <returns></returns>
-        public virtual bool TryGetString(out string o) {
+        public virtual bool TryGetString(out string o, bool strict = true,
+            IFormatProvider provider = null) {
+            provider ??= CultureInfo.InvariantCulture;
             if (Type == VariantValueType.Primitive) {
-                switch (Value) {
+                switch (RawValue) {
                     case string s:
-                        o = s;
+                        o = s.ToString(provider);
                         return true;
                 }
             }
@@ -1079,44 +1758,79 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 var xt = x?.Type ?? VariantValueType.Null;
 
                 if (yt != xt) {
+                    // Special case
+                    if ((xt == VariantValueType.Values && yt == VariantValueType.Primitive) ||
+                        (yt == VariantValueType.Values && xt == VariantValueType.Primitive)) {
+                        // Compare bytes
+                        if (x.TryGetBytes(out var bufx) &&
+                            y.TryGetBytes(out var bufy) &&
+                            bufx.AsSpan().SequenceEqual(bufy)) {
+                            return true;
+                        }
+                    }
                     return false;
                 }
 
-                if (xt == VariantValueType.Null &&
-                    yt == VariantValueType.Null) {
+                if (xt == VariantValueType.Null) {
                     // If both null then they are the same
                     return true;
                 }
 
                 // Perform structural comparison
-                switch (xt) {
-                    case VariantValueType.Null:
+                if (xt == VariantValueType.Values) {
+                    if (y.ArrayElements.SequenceEqual(x.ArrayElements, Comparer)) {
                         return true;
-                    case VariantValueType.Array:
-                        if (y.Values.SequenceEqual(x.Values, Comparer)) {
-                            return true;
-                        }
-                        return false;
-                    case VariantValueType.Object:
-                        var p1 = x.Keys.OrderBy(k => k).Select(k => x[k]);
-                        var p2 = y.Keys.OrderBy(k => k).Select(k => y[k]);
-                        if (p1.SequenceEqual(p2, Comparer)) {
-                            return true;
-                        }
-                        return false;
-                    case VariantValueType.Bytes:
-                    case VariantValueType.Primitive:
-                        if (x.TryGetValue(out var xv) &&
-                            y.TryGetValue(out var xy)) {
-                            return EqualValues(xv, xy);
-                        }
+                    }
+                    return false;
+                }
 
-                        // Try string comparison
-                        if (y.ToString() ==
-                            x.ToString()) {
-                            return true;
-                        }
-                        break;
+                if (xt == VariantValueType.Object) {
+                    var p1 = x.PropertyNames.OrderBy(k => k).Select(k => x[k]);
+                    var p2 = y.PropertyNames.OrderBy(k => k).Select(k => y[k]);
+                    if (p1.SequenceEqual(p2, Comparer)) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                // Allow implementation to perform comparison first
+                if (x.TryEqualsVariant(y, out var result) ||
+                    y.TryEqualsVariant(x, out result)) {
+                    return result;
+                }
+
+                // Compare floating point values
+                if (x.TryGetSingle(out var fx) &&
+                    y.TryGetSingle(out var fy) &&
+                    fx == fy) {
+                    return true;
+                }
+                if (x.TryGetDouble(out var dx) &&
+                    y.TryGetDouble(out var dy) &&
+                    dx == dy) {
+                    return true;
+                }
+
+                // Compare numbers - includes dates and times
+                if (x.TryGetDecimal(out var nx, false) &&
+                    y.TryGetDecimal(out var ny, false) &&
+                    nx == ny) {
+                    return true;
+                }
+
+                // Compare bytes - includes empty strings
+                if (x.TryGetBytes(out var bx, false) &&
+                    y.TryGetBytes(out var by, false) &&
+                    bx.AsSpan().SequenceEqual(by)) {
+                    return true;
+                }
+
+                // Compare values
+                if (y.TryGetValue(out var yv) && EqualValues(x, yv)) {
+                    return true;
+                }
+                if (x.TryGetValue(out var xv) && EqualValues(y, xv)) {
+                    return true;
                 }
                 return false;
             }
@@ -1126,20 +1840,79 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
                 var yt = y?.Type ?? VariantValueType.Null;
                 var xt = x?.Type ?? VariantValueType.Null;
-                if (xt == VariantValueType.Null ||
-                    yt == VariantValueType.Null) {
+
+                if (yt != xt) {
+                    // Special case to compare bytes
+                    if ((xt == VariantValueType.Values && yt == VariantValueType.Primitive) ||
+                        (yt == VariantValueType.Values && xt == VariantValueType.Primitive)) {
+                        if (x.TryGetBytes(out var bufx) && y.TryGetBytes(out var bufy)) {
+                            return Convert.ToBase64String(bufx)
+                                .CompareTo(Convert.ToBase64String(bufy));
+                        }
+                    }
+                    // Sort on type
                     return xt.CompareTo(yt);
                 }
 
-                if (x.TryGetValue(out var xv) &&
-                    y.TryGetValue(out var yv) &&
-                    TryCompare(xv, yv, out var result)) {
-                    return result;
+                // First compare values to see if they are the same
+                if (Equals(x, y)) {
+                    return 0;
                 }
 
-                var xs = x.ToString();
-                var ys = y.ToString();
-                return xs.CompareTo(ys);
+                // Allow implementation to perform comparison first
+                if (x.TryCompareToValue(y, out var result)) {
+                    return result < 0 ? -1 : result > 0 ? 1 : 0;
+                }
+                if (y.TryCompareToValue(x, out result)) {
+                    return result > 0 ? -1 : result < 0 ? 1 : 0;
+                }
+
+                // Perform primitive value comparison
+                if (xt == VariantValueType.Primitive) {
+
+                    if (x.TryGetSingle(out var fx) &&
+                        y.TryGetSingle(out var fy)) {
+                        return fx.CompareTo(fy);
+                    }
+                    if (x.TryGetDouble(out var dx) &&
+                        y.TryGetDouble(out var dy)) {
+                        return dx.CompareTo(dy);
+                    }
+                    if (x.TryGetDecimal(out var decx, false) &&
+                        y.TryGetDecimal(out var decy, false)) {
+                        return decx.CompareTo(decy);
+                    }
+                    if (x.TryGetBigInteger(out var bix) &&
+                        y.TryGetBigInteger(out var biy)) {
+                        return bix.CompareTo(biy);
+                    }
+                    if (x.TryGetTimeSpan(out var tx) &&
+                        y.TryGetTimeSpan(out var ty)) {
+                        return tx.CompareTo(ty);
+                    }
+                    if (x.TryGetDateTimeOffset(out var dtox) &&
+                        y.TryGetDateTimeOffset(out var dtoy)) {
+                        return dtox.CompareTo(dtoy);
+                    }
+                    if (x.TryGetDateTime(out var dtx) &&
+                        y.TryGetDateTime(out var dty)) {
+                        return dtx.CompareTo(dty);
+                    }
+                    if (x.TryGetGuid(out var gx) &&
+                        y.TryGetGuid(out var gy)) {
+                        return gx.CompareTo(gy);
+                    }
+                    if (x.TryGetString(out var sx) &&
+                        y.TryGetString(out var sy)) {
+                        return sx.CompareTo(sy);
+                    }
+                }
+
+                // Use string comparison
+                var osx = x.ToString().ToLowerInvariant();
+                var osy = y.ToString().ToLowerInvariant();
+
+                return osx.CompareTo(osy);
             }
 
             /// <inheritdoc/>
@@ -1151,10 +1924,25 @@ namespace Microsoft.Azure.IIoT.Serializers {
             /// Tries to compare equality of 2 values using convertible
             /// and comparable interfaces.
             /// </summary>
-            /// <param name="x"></param>
+            /// <param name="v"></param>
             /// <param name="y"></param>
             /// <returns></returns>
-            internal static bool EqualValues(object x, object y) {
+            internal static bool EqualValues(VariantValue v, object y) {
+
+                // Allow implementation to perform comparison first
+                if (v.TryEqualsValue(y, out var equality)) {
+                    return equality;
+                }
+
+                if (!v.TryGetValue(out var x)) {
+                    try {
+                        x = v.ConvertTo(y.GetType());
+                    }
+                    catch {
+                        return false;
+                    }
+                }
+
                 if (ReferenceEquals(x, y)) {
                     return true;
                 }
@@ -1163,7 +1951,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     return false;
                 }
 
-                if (y.Equals(x)) {
+                if (y.Equals(x) || x.Equals(y)) {
                     return true;
                 }
 
@@ -1191,24 +1979,62 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 }
 
                 // Compare values through comparison operation
-                return TryCompare(x, y, out var result) && result == 0;
+                return TryCompare(v, y, out var result, false) && result == 0;
             }
 
             /// <summary>
             /// Compare value
             /// </summary>
-            /// <param name="x"></param>
+            /// <param name="v"></param>
             /// <param name="y"></param>
             /// <returns></returns>
-            internal static int CompareValues(object x, object y) {
-                if (TryCompare(x, y, out var result)) {
+            internal static int CompareValues(VariantValue v, object y) {
+                if (TryCompare(v, y, out var result, true)) {
                     return result;
+                }
+                return -1;
+            }
+
+            /// <summary>
+            /// Compare
+            /// </summary>
+            /// <param name="v"></param>
+            /// <param name="y"></param>
+            /// <param name="result"></param>
+            /// <param name="stringCompare"></param>
+            /// <returns></returns>
+            private static bool TryCompare(VariantValue v, object y,
+                out int result, bool stringCompare = false) {
+
+                // Allow implementation to perform comparison first
+                if (v.TryCompareToValue(y, out result)) {
+                    return true;
+                }
+
+                if (!v.TryGetValue(out var x)) {
+                    // Throw if needed
+                    x = v.ConvertTo(y.GetType());
+                }
+
+                if (TryCompare(x, y, out result)) {
+                    result = result < 0 ? -1 : result > 0 ? 1 : 0;
+                    return true;
+                }
+                if (TryCompare(y, x, out result)) {
+                    result = result > 0 ? -1 : result < 0 ? 1 : 0;
+                    return true;
+                }
+
+                if (!stringCompare) {
+                    result = -1;
+                    return false;
                 }
 
                 // Compare stringified version
                 var s1 = x?.ToString() ?? "null";
                 var s2 = y?.ToString() ?? "null";
-                return s1.CompareTo(s2);
+                result = s1.CompareTo(s2);
+                return true;
             }
 
             /// <summary>
@@ -1219,23 +2045,14 @@ namespace Microsoft.Azure.IIoT.Serializers {
             /// <param name="result"></param>
             /// <returns></returns>
             private static bool TryCompare(object x, object y, out int result) {
-
-                if (x is IComparable cv1 && y is IConvertible co1) {
+                if (x is IComparable cv1) {
                     try {
-                        var compared = cv1.CompareTo(co1.ToType(x.GetType(),
-                            CultureInfo.InvariantCulture));
-                        result = compared < 0 ? -1 : compared > 0 ? 1 : 0;
-                        return true;
-                    }
-                    catch {
-                    }
-                }
-                // Compare the other way around
-                if (y is IComparable cv2 && x is IConvertible co2) {
-                    try {
-                        var compared = cv2.CompareTo(co2.ToType(x.GetType(),
-                            CultureInfo.InvariantCulture));
-                        result = compared > 0 ? -1 : compared < 0 ? 1 : 0;
+                        if (x.GetType() != y.GetType()) {
+                            if (y is IConvertible c) {
+                                y = c.ToType(x.GetType(), CultureInfo.InvariantCulture);
+                            }
+                        }
+                        result = cv1.CompareTo(y);
                         return true;
                     }
                     catch {
@@ -1255,18 +2072,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
             protected override VariantValueType Type { get; }
 
             /// <inheritdoc/>
-            public override object Value { get; }
-
-            /// <inheritdoc/>
-            public override IEnumerable<string> Keys =>
+            protected override IEnumerable<string> ObjectProperties =>
                 Enumerable.Empty<string>();
 
             /// <inheritdoc/>
-            public override IEnumerable<VariantValue> Values =>
+            protected override object RawValue { get; }
+
+            /// <inheritdoc/>
+            protected override IEnumerable<VariantValue> ArrayElements =>
                 Enumerable.Empty<VariantValue>();
 
             /// <inheritdoc/>
-            public override int Count => 0;
+            protected override int ArrayCount => 0;
 
             /// <summary>
             /// Clone
@@ -1274,7 +2091,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             /// <param name="value"></param>
             /// <param name="type"></param>
             internal PrimitiveValue(object value, VariantValueType type) {
-                Value = value;
+                RawValue = value;
                 Type = value == null ? VariantValueType.Null : type;
             }
 
@@ -1285,7 +2102,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
             /// <inheritdoc/>
             public PrimitiveValue(byte[] value) :
-                this(value, VariantValueType.Bytes) {
+                this(value, VariantValueType.Primitive) {
             }
 
             /// <inheritdoc/>
@@ -1460,27 +2277,27 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
             /// <inheritdoc/>
             public override VariantValue Copy(bool shallow = false) {
-                return new PrimitiveValue(Value, Type);
+                return new PrimitiveValue(RawValue, Type);
             }
 
             /// <inheritdoc/>
             public override object ToType(Type conversionType,
                 IFormatProvider provider) {
-                if (Value == null || IsNull) {
+                if (RawValue == null || IsNull) {
                     if (conversionType.IsValueType) {
                         return Activator.CreateInstance(conversionType);
                     }
                     return null;
                 }
-                if (conversionType.IsAssignableFrom(Value.GetType())) {
-                    return Value;
+                if (conversionType.IsAssignableFrom(RawValue.GetType())) {
+                    return RawValue;
                 }
-                if (Value is IConvertible c) {
+                if (RawValue is IConvertible c) {
                     return c.ToType(conversionType,
                         provider ?? CultureInfo.InvariantCulture);
                 }
                 var converter = TypeDescriptor.GetConverter(conversionType);
-                return converter.ConvertFrom(Value);
+                return converter.ConvertFrom(RawValue);
             }
 
             /// <inheritdoc/>
@@ -1509,6 +2326,26 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// </summary>
         /// <inheritdoc/>
         protected abstract VariantValueType Type { get; }
+
+        /// <summary>
+        /// Provide raw value or null
+        /// </summary>
+        protected abstract object RawValue{ get; }
+
+        /// <summary>
+        /// Values of array
+        /// </summary>
+        protected abstract IEnumerable<VariantValue> ArrayElements { get; }
+
+        /// <summary>
+        /// Property names of object
+        /// </summary>
+        protected abstract IEnumerable<string> ObjectProperties { get; }
+
+        /// <summary>
+        /// Length of array
+        /// </summary>
+        protected abstract int ArrayCount { get; }
 
         /// <summary>
         /// Compare to a non variant value object, e.g. the value of
@@ -1564,24 +2401,15 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// </summary>
         /// <returns></returns>
         protected virtual void AppendTo(StringBuilder builder) {
+            string s;
             switch (Type) {
                 case VariantValueType.Null:
                     builder.Append("null");
                     return;
-                case VariantValueType.Bytes:
-                    if (TryGetBytes(out var b)) {
-                        builder.Append('"');
-                        builder.Append(Convert.ToBase64String(b));
-                        builder.Append('"');
-                        return;
-                    }
-                    break;
-                case VariantValueType.Primitive:
-                    break;
-                case VariantValueType.Array:
+                case VariantValueType.Values:
                     var first = true;
                     builder.Append('[');
-                    foreach (var value in Values) {
+                    foreach (var value in ArrayElements) {
                         if (!first) {
                             builder.Append(',');
                         }
@@ -1591,11 +2419,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         value.AppendTo(builder);
                     }
                     builder.Append(']');
-                    break;
+                    return;
                 case VariantValueType.Object:
                     var open = true;
                     builder.Append('{');
-                    var p2 = Keys.OrderBy(k => k);
+                    var p2 = PropertyNames.OrderBy(k => k);
                     foreach (var k in p2) {
                         if (!open) {
                             builder.Append(',');
@@ -1608,65 +2436,85 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         this[k].AppendTo(builder);
                     }
                     builder.Append('}');
-                    break;
+                    return;
             }
             if (!TryGetValue(out var v)) {
-                switch (v) {
-                    case string str:
-                        builder.Append('"');
-                        builder.Append(str);
-                        builder.Append('"');
-                        break;
-                    case byte[] b:
-                        builder.Append('"');
-                        builder.Append(Convert.ToBase64String(b));
-                        builder.Append('"');
-                        break;
-                    case Guid g:
-                        builder.Append('"');
-                        builder.Append(g.ToString());
-                        builder.Append('"');
-                        break;
-                    case DateTime dt:
-                        builder.Append('"');
-                        builder.Append(dt.ToString("O",
-                            CultureInfo.InvariantCulture));
-                        builder.Append('"');
-                        break;
-                    case DateTimeOffset dto:
-                        builder.Append('"');
-                        builder.Append(dto.ToString("O",
-                            CultureInfo.InvariantCulture));
-                        builder.Append('"');
-                        break;
-                    case TimeSpan ts:
-                        builder.Append('"');
-                        builder.Append(ts.ToString("c",
-                            CultureInfo.InvariantCulture));
-                        builder.Append('"');
-                        break;
-                    case BigInteger bi:
-                        builder.Append(bi.ToString("R",
-                            CultureInfo.InvariantCulture));
-                        break;
-                    case decimal d:
-                        builder.Append(d.ToString("G",
-                            CultureInfo.InvariantCulture));
-                        break;
-                    case double d:
-                        builder.Append(d.ToString("G17",
-                            CultureInfo.InvariantCulture));
-                        break;
-                    case float f:
-                        builder.Append(f.ToString("G9",
-                            CultureInfo.InvariantCulture));
-                        break;
-                    default:
-                        // All else - use G == default
-                        builder.Append(v.ToString());
-                        break;
-                }
+                v = RawValue;
             }
+            switch (v) {
+                case string str:
+                    s = str;
+                    break;
+                case byte[] b:
+                    s = Convert.ToBase64String(b);
+                    break;
+                case Guid g:
+                    s = g.ToString();
+                    break;
+                case DateTime dt:
+                    s = dt.ToString("O", CultureInfo.InvariantCulture);
+                    break;
+                case DateTimeOffset dto:
+                    s = dto.ToString("O", CultureInfo.InvariantCulture);
+                    break;
+                case TimeSpan ts:
+                    s = ts.ToString("c", CultureInfo.InvariantCulture);
+                    break;
+                case BigInteger bi:
+                    builder.Append(bi.ToString("R", CultureInfo.InvariantCulture));
+                    return;
+                case decimal d:
+                    builder.Append(d.ToString("G", CultureInfo.InvariantCulture));
+                    return;
+                case double d:
+                    s = d.ToString("G17", CultureInfo.InvariantCulture);
+                    if (double.IsNaN(d) || double.IsInfinity(d)) {
+                        break;
+                    }
+                    builder.Append(s);
+                    return;
+                case float f:
+                    s = f.ToString("G9", CultureInfo.InvariantCulture);
+                    if (float.IsNaN(f) || float.IsInfinity(f)) {
+                        break;
+                    }
+                    builder.Append(s);
+                    return;
+                case int i:
+                    builder.Append(i.ToString("G", CultureInfo.InvariantCulture));
+                    return;
+                case long i:
+                    builder.Append(i.ToString("G", CultureInfo.InvariantCulture));
+                    return;
+                case short i:
+                    builder.Append(i.ToString("G", CultureInfo.InvariantCulture));
+                    return;
+                case uint i:
+                    builder.Append(i.ToString("G", CultureInfo.InvariantCulture));
+                    return;
+                case ushort i:
+                    builder.Append(i.ToString("G", CultureInfo.InvariantCulture));
+                    return;
+                case sbyte i:
+                    builder.Append(i.ToString("G", CultureInfo.InvariantCulture));
+                    return;
+                case byte i:
+                    builder.Append(i.ToString("G", CultureInfo.InvariantCulture));
+                    return;
+                case ulong i:
+                    builder.Append(i.ToString("G", CultureInfo.InvariantCulture));
+                    return;
+                case bool _:
+                    builder.Append(RawValue.ToString().ToLowerInvariant());
+                    return;
+                case char _:
+                default:
+                    s = v.ToString();
+                    break;
+            }
+            builder.Append('"');
+            builder.Append(s);
+            builder.Append('"');
         }
 
         /// <summary>
@@ -1678,28 +2526,29 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case VariantValueType.Null:
                     hc.Add(Type);
                     break;
-                case VariantValueType.Bytes:
                 case VariantValueType.Primitive:
-                    if (TryGetValue(out var o)) {
-                        hc.Add(o);
-                        break;
+                    if (!TryGetValue(out var o)) {
+                        o = RawValue;
                     }
-                    hc.Add(Value);
+                    if (o is byte[] b) {
+                        o = Convert.ToBase64String(b);
+                    }
+                    hc.Add(o);
                     break;
-                case VariantValueType.Array:
-                    foreach (var value in Values) {
+                case VariantValueType.Values:
+                    foreach (var value in ArrayElements) {
                         value.GetDeepHashCode(ref hc);
                     }
                     break;
                 case VariantValueType.Object:
-                    var p2 = Keys.OrderBy(k => k);
+                    var p2 = PropertyNames.OrderBy(k => k);
                     foreach (var k in p2) {
                         hc.Add(k);
                         this[k].GetDeepHashCode(ref hc);
                     }
                     break;
                 default:
-                    hc.Add(Value);
+                    hc.Add(RawValue);
                     break;
             }
         }

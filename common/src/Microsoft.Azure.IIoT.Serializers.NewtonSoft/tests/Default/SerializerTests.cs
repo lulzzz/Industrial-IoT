@@ -142,7 +142,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             var expected = type.MakeArrayType();
             var result = Serializer.FromArray(o, o, o);
             Assert.NotNull(result);
-            Assert.True(result.IsArray);
+            Assert.True(result.IsListOfValues);
             Assert.True(result.Count == 3);
         }
 
@@ -213,10 +213,6 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             var json = Serializer.Serialize(v);
             var actual = Serializer.Parse(json);
 
-            if (!actual.Equals(expected)) {
-                Console.WriteLine("");
-            }
-
             Assert.True(expected.Equals(actual));
             Assert.Equal(expected, actual);
         }
@@ -252,6 +248,9 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                 Locale = "de",
                 TeSt = 1
             });
+
+            Assert.True(expected.Equals(actual));
+            Assert.True(expected == actual);
             Assert.Equal(expected, actual);
         }
 

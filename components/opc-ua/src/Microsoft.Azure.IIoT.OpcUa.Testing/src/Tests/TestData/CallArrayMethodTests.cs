@@ -648,7 +648,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.Equal(input.Select(arg => arg.Value),
                 result.Results.Select(arg => arg.Value));
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.True(arg.Value.IsArray));
+                arg => Assert.True(arg.Value.IsListOfValues));
         }
 
 
@@ -724,7 +724,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Empty(arg.Value.Values);
                 });
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.True(arg.Value.IsArray));
+                arg => Assert.True(arg.Value.IsListOfValues));
         }
 
 
@@ -749,7 +749,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
                 arg => Assert.Empty(arg.Value.Values));
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.True(arg.Value.IsArray));
+                arg => Assert.True(arg.Value.IsListOfValues));
         }
 
 
@@ -839,7 +839,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                     Assert.Equal(input[10].Value, arg.Value);
                 });
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.True(arg.Value.IsArray));
+                arg => Assert.True(arg.Value.IsListOfValues));
         }
 
 
@@ -909,7 +909,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 "Int32", "UInt32", "Int64", "UInt64", "Float", "Double"
             }, result.Results.Select(arg => arg.DataType));
             Assert.All(result.Results.Where(arg => arg.DataType != "ByteString"),
-                arg => Assert.True(arg.Value.IsArray));
+                arg => Assert.True(arg.Value.IsListOfValues));
             Assert.Collection(result.Results,
                 arg => {
                     Assert.Empty(arg.Value.Values);
@@ -1108,7 +1108,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 arg => {
                     Assert.Equal(input[9].Value, arg.Value);
                 });
-            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsListOfValues));
         }
 
 
@@ -1131,7 +1131,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 "XmlElement", "NodeId", "ExpandedNodeId",
                 "QualifiedName","LocalizedText","StatusCode" },
                 result.Results.Select(arg => arg.DataType));
-            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsListOfValues));
             Assert.All(result.Results, arg => Assert.Empty(arg.Value.Values));
         }
 
@@ -1175,7 +1175,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 "XmlElement", "NodeId", "ExpandedNodeId",
                 "QualifiedName","LocalizedText","StatusCode" },
                 result.Results.Select(arg => arg.DataType));
-            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsListOfValues));
             Assert.Equal(3, result.Results[8].Value.Count);
         }
 
@@ -1245,7 +1245,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 result.Results.Select(arg => arg.DataType));
             Assert.Equal(input.Select(arg => arg.Value),
                 result.Results.Select(arg => arg.Value));
-            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsListOfValues));
             Assert.All(result.Results, arg => Assert.Empty(arg.Value.Values));
         }
 
@@ -1285,7 +1285,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             }, result.Results.Select(arg => arg.DataType));
             Assert.Equal(input.Select(arg => arg.Value),
                 result.Results.Select(arg => arg.Value));
-            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsListOfValues));
         }
 
 
@@ -1352,7 +1352,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             }, result.Results.Select(arg => arg.DataType));
             Assert.Equal(input.Select(arg => arg.Value),
                 result.Results.Select(arg => arg.Value));
-            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsListOfValues));
         }
 
 
@@ -1373,7 +1373,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.Equal(new List<string> {
                 "Variant", "Int32", "ExtensionObject"
             }, result.Results.Select(arg => arg.DataType));
-            Assert.All(result.Results, arg => Assert.True(arg.Value.IsArray));
+            Assert.All(result.Results, arg => Assert.True(arg.Value.IsListOfValues));
             Assert.All(result.Results, arg => Assert.Empty(arg.Value.Values));
         }
 

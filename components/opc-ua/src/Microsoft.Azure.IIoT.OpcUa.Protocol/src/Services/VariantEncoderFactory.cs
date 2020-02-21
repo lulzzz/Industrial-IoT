@@ -141,7 +141,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                 }
 
                 var asString = value.IsString ? (string)value : value.ToString();
-                if (!value.IsObject && !value.IsArray && !value.IsString) {
+                if (!value.IsObject && !value.IsListOfValues && !value.IsString) {
                     //
                     // If this should be a string - return as such
                     //
@@ -218,7 +218,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     }
                 }
 
-                if (value.IsArray) {
+                if (value.IsListOfValues) {
                     //
                     // Sanitize each element accordingly
                     //

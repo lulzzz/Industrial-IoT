@@ -165,31 +165,35 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                         case JTokenType.Object:
                             return VariantValueType.Object;
                         case JTokenType.Array:
-                            return VariantValueType.Array;
-                        case JTokenType.Bytes:
-                            return VariantValueType.Bytes;
-                        case JTokenType.Boolean:
-                        case JTokenType.Integer:
-                        case JTokenType.Float:
-                        case JTokenType.Date:
-                        case JTokenType.TimeSpan:
-                        case JTokenType.Guid:
-                        case JTokenType.Raw:
-                        case JTokenType.Uri:
-                        case JTokenType.String:
-                            return VariantValueType.Primitive;
+                            return VariantValueType.Values;
+                        case JTokenType.None:
                         case JTokenType.Null:
-                        default:
+                        case JTokenType.Undefined:
+                        case JTokenType.Constructor:
+                        case JTokenType.Property:
+                        case JTokenType.Comment:
                             return VariantValueType.Null;
+                        default:
+                            return VariantValueType.Primitive;
                     }
                 }
             }
 
             /// <inheritdoc/>
-            public override object Value => Token;
+            protected override object RawValue {
+                get {
+                    if (Token is JValue v) {
+                        if (v.Value is Uri u) {
+                            return u.ToString();
+                        }
+                        return v.Value;
+                    }
+                    return Token;
+                }
+            }
 
             /// <inheritdoc/>
-            public override IEnumerable<string> Keys {
+            protected override IEnumerable<string> ObjectProperties {
                 get {
                     if (Token is JObject o) {
                         return o.Properties().Select(p => p.Name);
@@ -199,7 +203,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            public override IEnumerable<VariantValue> Values {
+            protected override IEnumerable<VariantValue> ArrayElements {
                 get {
                     if (Token is JArray array) {
                         return array.Select(i => new JsonVariantValue(i, _serializer));
@@ -209,7 +213,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            public override int Count {
+            protected override int ArrayCount {
                 get {
                     if (Token is JArray array) {
                         return array.Count;
@@ -257,6 +261,9 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                     sb.Append(Token.ToString(Formatting.None,
                         _serializer.Settings.Converters.ToArray()));
                 }
+                else {
+                    base.AppendTo(sb);
+                }
             }
 
             /// <inheritdoc/>
@@ -288,17 +295,11 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
 
             /// <inheritdoc/>
             protected override bool TryEqualsValue(object o, out bool equality) {
-                // Compare tokens
-                if (!(o is JToken t)) {
-                    try {
-                        t = FromObject(o);
-                    }
-                    catch {
-                        return base.TryEqualsValue(o, out equality);
-                    }
+                if (o is JToken t) {
+                    equality = DeepEquals(Token, t);
+                    return true;
                 }
-                equality = DeepEquals(Token, t);
-                return true;
+                return base.TryEqualsValue(o, out equality);
             }
 
             /// <inheritdoc/>
@@ -308,6 +309,23 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                     return true;
                 }
                 return base.TryEqualsVariant(v, out equality);
+            }
+
+            /// <inheritdoc/>
+            protected override bool TryCompareToValue(object o, out int result) {
+                if (Token is JValue v1 && o is JValue v2) {
+                    result = v1.CompareTo(v2);
+                    return true;
+                }
+                return base.TryCompareToValue(o, out result);
+            }
+
+            /// <inheritdoc/>
+            protected override bool TryCompareToVariantValue(VariantValue v, out int result) {
+                if (v is JsonVariantValue json) {
+                    return TryCompareToValue(json.Token, out result);
+                }
+                return base.TryCompareToVariantValue(v, out result);
             }
 
             /// <summary>
@@ -354,26 +372,6 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                 return false;
             }
 
-            /// <inheritdoc/>
-            protected override bool TryCompareToValue(object o, out int result) {
-                // Compare value token
-                if (Token is JValue v1 && o is JValue v2) {
-                    result = v1.CompareTo(v2);
-                    return true;
-                }
-                result = 0;
-                return false;
-            }
-
-            /// <inheritdoc/>
-            protected override bool TryCompareToVariantValue(VariantValue v, out int result) {
-                if (v is JsonVariantValue json) {
-                    return TryCompareToValue(json.Token, out result);
-                }
-                result = 0;
-                return false;
-            }
-
             /// <summary>
             /// Create token from object and rethrow serializer exception
             /// </summary>
@@ -416,7 +414,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                         if (variant.IsNull()) {
                             writer.WriteNull();
                         }
-                        else if (variant.IsArray) {
+                        else if (variant.IsListOfValues) {
                             writer.WriteStartArray();
                             foreach (var item in variant.Values) {
                                 WriteJson(writer, item, serializer);
@@ -425,7 +423,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                         }
                         else if (variant.IsObject) {
                             writer.WriteStartObject();
-                            foreach (var key in variant.Keys) {
+                            foreach (var key in variant.PropertyNames) {
                                 writer.WritePropertyName(key);
                                 // Write value
                                 WriteJson(writer, variant[key], serializer);

@@ -182,7 +182,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -211,7 +211,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -275,7 +275,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -304,7 +304,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -333,7 +333,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -362,7 +362,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -391,7 +391,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -420,7 +420,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -449,12 +449,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.True(result.Value[0].IsNumber, $"First is {result.Value}");
+            Assert.True(result.Value[0].IsDecimal, $"First is {result.Value}");
             Assert.Equal("Float", result.DataType);
         }
 
@@ -478,12 +478,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
 
-            Assert.True(result.Value[0].IsNumber);
+            Assert.True(result.Value[0].IsDecimal);
             Assert.Equal("Double", result.DataType);
         }
 
@@ -507,7 +507,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -536,7 +536,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -565,7 +565,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -597,7 +597,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             if (result.Value.IsNull()) {
                 return;
             }
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -626,7 +626,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -655,7 +655,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -684,7 +684,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -713,7 +713,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -742,7 +742,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -771,7 +771,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -801,7 +801,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -827,7 +827,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -856,7 +856,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -890,11 +890,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 Assert.NotEmpty(((string)result.Value).DecodeAsBase64());
                 return;
             }
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
-            Assert.True(result.Value[0].IsNumber, $"Not a number {result.Value[0]}");
+            Assert.True(result.Value[0].IsDecimal, $"Not a number {result.Value[0]}");
         }
 
 
@@ -921,7 +921,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 Assert.NotEmpty(((string)result.Value).DecodeAsBase64());
                 return;
             }
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
@@ -953,7 +953,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 Assert.NotEmpty(((string)result.Value).DecodeAsBase64());
                 return;
             }
-            Assert.True(result.Value.IsArray);
+            Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
             }
