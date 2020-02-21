@@ -153,7 +153,14 @@ Function Select-Context() {
     # Update context
     $writeProfile = $false
     if ($context.Subscription.Id -ne $subscriptionDetails.Id) {
-        $context = ($subscriptionDetails | Set-AzContext)
+        $context = Get-AzContext -ListAvailable | ?{ $_.Subscription.Id -eq $subscriptionDetails.Id }
+        
+        if (!$context) {
+            throw "Could not select correct context, exiting."
+        }
+
+        Select-AzContext -InputObject $context
+
         # If file exists - silently update profile
         $writeProfile = Test-Path $contextFile
     }
@@ -167,7 +174,7 @@ Function Select-Context() {
         }
     }
     if ($writeProfile) {
-        Save-AzContext -Path $contextFile 
+        Save-AzContext -Path $contextFile -Force
     }
 
     Write-Host "Azure subscription $($context.Subscription.Name) ($($context.Subscription.Id)) selected."
