@@ -886,11 +886,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsListOfValues);
+            Assert.True(result.Value.IsListOfValues,
+                $"Not a list {result.Value}");
             if (result.Value.Count == 0) {
                 return;
             }
-            Assert.True(result.Value[0].IsDecimal, $"Not a number {result.Value[0]}");
+            Assert.True(result.Value[0].IsDouble || result.Value[0].IsDecimal,
+                $"Not a number {result.Value[0]}");
         }
 
 
@@ -941,7 +943,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsListOfValues);
+            Assert.True(result.Value.IsListOfValues,
+                $"Not a list {result.Value}");
             if (result.Value.Count == 0) {
                 return;
             }

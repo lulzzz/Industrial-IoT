@@ -1721,27 +1721,27 @@ namespace Microsoft.Azure.IIoT.Serializers {
             IFormatProvider provider = null) {
             provider ??= CultureInfo.InvariantCulture;
             o = null;
-            if (Type == VariantValueType.Primitive) {
-                switch (RawValue) {
-                    case string s:
-                        o = s.ToString(provider);
-                        break;
-                    case Guid g:
-                        if (strict) {
-                            return false;
-                        }
-                        o = g.ToString();
-                        break;
-                    default:
-                        if (strict) {
-                            return false;
-                        }
-                        o = RawValue is IFormattable fmt ?
-                            fmt.ToString("G", provider) : RawValue.ToString();
-                        break;
-                }
+            if (Type != VariantValueType.Primitive) {
+                return false;
             }
-            return true;
+            switch (RawValue) {
+                case string s:
+                    o = s.ToString(provider);
+                    return true;
+                case Guid g:
+                    if (strict) {
+                        return false;
+                    }
+                    o = g.ToString();
+                    return true;
+                default:
+                    if (strict) {
+                        return false;
+                    }
+                    o = RawValue is IFormattable fmt ?
+                        fmt.ToString("G", provider) : RawValue.ToString();
+                    return true;
+            }
         }
 
         /// <summary>
