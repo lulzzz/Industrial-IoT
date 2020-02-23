@@ -158,7 +158,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// Value is a string type
         /// </summary>
         public bool IsString =>
-            TryGetString(out _, false);
+            TryGetString(out _, true);
 
         /// <summary>
         /// Value is a bytes type
@@ -776,12 +776,12 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 o = g;
                 return true;
             }
-            if (TryGetBytes(out var buffer, true, provider)) {
-                o = buffer;
-                return true;
-            }
             if (TryGetString(out var s, true, provider)) {
                 o = s;
+                return true;
+            }
+            if (TryGetBytes(out var buffer, true, provider)) {
+                o = buffer;
                 return true;
             }
             o = null;
@@ -1720,15 +1720,28 @@ namespace Microsoft.Azure.IIoT.Serializers {
         public virtual bool TryGetString(out string o, bool strict = true,
             IFormatProvider provider = null) {
             provider ??= CultureInfo.InvariantCulture;
+            o = null;
             if (Type == VariantValueType.Primitive) {
                 switch (RawValue) {
                     case string s:
                         o = s.ToString(provider);
-                        return true;
+                        break;
+                    case Guid g:
+                        if (strict) {
+                            return false;
+                        }
+                        o = g.ToString();
+                        break;
+                    default:
+                        if (strict) {
+                            return false;
+                        }
+                        o = RawValue is IFormattable fmt ?
+                            fmt.ToString("G", provider) : RawValue.ToString();
+                        break;
                 }
             }
-            o = null;
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -1758,14 +1771,26 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 var xt = x?.Type ?? VariantValueType.Null;
 
                 if (yt != xt) {
+                    if (xt == VariantValueType.Null || yt == VariantValueType.Null) {
+                        return false;
+                    }
                     // Special case
-                    if ((xt == VariantValueType.Values && yt == VariantValueType.Primitive) ||
-                        (yt == VariantValueType.Values && xt == VariantValueType.Primitive)) {
-                        // Compare bytes
-                        if (x.TryGetBytes(out var bufx) &&
-                            y.TryGetBytes(out var bufy) &&
-                            bufx.AsSpan().SequenceEqual(bufy)) {
-                            return true;
+                    if (xt == VariantValueType.Primitive || yt == VariantValueType.Primitive) {
+                        if (xt == VariantValueType.Values || yt == VariantValueType.Values) {
+                            // Compare as bytes
+                            if (x.TryGetBytes(out var bufx) &&
+                                y.TryGetBytes(out var bufy) &&
+                                bufx.AsSpan().SequenceEqual(bufy)) {
+                                return true;
+                            }
+                        }
+
+                        // Values or object compare to string
+                        if (xt == VariantValueType.Primitive && x.TryGetString(out var sx)) {
+                            return y.ToString() == sx;
+                        }
+                        if (yt == VariantValueType.Primitive && y.TryGetString(out var sy)) {
+                            return x.ToString() == sy;
                         }
                     }
                     return false;
@@ -1842,15 +1867,26 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 var xt = x?.Type ?? VariantValueType.Null;
 
                 if (yt != xt) {
-                    // Special case to compare bytes
-                    if ((xt == VariantValueType.Values && yt == VariantValueType.Primitive) ||
-                        (yt == VariantValueType.Values && xt == VariantValueType.Primitive)) {
-                        if (x.TryGetBytes(out var bufx) && y.TryGetBytes(out var bufy)) {
-                            return Convert.ToBase64String(bufx)
-                                .CompareTo(Convert.ToBase64String(bufy));
+                    if (xt != VariantValueType.Null && yt != VariantValueType.Null) {
+                        // Special case compare
+                        if (xt == VariantValueType.Primitive || yt == VariantValueType.Primitive) {
+                            if (xt == VariantValueType.Values || yt == VariantValueType.Values) {
+                                // Compare as bytes
+                                if (x.TryGetBytes(out var bufx) && y.TryGetBytes(out var bufy)) {
+                                    return Convert.ToBase64String(bufx)
+                                        .CompareTo(Convert.ToBase64String(bufy));
+                                }
+                            }
+
+                            // Values or object compare to string
+                            if (xt == VariantValueType.Primitive && x.TryGetString(out var sx)) {
+                                return sx.CompareTo(y.ToString());
+                            }
+                            if (yt == VariantValueType.Primitive && y.TryGetString(out var sy)) {
+                                return x.ToString().CompareTo(sy);
+                            }
                         }
                     }
-                    // Sort on type
                     return xt.CompareTo(yt);
                 }
 
@@ -1934,6 +1970,17 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     return equality;
                 }
 
+                if (v.Type != VariantValueType.Primitive) {
+                    if (y is string s) {
+                        return v.ToString() == s;
+                    }
+                    if (y is byte[] boy && v.Type == VariantValueType.Values) {
+                        if (v.TryGetBytes(out var box)) {
+                            return box.AsSpan().SequenceEqual(boy);
+                        }
+                    }
+                }
+
                 if (!v.TryGetValue(out var x)) {
                     try {
                         x = v.ConvertTo(y.GetType());
@@ -2009,6 +2056,21 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 // Allow implementation to perform comparison first
                 if (v.TryCompareToValue(y, out result)) {
                     return true;
+                }
+
+                if (v.Type != VariantValueType.Primitive) {
+                    if (y is string s) {
+                        result = v.ToString().CompareTo(s);
+                        return true;
+                    }
+                    if (y is byte[] boy && v.Type == VariantValueType.Values) {
+                        if (v.TryGetBytes(out var box)) {
+                            var box64 = Convert.ToBase64String(box);
+                            var boy64 = Convert.ToBase64String(boy);
+                            result = box64.CompareTo(boy64);
+                            return true;
+                        }
+                    }
                 }
 
                 if (!v.TryGetValue(out var x)) {

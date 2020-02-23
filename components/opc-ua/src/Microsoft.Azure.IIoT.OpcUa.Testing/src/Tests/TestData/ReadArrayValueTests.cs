@@ -454,7 +454,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
                 return;
             }
 
-            Assert.True(result.Value[0].IsDecimal, $"First is {result.Value}");
+            Assert.True(result.Value[0].IsFloat, $"First is {result.Value}");
             Assert.Equal("Float", result.DataType);
         }
 
@@ -886,10 +886,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            if (result.Value.IsString) {
-                Assert.NotEmpty(((string)result.Value).DecodeAsBase64());
-                return;
-            }
             Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
@@ -917,10 +913,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            if (result.Value.IsString) {
-                Assert.NotEmpty(((string)result.Value).DecodeAsBase64());
-                return;
-            }
             Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
@@ -949,10 +941,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            if (result.Value.IsString) {
-                Assert.NotEmpty(((string)result.Value).DecodeAsBase64());
-                return;
-            }
             Assert.True(result.Value.IsListOfValues);
             if (result.Value.Count == 0) {
                 return;
