@@ -624,8 +624,30 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
         /// <inheritdoc/>
         public override string ToString() {
+            static void AppendProperty(StringBuilder sb, string k, object p) {
+                sb.AppendLine(",");
+                sb.Append("    \"");
+                sb.Append(k); sb.Append("\": "); sb.Append(p);
+            }
             var sb = new StringBuilder();
-            AppendTo(sb);
+            sb.AppendLine("{");
+            sb.Append("    \"Value\": "); AppendTo(sb);
+            AppendProperty(sb, nameof(IsObject), IsObject);
+            AppendProperty(sb, nameof(IsArray), IsArray);
+            AppendProperty(sb, nameof(IsBoolean), IsBoolean);
+            AppendProperty(sb, nameof(IsString), IsString);
+            AppendProperty(sb, nameof(IsBytes), IsBytes);
+            AppendProperty(sb, nameof(IsDecimal), IsDecimal);
+            AppendProperty(sb, nameof(IsDouble), IsDouble);
+            AppendProperty(sb, nameof(IsFloat), IsFloat);
+            AppendProperty(sb, nameof(IsInt64), IsInt64);
+            AppendProperty(sb, nameof(IsUInt64), IsUInt64);
+            AppendProperty(sb, nameof(IsInteger), IsInteger);
+            AppendProperty(sb, nameof(IsGuid), IsGuid);
+            AppendProperty(sb, nameof(IsDateTime), IsDateTime);
+            AppendProperty(sb, nameof(IsTimeSpan), IsTimeSpan);
+            sb.AppendLine();
+            sb.Append("}");
             return sb.ToString();
         }
 
@@ -639,6 +661,16 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// <inheritdoc/>
         public object Clone() {
             return Copy();
+        }
+
+        /// <summary>
+        /// Convert to json
+        /// </summary>
+        /// <returns></returns>
+        public string AsString() {
+            var sb = new StringBuilder();
+            AppendTo(sb);
+            return sb.ToString();
         }
 
         /// <summary>
@@ -1787,10 +1819,10 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
                         // Values or object compare to string
                         if (xt == VariantValueType.Primitive && x.TryGetString(out var sx)) {
-                            return y.ToString() == sx;
+                            return y.AsString() == sx;
                         }
                         if (yt == VariantValueType.Primitive && y.TryGetString(out var sy)) {
-                            return x.ToString() == sy;
+                            return x.AsString() == sy;
                         }
                     }
                     return false;
@@ -1972,7 +2004,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
                 if (v.Type != VariantValueType.Primitive) {
                     if (y is string s) {
-                        return v.ToString() == s;
+                        return v.AsString() == s;
                     }
                     if (y is byte[] boy && v.Type == VariantValueType.Values) {
                         if (v.TryGetBytes(out var box)) {

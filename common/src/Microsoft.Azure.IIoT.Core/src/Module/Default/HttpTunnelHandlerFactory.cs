@@ -188,8 +188,8 @@ namespace Microsoft.Azure.IIoT.Module.Default {
                 using (var header = new MemoryStream())
                 using (var writer = new BinaryWriter(header)) {
                     // Serialize header (0)
-                    var headerBuffer = Encoding.UTF8.GetBytes(
-                        _outer._serializer.Serialize(tunnelRequest)).Zip();
+                    var headerBuffer =
+                        _outer._serializer.SerializeToBytes(tunnelRequest).ToArray().Zip();
 
                     writer.Write(headerBuffer.Length);
                     writer.Write(headerBuffer);

@@ -300,7 +300,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32FromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "UInt32",
                 Body = 123u
             }).ToString();
@@ -314,7 +314,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32ArrayFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "UInt32",
                 Body = new uint[] { 123u, 124u, 125u }
             }).ToString();
@@ -370,7 +370,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32FromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "uint32",
                 Body = 123u
             }).ToString();
@@ -384,7 +384,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32ArrayFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "UInt32",
                 body = new uint[] { 123u, 124u, 125u }
             }).ToString();
@@ -412,7 +412,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32FromVariantJsonStringTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 DataType = "UInt32",
                 Value = 123u
             }).ToString();
@@ -440,7 +440,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32MatrixFromStringJsonStringTypeUInt32() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new uint[,,] {
+            var str = _serializer.SerializeToString(new uint[,,] {
                 { { 123u, 124u, 125u }, { 123u, 124u, 125u }, { 123u, 124u, 125u } },
                 { { 123u, 124u, 125u }, { 123u, 124u, 125u }, { 123u, 124u, 125u } },
                 { { 123u, 124u, 125u }, { 123u, 124u, 125u }, { 123u, 124u, 125u } },
@@ -463,7 +463,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32MatrixFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "UInt32",
                 body = new uint[,,] {
                     { { 123u, 124u, 125u }, { 123u, 124u, 125u }, { 123u, 124u, 125u } },
@@ -489,7 +489,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32MatrixFromVariantJsonTokenTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "UInt32",
                 value = new uint[,,] {
                     { { 123u, 124u, 125u }, { 123u, 124u, 125u }, { 123u, 124u, 125u } },
@@ -515,7 +515,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32MatrixFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "UInt32",
                 body = new uint[,,] {
                     { { 123u, 124u, 125u }, { 123u, 124u, 125u }, { 123u, 124u, 125u } },
@@ -541,7 +541,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt32MatrixFromVariantJsonTokenTypeNullMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "UInt32",
                 value = new uint[,,] {
                     { { 123u, 124u, 125u }, { 123u, 124u, 125u }, { 123u, 124u, 125u } },

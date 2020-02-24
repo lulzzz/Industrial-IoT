@@ -58,7 +58,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
                 throw new ArgumentNullException(nameof(request));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "Browse_V2", _serializer.Serialize(new {
+                "Browse_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -81,7 +81,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
                 throw new ArgumentNullException(nameof(request.ContinuationToken));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "BrowseNext_V2", _serializer.Serialize(new {
+                "BrowseNext_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -105,7 +105,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
                 throw new ArgumentNullException(nameof(request.BrowsePaths));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "BrowsePath_V2", _serializer.Serialize(new {
+                "BrowsePath_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
                 throw new ArgumentException(nameof(request.Attributes));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "NodeRead_V2", _serializer.Serialize(new {
+                "NodeRead_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -151,7 +151,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
                 throw new ArgumentException(nameof(request.Attributes));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "NodeWrite_V2", _serializer.Serialize(new {
+                "NodeWrite_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -171,7 +171,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
                 throw new ArgumentNullException(nameof(request));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "ValueRead_V2", _serializer.Serialize(new {
+                "ValueRead_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -194,7 +194,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
                 throw new ArgumentNullException(nameof(request.Value));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "ValueWrite_V2", _serializer.Serialize(new {
+                "ValueWrite_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -214,7 +214,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
                 throw new ArgumentNullException(nameof(request));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "MethodMetadata_V2", _serializer.Serialize(new {
+                "MethodMetadata_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -234,7 +234,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
                 throw new ArgumentNullException(nameof(request));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "MethodCall_V2", _serializer.Serialize(new {
+                "MethodCall_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);

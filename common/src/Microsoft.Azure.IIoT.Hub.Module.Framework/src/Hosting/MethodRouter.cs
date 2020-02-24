@@ -302,10 +302,9 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                         _logger.Verbose(ex, "Method call error");
                         ex = _ef.Filter(ex, out var status);
                         throw new MethodCallStatusException(ex != null ?
-                           _serializer.Serialize(ex) : null, status);
+                           _serializer.SerializeToString(ex) : null, status);
                     }
-                    return Encoding.UTF8.GetBytes(
-                        _serializer.Serialize(tr.Result));
+                    return _serializer.SerializeToBytes(tr.Result).ToArray();
                 });
             }
 
@@ -325,7 +324,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                         _logger.Verbose(ex, "Method call error");
                         ex = _ef.Filter(ex, out var status);
                         throw new MethodCallStatusException(ex != null ?
-                            _serializer.Serialize(ex) : null, status);
+                            _serializer.SerializeToString(ex) : null, status);
                     }
                     return new byte[0];
                 });

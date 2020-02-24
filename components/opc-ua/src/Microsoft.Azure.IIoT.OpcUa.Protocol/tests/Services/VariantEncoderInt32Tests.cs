@@ -300,10 +300,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32FromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "Int32",
                 Body = -123
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(-123);
             var encoded = codec.Encode(variant);
@@ -314,10 +314,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32ArrayFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "Int32",
                 Body = new int[] { -123, -124, -125 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new int[] { -123, -124, -125 });
             var encoded = codec.Encode(variant);
@@ -370,10 +370,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32FromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "int32",
                 Body = -123
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(-123);
             var encoded = codec.Encode(variant);
@@ -384,10 +384,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32ArrayFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "Int32",
                 body = new int[] { -123, -124, -125 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new int[] { -123, -124, -125 });
             var encoded = codec.Encode(variant);
@@ -412,10 +412,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32FromVariantJsonStringTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 DataType = "Int32",
                 Value = -123
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(-123);
             var encoded = codec.Encode(variant);
@@ -440,12 +440,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32MatrixFromStringJsonStringTypeInt32() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new int[,,] {
+            var str = _serializer.SerializeToString(new int[,,] {
                 { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
                 { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
                 { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
                 { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Int32);
             var expected = new Variant(new int[,,] {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
@@ -463,7 +463,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32MatrixFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "Int32",
                 body = new int[,,] {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
@@ -471,7 +471,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new int[,,] {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
@@ -489,7 +489,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32MatrixFromVariantJsonTokenTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "Int32",
                 value = new int[,,] {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
@@ -497,7 +497,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new int[,,] {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
@@ -515,7 +515,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32MatrixFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "Int32",
                 body = new int[,,] {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
@@ -523,7 +523,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new int[,,] {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
@@ -541,7 +541,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt32MatrixFromVariantJsonTokenTypeNullMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "Int32",
                 value = new int[,,] {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
@@ -549,7 +549,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new int[,,] {
                     { { 123, -124, 125 }, { 123, -124, 125 }, { 123, -124, 125 } },

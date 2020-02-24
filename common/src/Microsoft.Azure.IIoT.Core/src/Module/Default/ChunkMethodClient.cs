@@ -63,7 +63,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
                     var length = Math.Min(buffer.Length - offset, _maxSize);
                     var chunk = buffer.AsSpan(offset, length).ToArray();
                     var result = await _client.CallMethodAsync(deviceId, moduleId,
-                        MethodNames.Call, _serializer.Serialize(offset == 0 ?
+                        MethodNames.Call, _serializer.SerializeToString(offset == 0 ?
                             new MethodChunkModel {
                                 Timeout = timeout,
                                 MethodName = method,
@@ -88,7 +88,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
                 // Receive all responses
                 while (!string.IsNullOrEmpty(handle)) {
                     var result = await _client.CallMethodAsync(deviceId, moduleId,
-                        MethodNames.Call, _serializer.Serialize(new MethodChunkModel {
+                        MethodNames.Call, _serializer.SerializeToString(new MethodChunkModel {
                             Handle = handle,
                         }), timeout, ct);
                     var response = _serializer.Deserialize<MethodChunkModel>(result);

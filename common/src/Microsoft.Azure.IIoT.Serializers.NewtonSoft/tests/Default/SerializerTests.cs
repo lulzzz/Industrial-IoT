@@ -121,7 +121,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [MemberData(nameof(GetEmptyArrays))]
         [MemberData(nameof(GetFilledArrays))]
         public void SerializerDeserializer(object o, Type type) {
-            var result = Serializer.Deserialize(Serializer.Serialize(o), type);
+            var result = Serializer.Deserialize(Serializer.SerializeToString(o), type);
             Assert.NotNull(result);
             Assert.Equal(o, result);
             Assert.Equal(o.GetType(), result.GetType());
@@ -130,7 +130,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [Theory]
         [MemberData(nameof(GetNulls))]
         public void SerializerDeserializerNullable(Type type) {
-            var result = Serializer.Deserialize(Serializer.Serialize(null), type);
+            var result = Serializer.Deserialize(Serializer.SerializeToString(null), type);
             Assert.Null(result);
         }
 
@@ -179,8 +179,8 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [Theory]
         [MemberData(nameof(GetVariantValueAndValue))]
         public void SerializerSerialzeValueToStringAndCompare(VariantValue v, object o) {
-            var actual = Serializer.Serialize(v);
-            var expected = Serializer.Serialize(o);
+            var actual = Serializer.SerializeToString(v);
+            var expected = Serializer.SerializeToString(o);
 
             Assert.Equal(expected, actual);
         }
@@ -191,7 +191,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             var expected = JsonConvert.SerializeObject(
                 o == null ? JValue.CreateNull() : JToken.FromObject(o),
                 new NewtonSoftJsonSerializer().Settings);
-            var actual = Serializer.Serialize(v);
+            var actual = Serializer.SerializeToString(v);
 
             Assert.Equal(expected, actual);
         }
@@ -201,7 +201,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         public void JsonConvertRawAndStringCompare(VariantValue v, object o) {
             var expected = JsonConvert.SerializeObject(o,
                 new NewtonSoftJsonSerializer().Settings);
-            var actual = Serializer.Serialize(v);
+            var actual = Serializer.SerializeToString(v);
 
             Assert.Equal(expected, actual);
         }
@@ -210,7 +210,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [MemberData(nameof(GetVariantValues))]
         public void SerializerStringParse(VariantValue v) {
             var expected = v;
-            var json = Serializer.Serialize(v);
+            var json = Serializer.SerializeToString(v);
             var actual = Serializer.Parse(json);
 
             Assert.True(expected.Equals(actual));
@@ -257,7 +257,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [Fact]
         public void SerializeEndpointString1() {
             var expected = "Endpoint";
-            var json = Serializer.Serialize(expected);
+            var json = Serializer.SerializeToString(expected);
             var actual = Serializer.Parse(json);
             VariantValue expected1 = "Endpoint";
 
@@ -271,7 +271,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [Fact]
         public void SerializeEndpointString2() {
             VariantValue expected = "Endpoint";
-            var json = Serializer.Serialize(expected);
+            var json = Serializer.SerializeToString(expected);
             var actual = Serializer.Parse(json);
             var expected1 = "Endpoint";
 

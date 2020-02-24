@@ -488,7 +488,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Services {
                     return discovery;
                 });
             await Task.Run(() => _events.SendJsonEventsAsync(
-                messages.Select(message => _serializer.Serialize(message)),
+                messages.Select(message => _serializer.SerializeToString(message)),
                     Registry.Models.MessageSchemaTypes.DiscoveryEvents), ct);
             _logger.Information("{count} results uploaded.", discovered.Count);
         }

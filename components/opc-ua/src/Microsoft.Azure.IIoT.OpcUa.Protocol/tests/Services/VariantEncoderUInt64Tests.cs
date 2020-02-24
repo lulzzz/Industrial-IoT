@@ -300,10 +300,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64FromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "UInt64",
                 Body = 123Lu
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Variant);
             var expected = new Variant(123Lu);
             var encoded = codec.Encode(variant);
@@ -314,10 +314,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64ArrayFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "UInt64",
                 Body = new ulong[] { 123Lu, 124Lu, 125Lu }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Variant);
             var expected = new Variant(new ulong[] { 123Lu, 124Lu, 125Lu });
             var encoded = codec.Encode(variant);
@@ -370,10 +370,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64FromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "uint64",
                 Body = 123Lu
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Null);
             var expected = new Variant(123Lu);
             var encoded = codec.Encode(variant);
@@ -384,10 +384,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64ArrayFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "UInt64",
                 body = new ulong[] { 123Lu, 124Lu, 125Lu }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Null);
             var expected = new Variant(new ulong[] { 123Lu, 124Lu, 125Lu });
             var encoded = codec.Encode(variant);
@@ -412,10 +412,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64FromVariantJsonStringTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 DataType = "UInt64",
                 Value = 123Lu
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Variant);
             var expected = new Variant(123Lu);
             var encoded = codec.Encode(variant);
@@ -440,13 +440,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64MatrixFromStringJsonTypeUInt64() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new ulong[,,] {
+            var str = _serializer.SerializeToString(new ulong[,,] {
                 { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
                 { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
                 { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
                 { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } }
             }
-            ).ToString();
+            );
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.UInt64);
             var expected = new Variant(new ulong[,,] {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
@@ -464,7 +464,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64MatrixFromVariantJsonTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "UInt64",
                 body = new ulong[,,] {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
@@ -472,7 +472,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Variant);
             var expected = new Variant(new ulong[,,] {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
@@ -490,7 +490,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64MatrixFromVariantJsonTokenTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "UInt64",
                 value = new ulong[,,] {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
@@ -498,7 +498,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Variant);
             var expected = new Variant(new ulong[,,] {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
@@ -516,7 +516,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64MatrixFromVariantJsonTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "UInt64",
                 body = new ulong[,,] {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
@@ -524,7 +524,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Null);
             var expected = new Variant(new ulong[,,] {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
@@ -542,7 +542,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt64MatrixFromVariantJsonTokenTypeNullMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "UInt64",
                 value = new ulong[,,] {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
@@ -550,7 +550,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Null);
             var expected = new Variant(new ulong[,,] {
                     { { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu }, { 123Lu, 124Lu, 125Lu } },

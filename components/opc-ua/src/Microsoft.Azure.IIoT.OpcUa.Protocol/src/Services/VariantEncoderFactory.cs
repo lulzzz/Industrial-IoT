@@ -118,7 +118,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                 //
                 // Decode json to a real variant
                 //
-                using (var text = new StringReader(json.ToString()))
+                using (var text = new StringReader(Serializer.SerializeToString(json)))
                 using (var reader = new Newtonsoft.Json.JsonTextReader(text))
                 using (var decoder = new JsonDecoderEx(reader, Context)) {
                     return decoder.ReadVariant(nameof(value));
@@ -140,7 +140,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     return value;
                 }
 
-                var asString = value.IsString ? (string)value : value.ToString();
+                if (!value.TryGetString(out var asString, true)) {
+                    asString = Serializer.SerializeToString(value);
+                }
+
                 if (!value.IsObject && !value.IsListOfValues && !value.IsString) {
                     //
                     // If this should be a string - return as such

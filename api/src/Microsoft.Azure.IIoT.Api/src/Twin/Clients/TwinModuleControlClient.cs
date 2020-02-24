@@ -220,7 +220,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             }
             var sw = Stopwatch.StartNew();
             var result = await _client.CallMethodAsync(endpointId, null, service,
-                _serializer.Serialize(request));
+                _serializer.SerializeToString(request));
             _logger.Debug("Twin call '{service}' took {elapsed} ms)!",
                 service, sw.ElapsedMilliseconds);
             return _serializer.Deserialize<R>(result);

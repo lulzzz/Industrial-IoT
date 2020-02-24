@@ -66,7 +66,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
                 }
             }
             var response = await processor.ProcessAsync(handler, request);
-            return Encoding.UTF8.GetBytes(_serializer.Serialize(response));
+            return _serializer.SerializeToBytes(response).ToArray();
         }
 
         /// <summary>

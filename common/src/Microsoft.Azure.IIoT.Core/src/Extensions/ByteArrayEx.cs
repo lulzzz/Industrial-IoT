@@ -92,7 +92,6 @@ namespace System {
             return bytes.Take(length).All(x => x > 32 || x <= 127);
         }
 
-
         /// <summary>
         /// Zip string to byte array
         /// </summary>

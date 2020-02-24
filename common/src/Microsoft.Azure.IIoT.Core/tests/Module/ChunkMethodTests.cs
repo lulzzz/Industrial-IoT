@@ -25,11 +25,11 @@ namespace Microsoft.Azure.IIoT.Module {
 
             var expectedMethod = fixture.Create<string>();
             var expectedContentType = fixture.Create<string>();
-            var expectedRequest = _serializer.Serialize(new {
+            var expectedRequest = _serializer.SerializeToString(new {
                 test1 = fixture.Create<string>(),
                 test2 = fixture.Create<long>()
             });
-            var expectedResponse = _serializer.Serialize(new {
+            var expectedResponse = _serializer.SerializeToString(new {
                 test1 = fixture.Create<byte[]>(),
                 test2 = fixture.Create<string>()
             });

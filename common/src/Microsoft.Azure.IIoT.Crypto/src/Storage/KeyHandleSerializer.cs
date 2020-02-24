@@ -26,7 +26,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Storage {
         /// <inheritdoc/>
         public byte[] SerializeHandle(KeyHandle handle) {
             if (handle is KeyId id) {
-                return Encoding.UTF8.GetBytes(_serializer.Serialize(id));
+                return _serializer.SerializeToBytes(id).ToArray();
             }
             throw new ArgumentException("Bad handle type");
         }
@@ -36,8 +36,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Storage {
             if (token == null) {
                 return null;
             }
-            return _serializer.Deserialize<KeyId>(
-                Encoding.UTF8.GetString(token));
+            return _serializer.Deserialize<KeyId>(token);
         }
 
         private readonly ISerializer _serializer;

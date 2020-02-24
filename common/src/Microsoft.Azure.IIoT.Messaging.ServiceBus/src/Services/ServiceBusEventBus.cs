@@ -47,9 +47,7 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
         /// <inheritdoc/>
         public async Task PublishAsync<T>(T message) {
 
-            var jsonMessage = _serializer.Serialize(message);
-            var body = Encoding.UTF8.GetBytes(jsonMessage);
-
+            var body = _serializer.SerializeToBytes(message).ToArray();
             var client = await _factory.CreateOrGetTopicClientAsync();
             await client.SendAsync(new Message {
                 MessageId = Guid.NewGuid().ToString(),

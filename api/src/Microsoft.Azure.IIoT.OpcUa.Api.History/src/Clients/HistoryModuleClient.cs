@@ -61,7 +61,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Clients {
                 throw new ArgumentNullException(nameof(request.Details));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "HistoryRead_V2", _serializer.Serialize(new {
+                "HistoryRead_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -85,7 +85,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Clients {
                 throw new ArgumentNullException(nameof(request.ContinuationToken));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "HistoryReadNext_V2", _serializer.Serialize(new {
+                "HistoryReadNext_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Clients {
                 throw new ArgumentNullException(nameof(request.Details));
             }
             var response = await _methodClient.CallMethodAsync(_deviceId, _moduleId,
-                "HistoryUpdate_V2", _serializer.Serialize(new {
+                "HistoryUpdate_V2", _serializer.SerializeToString(new {
                     endpoint,
                     request
                 }), null, ct);

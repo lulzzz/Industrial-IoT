@@ -72,7 +72,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Deploy {
             }
 
             // Configure create options per os specified
-            var createOptions = _serializer.Serialize(new {
+            var createOptions = _serializer.SerializeToString(new {
                 Hostname = "opcpublisher",
                 Cmd = new[] {
                     "--aa"

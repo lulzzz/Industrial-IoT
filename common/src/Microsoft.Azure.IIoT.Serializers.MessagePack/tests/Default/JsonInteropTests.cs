@@ -125,7 +125,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         public void SerializerArrayVariant(object o, Type type) {
             var t = type.MakeArrayType();
             var expected = Json.FromArray(o, o, o);
-            var result = MsgPack.Parse(MsgPack.Serialize(expected));
+            var result = MsgPack.Parse(MsgPack.SerializeToString(expected));
             Assert.True(result.IsArray);
             Assert.True(result.Count == 3);
             Assert.Equal(expected.GetTypeCode(), result.GetTypeCode());
@@ -140,7 +140,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         public void SerializerArrayVariantToObject(object o, Type type) {
             var t = type.MakeArrayType();
             var expected = Json.FromArray(o, o, o);
-            var result = MsgPack.Parse(MsgPack.Serialize(expected.ConvertTo(type.MakeArrayType())));
+            var result = MsgPack.Parse(MsgPack.SerializeToString(expected.ConvertTo(type.MakeArrayType())));
 
             Assert.True(result.IsArray);
             Assert.True(result.Count == 3);

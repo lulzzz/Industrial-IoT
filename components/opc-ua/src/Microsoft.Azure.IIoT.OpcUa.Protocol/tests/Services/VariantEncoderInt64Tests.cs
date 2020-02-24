@@ -300,10 +300,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64FromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "Int64",
                 Body = -123
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(-123L);
             var encoded = codec.Encode(variant);
@@ -314,10 +314,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64ArrayFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "Int64",
                 Body = new long[] { -123, -124, -125 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new long[] { -123, -124, -125 });
             var encoded = codec.Encode(variant);
@@ -370,10 +370,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64FromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "int64",
                 Body = -123
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(-123L);
             var encoded = codec.Encode(variant);
@@ -384,10 +384,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64ArrayFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "Int64",
                 body = new long[] { -123, -124, -125 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new long[] { -123, -124, -125 });
             var encoded = codec.Encode(variant);
@@ -412,10 +412,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64FromVariantJsonStringTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 DataType = "Int64",
                 Value = -123
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(-123L);
             var encoded = codec.Encode(variant);
@@ -440,12 +440,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64MatrixFromStringJsonTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new long[,,] {
+            var str = _serializer.SerializeToString(new long[,,] {
                 { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                 { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                 { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                 { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
@@ -463,12 +463,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64MatrixFromStringJsonTypeInt64() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new long[,,] {
+            var str = _serializer.SerializeToString(new long[,,] {
                 { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                 { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                 { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                 { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Int64);
             var expected = new Variant(new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
@@ -486,7 +486,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64MatrixFromVariantJsonTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "Int64",
                 body = new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
@@ -494,7 +494,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
@@ -512,7 +512,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64MatrixFromVariantJsonTokenTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "Int64",
                 value = new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
@@ -520,7 +520,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
@@ -538,7 +538,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64MatrixFromVariantJsonTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "Int64",
                 body = new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
@@ -546,7 +546,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
@@ -564,7 +564,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeInt64MatrixFromVariantJsonTokenTypeNullMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "Int64",
                 value = new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
@@ -572,7 +572,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new long[,,] {
                     { { 123L, -124L, -125L }, { 123L, -124L, -125L }, { 123L, -124L, -125L } },

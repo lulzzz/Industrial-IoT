@@ -277,10 +277,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "String",
                 Body = ""
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant("");
             var encoded = codec.Encode(variant);
@@ -291,10 +291,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringArrayFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "String",
                 Body = new string[] { "", "", "" }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new string[] { "", "", "" });
             var encoded = codec.Encode(variant);
@@ -347,10 +347,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "string",
                 Body = ""
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant("");
             var encoded = codec.Encode(variant);
@@ -361,10 +361,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringArrayFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "String",
                 body = new string[] { "", "", "" }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new string[] { "", "", "" });
             var encoded = codec.Encode(variant);
@@ -389,10 +389,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringFromVariantJsonStringTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 DataType = "String",
                 Value = ""
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant("");
             var encoded = codec.Encode(variant);
@@ -417,12 +417,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringMatrixFromStringJsonTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new string[,,] {
+            var str = _serializer.SerializeToString(new string[,,] {
                 { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                 { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                 { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                 { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
@@ -440,12 +440,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringMatrixFromStringJsonTypeString() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new string[,,] {
+            var str = _serializer.SerializeToString(new string[,,] {
                 { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                 { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                 { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                 { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.String);
             var expected = new Variant(new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
@@ -463,7 +463,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringMatrixFromVariantJsonTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "String",
                 body = new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
@@ -471,7 +471,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
@@ -489,7 +489,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringMatrixFromVariantJsonTokenTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "String",
                 value = new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
@@ -497,7 +497,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
@@ -515,7 +515,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringMatrixFromVariantJsonTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "String",
                 body = new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
@@ -523,7 +523,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
@@ -541,7 +541,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeStringMatrixFromVariantJsonTokenTypeNullMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "String",
                 value = new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
@@ -549,7 +549,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new string[,,] {
                     { { "test", "zhf", "33" }, { "test", "zhf", "33" }, { "test", "zhf", "33" } },

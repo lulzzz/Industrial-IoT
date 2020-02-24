@@ -16,17 +16,17 @@ namespace Microsoft.Azure.IIoT.Serializers {
     public static class SerializerEx {
 
         /// <summary>
-        /// Serialize to string
+        /// Serialize to byte array
         /// </summary>
         /// <param name="serializer"></param>
         /// <param name="o"></param>
         /// <param name="format"></param>
-        public static string Serialize(this ISerializer serializer,
-            object o, SerializeOption format = SerializeOption.None) {
+        public static ReadOnlySpan<byte> SerializeToBytes(
+            this ISerializer serializer, object o,
+            SerializeOption format = SerializeOption.None) {
             var writer = new ArrayBufferWriter<byte>();
             serializer.Serialize(writer, o, format);
-            return serializer.ContentEncoding?.GetString(writer.WrittenSpan)
-                ?? Convert.ToBase64String(writer.WrittenSpan);
+            return writer.WrittenSpan;
         }
 
         /// <summary>
@@ -34,9 +34,32 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// </summary>
         /// <param name="serializer"></param>
         /// <param name="a"></param>
-        public static string SerializeArray(this ISerializer serializer,
-            params object[] a) {
-            return serializer.Serialize(a);
+        public static ReadOnlySpan<byte> SerializeArrayToBytes(
+            this ISerializer serializer, params object[] a) {
+            return serializer.SerializeToBytes(a);
+        }
+
+        /// <summary>
+        /// Serialize to string
+        /// </summary>
+        /// <param name="serializer"></param>
+        /// <param name="o"></param>
+        /// <param name="format"></param>
+        public static string SerializeToString(this ISerializer serializer,
+            object o, SerializeOption format = SerializeOption.None) {
+            var span = serializer.SerializeToBytes(o, format);
+            return serializer.ContentEncoding?.GetString(span)
+                ?? Convert.ToBase64String(span);
+        }
+
+        /// <summary>
+        /// Serialize to string
+        /// </summary>
+        /// <param name="serializer"></param>
+        /// <param name="a"></param>
+        public static string SerializeArrayToString(
+            this ISerializer serializer, params object[] a) {
+            return serializer.SerializeToString(a);
         }
 
         /// <summary>
@@ -51,7 +74,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (request == null) {
                 throw new ArgumentNullException(nameof(request));
             }
-            request.SetStringContent(serializer.Serialize(o));
+            request.SetStringContent(serializer.SerializeToString(o));
         }
 
         /// <summary>
@@ -74,7 +97,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// <returns></returns>
         public static string SerializePretty(
             this ISerializer serializer, object o) {
-            return serializer.Serialize(o, SerializeOption.Indented);
+            return serializer.SerializeToString(o, SerializeOption.Indented);
         }
 
         /// <summary>
@@ -85,7 +108,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// <returns></returns>
         public static string SerializeArrayPretty(
             this ISerializer serializer, params object[] a) {
-            return serializer.Serialize(a, SerializeOption.Indented);
+            return serializer.SerializeToString(a, SerializeOption.Indented);
         }
 
         /// <summary>
@@ -100,6 +123,18 @@ namespace Microsoft.Azure.IIoT.Serializers {
             var buffer = serializer.ContentEncoding?.GetBytes(str)
                 ?? Convert.FromBase64String(str);
             return serializer.Deserialize(buffer, type);
+        }
+
+        /// <summary>
+        /// Deserialize from reader
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serializer"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public static T Deserialize<T>(this ISerializer serializer,
+            ReadOnlyMemory<byte> buffer) {
+            return (T)serializer.Deserialize(buffer, typeof(T));
         }
 
         /// <summary>
@@ -186,7 +221,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (model == null) {
                 return default;
             }
-            return serializer.Deserialize<T>(serializer.Serialize(model));
+            return serializer.Deserialize<T>(serializer.SerializeToString(model));
         }
     }
 }

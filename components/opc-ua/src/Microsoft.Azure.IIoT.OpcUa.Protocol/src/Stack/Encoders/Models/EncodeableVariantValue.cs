@@ -46,7 +46,7 @@ namespace Opc.Ua.Encoders {
 
         /// <inheritdoc/>
         public void Encode(IEncoder encoder) {
-            encoder.WriteString(nameof(Value), _serializer.Serialize(Value));
+            encoder.WriteString(nameof(Value), _serializer.SerializeToString(Value));
         }
 
         /// <inheritdoc/>

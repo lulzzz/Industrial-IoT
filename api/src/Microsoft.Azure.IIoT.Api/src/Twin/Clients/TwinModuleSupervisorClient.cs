@@ -218,7 +218,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             var deviceId = SupervisorModelEx.ParseDeviceId(registration.SupervisorId,
                 out var moduleId);
             var result = await _client.CallMethodAsync(deviceId, moduleId, service,
-                _serializer.Serialize(new {
+                _serializer.SerializeToString(new {
                     endpoint = registration.Endpoint,
                     request
                 }));

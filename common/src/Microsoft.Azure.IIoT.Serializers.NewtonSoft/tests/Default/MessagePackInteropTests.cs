@@ -123,7 +123,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
         public void SerializerArrayVariant(object o, Type type) {
             var t = type.MakeArrayType();
             var expected = MsgPack.FromArray(o, o, o);
-            var actual = Json.Parse(Json.Serialize(expected));
+            var actual = Json.Parse(Json.SerializeToString(expected));
             Assert.True(actual.IsArray);
             Assert.True(actual.Count == 3);
             Assert.Equal(expected.GetTypeCode(), actual.GetTypeCode());
@@ -136,7 +136,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
         public void SerializerByteArrayVariantToObject() {
             var expected = MsgPack.FromArray((byte)1, (byte)2, (byte)3);
             var o1 = expected.ConvertTo<byte[]>();
-            var json = Json.Serialize(o1);
+            var json = Json.SerializeToString(o1);
             var actual = Json.Parse(json);
 
             Assert.True(actual.IsBytes);
@@ -156,7 +156,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             var t = type.MakeArrayType();
             var expected = MsgPack.FromArray(o, o, o);
             var o1 = expected.ConvertTo(type.MakeArrayType());
-            var json = Json.Serialize(o1);
+            var json = Json.SerializeToString(o1);
             var actual = Json.Parse(json);
 
             Assert.True(actual.IsArray);

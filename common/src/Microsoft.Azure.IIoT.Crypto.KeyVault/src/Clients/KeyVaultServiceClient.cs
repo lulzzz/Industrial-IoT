@@ -565,7 +565,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
                 if (store?.Exportable ?? false) {
                     // Store key as json web key secret so we can export it
                     var secretBundle = await _keyVaultClient.SetSecretAsync(_vaultBaseUrl,
-                        name, _serializer.Serialize(key.ToJsonWebKey()),
+                        name, _serializer.SerializeToString(key.ToJsonWebKey()),
                         null, ContentMimeType.Json,
                         new SecretAttributes {
                             Enabled = true,

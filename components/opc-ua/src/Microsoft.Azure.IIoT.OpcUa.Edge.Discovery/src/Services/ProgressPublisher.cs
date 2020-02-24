@@ -51,7 +51,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Services {
         /// <returns></returns>
         private Task SendAsync(DiscoveryProgressModel progress) {
             return Try.Async(() => _events.SendJsonEventAsync(
-                _serializer.Serialize(progress),
+                _serializer.SerializeToString(progress),
                 Registry.Models.MessageSchemaTypes.DiscoveryMessage));
         }
 

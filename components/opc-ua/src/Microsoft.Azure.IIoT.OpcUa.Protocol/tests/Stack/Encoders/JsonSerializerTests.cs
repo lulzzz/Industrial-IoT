@@ -19,7 +19,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteQualifiedName() {
             var expected = new QualifiedName("hello");
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<QualifiedName>(json);
             Assert.Equal(expected, result);
         }
@@ -33,7 +33,7 @@ namespace Opc.Ua.Encoders {
                 new QualifiedName("bla", 0),
                 };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<QualifiedName[]>(json);
             Assert.Equal(expected, result);
         }
@@ -42,7 +42,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteDataValue1() {
             var expected = new DataValue(new Variant("hello"), StatusCodes.Good, DateTime.UtcNow);
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<DataValue>(json);
             Assert.Equal(expected, result);
         }
@@ -51,7 +51,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteDataValue2() {
             var expected = new DataValue(new Variant("hello"), StatusCodes.Good, DateTime.UtcNow);
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<DataValue>(json);
             Assert.Equal(expected, result);
         }
@@ -60,7 +60,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteDataValue3() {
             var expected = new DataValue(new Variant(new byte[30]), StatusCodes.Good, DateTime.UtcNow, DateTime.UtcNow);
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<DataValue>(json);
             Assert.Equal(expected, result);
         }
@@ -69,7 +69,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteDataValue4() {
             var expected = new DataValue(StatusCodes.BadAggregateInvalidInputs, DateTime.UtcNow);
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<DataValue>(json);
             Assert.Equal(expected, result);
         }
@@ -78,7 +78,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteDataValueNull() {
             DataValue expected = null;
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<DataValue>(json);
             Assert.Equal(expected, result);
         }
@@ -92,7 +92,7 @@ namespace Opc.Ua.Encoders {
                 new DataValue(new Variant("bla"), StatusCodes.BadAggregateListMismatch, DateTime.UtcNow, DateTime.UtcNow)
                 };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<DataValue[]>(json);
             Assert.Equal(expected, result);
         }
@@ -102,7 +102,7 @@ namespace Opc.Ua.Encoders {
             var expected = new LocalizedText("hello");
 
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<LocalizedText>(json);
             Assert.Equal(expected, result);
         }
@@ -111,7 +111,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteLocalizedText2() {
             var expected = new LocalizedText(CultureInfo.CurrentCulture.Name, "hello");
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<LocalizedText>(json);
             Assert.Equal(expected, result);
         }
@@ -120,7 +120,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteLocalizedTextNull() {
             LocalizedText expected = null;
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<LocalizedText>(json);
             Assert.Equal(expected, result);
         }
@@ -134,7 +134,7 @@ namespace Opc.Ua.Encoders {
                 new LocalizedText("I am"),
                 };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<LocalizedText[]>(json);
             Assert.Equal(expected, result);
         }
@@ -148,7 +148,7 @@ namespace Opc.Ua.Encoders {
                 new LocalizedText(CultureInfo.CurrentCulture.Name, "I am"),
                 };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<LocalizedText[]>(json);
             Assert.Equal(expected, result);
         }
@@ -157,7 +157,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteUUID() {
             var expected = new Uuid(Guid.NewGuid().ToString());
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Uuid>(json);
             Assert.Equal(expected, result);
         }
@@ -166,7 +166,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteNullableUUID() {
             Uuid? expected = new Uuid(Guid.NewGuid().ToString());
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Uuid?>(json);
             Assert.Equal(expected, result);
         }
@@ -175,7 +175,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteNullableUUIDWithNull() {
             Uuid? expected = null;
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Uuid?>(json);
             Assert.Equal(expected, result);
         }
@@ -184,7 +184,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteStatusCode() {
             var expected = new StatusCode(StatusCodes.BadAggregateInvalidInputs);
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<StatusCode>(json);
             Assert.Equal(expected, result);
         }
@@ -193,7 +193,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteNullableStatusCode() {
             StatusCode? expected = new StatusCode(StatusCodes.BadAggregateInvalidInputs);
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<StatusCode?>(json);
             Assert.Equal(expected, result);
         }
@@ -202,7 +202,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteNullableStatusCodeWithNull() {
             StatusCode? expected = null;
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<StatusCode?>(json);
             Assert.Equal(expected, result);
         }
@@ -214,7 +214,7 @@ namespace Opc.Ua.Encoders {
                 ArrayDimensions = new uint[0]
             };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Argument>(json);
             Assert.True(result.IsEqual(expected));
         }
@@ -232,7 +232,7 @@ namespace Opc.Ua.Encoders {
                     new NodeId(23), 1, "dfad  sdafdfdf  fasdf") { ArrayDimensions = new uint[0] }
             };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Argument[]>(json);
             for (var i = 0; i < result.Length; i++) {
                 Assert.True(result[i].IsEqual(expected[i]));
@@ -243,7 +243,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteStringVariant() {
             var expected = new Variant("5");
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Variant>(json);
             Assert.Equal(expected, result);
         }
@@ -252,7 +252,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteUintVariant() {
             var expected = new Variant((uint)99);
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Variant>(json);
             Assert.Equal(expected, result);
         }
@@ -261,7 +261,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteNullableVariant() {
             Variant? expected = new Variant("5");
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Variant?>(json);
             Assert.Equal(expected, result);
         }
@@ -270,7 +270,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteNullableVariantWithNull() {
             Variant? expected = null;
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Variant?>(json);
             Assert.Equal(expected, result);
         }
@@ -279,7 +279,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteStringArrayVariant() {
             var expected = new Variant(new string[] { "1", "2", "3", "4", "5" });
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Variant>(json);
             Assert.Equal(expected, result);
         }
@@ -288,7 +288,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteByteStringVariant() {
             var expected = new Variant(new byte[] { 1, 2, 3, 4, 5, 6 });
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Variant>(json);
             Assert.Equal(expected, result);
         }
@@ -299,7 +299,7 @@ namespace Opc.Ua.Encoders {
                 { 1, 1, 1, 1 }, { 2, 2, 2, 2 }, { 3, 3, 3, 3 }, { 4, 4, 4, 4 }
             });
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Variant>(json);
             Assert.True(expected.Value is Matrix);
             Assert.True(result.Value is Matrix);
@@ -319,7 +319,7 @@ namespace Opc.Ua.Encoders {
                 { { "1", "1", "1" }, { "2", "2", "2" }, { "3", "3", "3" } }
             });
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Variant>(json);
             Assert.True(expected.Value is Matrix);
             Assert.True(result.Value is Matrix);
@@ -336,7 +336,7 @@ namespace Opc.Ua.Encoders {
                 new Variant(new string[] {"1", "2", "3", "4", "5" })
             };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<VariantCollection>(json);
             Assert.Equal(expected, result);
         }
@@ -350,7 +350,7 @@ namespace Opc.Ua.Encoders {
                 new Variant(new string[] {"1", "2", "3", "4", "5" })
             };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<Variant[]>(json);
             Assert.Equal(expected, result);
         }
@@ -366,7 +366,7 @@ namespace Opc.Ua.Encoders {
             expected.SetAttribute(Attributes.Description, new LocalizedText("test"));
             expected.SetAttribute(Attributes.DataType, new NodeId(Guid.NewGuid()));
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<NodeAttributeSet>(json);
             Assert.True(expected.IsEqual(result));
         }
@@ -399,7 +399,7 @@ namespace Opc.Ua.Encoders {
             na3.SetAttribute(Attributes.DataType, new NodeId(Guid.NewGuid()));
             var expected = new[] { na1, na2, na3 };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<NodeAttributeSet[]>(json);
             Assert.True(expected.SetEqualsSafe(result, Utils.IsEqual));
         }
@@ -408,7 +408,7 @@ namespace Opc.Ua.Encoders {
         public void ReadWriteNodeAttributeSetNull() {
             NodeAttributeSet expected = null;
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<NodeAttributeSet>(json);
             Assert.Equal(expected, result);
         }
@@ -461,7 +461,7 @@ namespace Opc.Ua.Encoders {
                 LastTransitionTime = DateTime.UtcNow - TimeSpan.FromDays(23)
             };
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<ProgramDiagnostic2DataType>(json);
             Assert.True(result.IsEqual(expected));
         }
@@ -515,7 +515,7 @@ namespace Opc.Ua.Encoders {
             };
             var expected = new ExtensionObject(type);
 
-            var json = _serializer.Serialize(expected);
+            var json = _serializer.SerializeToString(expected);
             var result = _serializer.Deserialize<ExtensionObject>(json);
             Assert.Equal(result, expected);
         }

@@ -119,7 +119,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
         [MemberData(nameof(GetEmptyArrays))]
         [MemberData(nameof(GetFilledArrays))]
         public void SerializerDeserializer(object o, Type type) {
-            var result = Serializer.Deserialize(Serializer.Serialize(o), type);
+            var result = Serializer.Deserialize(Serializer.SerializeToString(o), type);
             Assert.NotNull(result);
             Assert.Equal(o, result);
             Assert.Equal(o.GetType(), result.GetType());
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
         [Theory]
         [MemberData(nameof(GetNulls))]
         public void SerializerDeserializerNullable(Type type) {
-            var result = Serializer.Deserialize(Serializer.Serialize(null), type);
+            var result = Serializer.Deserialize(Serializer.SerializeToString(null), type);
             Assert.Null(result);
         }
 
@@ -177,8 +177,8 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
         [Theory]
         [MemberData(nameof(GetVariantValueAndValue))]
         public void SerializerSerializeValueToStringAndCompare(VariantValue v, object o) {
-            var actual = Serializer.Serialize(v);
-            var expected = Serializer.Serialize(o);
+            var actual = Serializer.SerializeToString(v);
+            var expected = Serializer.SerializeToString(o);
 
             Assert.Equal(expected, actual);
         }
@@ -187,7 +187,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
         [MemberData(nameof(GetVariantValues))]
         public void SerializerStringParse(VariantValue v) {
             var expected = v;
-            var encstr = Serializer.Serialize(v);
+            var encstr = Serializer.SerializeToString(v);
             var actual = Serializer.Parse(encstr);
 
             Assert.Equal(expected, actual);

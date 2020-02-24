@@ -107,11 +107,12 @@ namespace Microsoft.Azure.IIoT.Hub.Mock {
 
         /// <inheritdoc/>
         public Task SendAsync(string deviceId, string moduleId, EventModel message) {
+            var payload = _serializer.SerializeToBytes(message.Payload).ToArray();
             var ev = new EventMessage {
                 DeviceId = deviceId,
                 ModuleId = moduleId,
                 EnqueuedTimeUtc = DateTime.UtcNow,
-                Message = new Message(Encoding.UTF8.GetBytes(message.Payload.ToString()))
+                Message = new Message(payload)
             };
             foreach (var item in message.Properties) {
                 ev.Message.Properties.Add(item.Key, item.Value);

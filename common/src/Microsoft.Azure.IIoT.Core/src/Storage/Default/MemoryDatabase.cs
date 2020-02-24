@@ -216,9 +216,10 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
             /// <param name="newDoc"></param>
             private void AddDocument<T>(Document<T> newDoc) {
                 const int kMaxDocSize = 2 * 1024 * 1024;  // 2 meg like in cosmos
-                var size = newDoc.Size;
-                if (newDoc.Size > kMaxDocSize) {
-                    throw new ResourceTooLargeException(newDoc.ToString(), size, kMaxDocSize);
+                var bytes = _outer._serializer.SerializeToBytes(newDoc.Value);
+                if (bytes.Length > kMaxDocSize) {
+                    throw new ResourceTooLargeException(newDoc.ToString(),
+                        bytes.Length, kMaxDocSize);
                 }
                 _data.Add(newDoc.Id, newDoc);
 #if LOG_VERBOSE
@@ -326,12 +327,6 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
             /// Wraps a document value
             /// </summary>
             private abstract class MemoryDocument : IDocumentInfo<VariantValue> {
-
-                /// <summary>
-                /// Returns the size of the document
-                /// </summary>
-                public int Size => Encoding.UTF8.GetByteCount(Value.ToString());
-                // TODO: serialize and get number of resulting bytes
 
                 /// <summary>
                 /// Create memory document

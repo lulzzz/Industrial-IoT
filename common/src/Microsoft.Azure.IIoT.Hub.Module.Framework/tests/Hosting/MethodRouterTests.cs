@@ -37,7 +37,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
 
                 var response = await hub.CallMethodAsync(device, module, new MethodParameterModel {
                     Name = "Test1_V1",
-                    JsonPayload = _serializer.Serialize(expected)
+                    JsonPayload = _serializer.SerializeToString(expected)
                 });
 
                 var returned = _serializer.Deserialize<TestModel>(response.JsonPayload);
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
 
                 var response = await hub.CallMethodAsync(device, module, new MethodParameterModel {
                     Name = "Test2_V1",
-                    JsonPayload = _serializer.Serialize(buffer)
+                    JsonPayload = _serializer.SerializeToString(buffer)
                 });
 
                 var returned = _serializer.Deserialize<byte[]>(response.JsonPayload);
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
 
                 var response = await hub.CallMethodAsync(device, module, new MethodParameterModel {
                     Name = "Test3_V1",
-                    JsonPayload = _serializer.Serialize(new {
+                    JsonPayload = _serializer.SerializeToString(new {
                         request = buffer,
                         value = 55
                     })
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
 
                 var response = await hub.CallMethodAsync(device, module, new MethodParameterModel {
                     Name = "Test3_v2",
-                    JsonPayload = _serializer.Serialize(new {
+                    JsonPayload = _serializer.SerializeToString(new {
                         request = buffer,
                         value = expected
                     })
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
 
                 var response = await hub.CallMethodAsync(device, module, new MethodParameterModel {
                     Name = "TestNoParameters_V1",
-                    JsonPayload = _serializer.Serialize(null)
+                    JsonPayload = _serializer.SerializeToString(null)
                 });
 
                 var returned = _serializer.Deserialize<string>(response.JsonPayload);
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
 
                 var response = await hub.CallMethodAsync(device, module, new MethodParameterModel {
                     Name = "TestNoReturn_V1",
-                    JsonPayload = _serializer.Serialize(nameof(TestControllerV1.TestNoReturnAsync))
+                    JsonPayload = _serializer.SerializeToString(nameof(TestControllerV1.TestNoReturnAsync))
                 });
 
                 Assert.Null(response.JsonPayload);
@@ -155,7 +155,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
 
                 var response = await hub.CallMethodAsync(device, module, new MethodParameterModel {
                     Name = "TestNoParametersAndNoReturn_V1",
-                    JsonPayload = _serializer.Serialize(null)
+                    JsonPayload = _serializer.SerializeToString(null)
                 });
 
                 Assert.Null(response.JsonPayload);
@@ -174,7 +174,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 kRand.NextBytes(buffer);
                 var expected = new TestModel { Test = buffer };
                 var response = await hub.CallMethodAsync(device, module, "Test1_V1",
-                    _serializer.Serialize(expected));
+                    _serializer.SerializeToString(expected));
                 var returned = _serializer.Deserialize<TestModel>(response);
                 Assert.Equal(expected.Test, returned.Test);
             });
@@ -190,7 +190,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 kRand.NextBytes(buffer);
                 var expected = new TestModel { Test = buffer };
                 var response = await hub.CallMethodAsync(device, module, "Test1_V1",
-                    _serializer.Serialize(expected));
+                    _serializer.SerializeToString(expected));
                 var returned = _serializer.Deserialize<TestModel>(response);
                 Assert.Equal(expected.Test, returned.Test);
             });
@@ -206,7 +206,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 kRand.NextBytes(buffer);
 
                 var response = await hub.CallMethodAsync(device, module, "Test2_V1",
-                    _serializer.Serialize(buffer));
+                    _serializer.SerializeToString(buffer));
 
                 var returned = _serializer.Deserialize<byte[]>(response);
                 Assert.True(buffer.SequenceEqual(returned));
@@ -223,7 +223,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 kRand.NextBytes(buffer);
 
                 var response = await hub.CallMethodAsync(device, module, "Test3_V1",
-                    _serializer.Serialize(new {
+                    _serializer.SerializeToString(new {
                         request = buffer,
                         value = 55
                     })
@@ -245,7 +245,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 var expected = 3254;
 
                 var response = await hub.CallMethodAsync(device, module, "Test3_V2",
-                    _serializer.Serialize(new {
+                    _serializer.SerializeToString(new {
                         request = buffer,
                         value = expected
                     })
@@ -263,7 +263,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 var hub = services.Resolve<IMethodClient>();
 
                 var response = await hub.CallMethodAsync(device, module, "TestNoParameters_V1",
-                    _serializer.Serialize(null));
+                    _serializer.SerializeToString(null));
 
                 var returned = _serializer.Deserialize<string>(response);
                 Assert.Equal(nameof(TestControllerV1.TestNoParametersAsync), returned);
@@ -291,21 +291,21 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 var hub = services.Resolve<IMethodClient>();
 
                 var response = await hub.CallMethodAsync(device, module, "TestNoReturn_V1",
-                    _serializer.Serialize(nameof(TestControllerV1.TestNoReturnAsync)));
+                    _serializer.SerializeToString(nameof(TestControllerV1.TestNoReturnAsync)));
 
                 Assert.Null(response);
             });
         }
 
         [Fact]
-        public async Task TestTestNoParametersAndNoReturnInvocationNoParamAndNoReturnUsingMethodClient() {
+        public async Task TestTestNoParametersAndNoReturnInvocationNoParamAndNoReturnUsingMethodClientAsync() {
             var harness = new ModuleHostHarness();
             var controller = new TestControllerV1();
             await harness.RunTestAsync(controller.YieldReturn(), async (device, module, services) => {
                 var hub = services.Resolve<IMethodClient>();
 
                 var response = await hub.CallMethodAsync(device, module, "TestNoParametersAndNoReturn_V1",
-                    _serializer.Serialize(null));
+                    _serializer.SerializeToString(null));
 
                 Assert.Null(response);
                 Assert.True(controller._noparamcalled);
@@ -320,8 +320,8 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             kRand.NextBytes(buffer);
             var expected = new TestModel { Test = buffer };
             var response = router.InvokeMethodAsync(new MethodRequest(
-                "Test1_V1", Encoding.UTF8.GetBytes(
-                    _serializer.Serialize(expected)))).Result;
+                "Test1_V1",
+                    _serializer.SerializeToBytes(expected).ToArray())).Result;
 
             var returned = _serializer.Deserialize<TestModel>(
                 response.ResultAsJson);
@@ -338,7 +338,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             kRand.NextBytes(buffer);
             var expected = new TestModel { Test = buffer };
             var response = client.CallMethodAsync("test", "test", "Test1_V1",
-                Encoding.UTF8.GetBytes(_serializer.Serialize(expected)),
+                _serializer.SerializeToBytes(expected).ToArray(),
                     null, null, CancellationToken.None).Result;
 
             var returned = _serializer.Deserialize<TestModel>(
@@ -357,8 +357,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             var expected = new byte[size];
             kRand.NextBytes(expected);
             var response = router.InvokeMethodAsync(new MethodRequest(
-                "Test2_V1", Encoding.UTF8.GetBytes(
-                    _serializer.Serialize(expected)))).Result;
+                "Test2_V1", _serializer.SerializeToBytes(expected).ToArray())).Result;
             var returned = _serializer.Deserialize<byte[]>(
                 response.ResultAsJson);
             Assert.Equal(expected, returned);
@@ -375,8 +374,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             var expected = new byte[size];
             kRand.NextBytes(expected);
             var response = router.InvokeMethodAsync(new MethodRequest(
-                "Test8_V1", Encoding.UTF8.GetBytes(
-                    _serializer.Serialize(expected)))).Result;
+                "Test8_V1", _serializer.SerializeToBytes(expected).ToArray())).Result;
             var returned = _serializer.Deserialize<byte[]>(
                 response.ResultAsJson);
             Assert.Equal(expected, returned);
@@ -393,8 +391,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             var expected = new byte[size];
             kRand.NextBytes(expected);
             var response = router.InvokeMethodAsync(new MethodRequest(
-                "Test8_V2", Encoding.UTF8.GetBytes(
-                    _serializer.Serialize(expected)))).Result;
+                "Test8_V2", _serializer.SerializeToBytes(expected).ToArray())).Result;
             var returned = _serializer.Deserialize<byte[]>(
                 response.ResultAsJson);
             Assert.Equal(expected, returned);
@@ -406,8 +403,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             var expected = new byte[96 * 1024];
             kRand.NextBytes(expected);
             var response = router.InvokeMethodAsync(new MethodRequest(
-                "Test2_V1", Encoding.UTF8.GetBytes(
-                    _serializer.Serialize(expected)))).Result;
+                "Test2_V1", _serializer.SerializeToBytes(expected).ToArray())).Result;
             Assert.Equal((int)HttpStatusCode.RequestEntityTooLarge,
                 response.Status);
         }
@@ -426,7 +422,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             var expected = new byte[size];
             kRand.NextBytes(expected);
             var response = client.CallMethodAsync("test", "test", "Test2_V1",
-                Encoding.UTF8.GetBytes(_serializer.Serialize(expected)),
+                _serializer.SerializeToBytes(expected).ToArray(),
                     null, null, CancellationToken.None).Result;
 
             var returned = _serializer.Deserialize<byte[]>(
@@ -448,7 +444,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             var expected = new byte[size];
             kRand.NextBytes(expected);
             var response = client.CallMethodAsync("test", "test", "Test8_V1",
-                Encoding.UTF8.GetBytes(_serializer.Serialize(expected)),
+                _serializer.SerializeToBytes(expected).ToArray(),
                     null, null, CancellationToken.None).Result;
 
             var returned = _serializer.Deserialize<byte[]>(
@@ -470,7 +466,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             var expected = new byte[size];
             kRand.NextBytes(expected);
             var response = client.CallMethodAsync("test", "test", "Test8_V2",
-                Encoding.UTF8.GetBytes(_serializer.Serialize(expected)),
+                _serializer.SerializeToBytes(expected).ToArray(),
                     null, null, CancellationToken.None).Result;
 
             var returned = _serializer.Deserialize<byte[]>(
@@ -484,11 +480,11 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             var expected = new byte[1049];
             kRand.NextBytes(expected);
             var response = router.InvokeMethodAsync(new MethodRequest(
-                "Test3_V1", Encoding.UTF8.GetBytes(
-                    _serializer.Serialize(new {
+                "Test3_V1",
+                    _serializer.SerializeToBytes(new {
                         request = expected,
                         Value = 3254
-                    })))).Result;
+                    }).ToArray())).Result;
 
             var returned = _serializer.Deserialize<byte[]>(
                 response.ResultAsJson);
@@ -501,8 +497,8 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             var buffer = new byte[1049];
             kRand.NextBytes(buffer);
             var response = router.InvokeMethodAsync(new MethodRequest(
-                "Test2_v2", Encoding.UTF8.GetBytes(
-                    _serializer.Serialize(buffer)))).Result;
+                "Test2_v2",
+                    _serializer.SerializeToBytes(buffer).ToArray())).Result;
 
             Assert.Equal(400, response.Status);
             var ex = _serializer.Deserialize<ArgumentNullException>(
@@ -517,11 +513,11 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             kRand.NextBytes(buffer);
             var expected = 3254;
             var response = router.InvokeMethodAsync(new MethodRequest(
-                "Test3_v2", Encoding.UTF8.GetBytes(
-                    _serializer.Serialize(new {
+                "Test3_v2",
+                    _serializer.SerializeToBytes(new {
                         request = buffer,
                         Value = expected
-                    })))).Result;
+                    }).ToArray())).Result;
 
             var returned = _serializer.Deserialize<int>(
                 response.ResultAsJson);

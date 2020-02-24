@@ -292,7 +292,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
                     // Forward response back to caller
                     await _outer._client.CallMethodAsync(
                         _deviceId, _moduleId, MethodNames.Response,
-                        _outer._serializer.Serialize(new HttpTunnelResponseModel {
+                        _outer._serializer.SerializeToString(new HttpTunnelResponseModel {
                             Headers = response.Headers?
                                 .ToDictionary(h => h.Key, h => h.Value.ToList()),
                             RequestId = RequestId,
@@ -305,11 +305,10 @@ namespace Microsoft.Azure.IIoT.Module.Default {
                     // Forward failure back to caller
                     await _outer._client.CallMethodAsync(
                         _deviceId, _moduleId, MethodNames.Response,
-                        _outer._serializer.Serialize(new HttpTunnelResponseModel {
+                        _outer._serializer.SerializeToString(new HttpTunnelResponseModel {
                             RequestId = RequestId,
                             Status = (int)HttpStatusCode.InternalServerError,
-                            Payload = Encoding.UTF8.GetBytes(
-                                _outer._serializer.Serialize(ex))
+                            Payload = _outer._serializer.SerializeToBytes(ex).ToArray()
                         }));
                 }
             }

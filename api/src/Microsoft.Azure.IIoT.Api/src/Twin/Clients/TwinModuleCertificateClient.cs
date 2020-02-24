@@ -51,7 +51,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
             var sw = Stopwatch.StartNew();
             var result = await _client.CallMethodAsync(deviceId, moduleId,
                  "GetEndpointCertificate_V2",
-                _serializer.Serialize(registration.Endpoint), null, ct);
+                _serializer.SerializeToString(registration.Endpoint), null, ct);
             _logger.Debug("Calling supervisor {deviceId}/{moduleId} to get certificate." +
                 "Took {elapsed} ms and returned {result}!", deviceId, moduleId,
                 sw.ElapsedMilliseconds, result);

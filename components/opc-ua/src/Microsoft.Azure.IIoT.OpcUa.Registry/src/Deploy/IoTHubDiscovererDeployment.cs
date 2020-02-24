@@ -87,7 +87,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Deploy {
             string createOptions;
             if (isLinux) {
                 // Linux
-                createOptions = _serializer.Serialize(new {
+                createOptions = _serializer.SerializeToString(new {
                     NetworkingConfig = new {
                         EndpointsConfig = new {
                             host = new {
@@ -102,7 +102,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Deploy {
             }
             else {
                 // Windows
-                createOptions = _serializer.Serialize(new {
+                createOptions = _serializer.SerializeToString(new {
                     HostConfig = new {
                         NetworkMode = "host"
                     }

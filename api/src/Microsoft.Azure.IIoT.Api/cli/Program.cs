@@ -2548,7 +2548,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         /// </summary>
         private void PrintResult<T>(CliOptions options, T status) {
             Console.WriteLine("==================");
-            Console.WriteLine(_serializer.Serialize(status,
+            Console.WriteLine(_serializer.SerializeToString(status,
                 options.GetValueOrDefault("-F", "--format", SerializeOption.Indented)));
             Console.WriteLine("==================");
         }
@@ -2684,7 +2684,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         /// Print sample
         /// </summary>
         private Task PrintSample(MonitoredItemMessageApiModel samples) {
-            Console.WriteLine(_serializer.Serialize(samples));
+            Console.WriteLine(_serializer.SerializeToString(samples));
             return Task.CompletedTask;
         }
 

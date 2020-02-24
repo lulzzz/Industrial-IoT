@@ -300,10 +300,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16FromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "UInt16",
                 Body = 123
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant((ushort)123);
             var encoded = codec.Encode(variant);
@@ -314,10 +314,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16ArrayFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "UInt16",
                 Body = new ushort[] { 123, 124, 125 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new ushort[] { 123, 124, 125 });
             var encoded = codec.Encode(variant);
@@ -370,10 +370,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16FromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "uint16",
                 Body = (ushort)123
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant((ushort)123);
             var encoded = codec.Encode(variant);
@@ -384,10 +384,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16ArrayFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "UInt16",
                 body = new ushort[] { 123, 124, 125 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new ushort[] { 123, 124, 125 });
             var encoded = codec.Encode(variant);
@@ -412,10 +412,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16FromVariantJsonStringTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 DataType = "UInt16",
                 Value = (ushort)123
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Variant);
             var expected = new Variant((ushort)123);
             var encoded = codec.Encode(variant);
@@ -440,12 +440,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16MatrixFromStringJsonStringTypeUInt16() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new ushort[,,] {
+            var str = _serializer.SerializeToString(new ushort[,,] {
                 { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
                 { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
                 { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
                 { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.UInt16);
             var expected = new Variant(new ushort[,,] {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
@@ -463,7 +463,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16MatrixFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "UInt16",
                 body = new ushort[,,] {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
@@ -471,7 +471,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Variant);
             var expected = new Variant(new ushort[,,] {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
@@ -489,7 +489,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16MatrixFromVariantJsonTokenTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "UInt16",
                 value = new ushort[,,] {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
@@ -497,7 +497,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Variant);
             var expected = new Variant(new ushort[,,] {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
@@ -515,7 +515,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16MatrixFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "UInt16",
                 body = new ushort[,,] {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
@@ -523,7 +523,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Null);
             var expected = new Variant(new ushort[,,] {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
@@ -541,7 +541,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeUInt16MatrixFromVariantJsonTokenTypeNullMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "UInt16",
                 value = new ushort[,,] {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
@@ -549,7 +549,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(_serializer.FromObject(str), BuiltInType.Null);
             var expected = new Variant(new ushort[,,] {
                     { { 123, 124, 125 }, { 123, 124, 125 }, { 123, 124, 125 } },

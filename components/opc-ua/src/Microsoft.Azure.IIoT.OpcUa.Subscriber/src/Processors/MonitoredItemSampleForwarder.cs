@@ -37,8 +37,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
             // Set timestamp as source timestamp
             // TODO: Make configurable
             sample.Timestamp = sample.SourceTimestamp;
-            return _client.SendAsync(Encoding.UTF8.GetBytes(
-                _serializer.Serialize(sample)));
+            return _client.SendAsync(
+                _serializer.SerializeToBytes(sample).ToArray());
         }
 
         /// <inheritdoc/>

@@ -230,10 +230,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "Boolean",
                 Body = true
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(true);
             var encoded = codec.Encode(variant);
@@ -244,10 +244,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanArrayFromVariantJsonStringTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "Boolean",
                 Body = new bool[] { true, true, false }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new bool[] { true, true, false });
             var encoded = codec.Encode(variant);
@@ -300,10 +300,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 Type = "boolean",
                 Body = true
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(true);
             var encoded = codec.Encode(variant);
@@ -314,10 +314,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanArrayFromVariantJsonStringTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "Boolean",
                 body = new bool[] { true, true, false }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new bool[] { true, true, false });
             var encoded = codec.Encode(variant);
@@ -342,10 +342,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanFromVariantJsonStringTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 DataType = "Boolean",
                 Value = true
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(true);
             var encoded = codec.Encode(variant);
@@ -356,7 +356,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanArrayFromVariantJsonTokenTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "Boolean",
                 value = new bool[] { true, true, false }
             });
@@ -370,12 +370,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanMatrixFromStringJsonTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new bool[,,] {
+            var str = _serializer.SerializeToString(new bool[,,] {
                 { { true, false, true }, { true, false, true }, { true, false, true } },
                 { { true, false, true }, { true, false, true }, { true, false, true } },
                 { { true, false, true }, { true, false, true }, { true, false, true } },
                 { { true, false, true }, { true, false, true }, { true, false, true } }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
@@ -393,12 +393,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanMatrixFromStringJsonTypeBoolean() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new bool[,,] {
+            var str = _serializer.SerializeToString(new bool[,,] {
                 { { true, false, true }, { true, false, true }, { true, false, true } },
                 { { true, false, true }, { true, false, true }, { true, false, true } },
                 { { true, false, true }, { true, false, true }, { true, false, true } },
                 { { true, false, true }, { true, false, true }, { true, false, true } }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Boolean);
             var expected = new Variant(new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
@@ -416,7 +416,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanMatrixFromVariantJsonTypeVariant() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "Boolean",
                 body = new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
@@ -424,7 +424,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
                     { { true, false, true }, { true, false, true }, { true, false, true } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
@@ -442,7 +442,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanMatrixFromVariantJsonTokenTypeVariantMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "Boolean",
                 value = new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
@@ -450,7 +450,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
                     { { true, false, true }, { true, false, true }, { true, false, true } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Variant);
             var expected = new Variant(new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
@@ -468,7 +468,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanMatrixFromVariantJsonTypeNull() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 type = "Boolean",
                 body = new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
@@ -476,7 +476,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
                     { { true, false, true }, { true, false, true }, { true, false, true } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
@@ -494,7 +494,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         [Fact]
         public void DecodeEncodeBooleanMatrixFromVariantJsonTokenTypeNullMsftEncoding() {
             var codec = new VariantEncoderFactory().Default;
-            var str = _serializer.FromObject(new {
+            var str = _serializer.SerializeToString(new {
                 dataType = "Boolean",
                 value = new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
@@ -502,7 +502,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     { { true, false, true }, { true, false, true }, { true, false, true } },
                     { { true, false, true }, { true, false, true }, { true, false, true } }
                 }
-            }).ToString();
+            });
             var variant = codec.Decode(str, BuiltInType.Null);
             var expected = new Variant(new bool[,,] {
                     { { true, false, true }, { true, false, true }, { true, false, true } },

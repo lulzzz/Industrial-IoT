@@ -167,7 +167,7 @@ Function Select-Context() {
         }
     }
     if ($writeProfile) {
-        Save-AzContext -Path $contextFile 
+        Save-AzContext -Path $contextFile
     }
 
     Write-Host "Azure subscription $($context.Subscription.Name) ($($context.Subscription.Id)) selected."
