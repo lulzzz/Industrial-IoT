@@ -799,7 +799,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Control.Services {
                 Historizing = node.Historizing,
                 MinimumSamplingInterval = node.MinimumSamplingInterval,
                 IsAbstract = node.IsAbstract,
-                Value = node.Value == null ? null : codec.Encode(node.Value.Value, out var type),
+                Value = codec.Encode(node.Value, out var type),
                 EventNotifier = node.EventNotifier == null || node.EventNotifier == 0x0 ?
                     (NodeEventNotifier?)null : (NodeEventNotifier)node.EventNotifier,
                 DataTypeDefinition = node.DataTypeDefinition == null ? null :

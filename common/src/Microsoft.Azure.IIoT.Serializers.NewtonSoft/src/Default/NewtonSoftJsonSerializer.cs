@@ -159,67 +159,57 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            protected override VariantValueType Type {
-                get {
-                    switch (Token.Type) {
-                        case JTokenType.Object:
-                            return VariantValueType.Object;
-                        case JTokenType.Array:
-                            return VariantValueType.Values;
-                        case JTokenType.None:
-                        case JTokenType.Null:
-                        case JTokenType.Undefined:
-                        case JTokenType.Constructor:
-                        case JTokenType.Property:
-                        case JTokenType.Comment:
-                            return VariantValueType.Null;
-                        default:
-                            return VariantValueType.Primitive;
-                    }
+            protected override VariantValueType GetValueType() {
+                switch (Token.Type) {
+                    case JTokenType.Object:
+                        return VariantValueType.Object;
+                    case JTokenType.Array:
+                        return VariantValueType.Values;
+                    case JTokenType.None:
+                    case JTokenType.Null:
+                    case JTokenType.Undefined:
+                    case JTokenType.Constructor:
+                    case JTokenType.Property:
+                    case JTokenType.Comment:
+                        return VariantValueType.Null;
+                    default:
+                        return VariantValueType.Primitive;
                 }
             }
 
             /// <inheritdoc/>
-            protected override object RawValue {
-                get {
-                    if (Token is JValue v) {
-                        if (v.Value is Uri u) {
-                            return u.ToString();
-                        }
-                        return v.Value;
+            protected override object GetRawValue() {
+                if (Token is JValue v) {
+                    if (v.Value is Uri u) {
+                        return u.ToString();
                     }
-                    return Token;
+                    return v.Value;
                 }
+                return Token;
             }
 
             /// <inheritdoc/>
-            protected override IEnumerable<string> ObjectProperties {
-                get {
-                    if (Token is JObject o) {
-                        return o.Properties().Select(p => p.Name);
-                    }
-                    return Enumerable.Empty<string>();
+            protected override IEnumerable<string> GetObjectProperties() {
+                if (Token is JObject o) {
+                    return o.Properties().Select(p => p.Name);
                 }
+                return Enumerable.Empty<string>();
             }
 
             /// <inheritdoc/>
-            protected override IEnumerable<VariantValue> ArrayElements {
-                get {
-                    if (Token is JArray array) {
-                        return array.Select(i => new JsonVariantValue(i, _serializer));
-                    }
-                    return Enumerable.Empty<VariantValue>();
+            protected override IEnumerable<VariantValue> GetArrayElements() {
+                if (Token is JArray array) {
+                    return array.Select(i => new JsonVariantValue(i, _serializer));
                 }
+                return Enumerable.Empty<VariantValue>();
             }
 
             /// <inheritdoc/>
-            protected override int ArrayCount {
-                get {
-                    if (Token is JArray array) {
-                        return array.Count;
-                    }
-                    return 0;
+            protected override int GetArrayCount() {
+                if (Token is JArray array) {
+                    return array.Count;
                 }
+                return 0;
             }
 
             /// <inheritdoc/>
@@ -286,7 +276,9 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            protected override VariantValue Null => new JsonVariantValue(null, _serializer);
+            protected override VariantValue NewValue() {
+                return new JsonVariantValue(null, _serializer);
+            }
 
             /// <inheritdoc/>
             protected override bool TryEqualsValue(object o, out bool equality) {

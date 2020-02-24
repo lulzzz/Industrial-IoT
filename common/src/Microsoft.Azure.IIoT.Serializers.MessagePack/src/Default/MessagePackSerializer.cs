@@ -123,108 +123,98 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             }
 
             /// <inheritdoc/>
-            protected override VariantValueType Type {
-                get {
-                    if (_value == null) {
-                        return VariantValueType.Null;
-                    }
-                    var type = RawValue.GetType();
-                    if (typeof(byte[]) == type ||
-                        typeof(string) == type) {
-                        return VariantValueType.Primitive;
-                    }
-                    if (type.IsArray ||
-                        typeof(IList<object>).IsAssignableFrom(type) ||
-                        typeof(IEnumerable<object>).IsAssignableFrom(type)) {
-                        return VariantValueType.Values;
-                    }
-                    if (typeof(IDictionary<object, object>).IsAssignableFrom(type)) {
-                        return VariantValueType.Object;
-                    }
-                    if (type.IsGenericType &&
-                        type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-                        type = type.GetGenericArguments()[0];
-                    }
-                    if (typeof(bool) == type ||
-                        typeof(Guid) == type ||
-                        typeof(DateTime) == type ||
-                        typeof(DateTimeOffset) == type ||
-                        typeof(TimeSpan) == type ||
-                        typeof(uint) == type ||
-                        typeof(int) == type ||
-                        typeof(ulong) == type ||
-                        typeof(long) == type ||
-                        typeof(sbyte) == type ||
-                        typeof(byte) == type ||
-                        typeof(ushort) == type ||
-                        typeof(short) == type ||
-                        typeof(char) == type ||
-                        typeof(float) == type ||
-                        typeof(double) == type ||
-                        typeof(decimal) == type ||
-                        typeof(BigInteger) == type) {
-                        return VariantValueType.Primitive;
-                    }
-                    if (type.GetProperties().Length > 0) {
-                        return VariantValueType.Object;
-                    }
-                    // TODO: Throw?
+            protected override VariantValueType GetValueType() {
+                if (_value == null) {
+                    return VariantValueType.Null;
+                }
+                var type = GetRawValue().GetType();
+                if (typeof(byte[]) == type ||
+                    typeof(string) == type) {
                     return VariantValueType.Primitive;
                 }
+                if (type.IsArray ||
+                    typeof(IList<object>).IsAssignableFrom(type) ||
+                    typeof(IEnumerable<object>).IsAssignableFrom(type)) {
+                    return VariantValueType.Values;
+                }
+                if (typeof(IDictionary<object, object>).IsAssignableFrom(type)) {
+                    return VariantValueType.Object;
+                }
+                if (type.IsGenericType &&
+                    type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
+                    type = type.GetGenericArguments()[0];
+                }
+                if (typeof(bool) == type ||
+                    typeof(Guid) == type ||
+                    typeof(DateTime) == type ||
+                    typeof(DateTimeOffset) == type ||
+                    typeof(TimeSpan) == type ||
+                    typeof(uint) == type ||
+                    typeof(int) == type ||
+                    typeof(ulong) == type ||
+                    typeof(long) == type ||
+                    typeof(sbyte) == type ||
+                    typeof(byte) == type ||
+                    typeof(ushort) == type ||
+                    typeof(short) == type ||
+                    typeof(char) == type ||
+                    typeof(float) == type ||
+                    typeof(double) == type ||
+                    typeof(decimal) == type ||
+                    typeof(BigInteger) == type) {
+                    return VariantValueType.Primitive;
+                }
+                if (type.GetProperties().Length > 0) {
+                    return VariantValueType.Object;
+                }
+                // TODO: Throw?
+                return VariantValueType.Primitive;
             }
 
             /// <inheritdoc/>
-            protected override object RawValue {
-                get {
-                    if (_value is Uri u) {
-                        return u.ToString();
-                    }
-                    if (_value is object[] o && o.Length == 2 && o[0] is DateTime dt) {
-                        var offset = Convert.ToInt64(o[1]);
-                        if (offset == 0) {
-                            return dt;
-                        }
-                        return new DateTimeOffset(dt, TimeSpan.FromTicks(offset));
-                    }
-                    return _value;
+            protected override object GetRawValue() {
+                if (_value is Uri u) {
+                    return u.ToString();
                 }
+                if (_value is object[] o && o.Length == 2 && o[0] is DateTime dt) {
+                    var offset = Convert.ToInt64(o[1]);
+                    if (offset == 0) {
+                        return dt;
+                    }
+                    return new DateTimeOffset(dt, TimeSpan.FromTicks(offset));
+                }
+                return _value;
             }
 
             /// <inheritdoc/>
-            protected override IEnumerable<string> ObjectProperties {
-                get {
-                    if (_value is IDictionary<object, object> o) {
-                        return o.Keys.Select(p => p.ToString());
-                    }
-                    return Enumerable.Empty<string>();
+            protected override IEnumerable<string> GetObjectProperties() {
+                if (_value is IDictionary<object, object> o) {
+                    return o.Keys.Select(p => p.ToString());
                 }
+                return Enumerable.Empty<string>();
             }
 
             /// <inheritdoc/>
-            protected override IEnumerable<VariantValue> ArrayElements {
-                get {
-                    if (_value is IList<object> array) {
-                        return array.Select(i =>
-                            new MessagePackVariantValue(i, _options, false));
-                    }
-                    return Enumerable.Empty<VariantValue>();
+            protected override IEnumerable<VariantValue> GetArrayElements() {
+                if (_value is IList<object> array) {
+                    return array.Select(i =>
+                        new MessagePackVariantValue(i, _options, false));
                 }
+                return Enumerable.Empty<VariantValue>();
             }
 
             /// <inheritdoc/>
-            protected override int ArrayCount {
-                get {
-                    if (_value is IList<object> array) {
-                        return array.Count;
-                    }
-                    return 0;
+            protected override int GetArrayCount() {
+                if (_value is IList<object> array) {
+                    return array.Count;
                 }
+                return 0;
             }
 
             /// <inheritdoc/>
             public override VariantValue Copy(bool shallow) {
                 if (_value == null) {
-                    return Null;
+                    return NewValue();
                 }
                 try {
                     return new MessagePackVariantValue(_value, _options, true);
@@ -278,7 +268,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
                         return true;
                     }
                 }
-                value = Null;
+                value = NewValue();
                 return false;
             }
 
@@ -288,28 +278,29 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
                     value = new MessagePackVariantValue(o[index], _options, false);
                     return true;
                 }
-                value = Null;
+                value = NewValue();
                 return false;
             }
 
             /// <inheritdoc/>
-            protected override VariantValue Null =>
-                new MessagePackVariantValue(null, _options, false);
+            protected override VariantValue NewValue() {
+                return new MessagePackVariantValue(null, _options, false);
+            }
 
-     //     /// <inheritdoc/>
-     //     protected override bool TryCompareToValue(object o, out int result) {
-     //         try {
-     //             if (_value is object[] a1 && a1.Length > 0 && a1[0] is IComparable c1 &&
-     //                 _value is object[] a2 && a2.Length > 0 && a2[0] is IComparable c2) {
-     //                 result = c1.CompareTo(c2);
-     //                 return true;
-     //             }
-     //         }
-     //         catch {
-     //             // Try base
-     //         }
-     //         return base.TryCompareToValue(o, out result);
-     //     }
+            //     /// <inheritdoc/>
+            //     protected override bool TryCompareToValue(object o, out int result) {
+            //         try {
+            //             if (_value is object[] a1 && a1.Length > 0 && a1[0] is IComparable c1 &&
+            //                 _value is object[] a2 && a2.Length > 0 && a2[0] is IComparable c2) {
+            //                 result = c1.CompareTo(c2);
+            //                 return true;
+            //             }
+            //         }
+            //         catch {
+            //             // Try base
+            //         }
+            //         return base.TryCompareToValue(o, out result);
+            //     }
 
             /// <inheritdoc/>
             protected override bool TryEqualsVariant(VariantValue v, out bool equality) {
@@ -319,7 +310,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
                 }
 
                 // Special comparison to timespan
-                var type = Type;
+                var type = GetValueType();
                 if (v.IsTimeSpan) {
                     if (IsInteger || IsDecimal) {
                         equality = v.Equals((VariantValue)TimeSpan.FromTicks(

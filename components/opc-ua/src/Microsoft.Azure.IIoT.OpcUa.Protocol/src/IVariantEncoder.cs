@@ -28,7 +28,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <param name="value"></param>
         /// <param name="builtinType"></param>
         /// <returns></returns>
-        VariantValue Encode(Variant value, out BuiltInType builtinType);
+        VariantValue Encode(Variant? value, out BuiltInType builtinType);
 
         /// <summary>
         /// Parse token to variant

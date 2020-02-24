@@ -60,17 +60,17 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
             }
 
             /// <inheritdoc/>
-            public VariantValue Encode(Variant value, out BuiltInType builtinType) {
+            public VariantValue Encode(Variant? value, out BuiltInType builtinType) {
 
-                if (value == Variant.Null) {
+                if (value == null || value == Variant.Null) {
                     builtinType = BuiltInType.Null;
-                    return Serializer.FromObject(null);
+                    return VariantValue.Null;
                 }
                 using (var stream = new MemoryStream()) {
                     using (var encoder = new JsonEncoderEx(stream, Context) {
                         UseAdvancedEncoding = true
                     }) {
-                        encoder.WriteVariant(nameof(value), value);
+                        encoder.WriteVariant(nameof(value), value.Value);
                     }
                     var json = Encoding.UTF8.GetString(stream.ToArray());
                     try {
@@ -88,6 +88,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
 
             /// <inheritdoc/>
             public Variant Decode(VariantValue value, BuiltInType builtinType) {
+
+                if (value.IsNull()) {
+                    return Variant.Null;
+                }
 
                 //
                 // Sanitize json input from user

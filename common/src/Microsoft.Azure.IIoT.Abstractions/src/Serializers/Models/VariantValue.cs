@@ -17,20 +17,27 @@ namespace Microsoft.Azure.IIoT.Serializers {
     /// </summary>
     public abstract class VariantValue : ICloneable, IConvertible, IComparable {
 
+        /// <summary>
+        /// Null constant
+        /// </summary>
+        public readonly static VariantValue Null =
+            new PrimitiveValue(null, VariantValueType.Null);
+
         /// <inheritdoc/>
         public VariantValue this[string key] =>
-            TryGetProperty(key, out var result) ? result : Null;
+            TryGetProperty(key, out var result) ? result : NewValue();
 
         /// <inheritdoc/>
         public VariantValue this[int index] =>
-            TryGetElement(index, out var result) ? result : null;
+            TryGetElement(index, out var result) ? result :
+            throw new IndexOutOfRangeException($"{index} out of range");
 
         /// <summary>
         /// Property names of object
         /// </summary>
         public IEnumerable<string> PropertyNames {
             get {
-                return ObjectProperties;
+                return GetObjectProperties();
             }
         }
 
@@ -54,7 +61,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 if (TryGetBytes(out var bytes)) {
                     return bytes.Select(b => new PrimitiveValue(b));
                 }
-                return ArrayElements;
+                return GetArrayElements();
             }
         }
 
@@ -66,7 +73,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 if (TryGetBytes(out var bytes)) {
                     return bytes.Length;
                 }
-                return ArrayCount;
+                return GetArrayCount();
             }
         }
 
@@ -74,25 +81,25 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// Value is a list
         /// </summary>
         public bool IsListOfValues =>
-            Type == VariantValueType.Values;
+            GetValueType() == VariantValueType.Values;
 
         /// <summary>
         /// Value is a array - includes bytes
         /// </summary>
         public bool IsArray =>
-            Type == VariantValueType.Values || IsBytes;
+            GetValueType() == VariantValueType.Values || IsBytes;
 
         /// <summary>
         /// Value is a object type
         /// </summary>
         public bool IsObject =>
-            Type == VariantValueType.Object;
+            GetValueType() == VariantValueType.Object;
 
         /// <summary>
         /// Value is a null type
         /// </summary>
         public bool IsNull =>
-            Type == VariantValueType.Null;
+            GetValueType() == VariantValueType.Null;
 
         /// <summary>
         /// Value is a decimal type
@@ -629,11 +636,38 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 sb.Append("    \"");
                 sb.Append(k); sb.Append("\": "); sb.Append(p);
             }
+
+            // Append stringified value
             var sb = new StringBuilder();
             sb.AppendLine("{");
-            sb.Append("    \"Value\": "); AppendTo(sb);
+            sb.Append("    \"Value\": ");
+            AppendTo(sb);
+
+            var raw = GetRawValue();
+            if (raw != null) {
+                sb.AppendLine(",");
+                // Append raw value as string
+                sb.Append("    \"Raw\": \"");
+                if (raw is IFormattable f) {
+                    sb.Append(f.ToString("G", CultureInfo.InvariantCulture));
+                }
+                else {
+                    sb.Append(raw.ToString());
+                }
+                sb.Append("\"");
+            }
+
+            // Append tests to inspect value recognition
             AppendProperty(sb, nameof(IsObject), IsObject);
             AppendProperty(sb, nameof(IsArray), IsArray);
+
+            if (GetValueType() == VariantValueType.Values) {
+                sb.AppendLine(",");
+                // Append raw value as string
+                sb.Append("    \"Count\": ");
+                sb.Append(Count);
+            }
+
             AppendProperty(sb, nameof(IsBoolean), IsBoolean);
             AppendProperty(sb, nameof(IsString), IsString);
             AppendProperty(sb, nameof(IsBytes), IsBytes);
@@ -648,6 +682,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             AppendProperty(sb, nameof(IsTimeSpan), IsTimeSpan);
             sb.AppendLine();
             sb.Append("}");
+
             return sb.ToString();
         }
 
@@ -737,7 +772,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
         public virtual bool TryGetValue(out object o,
             IFormatProvider provider = null) {
             provider ??= CultureInfo.InvariantCulture;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     o = null;
                     return false;
@@ -760,7 +796,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case DateTimeOffset _:
                 case Guid _:
                 case byte[] _:
-                    o = RawValue;
+                    o = raw;
                     return true;
             }
             // Parse string
@@ -832,7 +868,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = 0.0;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case TimeSpan _:
@@ -853,7 +890,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         return false;
                     }
                     try {
-                        o = Convert.ToDouble(RawValue, provider);
+                        o = Convert.ToDouble(raw, provider);
                         return true;
                     }
                     catch {
@@ -861,7 +898,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     }
                 case decimal _:
                     try {
-                        o = Convert.ToDouble(RawValue, provider);
+                        o = Convert.ToDouble(raw, provider);
                         return true;
                     }
                     catch {
@@ -883,11 +920,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable fmt ?
-                        fmt.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable fmt ?
+                        fmt.ToString("G", provider) : raw.ToString();
                     break;
             }
             var result = true;
@@ -930,7 +967,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = 0.0f;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                 case char _:
                     return false;
@@ -951,7 +989,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         return false;
                     }
                     try {
-                        o = Convert.ToSingle(RawValue, provider);
+                        o = Convert.ToSingle(raw, provider);
                         return true;
                     }
                     catch {
@@ -959,7 +997,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     }
                 case decimal _:
                     try {
-                        o = Convert.ToSingle(RawValue, provider);
+                        o = Convert.ToSingle(raw, provider);
                         return true;
                     }
                     catch {
@@ -985,11 +1023,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable fmt ?
-                        fmt.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable fmt ?
+                        fmt.ToString("G", provider) : raw.ToString();
                     break;
             }
             var result = true;
@@ -1032,7 +1070,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = 0m;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1069,7 +1108,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         return false;
                     }
                     try {
-                        o = Convert.ToDecimal(RawValue, provider);
+                        o = Convert.ToDecimal(raw, provider);
                         return true;
                     }
                     catch {
@@ -1089,7 +1128,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case float _:
                 case double _:
                     try {
-                        o = Convert.ToDecimal(RawValue, provider);
+                        o = Convert.ToDecimal(raw, provider);
                         return true;
                     }
                     catch {
@@ -1102,11 +1141,10 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable f ?
-                        f.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable f ? f.ToString("G", provider) : raw.ToString();
                     break;
             }
             return decimal.TryParse(s, strict ? NumberStyles.Float : NumberStyles.Any,
@@ -1125,7 +1163,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = 0L;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1156,7 +1195,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case ushort _:
                 case sbyte _:
                 case byte _:
-                    o = Convert.ToInt64(RawValue, provider);
+                    o = Convert.ToInt64(raw, provider);
                     return true;
                 case ulong v:
                     if (v > long.MaxValue) {
@@ -1171,8 +1210,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         return false;
                     }
                     try {
-                        o = Convert.ToInt64(RawValue, provider);
-                        return o.Equals(RawValue);
+                        o = Convert.ToInt64(raw, provider);
+                        return o.Equals(raw);
                     }
                     catch {
                         return false;
@@ -1189,11 +1228,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable f ?
-                        f.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable f ?
+                        f.ToString("G", provider) : raw.ToString();
                     break;
             }
             return long.TryParse(s,
@@ -1212,7 +1251,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = 0UL;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1226,16 +1266,16 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case long _:
                 case short _:
                 case sbyte _:
-                    var signed = Convert.ToInt64(RawValue, provider);
+                    var signed = Convert.ToInt64(raw, provider);
                     if (signed < 0) {
                         return false;
                     }
-                    o = Convert.ToUInt64(RawValue, provider);
+                    o = Convert.ToUInt64(raw, provider);
                     return true;
                 case uint _:
                 case ushort _:
                 case byte _:
-                    o = Convert.ToUInt64(RawValue, provider);
+                    o = Convert.ToUInt64(raw, provider);
                     return true;
                 case ulong v:
                     o = v;
@@ -1247,8 +1287,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         return false;
                     }
                     try {
-                        o = Convert.ToUInt64(RawValue, provider);
-                        return o.Equals(RawValue);
+                        o = Convert.ToUInt64(raw, provider);
+                        return o.Equals(raw);
                     }
                     catch {
                         return false;
@@ -1265,11 +1305,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable f ?
-                        f.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable f ?
+                        f.ToString("G", provider) : raw.ToString();
                     break;
             }
             return ulong.TryParse(s, NumberStyles.Integer, provider, out o);
@@ -1287,7 +1327,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = 0;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1308,8 +1349,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         return false;
                     }
                     try {
-                        o = Convert.ToByte(RawValue, provider);
-                        return o.Equals(RawValue);
+                        o = Convert.ToByte(raw, provider);
+                        return o.Equals(raw);
                     }
                     catch {
                         return false;
@@ -1336,11 +1377,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable f ?
-                        f.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable f ?
+                        f.ToString("G", provider) : raw.ToString();
                     break;
             }
             return byte.TryParse(s, NumberStyles.Integer, provider, out o);
@@ -1358,7 +1399,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = char.MinValue;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1381,7 +1423,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                         return false;
                     }
                     try {
-                        o = Convert.ToChar(RawValue, provider);
+                        o = Convert.ToChar(raw, provider);
                         return true;
                     }
                     catch {
@@ -1397,11 +1439,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable f ?
-                        f.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable f ?
+                        f.ToString("G", provider) : raw.ToString();
                     break;
             }
             if (char.TryParse(s, out o)) {
@@ -1426,7 +1468,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = BigInteger.Zero;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1440,13 +1483,13 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 case ulong _:
                 case ushort _:
                 case byte _:
-                    o = new BigInteger(Convert.ToUInt64(RawValue, provider));
+                    o = new BigInteger(Convert.ToUInt64(raw, provider));
                     return true;
                 case int _:
                 case long _:
                 case short _:
                 case sbyte _:
-                    o = new BigInteger(Convert.ToInt64(RawValue, provider));
+                    o = new BigInteger(Convert.ToInt64(raw, provider));
                     return true;
                 case BigInteger b:
                     o = b;
@@ -1479,11 +1522,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable fmt ?
-                        fmt.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable fmt ?
+                        fmt.ToString("G", provider) : raw.ToString();
                     break;
             }
             return BigInteger.TryParse(s, NumberStyles.Integer,
@@ -1502,7 +1545,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = TimeSpan.MinValue;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1520,11 +1564,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable fmt ?
-                        fmt.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable fmt ?
+                        fmt.ToString("G", provider) : raw.ToString();
                     break;
             }
             return TimeSpan.TryParse(s, provider, out o);
@@ -1542,7 +1586,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = DateTime.MinValue;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1554,8 +1599,13 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     if (strict) {
                         return false;
                     }
-                    o = DateTime.FromBinary(l);
-                    return true;
+                    try {
+                        o = DateTime.FromBinary(l);
+                        return true;
+                    }
+                    catch {
+                        return false;
+                    }
                 case DateTimeOffset dto:
                     o = dto.UtcDateTime;
                     return true;
@@ -1563,11 +1613,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable fmt ?
-                        fmt.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable fmt ?
+                        fmt.ToString("G", provider) : raw.ToString();
                     break;
             }
             return DateTime.TryParse(s, provider,
@@ -1586,7 +1636,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = DateTimeOffset.MinValue;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1610,11 +1661,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable fmt ?
-                        fmt.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable fmt ?
+                        fmt.ToString("G", provider) : raw.ToString();
                     break;
             }
             return DateTimeOffset.TryParse(s, provider,
@@ -1633,7 +1684,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = false;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid _:
@@ -1645,11 +1697,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable fmt ?
-                        fmt.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable fmt ?
+                        fmt.ToString("G", provider) : raw.ToString();
                     break;
             }
             return bool.TryParse(s, out o);
@@ -1667,7 +1719,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             provider ??= CultureInfo.InvariantCulture;
             o = Guid.Empty;
             string s;
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid g:
@@ -1677,11 +1730,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     s = str;
                     break;
                 default:
-                    if (Type != VariantValueType.Primitive) {
+                    if (GetValueType() != VariantValueType.Primitive) {
                         return false;
                     }
-                    s = RawValue is IFormattable fmt ?
-                        fmt.ToString("G", provider) : RawValue.ToString();
+                    s = raw is IFormattable fmt ?
+                        fmt.ToString("G", provider) : raw.ToString();
                     break;
             }
             return Guid.TryParse(s, out o);
@@ -1698,10 +1751,10 @@ namespace Microsoft.Azure.IIoT.Serializers {
             IFormatProvider provider = null) {
             provider ??= CultureInfo.InvariantCulture;
             o = null;
-            if (Type == VariantValueType.Values) {
+            if (GetValueType() == VariantValueType.Values) {
                 // Convert array to bytes
                 var buffer = new List<byte>();
-                foreach (var item in ArrayElements) {
+                foreach (var item in GetArrayElements()) {
                     if (!item.TryGetByte(out var b)) {
                         return false;
                     }
@@ -1710,10 +1763,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 o = buffer.ToArray();
                 return true;
             }
-            if (Type == VariantValueType.Object) {
+            if (GetValueType() == VariantValueType.Object) {
                 return false;
             }
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case null:
                     return false;
                 case Guid g:
@@ -1753,10 +1807,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
             IFormatProvider provider = null) {
             provider ??= CultureInfo.InvariantCulture;
             o = null;
-            if (Type != VariantValueType.Primitive) {
+            if (GetValueType() != VariantValueType.Primitive) {
                 return false;
             }
-            switch (RawValue) {
+            var raw = GetRawValue();
+            switch (raw) {
                 case string s:
                     o = s.ToString(provider);
                     return true;
@@ -1770,8 +1825,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     if (strict) {
                         return false;
                     }
-                    o = RawValue is IFormattable fmt ?
-                        fmt.ToString("G", provider) : RawValue.ToString();
+                    o = raw is IFormattable fmt ?
+                        fmt.ToString("G", provider) : raw.ToString();
                     return true;
             }
         }
@@ -1799,8 +1854,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     return true;
                 }
 
-                var yt = y?.Type ?? VariantValueType.Null;
-                var xt = x?.Type ?? VariantValueType.Null;
+                var yt = y?.GetValueType() ?? VariantValueType.Null;
+                var xt = x?.GetValueType() ?? VariantValueType.Null;
 
                 if (yt != xt) {
                     if (xt == VariantValueType.Null || yt == VariantValueType.Null) {
@@ -1835,7 +1890,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
                 // Perform structural comparison
                 if (xt == VariantValueType.Values) {
-                    if (y.ArrayElements.SequenceEqual(x.ArrayElements, Comparer)) {
+                    if (y.GetArrayElements().SequenceEqual(x.GetArrayElements(), Comparer)) {
                         return true;
                     }
                     return false;
@@ -1895,8 +1950,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             /// <inheritdoc/>
             public int Compare(VariantValue x, VariantValue y) {
 
-                var yt = y?.Type ?? VariantValueType.Null;
-                var xt = x?.Type ?? VariantValueType.Null;
+                var yt = y?.GetValueType() ?? VariantValueType.Null;
+                var xt = x?.GetValueType() ?? VariantValueType.Null;
 
                 if (yt != xt) {
                     if (xt != VariantValueType.Null && yt != VariantValueType.Null) {
@@ -1912,10 +1967,10 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
                             // Values or object compare to string
                             if (xt == VariantValueType.Primitive && x.TryGetString(out var sx)) {
-                                return sx.CompareTo(y.ToString());
+                                return sx.CompareTo(y.AsString());
                             }
                             if (yt == VariantValueType.Primitive && y.TryGetString(out var sy)) {
-                                return x.ToString().CompareTo(sy);
+                                return x.AsString().CompareTo(sy);
                             }
                         }
                     }
@@ -1977,8 +2032,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 }
 
                 // Use string comparison
-                var osx = x.ToString().ToLowerInvariant();
-                var osy = y.ToString().ToLowerInvariant();
+                var osx = x.AsString().ToLowerInvariant();
+                var osy = y.AsString().ToLowerInvariant();
 
                 return osx.CompareTo(osy);
             }
@@ -2002,11 +2057,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     return equality;
                 }
 
-                if (v.Type != VariantValueType.Primitive) {
+                if (v.GetValueType() != VariantValueType.Primitive) {
                     if (y is string s) {
                         return v.AsString() == s;
                     }
-                    if (y is byte[] boy && v.Type == VariantValueType.Values) {
+                    if (y is byte[] boy && v.GetValueType() == VariantValueType.Values) {
                         if (v.TryGetBytes(out var box)) {
                             return box.AsSpan().SequenceEqual(boy);
                         }
@@ -2090,12 +2145,12 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     return true;
                 }
 
-                if (v.Type != VariantValueType.Primitive) {
+                if (v.GetValueType() != VariantValueType.Primitive) {
                     if (y is string s) {
-                        result = v.ToString().CompareTo(s);
+                        result = v.AsString().CompareTo(s);
                         return true;
                     }
-                    if (y is byte[] boy && v.Type == VariantValueType.Values) {
+                    if (y is byte[] boy && v.GetValueType() == VariantValueType.Values) {
                         if (v.TryGetBytes(out var box)) {
                             var box64 = Convert.ToBase64String(box);
                             var boy64 = Convert.ToBase64String(boy);
@@ -2163,21 +2218,29 @@ namespace Microsoft.Azure.IIoT.Serializers {
         internal sealed class PrimitiveValue : VariantValue {
 
             /// <inheritdoc/>
-            protected override VariantValueType Type { get; }
+            protected override VariantValueType GetValueType() {
+                return _valueType;
+            }
 
             /// <inheritdoc/>
-            protected override IEnumerable<string> ObjectProperties =>
-                Enumerable.Empty<string>();
+            protected override IEnumerable<string> GetObjectProperties() {
+                return Enumerable.Empty<string>();
+            }
 
             /// <inheritdoc/>
-            protected override object RawValue { get; }
+            protected override object GetRawValue() {
+                return _rawValue;
+            }
 
             /// <inheritdoc/>
-            protected override IEnumerable<VariantValue> ArrayElements =>
-                Enumerable.Empty<VariantValue>();
+            protected override IEnumerable<VariantValue> GetArrayElements() {
+                return Enumerable.Empty<VariantValue>();
+            }
 
             /// <inheritdoc/>
-            protected override int ArrayCount => 0;
+            protected override int GetArrayCount() {
+                return 0;
+            }
 
             /// <summary>
             /// Clone
@@ -2185,8 +2248,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
             /// <param name="value"></param>
             /// <param name="type"></param>
             internal PrimitiveValue(object value, VariantValueType type) {
-                RawValue = value;
-                Type = value == null ? VariantValueType.Null : type;
+                _rawValue = value;
+                _valueType = value == null ? VariantValueType.Null : type;
             }
 
             /// <inheritdoc/>
@@ -2371,27 +2434,27 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
             /// <inheritdoc/>
             public override VariantValue Copy(bool shallow = false) {
-                return new PrimitiveValue(RawValue, Type);
+                return new PrimitiveValue(GetRawValue(), GetValueType());
             }
 
             /// <inheritdoc/>
             public override object ToType(Type conversionType,
                 IFormatProvider provider) {
-                if (RawValue == null || IsNull) {
+                if (GetRawValue() == null || IsNull) {
                     if (conversionType.IsValueType) {
                         return Activator.CreateInstance(conversionType);
                     }
                     return null;
                 }
-                if (conversionType.IsAssignableFrom(RawValue.GetType())) {
-                    return RawValue;
+                if (conversionType.IsAssignableFrom(GetRawValue().GetType())) {
+                    return GetRawValue();
                 }
-                if (RawValue is IConvertible c) {
+                if (GetRawValue() is IConvertible c) {
                     return c.ToType(conversionType,
                         provider ?? CultureInfo.InvariantCulture);
                 }
                 var converter = TypeDescriptor.GetConverter(conversionType);
-                return converter.ConvertFrom(RawValue);
+                return converter.ConvertFrom(GetRawValue());
             }
 
             /// <inheritdoc/>
@@ -2405,41 +2468,49 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
 
             /// <inheritdoc/>
-            protected override VariantValue Null =>
-                new PrimitiveValue(null, VariantValueType.Null);
+            protected override VariantValue NewValue() {
+                return new PrimitiveValue(null, VariantValueType.Null);
+            }
+
+            private readonly VariantValueType _valueType;
+            private readonly object _rawValue;
         }
 
         /// <summary>
         /// Create value which is set to null.
         /// </summary>
         /// <returns></returns>
-        protected abstract VariantValue Null { get; }
+        protected abstract VariantValue NewValue();
 
         /// <summary>
         /// Get type of value
         /// </summary>
-        /// <inheritdoc/>
-        protected abstract VariantValueType Type { get; }
+        /// <returns></returns>
+        protected abstract VariantValueType GetValueType();
 
         /// <summary>
         /// Provide raw value or null
         /// </summary>
-        protected abstract object RawValue{ get; }
+        /// <returns></returns>
+        protected abstract object GetRawValue();
 
         /// <summary>
         /// Values of array
         /// </summary>
-        protected abstract IEnumerable<VariantValue> ArrayElements { get; }
-
-        /// <summary>
-        /// Property names of object
-        /// </summary>
-        protected abstract IEnumerable<string> ObjectProperties { get; }
+        /// <returns></returns>
+        protected abstract IEnumerable<VariantValue> GetArrayElements();
 
         /// <summary>
         /// Length of array
         /// </summary>
-        protected abstract int ArrayCount { get; }
+        /// <returns></returns>
+        protected abstract int GetArrayCount();
+
+        /// <summary>
+        /// Property names of object
+        /// </summary>
+        /// <returns></returns>
+        protected abstract IEnumerable<string> GetObjectProperties();
 
         /// <summary>
         /// Compare to a non variant value object, e.g. the value of
@@ -2496,14 +2567,14 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// <returns></returns>
         protected virtual void AppendTo(StringBuilder builder) {
             string s;
-            switch (Type) {
+            switch (GetValueType()) {
                 case VariantValueType.Null:
                     builder.Append("null");
                     return;
                 case VariantValueType.Values:
                     var first = true;
                     builder.Append('[');
-                    foreach (var value in ArrayElements) {
+                    foreach (var value in GetArrayElements()) {
                         if (!first) {
                             builder.Append(',');
                         }
@@ -2532,10 +2603,10 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     builder.Append('}');
                     return;
             }
-            if (!TryGetValue(out var v)) {
-                v = RawValue;
+            if (!TryGetValue(out var raw)) {
+                raw = GetRawValue();
             }
-            switch (v) {
+            switch (raw) {
                 case string str:
                     s = str;
                     break;
@@ -2599,11 +2670,11 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     builder.Append(i.ToString("G", CultureInfo.InvariantCulture));
                     return;
                 case bool _:
-                    builder.Append(RawValue.ToString().ToLowerInvariant());
+                    builder.Append(GetRawValue().ToString().ToLowerInvariant());
                     return;
                 case char _:
                 default:
-                    s = v.ToString();
+                    s = raw.ToString();
                     break;
             }
             builder.Append('"');
@@ -2616,13 +2687,13 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// </summary>
         /// <returns></returns>
         private void GetDeepHashCode(ref HashCode hc) {
-            switch (Type) {
+            switch (GetValueType()) {
                 case VariantValueType.Null:
-                    hc.Add(Type);
+                    hc.Add(GetValueType());
                     break;
                 case VariantValueType.Primitive:
                     if (!TryGetValue(out var o)) {
-                        o = RawValue;
+                        o = GetRawValue();
                     }
                     if (o is byte[] b) {
                         o = Convert.ToBase64String(b);
@@ -2630,7 +2701,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     hc.Add(o);
                     break;
                 case VariantValueType.Values:
-                    foreach (var value in ArrayElements) {
+                    foreach (var value in GetArrayElements()) {
                         value.GetDeepHashCode(ref hc);
                     }
                     break;
@@ -2642,7 +2713,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
                     }
                     break;
                 default:
-                    hc.Add(RawValue);
+                    hc.Add(GetRawValue());
                     break;
             }
         }
