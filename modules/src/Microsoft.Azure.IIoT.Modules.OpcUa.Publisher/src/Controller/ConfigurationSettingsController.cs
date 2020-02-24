@@ -74,7 +74,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Publisher.Controller {
                 }
                 config.Capabilities.AddOrUpdate("Type", IdentityType.Publisher);
                 config.Capabilities.AddOrUpdate(nameof(_identity.SiteId),
-                    _identity.SiteId);
+                    _identity.SiteId ?? _identity.DeviceId);
                 config.Capabilities.AddOrUpdate(nameof(_identity.DeviceId),
                     _identity.DeviceId);
                 config.Capabilities.AddOrUpdate(nameof(_identity.ModuleId),
