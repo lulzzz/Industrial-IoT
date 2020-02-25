@@ -110,18 +110,6 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Registry.Events {
             builder.RegisterType<IoTHubMessagingHttpClient>()
                 .AsImplementedInterfaces().SingleInstance();
 
-            // Register event bus
-            builder.RegisterType<EventBusHost>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<ServiceBusClientFactory>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<ServiceBusEventBus>()
-                .AsImplementedInterfaces().SingleInstance();
-            // ... and auto start
-            builder.RegisterType<HostAutoStart>()
-                .AutoActivate()
-                .AsImplementedInterfaces().SingleInstance();
-
             // ... and event subscriptions
             builder.RegisterType<ApplicationEventBusSubscriber>()
                 .AsImplementedInterfaces().SingleInstance();
@@ -135,12 +123,25 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Registry.Events {
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<DiscovererEventBusSubscriber>()
                 .AsImplementedInterfaces().SingleInstance();
+
             // ...
 
             // Register forwarders
             builder.RegisterType<RegistryEventPublisherHost>()
                 .AsImplementedInterfaces();
             builder.RegisterType<SignalRServiceHost>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // Register event bus
+            builder.RegisterType<EventBusHost>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<ServiceBusClientFactory>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<ServiceBusEventBus>()
+                .AsImplementedInterfaces().SingleInstance();
+            // ... and auto start
+            builder.RegisterType<HostAutoStart>()
+                .AutoActivate()
                 .AsImplementedInterfaces().SingleInstance();
 
             return builder;

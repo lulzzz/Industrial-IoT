@@ -30,7 +30,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 var mockIotTelemetryService = new IoTHubServices();
                 mock.Provide<IIoTHubTelemetryServices>(mockIotTelemetryService);
                 var service = mock.Create<EndpointSecurityAlerter>();
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 var mockIotTelemetryService = new IoTHubServices();
                 mock.Provide<IIoTHubTelemetryServices>(mockIotTelemetryService);
                 var service = mock.Create<EndpointSecurityAlerter>();
@@ -82,7 +82,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 var mockIotTelemetryService = new IoTHubServices();
                 mock.Provide<IIoTHubTelemetryServices>(mockIotTelemetryService);
                 var service = mock.Create<EndpointSecurityAlerter>();
@@ -164,7 +164,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
             using (var mock = AutoMock.GetLoose()) {
                 var mockIotTelemetryService = new IoTHubServices();
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTelemetryServices>(mockIotTelemetryService);
                 var service = mock.Create<EndpointSecurityAlerter>();
 

@@ -26,7 +26,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Deploy {
         /// <param name="serializer"></param>
         /// <param name="logger"></param>
         public IoTHubDiscovererDeployment(IIoTHubConfigurationServices service,
-            IContainerRegistryConfig config, ISerializer serializer, ILogger logger) {
+            IContainerRegistryConfig config, IJsonSerializer serializer, ILogger logger) {
             _service = service ?? throw new ArgumentNullException(nameof(service));
             _config = config ?? throw new ArgumentNullException(nameof(service));
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Deploy {
         private const string kDefaultSchemaVersion = "1.0";
         private readonly IIoTHubConfigurationServices _service;
         private readonly IContainerRegistryConfig _config;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly ILogger _logger;
     }
 }

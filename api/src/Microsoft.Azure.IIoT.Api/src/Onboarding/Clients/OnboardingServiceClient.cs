@@ -23,7 +23,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Onboarding.Clients {
         /// <param name="config"></param>
         /// <param name="serializer"></param>
         public OnboardingServiceClient(IHttpClient httpClient, IOnboardingConfig config,
-            ISerializer serializer) : this(httpClient, config.OpcUaOnboardingServiceUrl,
+            IJsonSerializer serializer) : this(httpClient, config.OpcUaOnboardingServiceUrl,
                 config.OpcUaOnboardingServiceResourceId, serializer) {
         }
 
@@ -35,7 +35,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Onboarding.Clients {
         /// <param name="resourceId"></param>
         /// <param name="serializer"></param>
         public OnboardingServiceClient(IHttpClient httpClient, string serviceUri,
-            string resourceId, ISerializer serializer) {
+            string resourceId, IJsonSerializer serializer) {
             if (string.IsNullOrEmpty(serviceUri)) {
                 throw new ArgumentNullException(nameof(serviceUri),
                     "Please configure the Url of the onboarding micro service.");
@@ -73,6 +73,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Onboarding.Clients {
         private readonly IHttpClient _httpClient;
         private readonly string _serviceUri;
         private readonly string _resourceId;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

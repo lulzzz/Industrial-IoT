@@ -15,7 +15,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         /// <summary>
         /// Get serializer in use
         /// </summary>
-        ISerializer Serializer { get; }
+        IJsonSerializer Serializer { get; }
 
         /// <summary>
         /// Get context

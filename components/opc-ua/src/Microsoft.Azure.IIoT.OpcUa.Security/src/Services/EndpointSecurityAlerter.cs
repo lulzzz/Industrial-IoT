@@ -35,7 +35,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
         /// <param name="serializer"></param>
         /// <param name="logger"></param>
         public EndpointSecurityAlerter(IIoTHubTelemetryServices client,
-            IMetricsLogger metrics, ISerializer serializer, ILogger logger) {
+            IMetricsLogger metrics, IJsonSerializer serializer, ILogger logger) {
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -320,7 +320,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 
         private readonly IIoTHubTelemetryServices _client;
         private readonly ILogger _logger;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly IMetricsLogger _metrics;
         private static readonly Counter _endpointSecurityPolicyNone = Metrics.CreateCounter(
             "iiot_endpointSecurityAlerter_endpointSecurityPolicyNone", "unsecured endpoint found");

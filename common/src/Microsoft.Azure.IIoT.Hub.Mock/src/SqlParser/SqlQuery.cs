@@ -22,7 +22,7 @@ namespace Microsoft.Azure.IIoT.Hub.Mock.SqlParser {
         /// <summary>
         /// Create Registry
         /// </summary>
-        public SqlQuery(IIoTHub hub, ISerializer serializer) {
+        public SqlQuery(IIoTHub hub, IJsonSerializer serializer) {
             _hub = hub;
             _serializer = serializer;
         }
@@ -435,6 +435,6 @@ namespace Microsoft.Azure.IIoT.Hub.Mock.SqlParser {
         }
 
         private readonly IIoTHub _hub;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

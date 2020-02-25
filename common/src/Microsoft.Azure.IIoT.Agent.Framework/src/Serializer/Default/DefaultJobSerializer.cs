@@ -19,7 +19,7 @@ namespace Microsoft.Azure.IIoT.Agent.Framework.Serializer {
         /// </summary>
         /// <param name="serializer"></param>
         /// <param name="knownJobConfigProvider"></param>
-        public DefaultJobSerializer(ISerializer serializer,
+        public DefaultJobSerializer(IJsonSerializer serializer,
             IKnownJobConfigProvider knownJobConfigProvider) {
             _serializer = serializer;
             _knownJobConfigProvider = knownJobConfigProvider;
@@ -41,7 +41,7 @@ namespace Microsoft.Azure.IIoT.Agent.Framework.Serializer {
             return model.ConvertTo(type);
         }
 
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly IKnownJobConfigProvider _knownJobConfigProvider;
     }
 }

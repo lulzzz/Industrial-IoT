@@ -21,7 +21,7 @@ namespace Microsoft.Azure.IIoT.Hub.Services {
         /// <param name="service"></param>
         /// <param name="serializer"></param>
         public IoTHubEdgeBaseDeployment(IIoTHubConfigurationServices service,
-            ISerializer serializer) {
+            IJsonSerializer serializer) {
             _service = service ?? throw new ArgumentNullException(nameof(service));
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
         }
@@ -103,6 +103,6 @@ namespace Microsoft.Azure.IIoT.Hub.Services {
 
         private const string kDefaultSchemaVersion = "1.0";
         private readonly IIoTHubConfigurationServices _service;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

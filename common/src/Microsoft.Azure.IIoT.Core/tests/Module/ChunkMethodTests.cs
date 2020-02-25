@@ -80,6 +80,6 @@ namespace Microsoft.Azure.IIoT.Module {
         }
 
         private static readonly Random kR = new Random();
-        private readonly ISerializer _serializer = new NewtonSoftJsonSerializer();
+        private readonly IJsonSerializer _serializer = new NewtonSoftJsonSerializer();
     }
 }

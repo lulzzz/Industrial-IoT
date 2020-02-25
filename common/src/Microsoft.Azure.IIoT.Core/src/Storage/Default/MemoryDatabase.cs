@@ -26,7 +26,7 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
         /// <param name="logger"></param>
         /// <param name="serializer"></param>
         /// <param name="queryEngine"></param>
-        public MemoryDatabase(ILogger logger, ISerializer serializer,
+        public MemoryDatabase(ILogger logger, IJsonSerializer serializer,
             IQueryEngine queryEngine = null) {
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -490,7 +490,7 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
 
         private readonly ConcurrentDictionary<string, ItemContainerDatabase> _databases =
             new ConcurrentDictionary<string, ItemContainerDatabase>();
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly IQueryEngine _queryEngine;
         private readonly ILogger _logger;
     }

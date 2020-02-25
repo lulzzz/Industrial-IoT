@@ -28,7 +28,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -52,7 +52,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -88,7 +88,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -107,7 +107,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -128,7 +128,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -149,7 +149,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -169,7 +169,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             var count = endpoints.Count(x => x.IsTwinConnected());
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -189,7 +189,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
             var count = endpoints.Count(x => !x.IsTwinConnected());
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -209,7 +209,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -230,7 +230,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -250,7 +250,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(devices));
                 IEndpointRegistry service = mock.Create<EndpointRegistry>();
 
@@ -314,6 +314,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                 .ToList();
         }
 
-        private readonly ISerializer _serializer = new NewtonSoftJsonSerializer();
+        private readonly IJsonSerializer _serializer = new NewtonSoftJsonSerializer();
     }
 }

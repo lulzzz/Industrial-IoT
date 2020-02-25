@@ -308,7 +308,7 @@ namespace Microsoft.Azure.IIoT.App {
             /// <inheritdoc/>
             public void Handle(HttpContext context, AuthenticationException ex) {
                 // Force signout
-                var provider = context.RequestServices.GetService<AuthenticationStateProvider>();
+                var provider = context?.RequestServices.GetService<AuthenticationStateProvider>();
                 if (provider is ServerAuthenticationStateProvider s) {
                     var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
                     var anonymousState = new AuthenticationState(anonymousUser);

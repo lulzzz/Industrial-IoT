@@ -520,7 +520,7 @@ namespace Opc.Ua.Encoders {
             Assert.Equal(result, expected);
         }
 
-        private readonly ISerializer _serializer =
+        private readonly IJsonSerializer _serializer =
             new NewtonSoftJsonSerializer(new JsonConverters().YieldReturn());
     }
 }

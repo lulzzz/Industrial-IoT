@@ -31,7 +31,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
         /// <param name="serializer"></param>
         /// <param name="config"></param>
         /// <param name="cryptoProvider"></param>
-        public PublishedNodesJobConverter(ILogger logger, ISerializer serializer,
+        public PublishedNodesJobConverter(ILogger logger, IJsonSerializer serializer,
             IEngineConfiguration config = null, ISecureElement cryptoProvider = null) {
             _config = config;
             _cryptoProvider = cryptoProvider;
@@ -131,29 +131,29 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
                                     DataSet = new PublishedDataSetModel {
                                         DataSetSource = dataSetSource.Clone()
                                     },
-                                    DataSetFieldContentMask = DataSetFieldContentMask.SourceTimestamp | 
-                                        DataSetFieldContentMask.ServerTimestamp | 
+                                    DataSetFieldContentMask = DataSetFieldContentMask.SourceTimestamp |
+                                        DataSetFieldContentMask.ServerTimestamp |
                                         DataSetFieldContentMask.StatusCode |
-                                        DataSetFieldContentMask.NodeId  | 
+                                        DataSetFieldContentMask.NodeId  |
                                         DataSetFieldContentMask.ApplicationUri,
                                     MessageSettings = new DataSetWriterMessageSettingsModel() {
-                                        DataSetMessageContentMask = DataSetContentMask.Timestamp | 
-                                        DataSetContentMask.MetaDataVersion | 
-                                        DataSetContentMask.Status | 
-                                        DataSetContentMask.DataSetWriterId | 
-                                        DataSetContentMask.MajorVersion | 
-                                        DataSetContentMask.MinorVersion | 
+                                        DataSetMessageContentMask = DataSetContentMask.Timestamp |
+                                        DataSetContentMask.MetaDataVersion |
+                                        DataSetContentMask.Status |
+                                        DataSetContentMask.DataSetWriterId |
+                                        DataSetContentMask.MajorVersion |
+                                        DataSetContentMask.MinorVersion |
                                         DataSetContentMask.SequenceNumber
                                     }
                                 }
                             },
                             MessageSettings = new WriterGroupMessageSettingsModel() {
-                                NetworkMessageContentMask = NetworkMessageContentMask.PublisherId | 
-                                NetworkMessageContentMask.WriterGroupId | 
-                                NetworkMessageContentMask.SequenceNumber | 
-                                NetworkMessageContentMask.PayloadHeader | 
+                                NetworkMessageContentMask = NetworkMessageContentMask.PublisherId |
+                                NetworkMessageContentMask.WriterGroupId |
+                                NetworkMessageContentMask.SequenceNumber |
+                                NetworkMessageContentMask.PayloadHeader |
                                 NetworkMessageContentMask.NetworkMessageHeader |
-                                NetworkMessageContentMask.Timestamp | 
+                                NetworkMessageContentMask.Timestamp |
                                 NetworkMessageContentMask.DataSetMessageHeader
                             }
                         }
@@ -360,7 +360,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
 
         private readonly IEngineConfiguration _config;
         private readonly ISecureElement _cryptoProvider;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly ILogger _logger;
     }
 }

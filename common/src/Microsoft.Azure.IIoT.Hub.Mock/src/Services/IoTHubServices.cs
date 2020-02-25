@@ -58,7 +58,7 @@ namespace Microsoft.Azure.IIoT.Hub.Mock {
         /// <param name="serializer"></param>
         private IoTHubServices(IIoTHubConfig config,
             IEnumerable<(DeviceTwinModel, DeviceModel)> devices,
-            ISerializer serializer) {
+            IJsonSerializer serializer) {
             if (config?.IoTHubConnString != null) {
                 HostName = ConnectionString.Parse(config.IoTHubConnString).HostName;
             }
@@ -77,7 +77,7 @@ namespace Microsoft.Azure.IIoT.Hub.Mock {
         /// <param name="devices"></param>
         public static IoTHubServices Create(
             IEnumerable<(DeviceTwinModel, DeviceModel)> devices,
-            ISerializer serializer = null) {
+            IJsonSerializer serializer = null) {
             return new IoTHubServices(null, devices, serializer);
         }
 
@@ -523,6 +523,6 @@ namespace Microsoft.Azure.IIoT.Hub.Mock {
             new BlockingCollection<FileNotification>();
         private readonly List<IoTHubDeviceModel> _devices =
             new List<IoTHubDeviceModel>();
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

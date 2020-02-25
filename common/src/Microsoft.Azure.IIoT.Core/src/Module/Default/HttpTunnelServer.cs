@@ -38,7 +38,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
         /// <param name="serializer"></param>
         /// <param name="logger"></param>
         public HttpTunnelServer(IHttpClient http, IMethodClient client,
-            ISerializer serializer, ILogger logger) {
+            IJsonSerializer serializer, ILogger logger) {
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _http = http ?? throw new ArgumentNullException(nameof(http));
@@ -345,7 +345,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
         private const int kTimeoutCheckInterval = 10000;
         private readonly ConcurrentDictionary<string, HttpRequestProcessor> _requests;
         private readonly Timer _timer;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly IMethodClient _client;
         private readonly IHttpClient _http;
         private readonly ILogger _logger;

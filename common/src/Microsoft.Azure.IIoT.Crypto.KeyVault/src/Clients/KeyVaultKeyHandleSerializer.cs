@@ -19,7 +19,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
         /// Create serializer
         /// </summary>
         /// <param name="serializer"></param>
-        public KeyVaultKeyHandleSerializer(ISerializer serializer) {
+        public KeyVaultKeyHandleSerializer(IJsonSerializer serializer) {
             _serializer = serializer;
         }
 
@@ -39,6 +39,6 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             return _serializer.Deserialize<KeyVaultKeyHandle>(token);
         }
 
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

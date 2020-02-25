@@ -23,7 +23,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Controllers.Test {
         /// <param name="httpClient"></param>
         /// <param name="config"></param>
         public ControllerTestClient(IHttpClient httpClient, ITwinConfig config,
-            ISerializer serializer) {
+            IJsonSerializer serializer) {
             _serviceUri = config?.OpcUaTwinServiceUrl ??
                 throw new ArgumentNullException(nameof(config));
             _httpClient = httpClient ??
@@ -132,7 +132,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Controllers.Test {
         }
 
         private readonly IHttpClient _httpClient;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly string _serviceUri;
     }
 }

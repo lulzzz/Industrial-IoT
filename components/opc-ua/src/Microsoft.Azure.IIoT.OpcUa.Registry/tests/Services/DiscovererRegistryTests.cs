@@ -27,7 +27,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(modules));
                 IDiscovererRegistry service = mock.Create<DiscovererRegistry>();
 
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(modules));
                 IDiscovererRegistry service = mock.Create<DiscovererRegistry>();
 
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(modules));
                 IDiscovererRegistry service = mock.Create<DiscovererRegistry>();
 
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(modules));
                 IDiscovererRegistry service = mock.Create<DiscovererRegistry>();
 
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(modules));
                 IDiscovererRegistry service = mock.Create<DiscovererRegistry>();
 
@@ -121,7 +121,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(modules));
                 IDiscovererRegistry service = mock.Create<DiscovererRegistry>();
 
@@ -141,7 +141,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
 
             using (var mock = AutoMock.GetLoose()) {
                 mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
                 mock.Provide<IIoTHubTwinServices>(IoTHubServices.Create(modules));
                 IDiscovererRegistry service = mock.Create<DiscovererRegistry>();
 
@@ -192,6 +192,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                 .Select(t => (t, new DeviceModel { Id = t.Id, ModuleId = t.ModuleId }))
                 .ToList();
         }
-        private readonly ISerializer _serializer = new NewtonSoftJsonSerializer();
+        private readonly IJsonSerializer _serializer = new NewtonSoftJsonSerializer();
     }
 }

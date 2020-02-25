@@ -19,7 +19,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Storage {
         /// Create serializer
         /// </summary>
         /// <param name="serializer"></param>
-        public KeyHandleSerializer(ISerializer serializer) {
+        public KeyHandleSerializer(IJsonSerializer serializer) {
             _serializer = serializer;
         }
 
@@ -39,7 +39,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Storage {
             return _serializer.Deserialize<KeyId>(token);
         }
 
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }
 

@@ -24,7 +24,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Clients {
         /// <param name="config"></param>
         /// <param name="serializer"></param>
         public HistoryServiceClient(IHttpClient httpClient, IHistoryConfig config,
-            ISerializer serializer) : this(httpClient,
+            IJsonSerializer serializer) : this(httpClient,
                 config?.OpcUaHistoryServiceUrl, config?.OpcUaHistoryServiceResourceId,
                 serializer) {
         }
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Clients {
         /// <param name="resourceId"></param>
         /// <param name="serializer"></param>
         public HistoryServiceClient(IHttpClient httpClient, string serviceUri, string resourceId,
-            ISerializer serializer = null) {
+            IJsonSerializer serializer = null) {
             if (string.IsNullOrEmpty(serviceUri)) {
                 throw new ArgumentNullException(nameof(serviceUri),
                     "Please configure the Url of the endpoint micro service.");
@@ -384,7 +384,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Clients {
         }
 
         private readonly IHttpClient _httpClient;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly string _serviceUri;
         private readonly string _resourceId;
     }

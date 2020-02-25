@@ -23,7 +23,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
         /// <param name="queue"></param>
         /// <param name="serializer"></param>
         public MonitoredItemSampleForwarder(IEventQueueService queue,
-            ISerializer serializer) {
+            IJsonSerializer serializer) {
             _serializer = serializer ??
                 throw new ArgumentNullException(nameof(serializer));
             if (queue == null) {
@@ -47,6 +47,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
         }
 
         private readonly IEventQueueClient _client;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

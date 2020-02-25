@@ -28,7 +28,7 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
         /// <param name="serializer"></param>
         /// <param name="logger"></param>
         /// <param name="process"></param>
-        public ServiceBusEventBus(IServiceBusClientFactory factory, ISerializer serializer,
+        public ServiceBusEventBus(IServiceBusClientFactory factory, IJsonSerializer serializer,
             ILogger logger, IProcessIdentity process = null) {
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -232,7 +232,7 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
             new Dictionary<string, Dictionary<string, Subscription>>();
         private readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
         private readonly ILogger _logger;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly IServiceBusClientFactory _factory;
         private readonly ISubscriptionClient _subscriptionClient;
     }

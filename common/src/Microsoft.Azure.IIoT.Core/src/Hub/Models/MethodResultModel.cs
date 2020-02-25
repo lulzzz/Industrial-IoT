@@ -20,6 +20,7 @@ namespace Microsoft.Azure.IIoT.Hub.Models {
 
         /// <summary>
         /// Response payload
+        /// TODO: replace with variantvalue
         /// </summary>
         [DataMember(Name = "jsonPayload")]
         public string JsonPayload { get; set; }

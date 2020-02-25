@@ -34,7 +34,7 @@ namespace Microsoft.Azure.IIoT.Hub.Client {
         /// <param name="config"></param>
         /// <param name="serializer"></param>
         /// <param name="logger"></param>
-        public IoTHubServiceClient(IIoTHubConfig config, ISerializer serializer,
+        public IoTHubServiceClient(IIoTHubConfig config, IJsonSerializer serializer,
             ILogger logger) {
             if (string.IsNullOrEmpty(config?.IoTHubConnString)) {
                 throw new ArgumentNullException(nameof(config.IoTHubConnString));
@@ -314,7 +314,7 @@ namespace Microsoft.Azure.IIoT.Hub.Client {
 
         private readonly ServiceClient _client;
         private readonly RegistryManager _registry;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly JobClient _jobs;
         private readonly ILogger _logger;
     }

@@ -27,7 +27,7 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
         /// <param name="serializer"></param>
         /// <param name="logger"></param>
         public DiagnosticMethodsController(ITelemetrySender publisher,
-            ISerializer serializer, ILogger logger) {
+            IJsonSerializer serializer, ILogger logger) {
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
             _publisher = publisher ??
@@ -76,6 +76,6 @@ namespace Microsoft.Azure.IIoT.Modules.Diagnostic.v2.Supervisor {
 
         private readonly ILogger _logger;
         private readonly ITelemetrySender _publisher;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

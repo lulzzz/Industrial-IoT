@@ -29,7 +29,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
         /// </summary>
         /// <param name="serializer"></param>
         /// <param name="logger"></param>
-        public ChunkMethodServer(ISerializer serializer, ILogger logger) {
+        public ChunkMethodServer(IJsonSerializer serializer, ILogger logger) {
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requests = new ConcurrentDictionary<string, ChunkProcessor>();
@@ -197,7 +197,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
 
         private const int kTimeoutCheckInterval = 10000;
         private static long _requestCounter;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly ILogger _logger;
         private readonly ConcurrentDictionary<string, ChunkProcessor> _requests;
         private readonly Timer _timer;

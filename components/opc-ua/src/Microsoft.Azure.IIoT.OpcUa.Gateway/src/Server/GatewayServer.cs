@@ -1408,7 +1408,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Gateway.Server {
         /// <param name="serializer"></param>
         /// <returns></returns>
         private static CredentialModel GetRemoteCredentialsFromContext(
-            RequestContextModel context, ISerializer serializer) {
+            RequestContextModel context, IJsonSerializer serializer) {
             if (!context.Session.Identities.Any()) {
                 return null; // no credential - anonymous access - throw?
             }

@@ -18,7 +18,8 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
     /// <summary>
     /// Newtonsoft json serializer
     /// </summary>
-    public class NewtonSoftJsonSerializer : IJsonSerializerSettingsProvider, ISerializer {
+    public class NewtonSoftJsonSerializer : IJsonSerializerSettingsProvider,
+        IJsonSerializer {
 
         /// <inheritdoc/>
         public string MimeType => ContentMimeType.Json;

@@ -38,7 +38,7 @@ namespace Microsoft.Azure.IIoT.Hub.Client {
         /// <param name="serializer"></param>
         /// <param name="logger"></param>
         public IoTHubServiceHttpClient(IHttpClient httpClient,
-            IIoTHubConfig config, ISerializer serializer, ILogger logger) :
+            IIoTHubConfig config, IJsonSerializer serializer, ILogger logger) :
             base(httpClient, config, serializer, logger) {
         }
 
@@ -181,7 +181,7 @@ namespace Microsoft.Azure.IIoT.Hub.Client {
             response.Validate();
             var result = _serializer.ParseResponse(response);
             return new MethodResultModel {
-                JsonPayload = result["payload"].ToString(),
+                JsonPayload = _serializer.SerializeToString(result["payload"]),
                 Status = (int)result["status"]
             };
         }

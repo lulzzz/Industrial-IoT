@@ -21,7 +21,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
         /// <param name="services"></param>
         /// <param name="endpoint"></param>
         /// <param name="readExpected"></param>
-        public ReadArrayValueTests(ISerializer serializer,
+        public ReadArrayValueTests(IJsonSerializer serializer,
             Func<INodeServices<T>> services, T endpoint,
             Func<T, string, Task<VariantValue>> readExpected) {
             _services = services;
@@ -964,6 +964,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
         private readonly T _endpoint;
         private readonly Func<T, string, Task<VariantValue>> _readExpected;
         private readonly Func<INodeServices<T>> _services;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

@@ -385,7 +385,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
         /// <param name="registry"></param>
         private static IDiscoveryResultProcessor Setup(AutoMock mock, IoTHubServices registry) {
             mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-            mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+            mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
             mock.Provide<IIoTHubTwinServices>(registry);
             mock.Provide<IApplicationRepository, ApplicationTwins>();
             mock.Provide<IDiscovererRegistry, DiscovererRegistry>();
@@ -543,6 +543,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                 .Concat(Publisher.YieldReturn()));
         }
 
-        private readonly ISerializer _serializer = new NewtonSoftJsonSerializer();
+        private readonly IJsonSerializer _serializer = new NewtonSoftJsonSerializer();
     }
 }

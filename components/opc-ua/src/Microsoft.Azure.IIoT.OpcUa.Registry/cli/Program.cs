@@ -415,7 +415,7 @@ Operations (Mutually exclusive):
                 return Task.CompletedTask;
             }
 
-            private readonly ISerializer _serializer = new NewtonSoftJsonSerializer();
+            private readonly IJsonSerializer _serializer = new NewtonSoftJsonSerializer();
         }
 
         /// <inheritdoc/>

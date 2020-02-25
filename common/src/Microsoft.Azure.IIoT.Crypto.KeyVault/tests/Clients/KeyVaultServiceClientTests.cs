@@ -522,7 +522,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             Func<IEnumerable<IDocumentInfo<VariantValue>>,
             string, IEnumerable<IDocumentInfo<VariantValue>>> provider) {
             mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-            mock.Provide<ISerializer, NewtonSoftJsonSerializer>();
+            mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
             mock.Provide<IQueryEngine>(new QueryEngineAdapter(provider));
             mock.Provide<IDatabaseServer, MemoryDatabase>();
             mock.Provide<IItemContainerFactory, ItemContainerFactory>();
@@ -536,7 +536,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
                     mock.Provide<ICertificateRepository, CertificateDatabase>(),
                     mock.Provide<ICertificateFactory, CertificateFactory>(),
                     config.Object,
-                    mock.Provide<ISerializer, NewtonSoftJsonSerializer>(),
+                    mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>(),
                     client.Object)), client);
         }
         private const string kTestVaultUri = "http://test.vault.com:80";

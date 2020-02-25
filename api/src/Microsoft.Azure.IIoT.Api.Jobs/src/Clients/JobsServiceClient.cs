@@ -24,7 +24,7 @@ namespace Microsoft.Azure.IIoT.Api.Jobs.Clients {
         /// <param name="config"></param>
         /// <param name="serializer"></param>
         public JobsServiceClient(IHttpClient httpClient, IJobsServiceConfig config,
-            ISerializer serializer) :
+            IJsonSerializer serializer) :
             this(httpClient, config?.JobServiceUrl, config?.JobServiceResourceId, serializer) {
         }
 
@@ -36,7 +36,7 @@ namespace Microsoft.Azure.IIoT.Api.Jobs.Clients {
         /// <param name="resourceId"></param>
         /// <param name="serializer"></param>
         public JobsServiceClient(IHttpClient httpClient, string serviceUri, string resourceId,
-            ISerializer serializer = null) {
+            IJsonSerializer serializer = null) {
             _serializer = serializer ?? new NewtonSoftJsonSerializer();
             _serviceUri = serviceUri ?? throw new ArgumentNullException(nameof(serviceUri),
                     "Please configure the Url of the endpoint micro service.");
@@ -167,7 +167,7 @@ namespace Microsoft.Azure.IIoT.Api.Jobs.Clients {
             response.Validate();
         }
 
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly string _serviceUri;
         private readonly IHttpClient _httpClient;
         private readonly string _resourceId;

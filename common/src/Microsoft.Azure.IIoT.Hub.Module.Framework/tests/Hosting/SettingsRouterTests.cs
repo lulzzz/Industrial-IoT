@@ -218,6 +218,6 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             }
         }
 
-        private readonly ISerializer _serializer = new NewtonSoftJsonSerializer();
+        private readonly IJsonSerializer _serializer = new NewtonSoftJsonSerializer();
     }
 }

@@ -18,7 +18,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
         /// <summary>
         /// Create browse services tests
         /// </summary>
-        public BrowseServicesTests(ISerializer serializer,
+        public BrowseServicesTests(IJsonSerializer serializer,
             Func<IBrowseServices<T>> services, T endpoint) {
             _services = services;
             _endpoint = endpoint;
@@ -2225,6 +2225,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
 
         private readonly T _endpoint;
         private readonly Func<IBrowseServices<T>> _services;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

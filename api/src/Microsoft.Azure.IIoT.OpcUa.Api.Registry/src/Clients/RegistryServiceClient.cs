@@ -25,7 +25,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Clients {
         /// <param name="config"></param>
         /// <param name="serializer"></param>
         public RegistryServiceClient(IHttpClient httpClient, IRegistryConfig config,
-            ISerializer serializer) : this(httpClient,
+            IJsonSerializer serializer) : this(httpClient,
                 config?.OpcUaRegistryServiceUrl, config.OpcUaRegistryServiceResourceId,
                 serializer) {
         }
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Clients {
         /// <param name="resourceId"></param>
         /// <param name="serializer"></param>
         public RegistryServiceClient(IHttpClient httpClient, string serviceUri,
-            string resourceId, ISerializer serializer = null) {
+            string resourceId, IJsonSerializer serializer = null) {
             if (string.IsNullOrEmpty(serviceUri)) {
                 throw new ArgumentNullException(nameof(serviceUri),
                     "Please configure the Url of the registry micro service.");
@@ -835,6 +835,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Clients {
         private readonly IHttpClient _httpClient;
         private readonly string _serviceUri;
         private readonly string _resourceId;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

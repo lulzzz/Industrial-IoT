@@ -27,12 +27,13 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Publisher.Agent {
             /// Cerate job serializer
             /// </summary>
             /// <param name="serializer"></param>
-            public PublisherJobSerializer(ISerializer serializer) {
+            public PublisherJobSerializer(IJsonSerializer serializer) {
                 _serializer = serializer;
             }
 
             /// <inheritdoc/>
-            public object DeserializeJobConfiguration(VariantValue model, string jobConfigurationType) {
+            public object DeserializeJobConfiguration(VariantValue model,
+                string jobConfigurationType) {
                 switch (jobConfigurationType) {
                     case kDataSetWriterJobV2:
                         return model.ConvertTo<WriterGroupJobApiModel>().ToServiceModel();
@@ -42,7 +43,8 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Publisher.Agent {
             }
 
             /// <inheritdoc/>
-            public VariantValue SerializeJobConfiguration<T>(T jobConfig, out string jobConfigurationType) {
+            public VariantValue SerializeJobConfiguration<T>(T jobConfig,
+                out string jobConfigurationType) {
                 switch (jobConfig) {
                     case WriterGroupJobModel pj:
                         jobConfigurationType = kDataSetWriterJobV2;
@@ -52,7 +54,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Publisher.Agent {
                 throw new UnknownJobTypeException(typeof(T).Name);
             }
 
-            private readonly ISerializer _serializer;
+            private readonly IJsonSerializer _serializer;
         }
 
         /// <inheritdoc/>

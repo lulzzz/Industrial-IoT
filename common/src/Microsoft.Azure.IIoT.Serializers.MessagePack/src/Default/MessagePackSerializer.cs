@@ -22,7 +22,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
     /// Message pack serializer
     /// </summary>
     public class MessagePackSerializer : IMessagePackSerializerOptionsProvider,
-        ISerializer {
+        IBinarySerializer {
 
         /// <inheritdoc/>
         public string MimeType => ContentMimeType.MsgPack;

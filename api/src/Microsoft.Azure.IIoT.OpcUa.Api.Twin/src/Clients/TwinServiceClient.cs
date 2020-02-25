@@ -25,7 +25,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
         /// <param name="config"></param>
         /// <param name="serializer"></param>
         public TwinServiceClient(IHttpClient httpClient, ITwinConfig config,
-            ISerializer serializer) : this(httpClient,
+            IJsonSerializer serializer) : this(httpClient,
                 config?.OpcUaTwinServiceUrl, config?.OpcUaTwinServiceResourceId,
                 serializer) {
         }
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
         /// <param name="resourceId"></param>
         /// <param name="serializer"></param>
         public TwinServiceClient(IHttpClient httpClient, string serviceUri, string resourceId,
-            ISerializer serializer = null) {
+            IJsonSerializer serializer = null) {
             _serviceUri = serviceUri ?? throw new ArgumentNullException(nameof(serviceUri),
                     "Please configure the Url of the endpoint micro service.");
             _resourceId = resourceId;
@@ -222,7 +222,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Clients {
         }
 
         private readonly IHttpClient _httpClient;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
         private readonly string _serviceUri;
         private readonly string _resourceId;
     }

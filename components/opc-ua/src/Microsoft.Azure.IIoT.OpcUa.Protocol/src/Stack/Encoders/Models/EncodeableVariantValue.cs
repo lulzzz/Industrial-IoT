@@ -22,7 +22,7 @@ namespace Opc.Ua.Encoders {
         /// </summary>
         /// <param name="serializer"></param>
         /// <param name="value"></param>
-        public EncodeableVariantValue(ISerializer serializer, VariantValue value = null) {
+        public EncodeableVariantValue(IJsonSerializer serializer, VariantValue value = null) {
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
             Value = value;
         }
@@ -57,6 +57,6 @@ namespace Opc.Ua.Encoders {
             return false;
         }
 
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }

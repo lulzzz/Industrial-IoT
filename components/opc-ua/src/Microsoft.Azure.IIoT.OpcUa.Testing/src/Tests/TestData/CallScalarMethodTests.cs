@@ -22,7 +22,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
         /// <summary>
         /// Create node services tests
         /// </summary>
-        public CallScalarMethodTests(ISerializer serializer,
+        public CallScalarMethodTests(IJsonSerializer serializer,
             Func<INodeServices<T>> services, T endpoint) {
             _services = services;
             _endpoint = endpoint;
@@ -1692,6 +1692,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
 
         private readonly T _endpoint;
         private readonly Func<INodeServices<T>> _services;
-        private readonly ISerializer _serializer;
+        private readonly IJsonSerializer _serializer;
     }
 }
