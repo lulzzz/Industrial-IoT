@@ -255,6 +255,226 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         }
 
         [Fact]
+        public void SerializeFromComplexObjectAndGetByPath() {
+            var o = Serializer.FromObject(new {
+                Test = 0,
+                Path1 = new {
+                    Test = 1,
+                    a = new[] { 1, 2, 3, 4, 5 },
+                    Path2 = new {
+                        Test = 2,
+                        a = new[] { 1, 2, 3, 4, 5 },
+                        Path3 = new {
+                            Test = 3,
+                            a = new[] { 1, 2, 3, 4, 5 },
+                            Path4 = new {
+                                Test = 4,
+                                a = new[] { 1, 2, 3, 4, 5 }
+                            }
+                        }
+                    }
+                },
+                LoCale = "de"
+            });
+            VariantValue value;
+
+            value = o.GetByPath("Path1.Test");
+            Assert.Equal(1, value);
+            value = o.GetByPath("Path1.Path2.Test");
+            Assert.Equal(2, value);
+            value = o.GetByPath("Path1.Path2.Path3.Test");
+            Assert.Equal(3, value);
+            value = o.GetByPath("Path1.Path2.Path3.Path4.Test");
+            Assert.Equal(4, value);
+
+            value = o.GetByPath("path1.Test");
+            Assert.Equal(1, value);
+            value = o.GetByPath("Path1.path2.Test");
+            Assert.Equal(2, value);
+            value = o.GetByPath("Path1.PAth2.PaTh3.TEST");
+            Assert.Equal(3, value);
+            value = o.GetByPath("Path1.Path2.Path3.Path4.test");
+            Assert.Equal(4, value);
+
+            value = o.GetByPath("Path1.a");
+            Assert.True(value.IsListOfValues);
+            Assert.Equal(5, value.Count);
+
+            value = o.GetByPath("Path1.a[0]");
+            Assert.Equal(1, value);
+            value = o.GetByPath("Path1.path2.a[1]");
+            Assert.Equal(2, value);
+            value = o.GetByPath("Path1.PAth2.PaTh3.a[2]");
+            Assert.Equal(3, value);
+            value = o.GetByPath("Path1.Path2.Path3.Path4.a[3]");
+            Assert.Equal(4, value);
+        }
+
+
+        [Fact]
+        public void SerializeFromComplexObjectAndGetByPath1() {
+            var o = Serializer.FromObject(new {
+                Test = 0,
+                Path1 = new {
+                    Test = 1,
+                    Path2 = new {
+                        Test = 2,
+                        Path3 = new {
+                            Test = 3,
+                            Path4 = new {
+                                Test = 4,
+                            }
+                        }
+                    }
+                },
+                LoCale = "de"
+            });
+            VariantValue value;
+
+            value = o.GetByPath("Path1.Test");
+            Assert.Equal(1, value);
+            value = o.GetByPath("Path1.Path2.Test");
+            Assert.Equal(2, value);
+            value = o.GetByPath("Path1.Path2.Path3.Test");
+            Assert.Equal(3, value);
+            value = o.GetByPath("Path1.Path2.Path3.Path4.Test");
+            Assert.Equal(4, value);
+            value = o.GetByPath("Path1.Test", StringComparison.InvariantCulture);
+            Assert.Equal(1, value);
+            value = o.GetByPath("Path1.Path2.Test", StringComparison.InvariantCulture);
+            Assert.Equal(2, value);
+            value = o.GetByPath("Path1.Path2.Path3.Test", StringComparison.InvariantCulture);
+            Assert.Equal(3, value);
+            value = o.GetByPath("Path1.Path2.Path3.Path4.Test", StringComparison.InvariantCulture);
+            Assert.Equal(4, value);
+
+            value = o.GetByPath("path1.Test");
+            Assert.Equal(1, value);
+            value = o.GetByPath("Path1.path2.Test");
+            Assert.Equal(2, value);
+            value = o.GetByPath("Path1.PAth2.PaTh3.TEST");
+            Assert.Equal(3, value);
+            value = o.GetByPath("Path1.Path2.Path3.Path4.test");
+            Assert.Equal(4, value);
+
+            value = o.GetByPath("path1.Test", StringComparison.InvariantCulture);
+            Assert.True(value.IsNull);
+            value = o.GetByPath("Path1.path2.Test", StringComparison.InvariantCulture);
+            Assert.True(value.IsNull);
+            value = o.GetByPath("Path1.PAth2.PaTh3.TEST", StringComparison.InvariantCulture);
+            Assert.True(value.IsNull);
+            value = o.GetByPath("Path1.Path2.Path3.Path4.test", StringComparison.InvariantCulture);
+            Assert.True(value.IsNull);
+        }
+
+        [Fact]
+        public void SerializeFromComplexObjectAndGetByPath2() {
+            var o = Serializer.FromObject(new {
+                Test = 0,
+                Path1 = new {
+                    Test = 1,
+                    a = new[] { 1, 2, 3, 4, 5 },
+                    Path2 = new {
+                        Test = 2,
+                        a = new[] { 1, 2, 3, 4, 5 },
+                        Path3 = new {
+                            Test = 3,
+                            a = new[] { 1, 2, 3, 4, 5 },
+                            Path4 = new {
+                                Test = 4,
+                                a = new[] { 1, 2, 3, 4, 5 }
+                            }
+                        }
+                    }
+                },
+                LoCale = "de"
+            });
+            VariantValue value;
+
+            value = o.GetByPath("Path1.a");
+            Assert.True(value.IsListOfValues);
+            Assert.Equal(5, value.Count);
+
+            value = o.GetByPath("Path1.A[0]");
+            Assert.Equal(1, value);
+            value = o.GetByPath("Path1.path2.a[1]");
+            Assert.Equal(2, value);
+            value = o.GetByPath("Path1.PAth2.PaTh3.a[2]");
+            Assert.Equal(3, value);
+            value = o.GetByPath("Path1.Path2.Path3.PATH4.a[3]");
+            Assert.Equal(4, value);
+
+            value = o.GetByPath("Path1.A[0]", StringComparison.InvariantCulture);
+            Assert.True(value.IsNull);
+            value = o.GetByPath("Path1.path2.a[1]", StringComparison.InvariantCulture);
+            Assert.True(value.IsNull);
+            value = o.GetByPath("Path1.PAth2.PaTh3.a[2]", StringComparison.InvariantCulture);
+            Assert.True(value.IsNull);
+            value = o.GetByPath("Path1.Path2.Path3.PATH4.a[3]", StringComparison.InvariantCulture);
+            Assert.True(value.IsNull);
+        }
+
+        [Fact]
+        public void SerializeFromComplexObjectAndGetByPath3() {
+            var o = Serializer.FromObject(new {
+                Test = 0,
+                Path1 = new {
+                    a = new object[] {
+                        new {
+                            Test = 3,
+                            a = new[] { 1, 2, 3, 4, 5 },
+                            Path2 = new {
+                                Test = 2,
+                                a = new[] { 1, 2, 3, 4, 5 }
+                            }
+                        },
+                        new {
+                            Test = 3,
+                            a = new[] { 1, 2, 3, 4, 5 },
+                            Path3 = new {
+                                Test = 3,
+                                a = new[] { 1, 2, 3, 4, 5 }
+                            }
+                        },
+                        new {
+                            Test = 3,
+                            a = new[] { 1, 2, 3, 4, 5 },
+                            Path4 = new {
+                                Test = 4,
+                                a = new[] { 1, 2, 3, 4, 5 }
+                            }
+                        }
+                    }
+                },
+                LoCale = "de"
+            });
+            VariantValue value;
+
+            value = o.GetByPath("Path1.a");
+            Assert.True(value.IsListOfValues);
+            Assert.Equal(3, value.Count);
+
+            value = o.GetByPath("Path1.a[0]");
+            Assert.True(value.IsObject);
+
+            value = o.GetByPath("Path1.a[1].Test");
+            Assert.Equal(3, value);
+            value = o.GetByPath("Path1.a[1].Path3.Test");
+            Assert.Equal(3, value);
+
+            value = o.GetByPath("Path1.a[2].Path4.a");
+            Assert.True(value.IsListOfValues);
+            Assert.Equal(5, value.Count);
+            value = o.GetByPath("Path1.a[2].Path4.a[2]");
+            Assert.Equal(3, value);
+
+            value = o.GetByPath("Path1.a[4]");
+            Assert.True(value.IsNull);
+            value = o.GetByPath("Path1.a[4].Test");
+            Assert.True(value.IsNull);
+        }
+
+        [Fact]
         public void SerializeEndpointString1() {
             var expected = "Endpoint";
             var json = Serializer.SerializeToString(expected);

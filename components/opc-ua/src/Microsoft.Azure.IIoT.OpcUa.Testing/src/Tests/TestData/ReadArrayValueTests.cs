@@ -886,8 +886,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            Assert.True(result.Value.IsListOfValues,
-                $"Not a list {result.Value}");
+            Assert.True(result.Value.IsArray, $"Not an array {result.Value}");
             if (result.Value.Count == 0) {
                 return;
             }
@@ -943,13 +942,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
             Assert.NotNull(result.ServerTimestamp);
             AssertEqualValue(expected, result.Value);
 
-            // TODO - why is it returning byte array?
-            if (result.Value.IsBytes) {
-                return;
-            }
-
-            Assert.True(result.Value.IsListOfValues,
-                $"Not a list {result.Value}");
+            Assert.True(result.Value.IsArray, $"Not an array {result.Value}");
             if (result.Value.Count == 0) {
                 return;
             }

@@ -24,13 +24,28 @@ namespace Microsoft.Azure.IIoT.Serializers {
             new PrimitiveValue(null, VariantValueType.Null);
 
         /// <inheritdoc/>
-        public VariantValue this[string key] =>
-            TryGetProperty(key, out var result) ? result : NewValue();
+        public VariantValue this[string key] {
+            get {
+                if (!TryGetProperty(key, out var result)) {
+                    result = AddProperty(key);
+                }
+                return result;
+            }
+        }
 
         /// <inheritdoc/>
-        public VariantValue this[int index] =>
-            TryGetElement(index, out var result) ? result :
-            throw new IndexOutOfRangeException($"{index} out of range");
+        public VariantValue this[int index] {
+            get {
+                if (!TryGetElement(index, out var result)) {
+                    // Fall back to use array elements
+                    result = Values.Skip(index).FirstOrDefault();
+                    if (result == null) {
+                        throw new IndexOutOfRangeException($"{index} out of range");
+                    }
+                }
+                return result;
+            }
+        }
 
         /// <summary>
         /// Property names of object
@@ -731,7 +746,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// Update the value to the new value.
         /// </summary>
         /// <param name="value"></param>
-        public abstract void Set(object value);
+        public abstract void AssignValue(object value);
 
         /// <summary>
         /// Clone this item or entire tree
@@ -1832,11 +1847,41 @@ namespace Microsoft.Azure.IIoT.Serializers {
         }
 
         /// <summary>
-        /// Select value using path
+        /// Select value using path. Path can be either . seperated
+        /// property names or contain index [] for array elements.
         /// </summary>
         /// <param name="path"></param>
+        /// <param name="compare"></param>
         /// <returns></returns>
-        public abstract VariantValue SelectToken(string path);
+        public virtual VariantValue GetByPath(string path,
+            StringComparison compare = StringComparison.InvariantCultureIgnoreCase) {
+            var leaf = this;
+            var elements = path.Split('.', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var elem in elements) {
+                var key = elem;
+                var index = -1;
+                var offset = elem.Split('[', StringSplitOptions.RemoveEmptyEntries);
+                if (offset.Length > 1) {
+                    var end = offset[1].IndexOf(']');
+                    if (end != -1 &&
+                        int.TryParse(offset[1].Substring(0, end), out index)) {
+                        key = offset[0];
+                    }
+                    else {
+                        index = -1;
+                    }
+                }
+                if (!leaf.TryGetProperty(key, out leaf, compare)) {
+                    return Null;
+                }
+                if (index != -1) {
+                    if (!leaf.TryGetElement(index, out leaf)) {
+                        return Null;
+                    }
+                }
+            }
+            return leaf;
+        }
 
         /// <summary>
         /// Equality comparer
@@ -2458,18 +2503,19 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
 
             /// <inheritdoc/>
-            public override VariantValue SelectToken(string path) {
+            public override VariantValue GetByPath(string path,
+                StringComparison compare) {
+                return Null;
+            }
+
+            /// <inheritdoc/>
+            public override void AssignValue(object value) {
                 throw new NotSupportedException("Not an object");
             }
 
             /// <inheritdoc/>
-            public override void Set(object value) {
+            protected override VariantValue AddProperty(string property) {
                 throw new NotSupportedException("Not an object");
-            }
-
-            /// <inheritdoc/>
-            protected override VariantValue NewValue() {
-                return new PrimitiveValue(null, VariantValueType.Null);
             }
 
             private readonly VariantValueType _valueType;
@@ -2480,7 +2526,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// Create value which is set to null.
         /// </summary>
         /// <returns></returns>
-        protected abstract VariantValue NewValue();
+        protected abstract VariantValue AddProperty(string property);
 
         /// <summary>
         /// Get type of value

@@ -245,24 +245,24 @@ namespace Microsoft.Azure.IIoT.Hub.Mock.SqlParser {
             string identifier) {
             switch (identifier.ToLowerInvariant()) {
                 case "tags":
-                    return (t, s) => SelectTargetToken(t.Tags, s);
+                    return (t, s) => GetByPath(t.Tags, s);
                 case "deviceid":
                     return (t, s) => _serializer.FromObject(t.Id);
                 case "moduleid":
                     return (t, s) => _serializer.FromObject(t.ModuleId);
                 case "reported":
-                    return (t, s) => SelectTargetToken(t.Properties.Reported, s);
+                    return (t, s) => GetByPath(t.Properties.Reported, s);
                 case "desired":
-                    return (t, s) => SelectTargetToken(t.Properties.Desired, s);
+                    return (t, s) => GetByPath(t.Properties.Desired, s);
                 case "properties":
-                    return (t, s) => SelectTargetToken(t.Properties, s);
+                    return (t, s) => GetByPath(t.Properties, s);
                 case "capabilities":
-                    return (t, s) => SelectTargetToken(t.Capabilities, s);
+                    return (t, s) => GetByPath(t.Capabilities, s);
                 case "configurations":
                     // TODO
                     return (t, s) => null;
                 case "connectionstate":
-                    return (t, s) => SelectTargetToken(t.ConnectionState, s);
+                    return (t, s) => GetByPath(t.ConnectionState, s);
                 default:
                     return (t, s) => null;
             }
@@ -275,13 +275,12 @@ namespace Microsoft.Azure.IIoT.Hub.Mock.SqlParser {
         /// <param name="target"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        private VariantValue SelectTargetToken<T>(T target, string path) where T : class {
+        private VariantValue GetByPath<T>(T target, string path) where T : class {
             if (target == null) {
                 return null;
             }
             var root = _serializer.FromObject(target);
-            var selected = root.SelectToken(path);
-
+            var selected = root.GetByPath(path);
             return selected;
         }
 

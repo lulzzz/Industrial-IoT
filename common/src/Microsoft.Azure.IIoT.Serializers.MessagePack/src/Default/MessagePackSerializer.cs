@@ -116,9 +116,12 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             /// <param name="serializer"></param>
             /// <param name="typed">Whether the object is the
             /// original type or the generated one</param>
+            /// <param name="parentUpdate"></param>
             internal MessagePackVariantValue(object value,
-                MessagePackSerializerOptions serializer, bool typed) {
+                MessagePackSerializerOptions serializer, bool typed,
+                Action<object> parentUpdate = null) {
                 _options = serializer;
+                _update = parentUpdate;
                 _value = typed ? ToTypeLess(value) : value;
             }
 
@@ -214,7 +217,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             /// <inheritdoc/>
             public override VariantValue Copy(bool shallow) {
                 if (_value == null) {
-                    return NewValue();
+                    return new MessagePackVariantValue(null, _options, false);
                 }
                 try {
                     return new MessagePackVariantValue(_value, _options, true);
@@ -249,58 +252,48 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             }
 
             /// <inheritdoc/>
-            public override VariantValue SelectToken(string path) {
-                throw new NotSupportedException("Path not supported");
-            }
-
-            /// <inheritdoc/>
-            public override void Set(object value) {
-                _value = value;
-            }
-
-            /// <inheritdoc/>
             public override bool TryGetProperty(string key, out VariantValue value,
                 StringComparison compare) {
                 if (_value is IDictionary<object, object> o) {
                     var success = o.FirstOrDefault(kv => key.Equals((string)kv.Key, compare));
                     if (success.Value != null) {
-                        value = new MessagePackVariantValue(success.Value, _options, false);
+                        value = new MessagePackVariantValue(success.Value, _options, false,
+                            v => o.AddOrUpdate(success.Key, v));
                         return true;
                     }
                 }
-                value = NewValue();
+                value = null;
                 return false;
             }
 
             /// <inheritdoc/>
             public override bool TryGetElement(int index, out VariantValue value) {
                 if (index >= 0 && _value is IList<object> o && index < o.Count) {
-                    value = new MessagePackVariantValue(o[index], _options, false);
+                    value = new MessagePackVariantValue(o[index], _options, false,
+                        v => o[index] = v);
                     return true;
                 }
-                value = NewValue();
+                value = null;
                 return false;
             }
 
             /// <inheritdoc/>
-            protected override VariantValue NewValue() {
-                return new MessagePackVariantValue(null, _options, false);
+            protected override VariantValue AddProperty(string property) {
+                if (_value is IDictionary<object, object> o) {
+                    return new MessagePackVariantValue(null, _options, false,
+                        v => o.AddOrUpdate(property, v));
+                }
+                throw new NotSupportedException("Not an object");
             }
 
-            //     /// <inheritdoc/>
-            //     protected override bool TryCompareToValue(object o, out int result) {
-            //         try {
-            //             if (_value is object[] a1 && a1.Length > 0 && a1[0] is IComparable c1 &&
-            //                 _value is object[] a2 && a2.Length > 0 && a2[0] is IComparable c2) {
-            //                 result = c1.CompareTo(c2);
-            //                 return true;
-            //             }
-            //         }
-            //         catch {
-            //             // Try base
-            //         }
-            //         return base.TryCompareToValue(o, out result);
-            //     }
+            /// <inheritdoc/>
+            public override void AssignValue(object value) {
+                if (_update != null) {
+                    _update(value);
+                    _value = value;
+                }
+                throw new NotSupportedException("Not an object or array");
+            }
 
             /// <inheritdoc/>
             protected override bool TryEqualsVariant(VariantValue v, out bool equality) {
@@ -375,6 +368,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             }
 
             private readonly MessagePackSerializerOptions _options;
+            private readonly Action<object> _update;
             private object _value;
         }
 

@@ -46,7 +46,7 @@ namespace Microsoft.Azure.IIoT.Agent.Framework.Jobs {
                 }
                 var cs = await _ioTHubTwinServices.GetConnectionStringAsync(deviceTwin.Id);
                 if (job.JobConfiguration?.IsObject == true) {
-                    job.JobConfiguration[TwinProperties.ConnectionString].Set(cs.ToString());
+                    job.JobConfiguration[TwinProperties.ConnectionString].AssignValue(cs.ToString());
                     _logger.Debug("Added connection string to job {id}", jobDeviceId);
                 }
             }

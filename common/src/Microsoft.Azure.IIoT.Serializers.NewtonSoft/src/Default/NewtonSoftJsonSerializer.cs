@@ -230,19 +230,18 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            public override VariantValue SelectToken(string path) {
+            public override VariantValue GetByPath(string path, StringComparison compare) {
                 try {
-                    var selected = Token.SelectToken(path);
+                    if (compare == StringComparison.InvariantCultureIgnoreCase ||
+                        compare == StringComparison.OrdinalIgnoreCase) {
+                        return base.GetByPath(path, compare);
+                    }
+                    var selected = Token.SelectToken(path, false);
                     return new JsonVariantValue(selected, _serializer);
                 }
                 catch (JsonReaderException ex) {
                     throw new SerializerException(ex.Message, ex);
                 }
-            }
-
-            /// <inheritdoc/>
-            public override void Set(object value) {
-                Token = FromObject(value);
             }
 
             /// <inheritdoc/>
@@ -276,8 +275,41 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            protected override VariantValue NewValue() {
-                return new JsonVariantValue(null, _serializer);
+            protected override VariantValue AddProperty(string property) {
+                if (Token is JObject o) {
+                    var child = new JsonVariantValue(null, _serializer);
+                    // Add to object
+                    o.Add(property, child.Token);
+                    return child;
+                }
+                throw new NotSupportedException("Not an object");
+            }
+
+            /// <inheritdoc/>
+            public override void AssignValue(object value) {
+                switch (Token.Parent) {
+                    case JObject o:
+                        // Part of an object - update object
+                        var property = o.Properties().FirstOrDefault(p => p.Value == Token);
+                        if (property == null) {
+                            throw new ArgumentOutOfRangeException("No parent found");
+                        }
+                        Token = FromObject(value);
+                        property.Value = Token;
+                        break;
+                    case JArray a:
+                        // Part of an object - update object
+                        for (var i = 0; i < a.Count; i++) {
+                            if (a[i] == Token) {
+                                Token = FromObject(value);
+                                a[i] = Token;
+                                return;
+                            }
+                        }
+                        throw new ArgumentOutOfRangeException("No parent found");
+                    default:
+                        throw new NotSupportedException("Not an object or array");
+                }
             }
 
             /// <inheritdoc/>

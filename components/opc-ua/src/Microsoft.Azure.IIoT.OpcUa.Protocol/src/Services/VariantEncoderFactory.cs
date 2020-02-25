@@ -75,9 +75,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                     var json = Encoding.UTF8.GetString(stream.ToArray());
                     try {
                         var token = Serializer.Parse(json);
-                        Enum.TryParse((string)token.SelectToken("value.Type"),
+                        Enum.TryParse((string)token.GetByPath("value.Type"),
                             true, out builtinType);
-                        return token.SelectToken("value.Body");
+                        return token.GetByPath("value.Body");
                     }
                     catch (SerializerException se) {
                         throw new SerializerException($"Failed to parse '{json}'. " +
