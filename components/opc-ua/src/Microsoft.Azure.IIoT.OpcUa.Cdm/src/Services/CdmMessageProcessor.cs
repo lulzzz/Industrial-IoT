@@ -19,7 +19,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Cdm.Services {
     using System.Threading;
     using System.Threading.Tasks;
 
-
     /// <summary>
     /// Process messages and write them to Datalake.
     /// </summary>
@@ -114,6 +113,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Cdm.Services {
                 Manifest.Name = "IIoTOpcUaPubSub";
                 Manifest.ManifestName = "IIoT OPC UA Pub/Sub Manifest";
                 adlsRoot.Documents.Add(Manifest, "IIoTOpcUaPubSub.manifest.cdm.json");
+                Manifest.Imports.Add(kFoundationJsonPath);
+                Manifest.Schema = "cdm:/schema.cdm.json";
+                Manifest.JsonSchemaSemanticVersion = "1.0.0";
             }
             Try.Op(() => _cacheUploadTimer.Change(_cacheUploadInterval, Timeout.InfiniteTimeSpan));
         }
@@ -344,8 +346,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Cdm.Services {
             var newSampleEntityDoc = _cdmCorpus.MakeObject<CdmDocumentDefinition>(
                 CdmObjectType.DocumentDef, $"{newSampleEntity.EntityName}.cdm.json", false);
             newSampleEntityDoc.Imports.Add($"{newSampleEntity.EntityName}.cdm.json");
+<<<<<<< HEAD
             // TODO: remove - apparently not necessary
             //  newSampleEntityDoc.Imports.Add("cdm:/foundations.cdm.json");
+=======
+            // TODO: remove - apparently not necessary 
+            //newSampleEntityDoc.Imports.Add(kFoundationJsonPath);
+>>>>>>> 50f92a3a83e0063a2a16ae76b97dcab2dd06b325
             newSampleEntityDoc.Definitions.Add(newSampleEntity);
             _cdmCorpus.Storage.FetchRootFolder("adls").Documents.Add(
                 newSampleEntityDoc, newSampleEntityDoc.Name);
@@ -431,6 +438,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Cdm.Services {
 
         private static readonly int kSamplesCacheMaxSize = 5000;
         private static readonly string kPublisherSampleEntityName = "PublisherSampleModel";
+        private static readonly string kFoundationJsonPath = "cdm:/foundations.cdm.json";
         private static readonly string kCsvPartitionsDelimiter = ",";
         private static readonly AttributeResolutionDirectiveSet kDirectives =
             new AttributeResolutionDirectiveSet(new HashSet<string>() {

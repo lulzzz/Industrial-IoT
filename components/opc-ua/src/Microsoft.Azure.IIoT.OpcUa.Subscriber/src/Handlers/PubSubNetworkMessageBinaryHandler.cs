@@ -59,7 +59,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
                                             datapoint.Value.WrappedValue.TypeInfo.ValueRank)?.FullName : null,
                                     DataSetId = message.DataSetWriterId,
                                     Timestamp = DateTime.UtcNow,
-                                    SubscriptionId = "network message",
+                                    SubscriptionId = message.DataSetWriterId,
                                     EndpointId = networkMessage.PublisherId,
                                     NodeId = datapoint.Key,
                                     SourcePicoseconds = datapoint.Value.SourcePicoseconds,

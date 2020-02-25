@@ -102,11 +102,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Deploy {
             }
             else {
                 // Windows
-                createOptions = _serializer.SerializeToString(new {
-                    HostConfig = new {
-                        NetworkMode = "host"
-                    }
-                });
+                createOptions = "{}";
             }
             createOptions = createOptions.Replace("\"", "\\\"");
 
