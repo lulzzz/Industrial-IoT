@@ -39,6 +39,9 @@ namespace Microsoft.Azure.IIoT.App {
     using System;
     using System.Threading.Tasks;
     using System.Security.Claims;
+    using System.Security.Authentication;
+    using Microsoft.AspNetCore.Components.Authorization;
+    using Microsoft.AspNetCore.Components.Server;
 
     /// <summary>
     /// Webapp startup
@@ -223,8 +226,9 @@ namespace Microsoft.Azure.IIoT.App {
                 .AsImplementedInterfaces().SingleInstance();
             // Use behalf of token provider to get tokens from user
             builder.RegisterType<BehalfOfTokenProvider>()
-                .AsImplementedInterfaces().SingleInstance()
-                .WithParameter("acquireTokenIfSilentFails", true);
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SignOutHandler>()
+                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<DistributedTokenCache>()
                 .AsImplementedInterfaces().SingleInstance();
 
@@ -293,6 +297,24 @@ namespace Microsoft.Azure.IIoT.App {
             context.Response.Redirect("/Error");
             context.HandleResponse(); // Suppress the exception
             return Task.CompletedTask;
+        }
+
+        /// <inheritdoc/>
+        private class SignOutHandler : IAuthenticationErrorHandler {
+
+            /// <inheritdoc/>
+            public bool AcquireTokenIfSilentFails => true;
+
+            /// <inheritdoc/>
+            public void Handle(HttpContext context, AuthenticationException ex) {
+                // Force signout
+                var provider = context.RequestServices.GetService<AuthenticationStateProvider>();
+                if (provider is ServerAuthenticationStateProvider s) {
+                    var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
+                    var anonymousState = new AuthenticationState(anonymousUser);
+                    s.SetAuthenticationState(Task.FromResult(anonymousState));
+                }
+            }
         }
     }
 }

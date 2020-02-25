@@ -346,13 +346,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Cdm.Services {
             var newSampleEntityDoc = _cdmCorpus.MakeObject<CdmDocumentDefinition>(
                 CdmObjectType.DocumentDef, $"{newSampleEntity.EntityName}.cdm.json", false);
             newSampleEntityDoc.Imports.Add($"{newSampleEntity.EntityName}.cdm.json");
-<<<<<<< HEAD
             // TODO: remove - apparently not necessary
-            //  newSampleEntityDoc.Imports.Add("cdm:/foundations.cdm.json");
-=======
-            // TODO: remove - apparently not necessary 
             //newSampleEntityDoc.Imports.Add(kFoundationJsonPath);
->>>>>>> 50f92a3a83e0063a2a16ae76b97dcab2dd06b325
             newSampleEntityDoc.Definitions.Add(newSampleEntity);
             _cdmCorpus.Storage.FetchRootFolder("adls").Documents.Add(
                 newSampleEntityDoc, newSampleEntityDoc.Name);

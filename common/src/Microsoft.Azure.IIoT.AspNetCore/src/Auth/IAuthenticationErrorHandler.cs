@@ -12,6 +12,11 @@ namespace Microsoft.Azure.IIoT.AspNetCore.Auth {
     public interface IAuthenticationErrorHandler {
 
         /// <summary>
+        /// Aquire token non-silent if silent fails before handling.
+        /// </summary>
+        bool AcquireTokenIfSilentFails { get; }
+
+        /// <summary>
         /// Handle authentication error
         /// </summary>
         void Handle(HttpContext context, AuthenticationException ex);

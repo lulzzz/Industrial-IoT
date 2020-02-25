@@ -81,9 +81,9 @@
                     @{ string PortRange = "Default";}
                     @{ string MaxNetworkProbes = "Default";}
                     @{ string MaxPortProbes = "Default";}
-                    @{ string NetworkProbeTimeoutMs = "Default";}
-                    @{ string PortProbeTimeoutMs = "Default";}
-                    @{ string IdleTimeBetweenScansSec = "Default";}
+                    @{ string NetworkProbeTimeout = "Default";}
+                    @{ string PortProbeTimeout = "Default";}
+                    @{ string IdleTimeBetweenScans = "Default";}
                     @{ string ActivationFilter = "None";}
                     @{ List<string> DiscoveryUrls = new List<string>();}
                     @if (discoverer.DiscovererModel.DiscoveryConfig != null)
@@ -205,7 +205,7 @@
                         <option value="@SecurityMode.Best">Best</option>
                     </select>
                 </div>
-                
+
                 <label>Discovery Urls</label>
                 <div class="flex">
                     <input @bind="@_discoveryUrl" aria-label="DiscoveryUrls" id="DiscoveryUrls" type="text" class="form-control" placeholder="Discovery Url" />

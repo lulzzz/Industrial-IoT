@@ -11,6 +11,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Models {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+    using System.Net;
 
     /// <summary>
     /// Discovery request wrapper
@@ -128,26 +129,38 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Models {
             }
 
             if (AddressRanges == null) {
+                IEnumerable<NetInterface> interfaces;
                 switch (request.Discovery) {
                     case DiscoveryMode.Local:
-                        AddressRanges = NetworkInformationEx.GetAllNetInterfaces(NetworkClass)
-                            .Select(t => new AddressRange(t, true)).Distinct();
+                        interfaces = NetworkInformationEx.GetAllNetInterfaces(NetworkClass);
+                        AddressRanges = AddLocalHost(interfaces
+                            .Select(t => new AddressRange(t, true)))
+                            .Distinct();
                         break;
                     case DiscoveryMode.Fast:
-                        var interfaces = NetworkInformationEx.GetAllNetInterfaces(NetworkClass.Wired);
-                            AddressRanges = interfaces.Select(t => new AddressRange(t, false, 24));
-                            AddressRanges = AddressRanges.Concat(interfaces
+                        interfaces = NetworkInformationEx.GetAllNetInterfaces(NetworkClass.Wired);
+                        AddressRanges = AddLocalHost(interfaces
+                            .Select(t => new AddressRange(t, false, 24))
+                            .Concat(interfaces
                                 .Where(t => t.Gateway != null &&
                                             !t.Gateway.Equals(System.Net.IPAddress.Any) &&
                                             !t.Gateway.Equals(System.Net.IPAddress.None))
-                                .Select(i => new AddressRange(i.Gateway, 32)));
+                                .Select(i => new AddressRange(i.Gateway, 32)))
+                            .Distinct());
+                        break;
+                    case DiscoveryMode.Scan:
+                        interfaces = NetworkInformationEx.GetAllNetInterfaces(NetworkClass);
+                        AddressRanges = AddLocalHost(interfaces
+                            .Select(t => new AddressRange(t, false))
+                            .Concat(interfaces
+                                .Where(t => t.Gateway != null &&
+                                            !t.Gateway.Equals(System.Net.IPAddress.Any) &&
+                                            !t.Gateway.Equals(System.Net.IPAddress.None))
+                                .Select(i => new AddressRange(i.Gateway, 32)))
+                            .Distinct());
                         break;
                     case DiscoveryMode.Off:
                         AddressRanges = Enumerable.Empty<AddressRange>();
-                        break;
-                    case DiscoveryMode.Scan:
-                        AddressRanges = NetworkInformationEx.GetAllNetInterfaces(NetworkClass)
-                            .Select(t => new AddressRange(t, false)).Distinct();
                         break;
                     default:
                         AddressRanges = Enumerable.Empty<AddressRange>();
@@ -219,6 +232,25 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Models {
         /// <returns></returns>
         internal DiscoveryRequest Clone() {
             return new DiscoveryRequest(this);
+        }
+
+        /// <summary>
+        /// Add hosta address as fake address range
+        /// </summary>
+        /// <param name="ranges"></param>
+        /// <returns></returns>
+        public IEnumerable<AddressRange> AddLocalHost(IEnumerable<AddressRange> ranges) {
+            if (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER")?
+                .EqualsIgnoreCase("true") ?? false) {
+                try {
+                    var addresses = Dns.GetHostAddresses("host.docker.internal");
+                    ranges = ranges.Concat(addresses
+                        .Select(a => new AddressRange(a, 32, "localhost")));
+                }
+                catch {
+                }
+            }
+            return ranges;
         }
 
         /// <summary> Default idle time is 6 hours </summary>

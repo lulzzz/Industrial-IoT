@@ -425,7 +425,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Services {
                     .Select(GetHostEntryAsync)
                     .ToArray());
                 return results
-                    .Where(a => a.Item2 != null)
+                    .SelectMany(v => v)
                     .ToDictionary(k => k.Item1, v => v.Item2);
             }
             return new Dictionary<IPEndPoint, Uri>();
@@ -436,19 +436,31 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Services {
         /// </summary>
         /// <param name="discoveryUrl"></param>
         /// <returns></returns>
-        private Task<(IPEndPoint, Uri)> GetHostEntryAsync(
+        private Task<List<Tuple<IPEndPoint, Uri>>> GetHostEntryAsync(
             Uri discoveryUrl) {
             return Try.Async(async () => {
-                var entry = await Dns.GetHostEntryAsync(discoveryUrl.DnsSafeHost);
-                foreach (var address in entry.AddressList) {
-                    var reply = await new Ping().SendPingAsync(address);
-                    if (reply.Status == IPStatus.Success) {
-                        var ep = new IPEndPoint(address,
-                            discoveryUrl.IsDefaultPort ? 4840 : discoveryUrl.Port);
-                        return (ep, discoveryUrl);
+                var host = discoveryUrl.DnsSafeHost;
+                var list = new List<Tuple<IPEndPoint, Uri>>();
+                while (!string.IsNullOrEmpty(host)) {
+                    var entry = await Dns.GetHostEntryAsync(host);
+                    foreach (var address in entry.AddressList) {
+                        var reply = await new Ping().SendPingAsync(address);
+                        if (reply.Status == IPStatus.Success) {
+                            var ep = new IPEndPoint(address,
+                                discoveryUrl.IsDefaultPort ? 4840 : discoveryUrl.Port);
+                            list.Add(Tuple.Create(ep, discoveryUrl));
+                        }
                     }
+                    if (host.EqualsIgnoreCase("localhost") &&
+                        (Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER")?
+                            .EqualsIgnoreCase("true") ?? false)) {
+                        // Also resolve docker internal since we are in a container
+                        host = "host.docker.internal";
+                        continue;
+                    }
+                    break;
                 }
-                return (null, null);
+                return list;
             });
         }
 
