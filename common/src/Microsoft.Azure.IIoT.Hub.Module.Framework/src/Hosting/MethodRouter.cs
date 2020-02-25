@@ -254,12 +254,11 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                         inputs = new object[0];
                     }
                     else if (_methodParams.Length == 1) {
-                        var data = _serializer.Deserialize(
-                            Encoding.UTF8.GetString(payload), _methodParams[0].ParameterType);
+                        var data = _serializer.Deserialize(payload, _methodParams[0].ParameterType);
                         inputs = new[] { data };
                     }
                     else {
-                        var data = _serializer.Parse(Encoding.UTF8.GetString(payload));
+                        var data = _serializer.Parse(payload);
                         inputs = _methodParams.Select(param => {
                             if (data.TryGetProperty(param.Name,
                                 out var value, StringComparison.InvariantCultureIgnoreCase)) {

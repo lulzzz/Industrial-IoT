@@ -46,8 +46,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
         /// <inheritdoc/>
         public async Task<byte[]> InvokeAsync(byte[] payload, string contentType,
             IMethodHandler handler) {
-            var request = _serializer.Deserialize<MethodChunkModel>(
-                Encoding.UTF8.GetString(payload));
+            var request = _serializer.Deserialize<MethodChunkModel>(payload);
             ChunkProcessor processor;
             if (request.Handle != null) {
                 if (!_requests.TryGetValue(request.Handle, out processor)) {

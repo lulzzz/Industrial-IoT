@@ -21,6 +21,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Import {
     using System.IO;
     using System.Runtime.Loader;
     using System.Threading.Tasks;
+    using Microsoft.Azure.IIoT.Serializers;
 
     /// <summary>
     /// Twin Model import processor - processes uploaded models and inserts
@@ -96,6 +97,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Import {
 
             // Add diagnostics based on configuration
             builder.AddDiagnostics(config);
+            builder.RegisterModule<NewtonSoftJsonModule>();
 
             // Now Monitor model upload notification using ...
             // if (!config.UseFileNotificationHost) {

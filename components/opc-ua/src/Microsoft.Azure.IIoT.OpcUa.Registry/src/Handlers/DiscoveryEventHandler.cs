@@ -31,24 +31,24 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Handlers {
         /// <param name="logger"></param>
         public DiscoveryEventHandler(IEnumerable<IDiscoveryResultProcessor> processors,
             ISerializer serializer, ILogger logger) {
-            _serializer = serializer ?? 
+            _serializer = serializer ??
                 throw new ArgumentNullException(nameof(serializer));
-            _logger = logger ?? 
+            _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
-            _processors = processors?.ToList() ?? 
+            _processors = processors?.ToList() ??
                 throw new ArgumentNullException(nameof(processors));
         }
 
         /// <inheritdoc/>
         public async Task HandleAsync(string deviceId, string moduleId,
             byte[] payload, IDictionary<string, string> properties, Func<Task> checkpoint) {
-            var json = Encoding.UTF8.GetString(payload);
             DiscoveryEventModel discovery;
             try {
-                discovery = _serializer.Deserialize<DiscoveryEventModel>(json);
+                discovery = _serializer.Deserialize<DiscoveryEventModel>(payload);
             }
             catch (Exception ex) {
-                _logger.Error(ex, "Failed to convert discovery result {json}", json);
+                _logger.Error(ex, "Failed to convert discovery result {json}",
+                    Encoding.UTF8.GetString(payload));
                 return;
             }
             try {

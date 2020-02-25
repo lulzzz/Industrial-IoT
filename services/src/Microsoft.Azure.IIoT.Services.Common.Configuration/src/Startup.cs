@@ -7,6 +7,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Configuration {
     using Microsoft.Azure.IIoT.Services.Common.Configuration.Runtime;
     using Microsoft.Azure.IIoT.AspNetCore.Cors;
     using Microsoft.Azure.IIoT.Diagnostics;
+    using Microsoft.Azure.IIoT.Serializers;
     using Microsoft.Azure.IIoT.Messaging.SignalR.Services;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -142,6 +143,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Configuration {
 
             // Register logger
             builder.AddDiagnostics(Config);
+            builder.RegisterModule<NewtonSoftJsonModule>();
 
             // Register metrics logger
             builder.RegisterType<MetricsLogger>()

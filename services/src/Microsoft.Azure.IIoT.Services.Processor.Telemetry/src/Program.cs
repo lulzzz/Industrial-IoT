@@ -8,9 +8,11 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Telemetry {
     using Microsoft.Azure.IIoT.Messaging.EventHub.Services;
     using Microsoft.Azure.IIoT.Messaging.EventHub.Runtime;
     using Microsoft.Azure.IIoT.Messaging;
+    using Microsoft.Azure.IIoT.OpcUa.Protocol.Services;
     using Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers;
     using Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors;
     using Microsoft.Azure.IIoT.Exceptions;
+    using Microsoft.Azure.IIoT.Serializers;
     using Microsoft.Azure.IIoT.Hub;
     using Microsoft.Azure.IIoT.Hub.Processor.EventHub;
     using Microsoft.Azure.IIoT.Hub.Processor.Services;
@@ -104,6 +106,7 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Telemetry {
 
             // register diagnostics
             builder.AddDiagnostics(config);
+            builder.RegisterModule<NewtonSoftJsonModule>();
 
             // Event processor services
             builder.RegisterType<EventProcessorHost>()
@@ -117,6 +120,9 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Telemetry {
 
             // Handle telemetry events
             builder.RegisterType<IoTHubDeviceEventHandler>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            builder.RegisterType<VariantEncoderFactory>()
                 .AsImplementedInterfaces().SingleInstance();
 
             // Handle opc-ua pub/sub subscriber messages

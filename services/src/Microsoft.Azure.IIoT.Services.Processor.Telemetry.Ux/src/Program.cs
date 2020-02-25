@@ -20,6 +20,7 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Telemetry.Ux {
     using System.IO;
     using System.Runtime.Loader;
     using System.Threading.Tasks;
+    using Microsoft.Azure.IIoT.Serializers;
 
     /// <summary>
     /// IoT Hub device telemetry event processor host.  Processes all
@@ -100,6 +101,7 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Telemetry.Ux {
 
             // register diagnostics
             builder.AddDiagnostics(config);
+            builder.RegisterModule<NewtonSoftJsonModule>();
 
             // Event processor services for onboarding consumer
             builder.RegisterType<EventProcessorHost>()

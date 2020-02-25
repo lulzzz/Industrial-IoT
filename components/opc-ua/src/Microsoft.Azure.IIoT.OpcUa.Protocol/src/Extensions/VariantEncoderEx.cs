@@ -202,7 +202,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
                             break;
                     }
                 }
-                var o = codec.Serializer.Parse(Encoding.UTF8.GetString(stream.ToArray()));
+                var o = codec.Serializer.Parse(stream.ToArray());
                 return root != null ? o[root] : o;
             }
         }

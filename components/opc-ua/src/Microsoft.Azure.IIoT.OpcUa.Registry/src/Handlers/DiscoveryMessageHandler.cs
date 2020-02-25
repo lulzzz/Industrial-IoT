@@ -34,20 +34,20 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Handlers {
                 throw new ArgumentNullException(nameof(serializer));
             _logger = logger ??
                 throw new ArgumentNullException(nameof(logger));
-            _handlers = handlers?.ToList() ?? 
+            _handlers = handlers?.ToList() ??
                 throw new ArgumentNullException(nameof(handlers));
         }
 
         /// <inheritdoc/>
         public async Task HandleAsync(string deviceId, string moduleId,
             byte[] payload, IDictionary<string, string> properties, Func<Task> checkpoint) {
-            var json = Encoding.UTF8.GetString(payload);
             DiscoveryProgressModel discovery;
             try {
-                discovery = _serializer.Deserialize<DiscoveryProgressModel>(json);
+                discovery = _serializer.Deserialize<DiscoveryProgressModel>(payload);
             }
             catch (Exception ex) {
-                _logger.Error(ex, "Failed to convert discovery message {json}", json);
+                _logger.Error(ex, "Failed to convert discovery message {json}",
+                    Encoding.UTF8.GetString(payload));
                 return;
             }
             try {

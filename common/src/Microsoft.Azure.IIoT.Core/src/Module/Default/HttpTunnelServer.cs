@@ -165,7 +165,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
                     throw new ArgumentException("Bad encoding length");
                 }
                 request = _serializer.Deserialize<HttpTunnelRequestModel>(
-                    Encoding.UTF8.GetString(headerBuf.Unzip()));
+                    headerBuf.Unzip());
                 return chunk0;
             }
         }
@@ -253,7 +253,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
                     }
 
                     if (payload != null) {
-#if !LOG_PAYLOAD_STRING
+#if LOG_PAYLOAD_STRING
                         var debug = Try.Op(() => Encoding.UTF8.GetString(payload));
                         if (!string.IsNullOrEmpty(debug)) {
                             _outer._logger.Information("{Message}", debug);

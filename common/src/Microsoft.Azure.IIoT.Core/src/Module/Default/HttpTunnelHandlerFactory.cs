@@ -71,8 +71,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
         public Task<byte[]> InvokeAsync(byte[] payload, string contentType,
             IMethodHandler context) {
             // Handle response from device method
-            var result = Encoding.UTF8.GetString(payload);
-            var response = _serializer.Deserialize<HttpTunnelResponseModel>(result);
+            var response = _serializer.Deserialize<HttpTunnelResponseModel>(payload);
             if (_outstanding.TryRemove(response.RequestId, out var request)) {
                 var httpResponse = new HttpResponseMessage((HttpStatusCode)response.Status) {
                     Content = response.Payload == null ? null :

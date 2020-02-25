@@ -27,6 +27,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Hub.Edgemanager {
     using System;
     using ILogger = Serilog.ILogger;
     using Prometheus;
+    using Microsoft.Azure.IIoT.Serializers;
 
     /// <summary>
     /// Webservice startup
@@ -139,7 +140,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Hub.Edgemanager {
             appLifetime.ApplicationStopped.Register(applicationContainer.Dispose);
 
             // Print some useful information at bootstrap time
-            log.Information("{service} web service started with id {id}", 
+            log.Information("{service} web service started with id {id}",
                 ServiceInfo.Name, ServiceInfo.Id);
         }
 
@@ -156,6 +157,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Hub.Edgemanager {
 
             // Register logger
             builder.AddDiagnostics(Config);
+            builder.RegisterModule<NewtonSoftJsonModule>();
 
             // Register metrics logger
             builder.RegisterType<MetricsLogger>()

@@ -42,7 +42,7 @@ namespace Microsoft.Azure.IIoT.Storage.Blob.Services {
         /// <inheritdoc/>
         public async Task HandleAsync(string deviceId, string moduleId, string blobName,
             string contentType, string blobUri, DateTime enqueuedTimeUtc, CancellationToken ct) {
-            // If registered with blob upload notification host directly - this gets called. 
+            // If registered with blob upload notification host directly - this gets called.
             var properties = new Dictionary<string, string> {
                 { CommonProperties.DeviceId, deviceId },
                 { CommonProperties.ModuleId, moduleId },
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.IIoT.Storage.Blob.Services {
             }
             // Assume the event data is a string representing the uri to process
             var blobUri = Encoding.UTF8.GetString(eventData);
-            if (!Uri.TryCreate(blobUri, UriKind.Absolute, out var uri)) {
+            if (!Uri.TryCreate(blobUri, UriKind.Absolute, out _)) {
                 // We can always add more formats here later...
                 return;
             }

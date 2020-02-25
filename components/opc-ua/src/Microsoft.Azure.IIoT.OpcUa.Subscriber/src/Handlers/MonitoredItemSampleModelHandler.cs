@@ -40,8 +40,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
         public async Task HandleAsync(string deviceId, string moduleId,
             byte[] payload, IDictionary<string, string> properties, Func<Task> checkpoint) {
 
-            var json = Encoding.UTF8.GetString(payload);
-            var message = _serializer.Deserialize<MonitoredItemSampleModel>(json);
+            var message = _serializer.Deserialize<MonitoredItemSampleModel>(payload);
             try {
                 await Task.WhenAll(_handlers.Select(h => h.HandleSampleAsync(message)));
             }

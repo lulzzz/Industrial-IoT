@@ -192,7 +192,6 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
         /// <param name="token"></param>
         /// <returns></returns>
         private async Task ProcessEventAsync(Message message, CancellationToken token) {
-            var messageData = Encoding.UTF8.GetString(message.Body);
             IEnumerable<Subscription> subscriptions = null;
             await _lock.WaitAsync();
             try {
@@ -206,7 +205,7 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
             }
             foreach (var handler in subscriptions) {
                 // Do for now every time to pass brand new objects
-                var evt = _serializer.Deserialize(messageData, handler.Type);
+                var evt = _serializer.Deserialize(message.Body, handler.Type);
                 await handler.HandleAsync(evt);
             }
             // Complete the message so that it is not received again.
