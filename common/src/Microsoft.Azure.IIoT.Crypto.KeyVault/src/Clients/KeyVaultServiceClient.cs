@@ -748,7 +748,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             DateTime? notBefore, TimeSpan lifetime, DateTime maxNotAfter) {
 
             var now = DateTime.UtcNow;
-            notBefore = notBefore ?? now;
+            notBefore ??= now;
             var notAfter = notBefore.Value + lifetime;
             if (notAfter > maxNotAfter) {
                 notAfter = maxNotAfter;

@@ -184,7 +184,7 @@ namespace Microsoft.Azure.IIoT.Storage.CosmosDb.Services {
             if (existing == null) {
                 throw new ArgumentNullException(nameof(existing));
             }
-            options = options ?? new OperationOptions();
+            options ??= new OperationOptions();
             options.PartitionKey = existing.PartitionKey;
             return await Retry.WithExponentialBackoff(_logger, ct, async () => {
                 try {
@@ -223,7 +223,7 @@ namespace Microsoft.Azure.IIoT.Storage.CosmosDb.Services {
             if (item == null) {
                 throw new ArgumentNullException(nameof(item));
             }
-            options = options ?? new OperationOptions();
+            options ??= new OperationOptions();
             options.PartitionKey = item.PartitionKey;
             return DeleteAsync(item.Id, ct, options, item.Etag);
         }

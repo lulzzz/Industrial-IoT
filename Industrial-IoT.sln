@@ -252,6 +252,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.IIoT.Core.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.IIoT.OpcUa.Cdm", "components\opc-ua\src\Microsoft.Azure.IIoT.OpcUa.Cdm\src\Microsoft.Azure.IIoT.OpcUa.Cdm.csproj", "{B32532AB-1D40-4C72-898A-96BA65DF3D9B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.IIoT.Auth.IdentityServer4", "common\src\Microsoft.Azure.IIoT.Auth.IdentityServer4\src\Microsoft.Azure.IIoT.Auth.IdentityServer4.csproj", "{C7FA049B-E3C2-44B7-A433-65FD620BA134}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.IIoT.Services.Common.Auth", "services\src\Microsoft.Azure.IIoT.Services.Common.Auth\src\Microsoft.Azure.IIoT.Services.Common.Auth.csproj", "{4C8ECB9C-81CB-4793-B391-AAA7EA37A397}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.IIoT.Services.Common.Users", "services\src\Microsoft.Azure.IIoT.Services.Common.Users\src\Microsoft.Azure.IIoT.Services.Common.Users.csproj", "{33BF51DB-08C3-44E3-A701-932C2A71689A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -662,6 +668,18 @@ Global
 		{B32532AB-1D40-4C72-898A-96BA65DF3D9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B32532AB-1D40-4C72-898A-96BA65DF3D9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B32532AB-1D40-4C72-898A-96BA65DF3D9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7FA049B-E3C2-44B7-A433-65FD620BA134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7FA049B-E3C2-44B7-A433-65FD620BA134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7FA049B-E3C2-44B7-A433-65FD620BA134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7FA049B-E3C2-44B7-A433-65FD620BA134}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C8ECB9C-81CB-4793-B391-AAA7EA37A397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C8ECB9C-81CB-4793-B391-AAA7EA37A397}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C8ECB9C-81CB-4793-B391-AAA7EA37A397}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C8ECB9C-81CB-4793-B391-AAA7EA37A397}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33BF51DB-08C3-44E3-A701-932C2A71689A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33BF51DB-08C3-44E3-A701-932C2A71689A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33BF51DB-08C3-44E3-A701-932C2A71689A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33BF51DB-08C3-44E3-A701-932C2A71689A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -785,6 +803,9 @@ Global
 		{6396D6A7-5A1D-4AFA-B2EF-1C663C769C2F} = {ADB416A3-C375-4362-B2C0-3A35DA4CB5F8}
 		{225F39AA-C351-47DA-8392-817220A9102D} = {72646716-073F-4D6F-9ECD-52311A2BA140}
 		{B32532AB-1D40-4C72-898A-96BA65DF3D9B} = {A6028EDB-3331-48D2-8C7D-8D681172A61A}
+		{C7FA049B-E3C2-44B7-A433-65FD620BA134} = {FEE95825-2E34-45AF-BDED-52F9C7412BF5}
+		{4C8ECB9C-81CB-4793-B391-AAA7EA37A397} = {ADB416A3-C375-4362-B2C0-3A35DA4CB5F8}
+		{33BF51DB-08C3-44E3-A701-932C2A71689A} = {ADB416A3-C375-4362-B2C0-3A35DA4CB5F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F09EFCEA-59F6-4A16-9CB6-7E865A3F62D8}

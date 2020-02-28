@@ -969,8 +969,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
         /// <param name="expected"></param>
         /// <param name="value"></param>
         private static void AssertEqualValue(JToken expected, JToken value) {
-            value = value ?? JValue.CreateNull();
-            expected = expected ?? JValue.CreateNull();
+            value ??= JValue.CreateNull();
+            expected ??= JValue.CreateNull();
             Assert.True(JToken.DeepEquals(expected, value),
                 $"Expected: {expected} ({expected?.Type}) != Actual: {value} ({value?.Type})");
         }

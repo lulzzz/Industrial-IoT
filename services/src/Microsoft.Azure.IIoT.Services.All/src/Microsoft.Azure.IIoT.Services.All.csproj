@@ -15,12 +15,14 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Common.Auth\src\Microsoft.Azure.IIoT.Services.Common.Auth.csproj" />
     <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Common.Hub.Edgemanager\src\Microsoft.Azure.IIoT.Services.Common.Hub.Edgemanager.csproj" />
+    <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Common.Hub.Fileupload\src\Microsoft.Azure.IIoT.Services.Common.Hub.Fileupload.csproj" />
     <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Common.Identity\src\Microsoft.Azure.IIoT.Services.Common.Identity.csproj" />
     <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Common.Jobs.Edge\src\Microsoft.Azure.IIoT.Services.Common.Jobs.Edge.csproj" />
     <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Common.Jobs\src\Microsoft.Azure.IIoT.Services.Common.Jobs.csproj" />
     <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Common.Configuration\src\Microsoft.Azure.IIoT.Services.Common.Configuration.csproj" />
-    <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Common.Hub.Fileupload\src\Microsoft.Azure.IIoT.Services.Common.Hub.Fileupload.csproj" />
+    <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Common.Users\src\Microsoft.Azure.IIoT.Services.Common.Users.csproj" />
     <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Processor.Events\src\Microsoft.Azure.IIoT.Services.Processor.Events.csproj" />
     <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Processor.Tunnel\src\Microsoft.Azure.IIoT.Services.Processor.Tunnel.csproj" />
     <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Services.Processor.Telemetry.Cdm\src\Microsoft.Azure.IIoT.Services.Processor.Telemetry.Cdm.csproj" />
