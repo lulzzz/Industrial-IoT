@@ -73,45 +73,22 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 }
             }
 
-            // Apply settings on all affected controllers
+            // Apply settings on all affected controllers and return reported
+            var reported = new TwinCollection();
             if (controllers.Any()) {
                 var sw = Stopwatch.StartNew();
-                await Task.WhenAll(controllers.Select(c => c.SafeApplyAsync()));
-                _logger.Debug("Applying new settings took {elapsed}...", sw.Elapsed);
-            }
-
-            await _lock.WaitAsync();
-            try {
-                // Gather current values from controller
-                var reported = new Dictionary<string, VariantValue>();
-                foreach (var setting in settings) {
-                    if (TryGetInvoker(setting.Key, out var invoker)) {
-                        try {
-                            if (!invoker.Get(setting.Key, out var value)) {
-                                value = setting.Value; // No getter, echo back desired value.
-                            }
-                            _cache.AddOrUpdate(setting.Key, value);
-                            reported.AddOrUpdate(setting.Key, value);
-                            continue;
-                        }
-                        catch (Exception ex) {
-                            _logger.Error(ex, "Error retrieving reported setting {setting}",
-                                setting);
-                            // Clear value...
-                        }
-                    }
-                    // Clear value
-                    reported.AddOrUpdate(setting.Key, null);
-                    _cache.Remove(setting.Key);
+                await _lock.WaitAsync();
+                try {
+                    await Task.WhenAll(controllers.Select(c => c.SafeApplyAsync()));
+                    var invokers = controllers.SelectMany(c => c.Invokers).Distinct();
+                    CollectSettingsFromControllers(reported, invokers);
+                    _logger.Debug("Applying new settings took {elapsed}...", sw.Elapsed);
                 }
-                // Collect current values of all other settings
-                var remaining = _calltable.Where(v => !settings.ContainsKey(v.Key));
-                CollectSettingsFromControllers(reported, remaining);
-                return reported;
+                finally {
+                    _lock.Release();
+                }
             }
-            finally {
-                _lock.Release();
-            }
+            return reported;
         }
 
         /// <inheritdoc/>
@@ -119,7 +96,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             await _lock.WaitAsync();
             try {
                 var reported = new Dictionary<string, VariantValue>();
-                CollectSettingsFromControllers(reported, _calltable);
+                CollectSettingsFromControllers(reported, _calltable.Values);
                 return reported;
             }
             finally {
@@ -144,14 +121,14 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
         /// <param name="reported"></param>
         /// <param name="invokers"></param>
         private void CollectSettingsFromControllers(Dictionary<string, VariantValue> reported,
-            IEnumerable<KeyValuePair<string, CascadingInvoker>> invokers) {
+            IEnumerable<CascadingInvoker> invokers) {
             foreach (var handler in invokers) {
                 try {
-                    var key = handler.Value.Name;
+                    var key = handler.Name;
                     if (string.IsNullOrEmpty(key)) {
                         continue; // DO not return default indexer values
                     }
-                    if (!handler.Value.Get(key, out var value)) {
+                    if (!handler.Get(key, out var value)) {
                         continue;
                     }
                     var obj = _serializer.FromObject(value);
@@ -170,7 +147,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 }
                 catch (Exception ex) {
                     _logger.Debug(ex, "Error retrieving controller setting {setting}",
-                        handler.Key);
+                        handler.Name);
                 }
             }
         }
@@ -225,6 +202,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                         _calltable.Add(name, invoker);
                     }
                     invoker.Add(controller, propInfo, _serializer, indexed);
+                    controller.Add(invoker);
                 }
             }
         }
@@ -233,6 +211,11 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
         /// Wraps a controller
         /// </summary>
         private class Controller {
+
+            /// <summary>
+            /// Attached invokers
+            /// </summary>
+            public IEnumerable<CascadingInvoker> Invokers => _attachedTo;
 
             /// <summary>
             /// Target
@@ -285,8 +268,18 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 }
             }
 
+            /// <summary>
+            /// Add invoker found on controller
+            /// </summary>
+            /// <param name="invoker"></param>
+            internal void Add(CascadingInvoker invoker) {
+                _attachedTo.Add(invoker);
+            }
+
             private readonly ILogger _logger;
             private readonly MethodInfo _applyMethod;
+            private readonly List<CascadingInvoker> _attachedTo =
+                new List<CascadingInvoker>();
         }
 
         /// <summary>
