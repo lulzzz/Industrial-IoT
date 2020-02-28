@@ -265,7 +265,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
             DateTime? notBefore, TimeSpan lifetime,
             DateTime maxNotAfter, out DateTime notAfter) {
             var now = DateTime.UtcNow;
-            notBefore = notBefore ?? now;
+            notBefore ??= now;
             notAfter = notBefore.Value + lifetime;
             if (notAfter > maxNotAfter) {
                 notAfter = maxNotAfter;

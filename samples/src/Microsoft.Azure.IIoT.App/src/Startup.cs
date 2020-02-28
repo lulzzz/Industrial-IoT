@@ -29,8 +29,9 @@ namespace Microsoft.Azure.IIoT.App {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Rewrite;
-    using Microsoft.AspNetCore.HttpOverrides;
     using Microsoft.AspNetCore.Mvc.Authorization;
+    using Microsoft.AspNetCore.Components.Authorization;
+    using Microsoft.AspNetCore.Components.Server;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -38,11 +39,9 @@ namespace Microsoft.Azure.IIoT.App {
     using Autofac.Extensions.DependencyInjection;
     using Autofac;
     using System;
+    using System.Security.Authentication;
     using System.Threading.Tasks;
     using System.Security.Claims;
-    using System.Security.Authentication;
-    using Microsoft.AspNetCore.Components.Authorization;
-    using Microsoft.AspNetCore.Components.Server;
 
     /// <summary>
     /// Webapp startup

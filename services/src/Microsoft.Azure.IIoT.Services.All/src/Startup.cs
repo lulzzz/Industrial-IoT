@@ -110,6 +110,8 @@ namespace Microsoft.Azure.IIoT.Services.All {
             app.AddStartupBranch<OpcUa.Twin.Gateway.Startup>("/ua");
             app.AddStartupBranch<OpcUa.Twin.History.Startup>("/history");
             app.AddStartupBranch<OpcUa.Publisher.Startup>("/publisher");
+            app.AddStartupBranch<Common.Identity.Startup>("/auth");
+            app.AddStartupBranch<Common.Users.Startup>("/users");
             app.AddStartupBranch<Common.Jobs.Startup>("/jobs");
             app.AddStartupBranch<Common.Jobs.Edge.Startup>("/edge/jobs");
             app.AddStartupBranch<Common.Configuration.Startup>("/configuration");
@@ -156,7 +158,7 @@ namespace Microsoft.Azure.IIoT.Services.All {
                     Task.Run(() => Processor.Telemetry.Cdm.Program.Main(args), _cts.Token),
                     Task.Run(() => Processor.Telemetry.Ux.Program.Main(args), _cts.Token),
                     Task.Run(() => Processor.Tunnel.Program.Main(args), _cts.Token),
-                    Task.Run(() => Common.Identity.Program.Main(args), _cts.Token),
+                    Task.Run(() => Common.Hub.Identity.Program.Main(args), _cts.Token),
                     Task.Run(() => Common.Hub.Fileupload.Program.Main(args), _cts.Token),
                     Task.Run(() => OpcUa.Registry.Discovery.Program.Main(args), _cts.Token),
                     Task.Run(() => OpcUa.Registry.Events.Program.Main(args), _cts.Token),
