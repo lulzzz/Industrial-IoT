@@ -7,22 +7,27 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
     using Microsoft.Azure.IIoT.Services.Common.Users.Runtime;
     using Microsoft.Azure.IIoT.Auth.IdentityServer4.Storage;
     using Microsoft.Azure.IIoT.Auth.IdentityServer4.Models;
+    using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders.Extensions;
+    using Microsoft.Azure.IIoT.AspNetCore.Cors;
+    using Microsoft.Azure.IIoT.AspNetCore.Correlation;
+    using Microsoft.Azure.IIoT.AspNetCore.Auth;
     using Microsoft.Azure.IIoT.Storage.CosmosDb.Services;
     using Microsoft.Azure.IIoT.Storage.Default;
     using Microsoft.Azure.IIoT.Http.Default;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.Azure.IIoT.Serializers;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Microsoft.OpenApi.Models;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
-    using IdentityServer4.Configuration;
     using System;
     using ILogger = Serilog.ILogger;
+    using Prometheus;
 
     /// <summary>
     /// Webservice startup
@@ -107,16 +112,9 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
             // services.AddHttpClient();
 
             // Add controllers as services so they'll be resolved.
-            services.AddControllers()
-                .AddNewtonsoftJson(options => {
-                    options.SerializerSettings.Formatting = Formatting.Indented;
-                    options.SerializerSettings.Converters.Add(new ExceptionConverter(
-                        Environment.IsDevelopment()));
-                    options.SerializerSettings.MaxDepth = 10;
-                });
+            services.AddControllers().AddNewtonsoftJsonSerializer();
             services.AddSwagger(Config, ServiceInfo.Name, ServiceInfo.Description);
         }
-
 
         /// <summary>
         /// This method is called by the runtime, after the ConfigureServices
@@ -180,6 +178,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
 
             // Add diagnostics based on configuration
             builder.AddDiagnostics(Config);
+            builder.RegisterModule<NewtonSoftJsonModule>();
 
             // CORS setup
             builder.RegisterType<CorsSetup>()

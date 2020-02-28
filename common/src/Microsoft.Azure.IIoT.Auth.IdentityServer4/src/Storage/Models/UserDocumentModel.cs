@@ -4,82 +4,82 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.Auth.IdentityServer4.Models {
-    using Microsoft.AspNetCore.Identity;
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// User document
     /// </summary>
+    [DataContract]
     public class UserDocumentModel {
 
         /// <summary>
         /// Unique ID of the user
         /// </summary>
-        [JsonProperty("id")]
+        [DataMember(Name = "id")]
         public string Id { get; set; }
 
         /// <summary>
         /// Etag
         /// </summary>
-        [JsonProperty(PropertyName = "etag")]
+        [DataMember(Name = "etag")]
         public string ConcurrencyStamp { get; set; }
 
         /// <summary>
         /// Gets or sets the user name for this user.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string UserName { get; set; }
 
         /// <summary>
         /// Login providers
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public List<LoginModel> Logins { get; set; }
 
         /// <summary>
         /// Roles this user has
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public List<string> Roles { get; set; }
 
         /// <summary>
         /// Claims
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public List<ClaimModel> Claims { get; set; }
 
         /// <summary>
         /// Recovery codes
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public List<string> RecoveryCodes { get; set; }
 
         /// <summary>
         /// Gets or sets the normalized user name for this user.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string NormalizedUserName { get; set; }
 
         /// <summary>
         /// Gets or sets the email address for this user.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the normalized email address
         /// for this user.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string NormalizedEmail { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating if a user has
         /// confirmed their email address.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public bool EmailConfirmed { get; set; }
 
         /// <summary>
@@ -87,27 +87,27 @@ namespace Microsoft.Azure.IIoT.Auth.IdentityServer4.Models {
         /// of the password for this
         /// user.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string PasswordHash { get; set; }
 
         /// <summary>
         /// A random value that must change whenever a users
         /// credentials change (password changed, login removed)
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string SecurityStamp { get; set; }
 
         /// <summary>
         /// Gets or sets a telephone number for the user.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string PhoneNumber { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating if a user has
         /// confirmed their telephone address.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public bool PhoneNumberConfirmed { get; set; }
 
         /// <summary>
@@ -115,34 +115,34 @@ namespace Microsoft.Azure.IIoT.Auth.IdentityServer4.Models {
         /// authentication is enabled for
         /// this user.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public bool TwoFactorEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time, in UTC, when
         /// any user lockout ends.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public DateTimeOffset? LockoutEnd { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating if the user
         /// could be locked out.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public bool LockoutEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the number of failed login attempts
         /// for the current user.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public int AccessFailedCount { get; set; }
 
         /// <summary>
         /// Authenticator key
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string AuthenticatorKey { get; set; }
     }
 }

@@ -74,7 +74,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             }
 
             // Apply settings on all affected controllers and return reported
-            var reported = new TwinCollection();
+            var reported = new Dictionary<string, VariantValue>();
             if (controllers.Any()) {
                 var sw = Stopwatch.StartNew();
                 await _lock.WaitAsync();

@@ -70,6 +70,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users.Runtime {
         /// <inheritdoc/>
         public string OpenApiServerHost => _openApi.OpenApiServerHost;
 
+        /// <inheritdoc/>
         public string DbConnectionString => _cosmos.DbConnectionString;
         /// <inheritdoc/>
         public int? ThroughputUnits => _cosmos.ThroughputUnits;

@@ -4,23 +4,24 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.Auth.IdentityServer4.Models {
-    using Newtonsoft.Json;
+    using System.Runtime.Serialization;
 
     /// <summary>
     /// Instance of Claim.
     /// </summary>
+    [DataContract]
     public class ClaimModel {
 
         /// <summary>
         /// Claim Type.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string Type { get; set; }
 
         /// <summary>
         /// Claim Value.
         /// </summary>
-        [JsonProperty]
+        [DataMember]
         public string Value { get; set; }
     }
 }

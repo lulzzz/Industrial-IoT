@@ -4,7 +4,7 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.AspNetCore.Identity {
-    using Microsoft.Azure.IIoT.Auth.IdentityServer4.Exceptions;
+    using Microsoft.Azure.IIoT.Exceptions;
 
     /// <summary>
     /// Extensions
