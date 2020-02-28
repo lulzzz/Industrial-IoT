@@ -57,68 +57,180 @@ namespace Microsoft.Azure.IIoT.Api.Identity.Clients {
         }
 
         /// <inheritdoc/>
-        public Task CreateUserAsync(UserApiModel user) {
-            throw new NotImplementedException();
+        public async Task CreateUserAsync(UserApiModel user, CancellationToken ct) {
+            if (user == null) {
+                throw new ArgumentNullException(nameof(user));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/users");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            _serializer.SerializeToRequest(request, user);
+            var response = await _httpClient.PutAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
         }
 
         /// <inheritdoc/>
-        public Task<UserApiModel> GetUserByNameAsync(string name) {
-            throw new NotImplementedException();
+        public async Task<UserApiModel> GetUserByNameAsync(string name,
+            CancellationToken ct) {
+            if (string.IsNullOrEmpty(name)) {
+                throw new ArgumentNullException(nameof(name));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/users") {
+                Query = $"name={name}"
+            };
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.GetAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
+            return _serializer.DeserializeResponse<UserApiModel>(response);
         }
 
         /// <inheritdoc/>
-        public Task<UserApiModel> GetUserByEmailAsync(string email) {
-            throw new NotImplementedException();
+        public async Task<UserApiModel> GetUserByEmailAsync(string email,
+            CancellationToken ct) {
+            if (string.IsNullOrEmpty(email)) {
+                throw new ArgumentNullException(nameof(email));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/users") {
+                Query = $"email={email}"
+            };
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.GetAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
+            return _serializer.DeserializeResponse<UserApiModel>(response);
         }
 
         /// <inheritdoc/>
-        public Task<UserApiModel> GetUserByIdAsync(string userId) {
-            throw new NotImplementedException();
+        public async Task<UserApiModel> GetUserByIdAsync(string userId,
+            CancellationToken ct) {
+            if (string.IsNullOrEmpty(userId)) {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/users/{userId}");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.GetAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
+            return _serializer.DeserializeResponse<UserApiModel>(response);
         }
 
         /// <inheritdoc/>
-        public Task DeleteUserAsync(string userId) {
-            throw new NotImplementedException();
+        public async Task DeleteUserAsync(string userId, CancellationToken ct) {
+            if (string.IsNullOrEmpty(userId)) {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/users/{userId}");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.DeleteAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
         }
 
         /// <inheritdoc/>
-        public Task AddClaimAsync(string userId, ClaimApiModel model) {
-            throw new NotImplementedException();
+        public async Task AddClaimAsync(string userId, ClaimApiModel model,
+            CancellationToken ct) {
+            if (string.IsNullOrEmpty(userId)) {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            if (model == null) {
+                throw new ArgumentNullException(nameof(model));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/users/{userId}/claims");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            _serializer.SerializeToRequest(request, model);
+            var response = await _httpClient.PutAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
         }
 
         /// <inheritdoc/>
-        public Task RemoveClaimAsync(string userId, ClaimApiModel model) {
-            throw new NotImplementedException();
+        public async Task RemoveClaimAsync(string userId, ClaimApiModel model,
+            CancellationToken ct) {
+            if (string.IsNullOrEmpty(userId)) {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            if (model == null) {
+                throw new ArgumentNullException(nameof(model));
+            }
+            var uri = new UriBuilder(
+                $"{_serviceUri}/v2/users/{userId}/claims/{model.Type}/{model.Value}");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.DeleteAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
         }
 
         /// <inheritdoc/>
-        public Task AddRoleToUserAsync(string userId, string role) {
-            throw new NotImplementedException();
+        public async Task AddRoleToUserAsync(string userId, string role,
+            CancellationToken ct) {
+            if (string.IsNullOrEmpty(userId)) {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            if (string.IsNullOrEmpty(role)) {
+                throw new ArgumentNullException(nameof(role));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/users/{userId}/roles/{role}");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.PutAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<UserApiModel>> GetUsersInRoleAsync(string role) {
-            throw new NotImplementedException();
+        public async Task<IEnumerable<UserApiModel>> GetUsersInRoleAsync(
+            string role, CancellationToken ct) {
+            if (string.IsNullOrEmpty(role)) {
+                throw new ArgumentNullException(nameof(role));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/users/roles/{role}");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.GetAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
+            return _serializer.DeserializeResponse<IEnumerable<UserApiModel>>(response);
         }
 
         /// <inheritdoc/>
-        public Task RemoveRoleFromUserAsync(string userId, string role) {
-            throw new NotImplementedException();
+        public async Task RemoveRoleFromUserAsync(string userId, string role,
+            CancellationToken ct) {
+            if (string.IsNullOrEmpty(userId)) {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            if (string.IsNullOrEmpty(role)) {
+                throw new ArgumentNullException(nameof(role));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/users/{userId}/roles/{role}");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.DeleteAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
         }
 
         /// <inheritdoc/>
-        public Task CreateRoleAsync(RoleApiModel role) {
-            throw new NotImplementedException();
+        public async Task CreateRoleAsync(RoleApiModel role, CancellationToken ct) {
+            if (role == null) {
+                throw new ArgumentNullException(nameof(role));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/roles");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            _serializer.SerializeToRequest(request, role);
+            var response = await _httpClient.PutAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
         }
 
         /// <inheritdoc/>
-        public Task<RoleApiModel> GetRoleAsync(string roleId) {
-            throw new NotImplementedException();
+        public async Task<RoleApiModel> GetRoleByIdAsync(string roleId,
+            CancellationToken ct) {
+            if (string.IsNullOrEmpty(roleId)) {
+                throw new ArgumentNullException(nameof(roleId));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/roles/{roleId}");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.GetAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
+            return _serializer.DeserializeResponse<RoleApiModel>(response);
         }
 
         /// <inheritdoc/>
-        public Task DeleteRoleAsync(string roleId) {
-            throw new NotImplementedException();
+        public async Task DeleteRoleAsync(string roleId, CancellationToken ct) {
+            if (string.IsNullOrEmpty(roleId)) {
+                throw new ArgumentNullException(nameof(roleId));
+            }
+            var uri = new UriBuilder($"{_serviceUri}/v2/roles/{roleId}");
+            var request = _httpClient.NewRequest(uri.Uri, _resourceId);
+            var response = await _httpClient.DeleteAsync(request, ct).ConfigureAwait(false);
+            response.Validate();
         }
 
         private readonly IHttpClient _httpClient;

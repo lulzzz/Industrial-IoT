@@ -14,11 +14,11 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Security.Claims;
     using System.Linq;
-    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// User manager controller
@@ -46,8 +46,9 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task CreateUserAsync([FromBody] [Required] UserApiModel user) {
+        [HttpPut]
+        public async Task CreateUserAsync(
+            [FromBody] [Required] UserApiModel user) {
             if (user == null) {
                 throw new ArgumentNullException(nameof(user));
             }
@@ -104,7 +105,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [HttpDelete, Route("{userId}")]
+        [HttpDelete("{userId}")]
         public async Task DeleteUserAsync(string userId) {
             if (string.IsNullOrWhiteSpace(userId)) {
                 throw new ArgumentNullException(nameof(userId));
@@ -121,7 +122,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="userId"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost("{userId}/claims")]
+        [HttpPut("{userId}/claims")]
         public async Task AddClaimAsync(string userId,
             [FromBody] [Required] ClaimApiModel model) {
             if (!_manager.SupportsUserClaim) {
@@ -137,7 +138,6 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
             var result = await _manager.AddClaimAsync(user, model.ToClaim());
             result.Validate();
         }
-
 
         /// <summary>
         /// Remove claim
@@ -160,7 +160,6 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
             if (string.IsNullOrWhiteSpace(value)) {
                 throw new ArgumentNullException(nameof(value));
             }
-
             var user = await _manager.FindByIdAsync(userId);
             var result = await _manager.RemoveClaimAsync(user, new Claim(type, value));
             result.Validate();
@@ -172,15 +171,14 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="userId"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        [HttpPost("{userId}/roles/{role}")]
-        public async Task AddRoleAsync(string userId, string role) {
+        [HttpPut("{userId}/roles/{role}")]
+        public async Task AddRoleToUserAsync(string userId, string role) {
             if (!_manager.SupportsUserRole) {
                 throw new NotSupportedException("Role management not supported");
             }
             if (string.IsNullOrWhiteSpace(userId)) {
                 throw new ArgumentNullException(nameof(userId));
             }
-
             var user = await _manager.FindByIdAsync(userId);
             var result = await _manager.AddToRoleAsync(user, role);
             result.Validate();
@@ -192,7 +190,8 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="role"></param>
         /// <returns></returns>
         [HttpGet("/roles/{role}")]
-        public async Task<IEnumerable<UserApiModel>> GetUsersInRoleAsync(string role) {
+        public async Task<IEnumerable<UserApiModel>> GetUsersInRoleAsync(
+            string role) {
             var result = await _manager.GetUsersInRoleAsync(role);
             return result?.Select(u => u.ToApiModel());
         }
@@ -204,7 +203,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="role"></param>
         /// <returns></returns>
         [HttpDelete("{userId}/roles/{role}")]
-        public async Task RemoveRoleAsync(string userId, string role) {
+        public async Task RemoveRoleFromUserAsync(string userId, string role) {
             if (!_manager.SupportsUserRole) {
                 throw new NotSupportedException("Role management not supported");
             }
