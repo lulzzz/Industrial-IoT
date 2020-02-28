@@ -5,7 +5,9 @@
 
 namespace Microsoft.Azure.IIoT.Services.Common.Users {
     using Microsoft.Azure.IIoT.Services.Common.Users.Filters;
+    using Microsoft.Azure.IIoT.Services.Common.Users.Models;
     using Microsoft.Azure.IIoT.Services.Common.Users.Auth;
+    using Microsoft.Azure.IIoT.Api.Identity.Models;
     using Microsoft.Azure.IIoT.Auth.IdentityServer4.Models;
     using Microsoft.Azure.IIoT.AspNetCore.Auth;
     using Microsoft.AspNetCore.Authorization;
@@ -15,6 +17,8 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Security.Claims;
+    using System.Linq;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// User manager controller
@@ -43,11 +47,11 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="user"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task CreateUserAsync([FromBody] UserModel user) {
+        public async Task CreateUserAsync([FromBody] [Required] UserApiModel user) {
             if (user == null) {
                 throw new ArgumentNullException(nameof(user));
             }
-            var result = await _manager.CreateAsync(user);
+            var result = await _manager.CreateAsync(user.ToServiceModel());
             result.Validate();
         }
 
@@ -57,12 +61,13 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<UserModel> GetUserByNameAsync([FromQuery] string name) {
+        public async Task<UserApiModel> GetUserByNameAsync(
+            [FromQuery] [Required] string name) {
             if (string.IsNullOrWhiteSpace(name)) {
                 throw new ArgumentNullException(nameof(name));
             }
             var user = await _manager.FindByNameAsync(name);
-            return user;
+            return user.ToApiModel();
         }
 
         /// <summary>
@@ -71,12 +76,13 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="email"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<UserModel> GetUserByEmailAsync([FromQuery] string email) {
+        public async Task<UserApiModel> GetUserByEmailAsync(
+            [FromQuery] [Required] string email) {
             if (string.IsNullOrWhiteSpace(email)) {
                 throw new ArgumentNullException(nameof(email));
             }
             var user = await _manager.FindByEmailAsync(email);
-            return user;
+            return user.ToApiModel();
         }
 
         /// <summary>
@@ -85,12 +91,12 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet("{userId}")]
-        public async Task<UserModel> GetUserByIdAsync(string userId) {
+        public async Task<UserApiModel> GetUserByIdAsync(string userId) {
             if (string.IsNullOrWhiteSpace(userId)) {
                 throw new ArgumentNullException(nameof(userId));
             }
             var user = await _manager.FindByIdAsync(userId);
-            return user;
+            return user.ToApiModel();
         }
 
         /// <summary>
@@ -116,7 +122,8 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost("{userId}/claims")]
-        public async Task AddClaimAsync(string userId, [FromBody] ClaimModel model) {
+        public async Task AddClaimAsync(string userId,
+            [FromBody] [Required] ClaimApiModel model) {
             if (!_manager.SupportsUserClaim) {
                 throw new NotSupportedException("Claim management not supported");
             }
@@ -127,7 +134,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
                 throw new ArgumentNullException(nameof(model));
             }
             var user = await _manager.FindByIdAsync(userId);
-            var result = await _manager.AddClaimAsync(user, new Claim(model.Type, model.Value));
+            var result = await _manager.AddClaimAsync(user, model.ToClaim());
             result.Validate();
         }
 
@@ -185,9 +192,9 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="role"></param>
         /// <returns></returns>
         [HttpGet("/roles/{role}")]
-        public async Task<IList<UserModel>> GetUsersInRoleAsync(string role) {
+        public async Task<IEnumerable<UserApiModel>> GetUsersInRoleAsync(string role) {
             var result = await _manager.GetUsersInRoleAsync(role);
-            return result;
+            return result?.Select(u => u.ToApiModel());
         }
 
         /// <summary>

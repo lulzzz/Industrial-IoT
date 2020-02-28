@@ -6,6 +6,8 @@
 namespace Microsoft.Azure.IIoT.Services.Common.Users {
     using Microsoft.Azure.IIoT.Services.Common.Users.Filters;
     using Microsoft.Azure.IIoT.Services.Common.Users.Auth;
+    using Microsoft.Azure.IIoT.Services.Common.Users.Models;
+    using Microsoft.Azure.IIoT.Api.Identity.Models;
     using Microsoft.Azure.IIoT.Auth.IdentityServer4.Models;
     using Microsoft.Azure.IIoT.AspNetCore.Auth;
     using Microsoft.AspNetCore.Authorization;
@@ -13,6 +15,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
     using Microsoft.AspNetCore.Mvc;
     using System;
     using System.Threading.Tasks;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// Role manager controller
@@ -41,11 +44,11 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="role"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task CreateRoleAsync([FromBody] RoleModel role) {
+        public async Task CreateRoleAsync([FromBody] [Required] RoleApiModel role) {
             if (role == null) {
                 throw new ArgumentNullException(nameof(role));
             }
-            var result = await _manager.CreateAsync(role);
+            var result = await _manager.CreateAsync(role.ToServiceModel());
             result.Validate();
         }
 
@@ -55,12 +58,12 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="roleId"></param>
         /// <returns></returns>
         [HttpGet("{roleId}")]
-        public async Task<RoleModel> GetRoleAsync(string roleId) {
+        public async Task<RoleApiModel> GetRoleAsync(string roleId) {
             if (string.IsNullOrWhiteSpace(roleId)) {
                 throw new ArgumentNullException(nameof(roleId));
             }
             var role = await _manager.FindByIdAsync(roleId);
-            return role;
+            return role.ToApiModel();
         }
 
         /// <summary>

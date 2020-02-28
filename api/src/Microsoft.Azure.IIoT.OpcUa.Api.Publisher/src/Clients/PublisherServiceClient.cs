@@ -24,7 +24,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Clients {
         /// <param name="config"></param>
         /// <param name="serializer"></param>
         public PublisherServiceClient(IHttpClient httpClient, IPublisherConfig config,
-            IJsonSerializer serializer) : this(httpClient,
+            ISerializer serializer) : this(httpClient,
                 config?.OpcUaPublisherServiceUrl, config?.OpcUaPublisherServiceResourceId,
                 serializer) {
         }
@@ -37,7 +37,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Clients {
         /// <param name="resourceId"></param>
         /// <param name="serializer"></param>
         public PublisherServiceClient(IHttpClient httpClient, string serviceUri, string resourceId,
-            IJsonSerializer serializer) {
+            ISerializer serializer) {
             _serializer = serializer ?? new NewtonSoftJsonSerializer();
             _serviceUri = serviceUri ?? throw new ArgumentNullException(nameof(serviceUri),
                     "Please configure the Url of the endpoint micro service.");
@@ -137,7 +137,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Clients {
         }
 
         private readonly IHttpClient _httpClient;
-        private readonly IJsonSerializer _serializer;
+        private readonly ISerializer _serializer;
         private readonly string _serviceUri;
         private readonly string _resourceId;
     }

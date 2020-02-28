@@ -175,7 +175,6 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
 
             // TODO : Fix cleanup!!!
             // TODO :Assert.NotEqual("testType", twin.Properties.Reported[TwinProperty.kType]);
-            // TODO :Assert.NotEqual("TestSite", twin.Properties.Reported[TwinProperty.kSiteId]);
             // TODO :Assert.Equal("disconnected", twin.ConnectionState);
             Assert.NotEqual(_etag, twin.Etag);
         }
@@ -190,7 +189,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
             Assert.Equal("connected", twin.ConnectionState);
             Assert.Equal(true, twin.Properties.Reported[TwinProperty.Connected]);
             Assert.Equal(IdentityType.Supervisor, twin.Properties.Reported[TwinProperty.Type]);
-            Assert.False(twin.Properties.Reported.ContainsKey(TwinProperty.SiteId));
+            Assert.Equal(VariantValue.Null, twin.Properties.Reported[TwinProperty.SiteId]);
         }
 
         /// <summary>

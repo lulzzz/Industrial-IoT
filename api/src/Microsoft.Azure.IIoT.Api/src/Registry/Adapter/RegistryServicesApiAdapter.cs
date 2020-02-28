@@ -24,8 +24,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
         /// </summary>
         /// <param name="client"></param>
         /// <param name="serializer"></param>
-        public RegistryServicesApiAdapter(IRegistryServiceApi client, 
-            IJsonSerializer serializer) {
+        public RegistryServicesApiAdapter(IRegistryServiceApi client, ISerializer serializer) {
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
@@ -235,7 +234,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
                 _serializer.Map<DiscoveryCancelApiModel>(request), ct);
         }
 
-        private readonly IJsonSerializer _serializer;
+        private readonly ISerializer _serializer;
         private readonly IRegistryServiceApi _client;
     }
 }

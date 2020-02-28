@@ -3,18 +3,26 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Microsoft.Azure.IIoT.Agent.Framework {
-    using System;
+namespace Microsoft.Azure.IIoT.Api.Identity.Models {
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
 
     /// <summary>
-    /// Provides job types to deserialize
+    /// Role model
     /// </summary>
-    public interface IKnownJobConfigProvider {
+    [DataContract]
+    public class RoleApiModel {
 
         /// <summary>
-        /// Returns the known job types
+        /// Role id
         /// </summary>
-        IEnumerable<Type> KnownJobTypes { get; }
+        [DataMember(Name = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        [DataMember(Name = "id")]
+        public string Name { get; set; }
     }
 }
