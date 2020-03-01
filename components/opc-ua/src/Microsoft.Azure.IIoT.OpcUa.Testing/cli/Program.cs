@@ -7,7 +7,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Cli {
     using Microsoft.Azure.IIoT.OpcUa.Core.Models;
     using Microsoft.Azure.IIoT.OpcUa.Edge.Control.Services;
     using Microsoft.Azure.IIoT.OpcUa.Edge.Export.Services;
-    using Microsoft.Azure.IIoT.OpcUa.Graph.Services;
     using Microsoft.Azure.IIoT.OpcUa.Protocol;
     using Microsoft.Azure.IIoT.OpcUa.Protocol.Sample;
     using Microsoft.Azure.IIoT.OpcUa.Protocol.Services;
@@ -461,10 +460,11 @@ Operations (Mutually exclusive):
                     var sw = Stopwatch.StartNew();
                     using (var file = File.Open(filename, FileMode.OpenOrCreate)) {
                         using (var unzipped = new DeflateStream(file, CompressionMode.Decompress)) {
-                            var writer = new SourceStreamImporter(new ItemContainerFactory(database),
-                                new VariantEncoderFactory(), logger.Logger);
-                            await writer.ImportAsync(unzipped, Path.GetFullPath(filename + i),
-                                ContentMimeType.UaJson, null, CancellationToken.None);
+                           // TODO
+                           // var writer = new SourceStreamImporter(new ItemContainerFactory(database),
+                           //     new VariantEncoderFactory(), logger.Logger);
+                           // await writer.ImportAsync(unzipped, Path.GetFullPath(filename + i),
+                           //     ContentMimeType.UaJson, null, CancellationToken.None);
                         }
                     }
                     var elapsed = sw.Elapsed;

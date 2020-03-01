@@ -162,8 +162,7 @@ namespace Microsoft.Azure.IIoT.Services.All {
                     Task.Run(() => Common.Hub.Fileupload.Program.Main(args), _cts.Token),
                     Task.Run(() => OpcUa.Registry.Discovery.Program.Main(args), _cts.Token),
                     Task.Run(() => OpcUa.Registry.Events.Program.Main(args), _cts.Token),
-                    Task.Run(() => OpcUa.Registry.Security.Program.Main(args), _cts.Token),
-                    Task.Run(() => OpcUa.Twin.Import.Program.Main(args), _cts.Token),
+                    Task.Run(() => OpcUa.Registry.Security.Program.Main(args), _cts.Token)
                 });
             }
 

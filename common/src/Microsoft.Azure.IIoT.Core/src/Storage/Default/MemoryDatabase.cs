@@ -79,8 +79,8 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
         /// <summary>
         /// In memory container
         /// </summary>
-        private class ItemContainer : IItemContainer, IDocuments, IGraph,
-            ISqlClient, IGraphQueryClient {
+        private class ItemContainer : IItemContainer, IDocuments,
+            ISqlClient {
 
             /// <inheritdoc/>
             public string Name { get; }
@@ -233,28 +233,8 @@ namespace Microsoft.Azure.IIoT.Storage.Default {
             }
 
             /// <inheritdoc/>
-            public IGraph AsGraph() {
-                return this;
-            }
-
-            /// <inheritdoc/>
             public ISqlClient OpenSqlClient() {
                 return this;
-            }
-
-            /// <inheritdoc/>
-            public IGraphQueryClient OpenGremlinClient() {
-                return this;
-            }
-
-            /// <inheritdoc/>
-            public Task<IDocumentLoader> CreateBulkLoader() {
-                throw new NotSupportedException();
-            }
-
-            /// <inheritdoc/>
-            Task<IGraphLoader> IGraph.CreateBulkLoader() {
-                throw new NotImplementedException();
             }
 
             /// <inheritdoc/>
