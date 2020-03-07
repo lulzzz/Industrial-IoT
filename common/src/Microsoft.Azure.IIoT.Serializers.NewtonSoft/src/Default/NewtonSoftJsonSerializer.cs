@@ -220,7 +220,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             /// <inheritdoc/>
-            public override object ToType(Type type, IFormatProvider provider) {
+            public override object ConvertTo(Type type) {
                 try {
                     return Token.ToObject(type,
                         JsonSerializer.CreateDefault(_serializer.Settings));

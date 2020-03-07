@@ -216,7 +216,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetBoolean(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<bool>(provider);
+            return ConvertTo<bool>();
         }
         /// <inheritdoc/>
         public static explicit operator bool(VariantValue value) =>
@@ -237,7 +237,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetUInt64(out var value, false, provider)) {
                 return (byte)value;
             }
-            return ConvertTo<byte>(provider);
+            return ConvertTo<byte>();
         }
         /// <inheritdoc/>
         public static explicit operator byte(VariantValue value) =>
@@ -258,7 +258,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetChar(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<char>(provider);
+            return ConvertTo<char>();
         }
         /// <inheritdoc/>
         public static explicit operator char(VariantValue value) =>
@@ -279,7 +279,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetDateTime(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<DateTime>(provider);
+            return ConvertTo<DateTime>();
         }
         /// <inheritdoc/>
         public static explicit operator DateTime(VariantValue value) =>
@@ -300,7 +300,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetDateTimeOffset(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<DateTimeOffset>(provider);
+            return ConvertTo<DateTimeOffset>();
         }
         /// <inheritdoc/>
         public static explicit operator DateTimeOffset(VariantValue value) =>
@@ -321,7 +321,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetDecimal(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<decimal>(provider);
+            return ConvertTo<decimal>();
         }
         /// <inheritdoc/>
         public static explicit operator decimal(VariantValue value) =>
@@ -342,7 +342,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetDouble(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<double>(provider);
+            return ConvertTo<double>();
         }
         /// <inheritdoc/>
         public static explicit operator double(VariantValue value) =>
@@ -363,7 +363,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetInt64(out var value, false, provider)) {
                 return (short)value;
             }
-            return ConvertTo<short>(provider);
+            return ConvertTo<short>();
         }
         /// <inheritdoc/>
         public static explicit operator short(VariantValue value) =>
@@ -384,7 +384,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetInt64(out var value, false, provider)) {
                 return (int)value;
             }
-            return ConvertTo<int>(provider);
+            return ConvertTo<int>();
         }
         /// <inheritdoc/>
         public static explicit operator int(VariantValue value) =>
@@ -405,7 +405,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetInt64(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<long>(provider);
+            return ConvertTo<long>();
         }
         /// <inheritdoc/>
         public static explicit operator long(VariantValue value) =>
@@ -426,7 +426,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetUInt64(out var value, false, provider)) {
                 return (ushort)value;
             }
-            return ConvertTo<ushort>(provider);
+            return ConvertTo<ushort>();
         }
         /// <inheritdoc/>
         public static explicit operator ushort(VariantValue value) =>
@@ -447,7 +447,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetUInt64(out var value, false, provider)) {
                 return (uint)value;
             }
-            return ConvertTo<uint>(provider);
+            return ConvertTo<uint>();
         }
         /// <inheritdoc/>
         public static explicit operator uint(VariantValue value) =>
@@ -468,7 +468,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetUInt64(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<ulong>(provider);
+            return ConvertTo<ulong>();
         }
         /// <inheritdoc/>
         public static explicit operator ulong(VariantValue value) =>
@@ -489,7 +489,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetInt64(out var value, false, provider)) {
                 return (sbyte)value;
             }
-            return ConvertTo<sbyte>(provider);
+            return ConvertTo<sbyte>();
         }
         /// <inheritdoc/>
         public static explicit operator sbyte(VariantValue value) =>
@@ -510,7 +510,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetSingle(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<float>(provider);
+            return ConvertTo<float>();
         }
         /// <inheritdoc/>
         public static explicit operator float(VariantValue value) =>
@@ -531,7 +531,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetString(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<string>(provider);
+            return ConvertTo<string>();
         }
         /// <inheritdoc/>
         public static explicit operator string(VariantValue value) =>
@@ -545,7 +545,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetBytes(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<byte[]>(provider);
+            return ConvertTo<byte[]>();
         }
         /// <inheritdoc/>
         public static explicit operator byte[](VariantValue value) =>
@@ -559,7 +559,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetGuid(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<Guid>(provider);
+            return ConvertTo<Guid>();
         }
         /// <inheritdoc/>
         public static explicit operator Guid(VariantValue value) =>
@@ -580,7 +580,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             if (TryGetTimeSpan(out var value, false, provider)) {
                 return value;
             }
-            return ConvertTo<TimeSpan>(provider);
+            return ConvertTo<TimeSpan>();
         }
         /// <inheritdoc/>
         public static explicit operator TimeSpan(VariantValue value) =>
@@ -597,7 +597,79 @@ namespace Microsoft.Azure.IIoT.Serializers {
             new PrimitiveValue(value);
 
         /// <inheritdoc/>
-        public abstract object ToType(Type conversionType, IFormatProvider provider);
+        public virtual object ToType(Type conversionType, IFormatProvider provider) {
+            if (GetRawValue() == null || IsNull) {
+                if (conversionType.IsValueType) {
+                    return Activator.CreateInstance(conversionType);
+                }
+                return null;
+            }
+            if (conversionType.IsAssignableFrom(GetRawValue().GetType())) {
+                return GetRawValue();
+            }
+            if (GetRawValue() is IConvertible c) {
+                return c.ToType(conversionType,
+                    provider ?? CultureInfo.InvariantCulture);
+            }
+            if (conversionType == typeof(byte)) {
+                return ToByte(provider);
+            }
+            if (conversionType == typeof(float)) {
+                return ToSingle(provider);
+            }
+            if (conversionType == typeof(double)) {
+                return ToDouble(provider);
+            }
+            if (conversionType == typeof(sbyte)) {
+                return ToSByte(provider);
+            }
+            if (conversionType == typeof(short)) {
+                return ToInt16(provider);
+            }
+            if (conversionType == typeof(int)) {
+                return ToInt32(provider);
+            }
+            if (conversionType == typeof(long)) {
+                return ToInt64(provider);
+            }
+            if (conversionType == typeof(ushort)) {
+                return ToUInt16(provider);
+            }
+            if (conversionType == typeof(uint)) {
+                return ToUInt32(provider);
+            }
+            if (conversionType == typeof(ulong)) {
+                return ToUInt64(provider);
+            }
+            if (conversionType == typeof(char)) {
+                return ToChar(provider);
+            }
+            if (conversionType == typeof(string)) {
+                return ToString(provider);
+            }
+            if (conversionType == typeof(Guid)) {
+                return ToGuid(provider);
+            }
+            if (conversionType == typeof(bool)) {
+                return ToBoolean(provider);
+            }
+            if (conversionType == typeof(byte[])) {
+                return ToBytes(provider);
+            }
+            if (conversionType == typeof(decimal)) {
+                return ToDecimal(provider);
+            }
+            if (conversionType == typeof(DateTimeOffset)) {
+                return ToDateTimeOffset(provider);
+            }
+            if (conversionType == typeof(TimeSpan)) {
+                return ToTimeSpan(provider);
+            }
+            if (conversionType == typeof(DateTime)) {
+                return ToDateTime(provider);
+            }
+            return null;
+        }
 
         /// <inheritdoc/>
         public static bool operator ==(VariantValue left, VariantValue right) =>
@@ -717,7 +789,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// Convert to json
         /// </summary>
         /// <returns></returns>
-        public string AsString() {
+        public string ToJson() {
             var sb = new StringBuilder();
             AppendTo(sb);
             return sb.ToString();
@@ -728,8 +800,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T ConvertTo<T>(IFormatProvider provider = null) {
-            var typed = ToType(typeof(T), provider);
+        public T ConvertTo<T>() {
+            var typed = ConvertTo(typeof(T));
             return typed == null ? default : (T)typed;
         }
 
@@ -738,9 +810,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public object ConvertTo(Type type) {
-            return ToType(type, null);
-        }
+        public abstract object ConvertTo(Type type);
 
         /// <summary>
         /// Update the value to the new value.
@@ -1919,10 +1989,10 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
                         // Values or object compare to string
                         if (xt == VariantValueType.Primitive && x.TryGetString(out var sx)) {
-                            return y.AsString() == sx;
+                            return y.ToJson() == sx;
                         }
                         if (yt == VariantValueType.Primitive && y.TryGetString(out var sy)) {
-                            return x.AsString() == sy;
+                            return x.ToJson() == sy;
                         }
                     }
                     return false;
@@ -2012,10 +2082,10 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
                             // Values or object compare to string
                             if (xt == VariantValueType.Primitive && x.TryGetString(out var sx)) {
-                                return sx.CompareTo(y.AsString());
+                                return sx.CompareTo(y.ToJson());
                             }
                             if (yt == VariantValueType.Primitive && y.TryGetString(out var sy)) {
-                                return x.AsString().CompareTo(sy);
+                                return x.ToJson().CompareTo(sy);
                             }
                         }
                     }
@@ -2077,8 +2147,8 @@ namespace Microsoft.Azure.IIoT.Serializers {
                 }
 
                 // Use string comparison
-                var osx = x.AsString().ToLowerInvariant();
-                var osy = y.AsString().ToLowerInvariant();
+                var osx = x.ToJson().ToLowerInvariant();
+                var osy = y.ToJson().ToLowerInvariant();
 
                 return osx.CompareTo(osy);
             }
@@ -2104,7 +2174,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
                 if (v.GetValueType() != VariantValueType.Primitive) {
                     if (y is string s) {
-                        return v.AsString() == s;
+                        return v.ToJson() == s;
                     }
                     if (y is byte[] boy && v.GetValueType() == VariantValueType.Values) {
                         if (v.TryGetBytes(out var box)) {
@@ -2192,7 +2262,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
                 if (v.GetValueType() != VariantValueType.Primitive) {
                     if (y is string s) {
-                        result = v.AsString().CompareTo(s);
+                        result = v.ToJson().CompareTo(s);
                         return true;
                     }
                     if (y is byte[] boy && v.GetValueType() == VariantValueType.Values) {
@@ -2483,21 +2553,7 @@ namespace Microsoft.Azure.IIoT.Serializers {
             }
 
             /// <inheritdoc/>
-            public override object ToType(Type conversionType,
-                IFormatProvider provider) {
-                if (GetRawValue() == null || IsNull) {
-                    if (conversionType.IsValueType) {
-                        return Activator.CreateInstance(conversionType);
-                    }
-                    return null;
-                }
-                if (conversionType.IsAssignableFrom(GetRawValue().GetType())) {
-                    return GetRawValue();
-                }
-                if (GetRawValue() is IConvertible c) {
-                    return c.ToType(conversionType,
-                        provider ?? CultureInfo.InvariantCulture);
-                }
+            public override object ConvertTo(Type conversionType) {
                 var converter = TypeDescriptor.GetConverter(conversionType);
                 return converter.ConvertFrom(GetRawValue());
             }

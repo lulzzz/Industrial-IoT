@@ -228,7 +228,7 @@ namespace Microsoft.Azure.IIoT.Serializers.MessagePack {
             }
 
             /// <inheritdoc/>
-            public override object ToType(Type type, IFormatProvider provider) {
+            public override object ConvertTo(Type type) {
                 if (_value == null) {
                     return null;
                 }

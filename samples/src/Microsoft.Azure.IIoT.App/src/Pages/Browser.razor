@@ -90,7 +90,7 @@
                 {
                     <td>@node.NodeClass</td>
                 }
-                @if (node.NodeClass == NodeClass.Variable && (((node.AccessLevel & NodeAccessLevel.CurrentRead) == NodeAccessLevel.CurrentRead) || 
+                @if (node.NodeClass == NodeClass.Variable && (((node.AccessLevel & NodeAccessLevel.CurrentRead) == NodeAccessLevel.CurrentRead) ||
                         ((node.AccessLevel & NodeAccessLevel.CurrentWrite) == NodeAccessLevel.CurrentWrite)))
                 {
                     <td>
@@ -326,7 +326,7 @@
         {
             if (node.Id == samples.NodeId)
             {
-                node.Value = $"{samples.Value?.ToString()} ({samples.Status})";
+                node.Value = $"{samples.Value?.ToJson()} ({samples.Status})";
                 this.StateHasChanged();
             }
         }
