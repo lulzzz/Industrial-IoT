@@ -259,6 +259,9 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Models {
                 NoSubtypes = model.NoSubtypes,
                 TargetNodesOnly = model.TargetNodesOnly,
                 ReadVariableValues = model.ReadVariableValues,
+                NodeClassFilter = model.NodeClassFilter
+                    .Select(f => (Microsoft.Azure.IIoT.OpcUa.Api.Core.Models.NodeClass)f)
+                    .ToList(),
                 View = model.View.ToApiModel(),
                 Header = model.Header.ToApiModel(),
             };
@@ -281,6 +284,9 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Models {
                 ReferenceTypeId = model.ReferenceTypeId,
                 TargetNodesOnly = model.TargetNodesOnly,
                 ReadVariableValues = model.ReadVariableValues,
+                NodeClassFilter = model.NodeClassFilter
+                    .Select(f => (Microsoft.Azure.IIoT.OpcUa.Core.Models.NodeClass)f)
+                    .ToList(),
                 NoSubtypes = model.NoSubtypes,
                 Header = model.Header.ToServiceModel()
             };

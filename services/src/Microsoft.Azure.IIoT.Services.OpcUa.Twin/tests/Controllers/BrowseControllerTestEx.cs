@@ -81,6 +81,16 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Controllers {
         }
 
         [Fact]
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter1Async() {
+            await GetTests().NodeBrowseStaticScalarVariablesTestWithFilter1Async();
+        }
+
+        [Fact]
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter2Async() {
+            await GetTests().NodeBrowseStaticScalarVariablesTestWithFilter2Async();
+        }
+
+        [Fact]
         public async Task NodeBrowseStaticArrayVariablesWithValuesTestAsync() {
             await GetTests().NodeBrowseStaticArrayVariablesWithValuesTestAsync();
         }

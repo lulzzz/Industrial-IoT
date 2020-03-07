@@ -170,6 +170,26 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Twin.StartStop {
         }
 
         [SkippableFact]
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter1Async() {
+            // Skip.IfNot(_runAll);
+            using (var harness = new TwinModuleFixture()) {
+                await harness.RunTestAsync(Endpoint, async (endpoint, services) => {
+                    await GetTests(endpoint, services).NodeBrowseStaticScalarVariablesTestWithFilter1Async();
+                });
+            }
+        }
+
+        [SkippableFact]
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter2Async() {
+            Skip.IfNot(_runAll);
+            using (var harness = new TwinModuleFixture()) {
+                await harness.RunTestAsync(Endpoint, async (endpoint, services) => {
+                    await GetTests(endpoint, services).NodeBrowseStaticScalarVariablesTestWithFilter2Async();
+                });
+            }
+        }
+
+        [SkippableFact]
         public async Task NodeBrowseStaticArrayVariablesTestAsync() {
             Skip.IfNot(_runAll);
             using (var harness = new TwinModuleFixture()) {

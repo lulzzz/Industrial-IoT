@@ -7,6 +7,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
     using Microsoft.Azure.IIoT.OpcUa.Api.Core.Models;
     using System.Runtime.Serialization;
     using System.ComponentModel;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Browse request model
@@ -88,6 +89,16 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
             EmitDefaultValue = false)]
         [DefaultValue(false)]
         public bool? ReadVariableValues { get; set; }
+
+        /// <summary>
+        /// Filter returned target nodes by only returning
+        /// nodes that have classes defined in this array.
+        /// (default: null - all targets are returned)
+        /// </summary>
+        [DataMember(Name = "nodeClassFilter",
+            EmitDefaultValue = false)]
+        [DefaultValue(null)]
+        public List<NodeClass> NodeClassFilter { get; set; }
 
         /// <summary>
         /// Optional request header

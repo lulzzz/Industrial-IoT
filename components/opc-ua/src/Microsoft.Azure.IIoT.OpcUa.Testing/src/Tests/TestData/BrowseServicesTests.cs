@@ -1192,6 +1192,80 @@ namespace Microsoft.Azure.IIoT.OpcUa.Testing.Tests {
         }
 
 
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter1Async() {
+
+            var browser = _services();
+
+            // Act
+            var results = await browser.NodeBrowseAsync(_endpoint,
+                new BrowseRequestModel {
+                    NodeId = "http://test.org/UA/Data/#i=10159",
+                    TargetNodesOnly = true,
+                    NodeClassFilter = new List<NodeClass> {
+                        NodeClass.Method,
+                        NodeClass.Object
+                    }
+                });
+
+            // Assert
+            Assert.Null(results.ContinuationToken);
+            Assert.Equal("http://test.org/UA/Data/#i=10159", results.Node.NodeId);
+            Assert.Equal("Scalar", results.Node.DisplayName);
+            Assert.Equal(NodeClass.Object, results.Node.NodeClass);
+            Assert.True(results.Node.Children);
+            Assert.Collection(results.References,
+                reference => {
+                    Assert.Equal("http://test.org/UA/Data/#i=10161",
+                        reference.Target.NodeId);
+                    Assert.Equal("GenerateValues", reference.Target.DisplayName);
+                    Assert.Equal(NodeClass.Method, reference.Target.NodeClass);
+                    Assert.True(reference.Target.Executable);
+                    Assert.True(reference.Target.UserExecutable);
+                    Assert.True(reference.Target.Children);
+                },
+                reference => {
+                    Assert.Equal("http://test.org/UA/Data/#i=10163",
+                        reference.Target.NodeId);
+                    Assert.Equal("CycleComplete", reference.Target.DisplayName);
+                    Assert.Equal(NodeClass.Object, reference.Target.NodeClass);
+                    Assert.Null(reference.Target.Executable);
+                    Assert.Null(reference.Target.UserExecutable);
+                    Assert.True(reference.Target.Children);
+                });
+        }
+
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter2Async() {
+
+            var browser = _services();
+
+            // Act
+            var results = await browser.NodeBrowseAsync(_endpoint,
+                new BrowseRequestModel {
+                    NodeId = "http://test.org/UA/Data/#i=10159",
+                    TargetNodesOnly = true,
+                    NodeClassFilter = new List<NodeClass> {
+                        NodeClass.Method
+                    }
+                });
+
+            // Assert
+            Assert.Null(results.ContinuationToken);
+            Assert.Equal("http://test.org/UA/Data/#i=10159", results.Node.NodeId);
+            Assert.Equal("Scalar", results.Node.DisplayName);
+            Assert.Equal(NodeClass.Object, results.Node.NodeClass);
+            Assert.True(results.Node.Children);
+            Assert.Collection(results.References,
+                reference => {
+                    Assert.Equal("http://test.org/UA/Data/#i=10161",
+                        reference.Target.NodeId);
+                    Assert.Equal("GenerateValues", reference.Target.DisplayName);
+                    Assert.Equal(NodeClass.Method, reference.Target.NodeClass);
+                    Assert.True(reference.Target.Executable);
+                    Assert.True(reference.Target.UserExecutable);
+                    Assert.True(reference.Target.Children);
+                });
+        }
+
         public async Task NodeBrowseStaticArrayVariablesTestAsync() {
 
             var browser = _services();

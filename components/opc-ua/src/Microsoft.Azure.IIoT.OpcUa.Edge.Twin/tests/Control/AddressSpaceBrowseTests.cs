@@ -104,6 +104,16 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Control.Services {
         }
 
         [Fact]
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter1Async() {
+            await GetTests().NodeBrowseStaticScalarVariablesTestWithFilter1Async();
+        }
+
+        [Fact]
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter2Async() {
+            await GetTests().NodeBrowseStaticScalarVariablesTestWithFilter2Async();
+        }
+
+        [Fact]
         public async Task NodeBrowseStaticArrayVariablesWithValuesTestAsync() {
             await GetTests().NodeBrowseStaticArrayVariablesWithValuesTestAsync();
         }

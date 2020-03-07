@@ -103,6 +103,16 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor.Api {
         }
 
         [Fact]
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter1Async() {
+            await GetTests().NodeBrowseStaticScalarVariablesTestWithFilter1Async();
+        }
+
+        [Fact]
+        public async Task NodeBrowseStaticScalarVariablesTestWithFilter2Async() {
+            await GetTests().NodeBrowseStaticScalarVariablesTestWithFilter2Async();
+        }
+
+        [Fact]
         public async Task NodeBrowseStaticArrayVariablesTestAsync() {
             await GetTests().NodeBrowseStaticArrayVariablesTestAsync();
         }
