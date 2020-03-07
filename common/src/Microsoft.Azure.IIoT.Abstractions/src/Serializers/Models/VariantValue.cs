@@ -2549,13 +2549,25 @@ namespace Microsoft.Azure.IIoT.Serializers {
 
             /// <inheritdoc/>
             public override VariantValue Copy(bool shallow = false) {
-                return new PrimitiveValue(GetRawValue(), GetValueType());
+                return new PrimitiveValue(_rawValue, GetValueType());
             }
 
             /// <inheritdoc/>
             public override object ConvertTo(Type conversionType) {
+                if (_rawValue == null || IsNull) {
+                    if (conversionType.IsValueType) {
+                        return Activator.CreateInstance(conversionType);
+                    }
+                    return null;
+                }
+                if (conversionType.IsAssignableFrom(_rawValue.GetType())) {
+                    return _rawValue;
+                }
+                if (_rawValue is IConvertible c) {
+                    return c.ToType(conversionType, CultureInfo.InvariantCulture);
+                }
                 var converter = TypeDescriptor.GetConverter(conversionType);
-                return converter.ConvertFrom(GetRawValue());
+                return converter.ConvertFrom(_rawValue);
             }
 
             /// <inheritdoc/>
