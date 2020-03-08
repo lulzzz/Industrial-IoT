@@ -53,6 +53,50 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         public string BrowseName { get; set; }
 
         /// <summary>
+        /// Value of variable or default value of the
+        /// subtyped variable in case node is a variable
+        /// type, otherwise null.
+        /// </summary>
+        [DataMember(Name = "value",
+            EmitDefaultValue = false)]
+        public VariantValue Value { get; set; }
+
+        /// <summary>
+        /// Pico seconds part of when value was read at source.
+        /// </summary>
+        [DataMember(Name = "sourcePicoseconds",
+            EmitDefaultValue = false)]
+        public ushort? SourcePicoseconds { get; set; }
+
+        /// <summary>
+        /// Timestamp of when value was read at source.
+        /// </summary>
+        [DataMember(Name = "sourceTimestamp",
+            EmitDefaultValue = false)]
+        public DateTime? SourceTimestamp { get; set; }
+
+        /// <summary>
+        /// Pico seconds part of when value was read at server.
+        /// </summary>
+        [DataMember(Name = "serverPicoseconds",
+            EmitDefaultValue = false)]
+        public ushort? ServerPicoseconds { get; set; }
+
+        /// <summary>
+        /// Timestamp of when value was read at server.
+        /// </summary>
+        [DataMember(Name = "serverTimestamp",
+            EmitDefaultValue = false)]
+        public DateTime? ServerTimestamp { get; set; }
+
+        /// <summary>
+        /// Service result in case of error reading the value
+        /// </summary>
+        [DataMember(Name = "errorInfo",
+            EmitDefaultValue = false)]
+        public ServiceResultApiModel ErrorInfo { get; set; }
+
+        /// <summary>
         /// Node access restrictions if any.
         /// (default: none)
         /// </summary>
@@ -185,15 +229,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         [DataMember(Name = "minimumSamplingInterval",
             EmitDefaultValue = false)]
         public double? MinimumSamplingInterval { get; set; }
-
-        /// <summary>
-        /// Value of variable or default value of the
-        /// subtyped variable in case node is a variable
-        /// type, otherwise null.
-        /// </summary>
-        [DataMember(Name = "value",
-            EmitDefaultValue = false)]
-        public VariantValue Value { get; set; }
 
         /// <summary>
         /// Inverse name of the reference if the node is

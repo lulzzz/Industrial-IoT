@@ -776,6 +776,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Control.Services {
             }
             var node = await RawNodeModel.ReadAsync(session, header, nodeId, skipValue,
                 diagnostics, traceOnly);
+            var value = node.DataValue;
             return new NodeModel {
                 Children = children,
                 NodeId = id,
@@ -799,7 +800,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Control.Services {
                 Historizing = node.Historizing,
                 MinimumSamplingInterval = node.MinimumSamplingInterval,
                 IsAbstract = node.IsAbstract,
-                Value = codec.Encode(node.Value, out var type),
+                Value = codec.Encode(value?.WrappedValue, out var type),
+                SourceTimestamp = value?.SourceTimestamp,
+                SourcePicoseconds = value?.SourcePicoseconds,
+                ServerTimestamp = value?.ServerTimestamp,
+                ServerPicoseconds = value?.ServerPicoseconds,
+                ErrorInfo = codec.Encode(value?.StatusCode),
+                TypeDefinitionId = node.TypeDefinitionId.AsString(session.MessageContext),
                 EventNotifier = node.EventNotifier == null || node.EventNotifier == 0x0 ?
                     (NodeEventNotifier?)null : (NodeEventNotifier)node.EventNotifier,
                 DataTypeDefinition = node.DataTypeDefinition == null ? null :

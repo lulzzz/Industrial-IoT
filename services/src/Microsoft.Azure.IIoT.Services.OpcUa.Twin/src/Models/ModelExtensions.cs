@@ -228,7 +228,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Models {
                 ReferenceTypeId = model.ReferenceTypeId,
                 TargetNodesOnly = model.TargetNodesOnly,
                 ReadVariableValues = model.ReadVariableValues,
-                NodeClassFilter = model.NodeClassFilter
+                NodeClassFilter = model.NodeClassFilter?
                     .Select(f => (Microsoft.Azure.IIoT.OpcUa.Api.Core.Models.NodeClass)f)
                     .ToList(),
                 NoSubtypes = model.NoSubtypes,
@@ -253,7 +253,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Models {
                 ReferenceTypeId = model.ReferenceTypeId,
                 TargetNodesOnly = model.TargetNodesOnly,
                 ReadVariableValues = model.ReadVariableValues,
-                NodeClassFilter = model.NodeClassFilter
+                NodeClassFilter = model.NodeClassFilter?
                     .Select(f => (Microsoft.Azure.IIoT.OpcUa.Core.Models.NodeClass)f)
                     .ToList(),
                 NoSubtypes = model.NoSubtypes,
@@ -578,6 +578,11 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Models {
                 DataTypeDefinition = model.DataTypeDefinition,
                 Value = model.Value,
                 Historizing = model.Historizing,
+                ErrorInfo = model.ErrorInfo.ToApiModel(),
+                ServerPicoseconds = model.ServerPicoseconds,
+                SourcePicoseconds = model.SourcePicoseconds,
+                SourceTimestamp = model.SourceTimestamp,
+                ServerTimestamp = model.ServerTimestamp,
                 InverseName = model.InverseName,
                 MinimumSamplingInterval = model.MinimumSamplingInterval,
                 Symmetric = model.Symmetric,
@@ -624,6 +629,11 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Twin.Models {
                 Value = model.Value,
                 Historizing = model.Historizing,
                 InverseName = model.InverseName,
+                ErrorInfo = model.ErrorInfo.ToServiceModel(),
+                ServerPicoseconds = model.ServerPicoseconds,
+                SourcePicoseconds = model.SourcePicoseconds,
+                SourceTimestamp = model.SourceTimestamp,
+                ServerTimestamp = model.ServerTimestamp,
                 MinimumSamplingInterval = model.MinimumSamplingInterval,
                 Symmetric = model.Symmetric,
                 UserAccessLevel = (IIoT.OpcUa.Core.Models.NodeAccessLevel?)model.UserAccessLevel,

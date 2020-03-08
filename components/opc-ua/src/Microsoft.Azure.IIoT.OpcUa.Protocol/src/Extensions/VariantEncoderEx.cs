@@ -158,6 +158,35 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
         }
 
         /// <summary>
+        /// Convert to service model
+        /// </summary>
+        /// <param name="statusCode"></param>
+        /// <param name="diagnosticsInfo"></param>
+        /// <param name="config"></param>
+        /// <param name="codec"></param>
+        /// <returns></returns>
+        public static ServiceResultModel Encode(this IVariantEncoder codec,
+            StatusCode? statusCode, DiagnosticInfo diagnosticsInfo = null,
+            DiagnosticsModel config = null) {
+            if ((statusCode?.Code ?? StatusCodes.Good) == StatusCodes.Good) {
+                return null; // All well
+            }
+            return new ServiceResultModel {
+                // The last operation result is the one that caused the service to fail.
+                StatusCode = statusCode?.Code,
+                ErrorMessage = diagnosticsInfo?.AdditionalInfo ?? (statusCode == null ?
+                    null : StatusCode.LookupSymbolicId(statusCode.Value.CodeBits)),
+                Diagnostics = config == null ? null : codec.Write(
+                    new List<OperationResultModel> {
+                        new OperationResultModel {
+                            DiagnosticsInfo = diagnosticsInfo,
+                            StatusCode = statusCode.Value
+                        }
+                    }, config)
+            };
+        }
+
+        /// <summary>
         /// Convert operation results to json
         /// </summary>
         /// <param name="results"></param>
