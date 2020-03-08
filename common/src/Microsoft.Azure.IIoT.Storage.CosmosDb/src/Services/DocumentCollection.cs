@@ -18,9 +18,6 @@ namespace Microsoft.Azure.IIoT.Storage.CosmosDb.Services {
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
-    using Gremlin.Net.CosmosDb;
-    using Gremlin.Net.CosmosDb.Structure;
-    using Gremlin.Net.Process.Traversal;
     using CosmosContainer = Documents.DocumentCollection;
     using Newtonsoft.Json.Linq;
 

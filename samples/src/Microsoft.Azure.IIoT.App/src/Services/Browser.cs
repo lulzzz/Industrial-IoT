@@ -10,9 +10,9 @@ namespace Microsoft.Azure.IIoT.App.Services {
     using Microsoft.Azure.IIoT.OpcUa.Api.Core.Models;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+    using Serilog;
 
     /// <summary>
     /// Browser code behind
@@ -30,8 +30,10 @@ namespace Microsoft.Azure.IIoT.App.Services {
         /// Create browser
         /// </summary>
         /// <param name="twinService"></param>
-        public Browser(ITwinServiceApi twinService) {
-            _twinService = twinService;
+        /// <param name="logger"></param>
+        public Browser(ITwinServiceApi twinService, ILogger logger) {
+            _twinService = twinService ?? throw new ArgumentNullException(nameof(twinService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -114,9 +116,9 @@ namespace Microsoft.Azure.IIoT.App.Services {
             }
             catch (Exception e) {
                 // skip this node
-                Trace.TraceError("Can not browse node '{0}'", id);
+                _logger.Error($"Can not browse node '{id}'");
                 var errorMessage = string.Concat(e.Message, e.InnerException?.Message ?? "--", e?.StackTrace ?? "--");
-                Trace.TraceError(errorMessage);
+                _logger.Error(errorMessage);
                 pageResult.Error = e.Message;
             }
 
@@ -149,9 +151,9 @@ namespace Microsoft.Azure.IIoT.App.Services {
                 }
             }
             catch (Exception e) {
-                Trace.TraceError("Can not read value of node '{0}'", nodeId);
+                _logger.Error($"Can not read value of node '{nodeId}'");
                 var errorMessage = string.Concat(e.Message, e.InnerException?.Message ?? "--", e?.StackTrace ?? "--");
-                Trace.TraceError(errorMessage);
+                _logger.Error(errorMessage);
                 return errorMessage;
             }
         }
@@ -186,9 +188,9 @@ namespace Microsoft.Azure.IIoT.App.Services {
                 }
             }
             catch (Exception e) {
-                Trace.TraceError("Can not write value of node '{0}'", nodeId);
+                _logger.Error($"Can not write value of node '{nodeId}'");
                 var errorMessage = string.Concat(e.Message, e.InnerException?.Message ?? "--", e?.StackTrace ?? "--");
-                Trace.TraceError(errorMessage);
+                _logger.Error(errorMessage);
                 return errorMessage;
             }
         }
@@ -221,9 +223,9 @@ namespace Microsoft.Azure.IIoT.App.Services {
                 }
             }
             catch (Exception e) {
-                Trace.TraceError("Can not get method parameter from node '{0}'", nodeId);
+                _logger.Error($"Can not get method parameter from node '{nodeId}'");
                 var errorMessage = string.Concat(e.Message, e.InnerException?.Message ?? "--", e?.StackTrace ?? "--");
-                Trace.TraceError(errorMessage);
+                _logger.Error(errorMessage);
                 return errorMessage;
             }
         }
@@ -270,14 +272,15 @@ namespace Microsoft.Azure.IIoT.App.Services {
                 }
             }
             catch (Exception e) {
-                Trace.TraceError("Can not get method parameter from node '{0}'", nodeId);
+                _logger.Error($"Can not get method parameter from node '{nodeId}'");
                 var errorMessage = string.Concat(e.Message, e.InnerException?.Message ?? "--", e?.StackTrace ?? "--");
-                Trace.TraceError(errorMessage);
+                _logger.Error(errorMessage);
                 return errorMessage;
             }
         }
 
         private readonly ITwinServiceApi _twinService;
+        private readonly ILogger _logger;
         private const int _MAX_REFERENCES = 50;
     }
 }

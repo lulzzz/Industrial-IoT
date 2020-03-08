@@ -34,6 +34,7 @@ namespace Microsoft.Azure.IIoT.App {
     using Microsoft.AspNetCore.Components.Server;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Clients.ActiveDirectory;
     using Autofac.Extensions.DependencyInjection;
@@ -54,33 +55,41 @@ namespace Microsoft.Azure.IIoT.App {
         public Config Config { get; }
 
         /// <summary>
+        /// Current hosting environment - Initialized in constructor
+        /// </summary>
+        public IWebHostEnvironment Environment { get; }
+
+        /// <summary>
         /// Created through builder
         /// </summary>
+        /// <param name="env"></param>
         /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration) {
-            if (configuration == null) {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            configuration = new ConfigurationBuilder()
+        public Startup(IWebHostEnvironment env, IConfiguration configuration) :
+            this(env, new Config(new ConfigurationBuilder()
                 .AddConfiguration(configuration)
                 .AddEnvironmentVariables()
                 .AddEnvironmentVariables(EnvironmentVariableTarget.User)
                 .AddFromDotEnvFile()
                 .AddFromKeyVault()
-                .Build();
+                .Build())) {
+        }
 
-            Config = new Config(configuration);
+        /// <summary>
+        /// Create startup
+        /// </summary>
+        /// <param name="env"></param>
+        /// <param name="configuration"></param>
+        public Startup(IWebHostEnvironment env, Config configuration) {
+            Environment = env ?? throw new ArgumentNullException(nameof(env));
+            Config = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         /// <summary>
         /// Configure application
         /// </summary>
         /// <param name="app"></param>
-        /// <param name="env"></param>
         /// <param name="appLifetime"></param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            IHostApplicationLifetime appLifetime) {
+        public void Configure(IApplicationBuilder app, IHostApplicationLifetime appLifetime) {
             var applicationContainer = app.ApplicationServices.GetAutofacRoot();
 
             if (!string.IsNullOrEmpty(Config.ServicePathBase)) {
@@ -92,7 +101,7 @@ namespace Microsoft.Azure.IIoT.App {
                 app.UseForwardedHeaders();
             }
 
-            var isDevelopment = env.IsDevelopment();
+            var isDevelopment = Environment.IsDevelopment();
             isDevelopment = true; // TODO Remove when all issues fixed
             if (isDevelopment) {
                 app.UseDeveloperExceptionPage();
@@ -136,6 +145,8 @@ namespace Microsoft.Azure.IIoT.App {
         /// <param name="services"></param>
         /// <returns></returns>
         public void ConfigureServices(IServiceCollection services) {
+
+            services.AddLogging(o => o.AddConsole().AddDebug());
 
             if (Config.AspNetCoreForwardedHeadersEnabled) {
                 // Configure processing of forwarded headers
