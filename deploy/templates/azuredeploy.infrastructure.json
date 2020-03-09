@@ -581,15 +581,6 @@
                                 "events"
                             ],
                             "isEnabled": true
-                        },
-                        {
-                            "name": "ModuleLifecycle",
-                            "source": "ModuleLifecycleEvents",
-                            "condition": "true",
-                            "endpointNames": [
-                                "events"
-                            ],
-                            "isEnabled": true
                         }
                     ],
                     "fallbackRoute": {
