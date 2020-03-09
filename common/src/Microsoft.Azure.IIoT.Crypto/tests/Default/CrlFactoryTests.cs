@@ -32,8 +32,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [InlineData(SignatureType.RS384)]
         public static async Task RSASignedCrlCreateWith1Test(SignatureType signature) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                Setup(mock);
+            using (var mock = Setup()) {
 
                 IKeyStore keys = mock.Create<KeyDatabase>();
                 ICrlFactory factory = mock.Create<CrlFactory>();
@@ -78,8 +77,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [InlineData(SignatureType.RS384)]
         public static async Task RSASignedCrlCreateWith2Test(SignatureType signature) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                Setup(mock);
+            using (var mock = Setup()) {
 
                 IKeyStore keys = mock.Create<KeyDatabase>();
                 ICrlFactory factory = mock.Create<CrlFactory>();
@@ -125,8 +123,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [InlineData(SignatureType.ES512)]
         public static async Task ECCSignedCrlCreateWith2Test(SignatureType signature) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                Setup(mock);
+            using (var mock = Setup()) {
 
                 IKeyStore keys = mock.Create<KeyDatabase>();
                 ICrlFactory factory = mock.Create<CrlFactory>();
@@ -169,7 +166,11 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         /// Setup mock
         /// </summary>
         /// <param name="mock"></param>
-        private static void Setup(AutoMock mock) {
+        private static AutoMock Setup() {
+            var mock = AutoMock.GetLoose(builder => {
+
+            });
+
             mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
             mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
             mock.Provide<IDatabaseServer, MemoryDatabase>();
@@ -178,6 +179,8 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
             mock.Provide<IDigestSigner, KeyDatabase>();
             mock.Provide<IKeyHandleSerializer, KeyHandleSerializer>();
             mock.Provide<ICrlFactory, CrlFactory>();
+
+            return mock;
         }
     }
 }

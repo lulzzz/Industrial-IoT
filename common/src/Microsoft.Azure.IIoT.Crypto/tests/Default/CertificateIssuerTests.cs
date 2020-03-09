@@ -29,21 +29,19 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public async Task ImportCertificateWithoutKeyTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -92,21 +90,19 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public async Task ImportCertificateWithKeyTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -164,21 +160,19 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [InlineData(SignatureType.PS512, 4096)]
         public async Task CreateRSARootTestAsync(SignatureType signature, uint keySize) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -233,21 +227,19 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         // TODO: [InlineData(SignatureType.ES256, CurveType.Brainpool_P160r1)]
         public async Task CreateECCRootTestAsync(SignatureType signature, CurveType curve, uint keySize) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -297,21 +289,19 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [InlineData(SignatureType.ES512, CurveType.P256, 4096)]
         public async Task CreateECCRoot100TestAsync(SignatureType signature, CurveType curve, uint keySize) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -337,21 +327,19 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public async Task CreateRootTwiceTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -404,31 +392,29 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [InlineData(SignatureType.PS512, 4096)]
         public async Task CreateRSARootAndRSAIssuerTestAsync(SignatureType signature, uint keySize) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -482,31 +468,29 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [InlineData(SignatureType.PS512, 4096)]
         public async Task CreateRSARootAndECCIssuerTestAsync(SignatureType signature, uint keySize) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -562,31 +546,29 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         // TODO: [InlineData(SignatureType.ES256, CurveType.Brainpool_P160r1)]
         public async Task CreateECCRootAndRSAIssuerTestAsync(SignatureType signature, CurveType curve, uint keySize) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -639,31 +621,29 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         // TODO: [InlineData(SignatureType.ES256, CurveType.Brainpool_P160r1)]
         public async Task CreateECCRootAndECCIssuerTestAsync(SignatureType signature, CurveType curve, uint keySize) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -709,41 +689,39 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public async Task CreateRSARootAndRSAIssuerAndRSAIssuerTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'intca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "intca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'intca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "intca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -821,31 +799,29 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [InlineData(SignatureType.PS512, 4096)]
         public async Task CreateRSACertificateAndPrivateKeyTestAsync(SignatureType signature, uint keySize) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -901,31 +877,29 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         public async Task CreateECCCertificateAndPrivateKeyTestAsync(SignatureType signature,
             CurveType curveType, uint keySize) {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -973,31 +947,29 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public async Task CreateRSASignedCertificateTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    var expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'footca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "footca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    expected = "SELECT TOP 1 * FROM Certificates c " +
-                        "WHERE c.Type = 'Certificate' " +
-                            "AND c.CertificateName = 'rootca' " +
-                        "ORDER BY c.Version DESC";
-                    if (q == expected) {
-                        return v
-                            .Where(o => o.Value["Type"] == "Certificate")
-                            .Where(o => o.Value["CertificateName"] == "rootca")
-                            .OrderByDescending(o => o.Value["Version"]);
-                    }
-                    throw new AssertActualExpectedException(expected, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                var expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'footca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "footca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                expected = "SELECT TOP 1 * FROM Certificates c " +
+                    "WHERE c.Type = 'Certificate' " +
+                        "AND c.CertificateName = 'rootca' " +
+                    "ORDER BY c.Version DESC";
+                if (q == expected) {
+                    return v
+                        .Where(o => o.Value["Type"] == "Certificate")
+                        .Where(o => o.Value["CertificateName"] == "rootca")
+                        .OrderByDescending(o => o.Value["Version"]);
+                }
+                throw new AssertActualExpectedException(expected, q, "Query");
+            })) {
 
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 ICertificateStore store = mock.Create<CertificateDatabase>();
@@ -1045,8 +1017,12 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         /// </summary>
         /// <param name="mock"></param>
         /// <param name="provider"></param>
-        private static void Setup(AutoMock mock, Func<IEnumerable<IDocumentInfo<VariantValue>>,
+        private static AutoMock Setup(Func<IEnumerable<IDocumentInfo<VariantValue>>,
             string, IEnumerable<IDocumentInfo<VariantValue>>> provider) {
+            var mock = AutoMock.GetLoose(builder => {
+
+            });
+
             mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
             mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
             mock.Provide<IQueryEngine>(new QueryEngineAdapter(provider));
@@ -1057,6 +1033,8 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
             mock.Provide<ICertificateStore, CertificateDatabase>();
             mock.Provide<ICertificateRepository, CertificateDatabase>();
             mock.Provide<ICertificateFactory, CertificateFactory>();
+
+            return mock;
         }
     }
 }

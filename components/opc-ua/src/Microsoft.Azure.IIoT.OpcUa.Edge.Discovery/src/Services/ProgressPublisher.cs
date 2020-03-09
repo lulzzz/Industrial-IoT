@@ -50,9 +50,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Services {
         /// <param name="progress"></param>
         /// <returns></returns>
         private Task SendAsync(DiscoveryProgressModel progress) {
-            return Try.Async(() => _events.SendJsonEventAsync(
-                _serializer.SerializeToString(progress),
-                Registry.Models.MessageSchemaTypes.DiscoveryMessage));
+            return Try.Async(() => _events.SendEventAsync(
+                _serializer.SerializeToBytes(progress).ToArray(), ContentMimeType.Json,
+                Registry.Models.MessageSchemaTypes.DiscoveryMessage, "utf-8"));
         }
 
         private readonly IJsonSerializer _serializer;

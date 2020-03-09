@@ -27,9 +27,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public async Task RevokeRSAIssuerAndRSAIssuersTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, HandleQuery);
+            using (var mock = Setup(HandleQuery)) {
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 var rootca = await service.NewRootCertificateAsync("rootca",
                     X500DistinguishedNameEx.Create("CN=rootca"), DateTime.UtcNow, TimeSpan.FromDays(5),
@@ -76,9 +74,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public async Task RevokeECCIssuerAndECCIssuersTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, HandleQuery);
+            using (var mock = Setup(HandleQuery)) {
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 var rootca = await service.NewRootCertificateAsync("rootca",
                     X500DistinguishedNameEx.Create("CN=rootca"), DateTime.UtcNow, TimeSpan.FromDays(5),
@@ -127,9 +123,8 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public async Task RevokeRSAIssuersTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
+            using (var mock = Setup(HandleQuery)) {
                 // Setup
-                Setup(mock, HandleQuery);
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 var rootca = await service.NewRootCertificateAsync("rootca",
                     X500DistinguishedNameEx.Create("CN=rootca"), DateTime.UtcNow, TimeSpan.FromDays(5),
@@ -183,9 +178,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public async Task RevokeECCIssuersTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, HandleQuery);
+            using (var mock = Setup(HandleQuery)) {
                 ICertificateIssuer service = mock.Create<CertificateIssuer>();
                 var rootca = await service.NewRootCertificateAsync("rootca",
                     X500DistinguishedNameEx.Create("CN=rootca"), DateTime.UtcNow, TimeSpan.FromDays(5),
@@ -355,8 +348,12 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         /// </summary>
         /// <param name="mock"></param>
         /// <param name="provider"></param>
-        private static void Setup(AutoMock mock, Func<IEnumerable<IDocumentInfo<VariantValue>>,
+        private static AutoMock Setup(Func<IEnumerable<IDocumentInfo<VariantValue>>,
             string, IEnumerable<IDocumentInfo<VariantValue>>> provider) {
+            var mock = AutoMock.GetLoose(builder => {
+
+            });
+
             mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
             mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
             mock.Provide<IQueryEngine>(new QueryEngineAdapter(provider));
@@ -371,6 +368,8 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
             mock.Provide<ICrlRepository, CrlDatabase>();
             mock.Provide<ICertificateIssuer, CertificateIssuer>();
             mock.Provide<ICrlFactory, CrlFactory>();
+
+            return mock;
         }
     }
 }

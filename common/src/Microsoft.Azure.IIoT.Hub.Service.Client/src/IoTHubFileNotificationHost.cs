@@ -25,7 +25,7 @@ namespace Microsoft.Azure.IIoT.Hub.Client {
         /// <param name="handlers"></param>
         /// <param name="logger"></param>
         public IoTHubFileNotificationHost(IIoTHubConfig config,
-            IEnumerable<IBlobUploadHandler> handlers, ILogger logger) {
+            IEnumerable<IDeviceFileUploadHandler> handlers, ILogger logger) {
             if (string.IsNullOrEmpty(config.IoTHubConnString)) {
                 throw new ArgumentException(nameof(config));
             }
@@ -112,7 +112,7 @@ namespace Microsoft.Azure.IIoT.Hub.Client {
         }
 
         private readonly CancellationTokenSource _cts;
-        private readonly IEnumerable<IBlobUploadHandler> _handlers;
+        private readonly IEnumerable<IDeviceFileUploadHandler> _handlers;
         private readonly ILogger _logger;
         private readonly ServiceClient _client;
         private Task _task;

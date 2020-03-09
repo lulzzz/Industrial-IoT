@@ -26,8 +26,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public static async Task RsaCertificateCreateSelfSignedTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                Setup(mock);
+            using (var mock = Setup()) {
 
                 IKeyStore keys = mock.Create<KeyDatabase>();
                 IDigestSigner signer = mock.Create<KeyDatabase>();
@@ -61,8 +60,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public static async Task RsaCreateLeafCertificateTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                Setup(mock);
+            using (var mock = Setup()) {
 
                 IKeyStore keys = mock.Create<KeyDatabase>();
                 IDigestSigner signer = mock.Create<KeyDatabase>();
@@ -92,8 +90,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         [Fact]
         public static async Task RsaCertificateCreateIntermediateCaTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                Setup(mock);
+            using (var mock = Setup()) {
 
                 IKeyStore keys = mock.Create<KeyDatabase>();
                 IDigestSigner signer = mock.Create<KeyDatabase>();
@@ -125,7 +122,10 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         /// Setup mock
         /// </summary>
         /// <param name="mock"></param>
-        private static void Setup(AutoMock mock) {
+        private static AutoMock Setup() {
+            var mock = AutoMock.GetLoose(builder => {
+
+            });
             mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
             mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
             mock.Provide<IDatabaseServer, MemoryDatabase>();
@@ -133,6 +133,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
             mock.Provide<IKeyStore, KeyDatabase>();
             mock.Provide<IKeyHandleSerializer, KeyHandleSerializer>();
             mock.Provide<ICertificateFactory, CertificateFactory>();
+            return mock;
         }
     }
 }

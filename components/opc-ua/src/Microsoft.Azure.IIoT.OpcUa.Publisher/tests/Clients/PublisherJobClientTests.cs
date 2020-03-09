@@ -31,11 +31,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
         [Fact]
         public async Task StartPublishTest1Async() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    throw new AssertActualExpectedException(null, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                throw new AssertActualExpectedException(null, q, "Query");
+            })) {
 
                 IPublishServices<string> service = mock.Create<PublisherJobService>();
 
@@ -66,11 +64,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
         [Fact]
         public async Task StartPublishTest2Async() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    throw new AssertActualExpectedException(null, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                throw new AssertActualExpectedException(null, q, "Query");
+            })) {
 
                 IPublishServices<string> service = mock.Create<PublisherJobService>();
 
@@ -99,11 +95,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
         [Fact]
         public async Task StartStopPublishTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
-                    throw new AssertActualExpectedException(null, q, "Query");
-                });
+            using (var mock = Setup((v, q) => {
+                throw new AssertActualExpectedException(null, q, "Query");
+            })) {
 
                 IPublishServices<string> service = mock.Create<PublisherJobService>();
 
@@ -136,11 +130,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
         [Fact]
         public async Task StartTwicePublishTest1Async() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
+            using (var mock = Setup((v, q) => {
                     throw new AssertActualExpectedException(null, q, "Query");
-                });
+                })) {
 
                 IPublishServices<string> service = mock.Create<PublisherJobService>();
 
@@ -179,11 +171,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
         [Fact]
         public async Task StartTwicePublishTest2Async() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
+            using (var mock = Setup((v, q) => {
                     throw new AssertActualExpectedException(null, q, "Query");
-                });
+                })) {
 
                 IPublishServices<string> service = mock.Create<PublisherJobService>();
 
@@ -221,11 +211,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
         [Fact]
         public async Task StartTwicePublishTest3Async() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
+            using (var mock = Setup((v, q) => {
                     throw new AssertActualExpectedException(null, q, "Query");
-                });
+                })) {
 
                 IPublishServices<string> service = mock.Create<PublisherJobService>();
 
@@ -263,11 +251,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
         [Fact]
         public async Task StartStopMultiplePublishTestAsync() {
 
-            using (var mock = AutoMock.GetLoose()) {
-                // Setup
-                Setup(mock, (v, q) => {
+            using (var mock = Setup((v, q) => {
                     throw new AssertActualExpectedException(null, q, "Query");
-                });
+                })) {
 
                 IPublishServices<string> service = mock.Create<PublisherJobService>();
 
@@ -332,8 +318,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
         /// </summary>
         /// <param name="mock"></param>
         /// <param name="provider"></param>
-        private static void Setup(AutoMock mock, Func<IEnumerable<IDocumentInfo<VariantValue>>,
+        private static AutoMock Setup(Func<IEnumerable<IDocumentInfo<VariantValue>>,
             string, IEnumerable<IDocumentInfo<VariantValue>>> provider) {
+            var mock = AutoMock.GetLoose(builder => {
+
+            });
             mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
             mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
             mock.Provide<IQueryEngine>(new QueryEngineAdapter(provider));
@@ -351,6 +340,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
                     }
                 }));
             mock.Provide<IPublishServices<string>, PublisherJobService>();
+            return mock;
         }
 
         /// <summary>

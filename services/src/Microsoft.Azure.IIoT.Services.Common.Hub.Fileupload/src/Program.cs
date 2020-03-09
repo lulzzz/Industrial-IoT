@@ -120,7 +120,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Hub.Fileupload {
         /// <summary>
         /// Copies hub file upload notifications into iot hub telemetry events
         /// </summary>
-        public class FileuploadNotificationForwarder : IBlobUploadHandler {
+        public class FileuploadNotificationForwarder : IDeviceFileUploadHandler {
 
             /// <summary>
             /// Create notification handler

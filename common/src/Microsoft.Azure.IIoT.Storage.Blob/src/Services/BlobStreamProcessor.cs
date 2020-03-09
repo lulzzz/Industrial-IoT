@@ -22,7 +22,7 @@ namespace Microsoft.Azure.IIoT.Storage.Blob.Services {
     /// service bus.  No matter what the processor simply processes the
     /// stream it is handed.
     /// </summary>
-    public class BlobStreamProcessor : IBlobUploadHandler, IEventHandler {
+    public class BlobStreamProcessor : IDeviceFileUploadHandler, IEventHandler {
 
         /// <summary>
         /// Create stream processor

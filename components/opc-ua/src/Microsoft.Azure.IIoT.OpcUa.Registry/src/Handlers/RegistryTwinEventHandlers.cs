@@ -24,8 +24,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry {
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<IoTHubDeviceLifecycleEventHandler>()
                 .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<IoTHubModuleLifecycleEventHandler>()
-                .AsImplementedInterfaces().SingleInstance();
 
             builder.RegisterType<SupervisorTwinEventHandler>()
                 .AsImplementedInterfaces().SingleInstance();

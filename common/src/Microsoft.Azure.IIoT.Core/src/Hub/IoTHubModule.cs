@@ -32,8 +32,6 @@ namespace Microsoft.Azure.IIoT.Hub {
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<IoTHubDeviceLifecycleEventHandler>()
                 .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<IoTHubModuleLifecycleEventHandler>()
-                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<IoTHubTwinChangeEventHandler>()
                 .AsImplementedInterfaces().SingleInstance();
 
