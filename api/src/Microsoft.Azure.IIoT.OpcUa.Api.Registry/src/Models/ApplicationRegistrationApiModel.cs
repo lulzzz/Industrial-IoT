@@ -27,7 +27,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "endpoints",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public List<EndpointRegistrationApiModel> Endpoints { get; set; }
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "securityAssessment",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public SecurityAssessment? SecurityAssessment { get; set; }
     }
 }

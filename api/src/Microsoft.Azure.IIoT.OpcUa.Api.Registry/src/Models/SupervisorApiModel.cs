@@ -26,7 +26,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "siteId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SiteId { get; set; }
 
         /// <summary>
@@ -34,7 +33,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "logLevel",
             EmitDefaultValue = false)]
-        [DefaultValue(TraceLogLevel.Information)]
         public TraceLogLevel? LogLevel { get; set; }
 
         /// <summary>
@@ -43,7 +41,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "outOfSync",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public bool? OutOfSync { get; set; }
 
         /// <summary>
@@ -51,7 +48,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "connected",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public bool? Connected { get; set; }
     }
 }

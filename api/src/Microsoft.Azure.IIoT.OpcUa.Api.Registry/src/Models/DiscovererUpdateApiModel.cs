@@ -18,7 +18,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "siteId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SiteId { get; set; }
 
         /// <summary>
@@ -26,7 +25,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discovery",
             EmitDefaultValue = false)]
-        [DefaultValue(DiscoveryMode.Off)]
         public DiscoveryMode? Discovery { get; set; }
 
         /// <summary>
@@ -34,7 +32,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discoveryConfig",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public DiscoveryConfigApiModel DiscoveryConfig { get; set; }
 
         /// <summary>
@@ -42,7 +39,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "logLevel",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public TraceLogLevel? LogLevel { get; set; }
     }
 }

@@ -18,7 +18,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "siteId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SiteId { get; set; }
 
         /// <summary>
@@ -26,7 +25,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "configuration",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public PublisherConfigApiModel Configuration { get; set; }
 
         /// <summary>
@@ -34,7 +32,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "logLevel",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public TraceLogLevel? LogLevel { get; set; }
     }
 }

@@ -19,7 +19,6 @@ namespace Microsoft.Azure.IIoT.Api.Jobs.Models {
         /// </summary>
         [DataMember(Name = "continuationToken",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ContinuationToken { get; set; }
 
         /// <summary>

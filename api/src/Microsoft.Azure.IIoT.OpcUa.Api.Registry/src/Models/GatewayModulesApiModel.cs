@@ -18,7 +18,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "supervisor",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public SupervisorApiModel Supervisor { get; set; }
 
         /// <summary>
@@ -26,7 +25,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "publisher",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public PublisherApiModel Publisher { get; set; }
 
         /// <summary>
@@ -34,7 +32,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discoverer",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public DiscovererApiModel Discoverer { get; set; }
     }
 }

@@ -19,7 +19,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "nodeId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string NodeId { get; set; }
 
         /// <summary>
@@ -28,7 +27,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "browsePath",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string[] BrowsePath { get; set; }
 
         /// <summary>
@@ -39,7 +37,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "indexRange",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string IndexRange { get; set; }
 
         /// <summary>
@@ -47,7 +44,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "header",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public RequestHeaderApiModel Header { get; set; }
     }
 }

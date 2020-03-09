@@ -12,6 +12,8 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
     using Xunit;
     using Newtonsoft.Json.Linq;
     using Newtonsoft.Json;
+    using System.Runtime.Serialization;
+    using System.ComponentModel;
 
     public class SerializerTests {
 
@@ -252,6 +254,72 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             Assert.True(expected.Equals(actual));
             Assert.True(expected == actual);
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestDataContractDefaultValues() {
+            var str = Serializer.SerializeToString(new DataContractModelWithDefaultValues());
+            Assert.Equal("{}", str);
+        }
+
+        [DataContract]
+        public class DataContractModelWithDefaultValues {
+
+            [DataMember(EmitDefaultValue = false)]
+            public int Test1 { get; set; } = 0;
+
+            [DataMember(EmitDefaultValue = false)]
+            public string Test2 { get; set; }
+
+            [DataMember(EmitDefaultValue = false)]
+            public DataContractEnum? Test3 { get; set; }
+
+            public int Test4 { get; set; } = 4;
+        }
+
+        [Fact]
+        public void TestDataContract() {
+            var str = Serializer.SerializeToString(new DataContractModel());
+            Assert.Equal("{}", str);
+        }
+
+        [DataContract]
+        public class DataContractModel {
+
+            [DataMember(Name = "a", EmitDefaultValue = false)]
+            public int Test1 { get; set; } = 8;
+
+            [DataMember(Name = "b", EmitDefaultValue = false)]
+            public string Test2 { get; set; } = null;
+        }
+
+        [Fact]
+        public void TestDataContractEnum1() {
+            var str = Serializer.SerializeToString(DataContractEnum.Test1 | DataContractEnum.Test2);
+            Assert.Equal("\"tst1, test2\"", str);
+            var result = Serializer.Deserialize<DataContractEnum>(str);
+            Assert.Equal(DataContractEnum.Test1 | DataContractEnum.Test2, result);
+        }
+
+        [Fact]
+        public void TestDataContractEnum2() {
+            var str = Serializer.SerializeToString(DataContractEnum.All);
+            Assert.Equal("\"all\"", str);
+            var result = Serializer.Deserialize<DataContractEnum>(str);
+            Assert.Equal(DataContractEnum.All, result);
+        }
+
+        [Flags]
+        [DataContract]
+        public enum DataContractEnum {
+            [EnumMember(Value = "tst1")]
+            Test1 = 1,
+            [EnumMember]
+            Test2 = 2,
+            [EnumMember]
+            Test3 = 4,
+            [EnumMember]
+            All = 7
         }
 
         [Fact]
@@ -711,6 +779,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             Assert.False(i2 == i1);
             Assert.False(i1 == 2);
         }
+
 
         public static IEnumerable<object[]> GetNulls() {
             return GetStrings()

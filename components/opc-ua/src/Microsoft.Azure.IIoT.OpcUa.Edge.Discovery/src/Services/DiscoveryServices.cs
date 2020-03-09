@@ -36,13 +36,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Services {
         /// <inheritdoc/>
         public DiscoveryMode Mode {
             get => _request.Mode;
-            set => _request = new DiscoveryRequest(value, _request.Configuration);
         }
 
         /// <inheritdoc/>
         public DiscoveryConfigModel Configuration {
             get => _request.Configuration;
-            set => _request = new DiscoveryRequest(_request.Mode, value);
         }
 
         /// <summary>
@@ -65,6 +63,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Services {
             _runner = Task.Run(() => ProcessDiscoveryRequestsAsync(_cts.Token));
             _timer = new Timer(_ => OnScanScheduling(), null,
                 TimeSpan.FromSeconds(20), Timeout.InfiniteTimeSpan);
+        }
+
+        /// <inheritdoc/>
+        public Task ConfigureAsync(DiscoveryMode mode, DiscoveryConfigModel config) {
+            _request = new DiscoveryRequest(mode, config);
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc/>
@@ -572,10 +576,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Services {
 #endif
             log();
         }
+
 #if !NO_WATCHDOG
         private int _counter;
 #endif
-
 
         /// <summary> Progress reporting every 3 seconds </summary>
         private static readonly TimeSpan kProgressInterval = TimeSpan.FromSeconds(3);

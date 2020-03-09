@@ -20,15 +20,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "addressRangesToScan",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string AddressRangesToScan { get; set; }
 
         /// <summary>
         /// Network probe timeout
         /// </summary>
-        [DataMember(Name = "networkProbeTimeoutMs",
-            EmitDefaultValue = false)]
-        [DefaultValue(null)]
+        [IgnoreDataMember]
         [Obsolete("Use NetworkProbeTimeout")]
         public int? NetworkProbeTimeoutMs {
             get => (int?)NetworkProbeTimeout?.TotalMilliseconds;
@@ -39,7 +36,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <summary>
         /// Network probe timeout
         /// </summary>
-        [IgnoreDataMember]
+        [DataMember(Name = "networkProbeTimeout",
+            EmitDefaultValue = false)]
         public TimeSpan? NetworkProbeTimeout { get; set; }
 
         /// <summary>
@@ -47,7 +45,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "maxNetworkProbes",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public int? MaxNetworkProbes { get; set; }
 
         /// <summary>
@@ -55,15 +52,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "portRangesToScan",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string PortRangesToScan { get; set; }
 
         /// <summary>
         /// Port probe timeout
         /// </summary>
-        [DataMember(Name = "portProbeTimeoutMs",
-            EmitDefaultValue = false)]
-        [DefaultValue(null)]
+        [IgnoreDataMember]
         [Obsolete("Use PortProbeTimeout")]
         public int? PortProbeTimeoutMs {
             get => (int?)PortProbeTimeout?.TotalMilliseconds;
@@ -74,7 +68,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <summary>
         /// Port probe timeout
         /// </summary>
-        [IgnoreDataMember]
+        [DataMember(Name = "portProbeTimeout",
+            EmitDefaultValue = false)]
         public TimeSpan? PortProbeTimeout { get; set; }
 
         /// <summary>
@@ -82,7 +77,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "maxPortProbes",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public int? MaxPortProbes { get; set; }
 
         /// <summary>
@@ -90,26 +84,24 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "minPortProbesPercent",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public int? MinPortProbesPercent { get; set; }
 
         /// <summary>
         /// Delay time between discovery sweeps in seconds
         /// </summary>
-        [DataMember(Name = "idleTimeBetweenScansSec",
-            EmitDefaultValue = false)]
-        [DefaultValue(null)]
         [Obsolete("Use IdleTimeBetweenScans")]
+        [IgnoreDataMember]
         public int? IdleTimeBetweenScansSec {
-            get => (int?)PortProbeTimeout?.TotalSeconds;
-            set => PortProbeTimeout = value != null ?
+            get => (int?)IdleTimeBetweenScans?.TotalSeconds;
+            set => IdleTimeBetweenScans = value != null ?
                 TimeSpan.FromSeconds(value.Value) : (TimeSpan?)null;
         }
 
         /// <summary>
         /// Delay time between discovery sweeps
         /// </summary>
-        [IgnoreDataMember]
+        [DataMember(Name = "idleTimeBetweenScans",
+            EmitDefaultValue = false)]
         public TimeSpan? IdleTimeBetweenScans { get; set; }
 
         /// <summary>
@@ -117,7 +109,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discoveryUrls",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public List<string> DiscoveryUrls { get; set; }
 
         /// <summary>
@@ -125,7 +116,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "locales",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public List<string> Locales { get; set; }
 
         /// <summary>
@@ -133,7 +123,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "activationFilter",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public EndpointActivationFilterApiModel ActivationFilter { get; set; }
     }
 }

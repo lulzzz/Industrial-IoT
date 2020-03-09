@@ -19,7 +19,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "url",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string Url { get; set; }
 
         /// <summary>
@@ -27,7 +26,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "certificate",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string Certificate { get; set; }
 
         /// <summary>
@@ -35,7 +33,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "securityMode",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public SecurityMode? SecurityMode { get; set; }
 
         /// <summary>
@@ -43,7 +40,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "securityPolicy",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SecurityPolicy { get; set; }
 
         /// <summary>
@@ -51,7 +47,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "activated",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public bool? Activated { get; set; }
 
         /// <summary>
@@ -59,7 +54,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "connected",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public bool? Connected { get; set; }
 
         /// <summary>
@@ -67,7 +61,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "endpointState",
             EmitDefaultValue = false)]
-        [DefaultValue(EndpointConnectivityState.Disconnected)]
         public EndpointConnectivityState? EndpointState { get; set; }
 
         /// <summary>
@@ -75,7 +68,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "includeNotSeenSince",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public bool? IncludeNotSeenSince { get; set; }
 
         /// <summary>
@@ -83,7 +75,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discovererId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string DiscovererId { get; set; }
 
         /// <summary>
@@ -91,7 +82,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "applicationId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ApplicationId { get; set; }
 
         /// <summary>
@@ -99,7 +89,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "supervisorId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SupervisorId { get; set; }
 
         /// <summary>
@@ -107,7 +96,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "siteOrGatewayId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SiteOrGatewayId { get; set; }
     }
 }

@@ -18,7 +18,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "id",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string Id { get; set; }
 
         /// <summary>
@@ -26,7 +25,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discovery",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public DiscoveryMode? Discovery { get; set; }
 
         /// <summary>
@@ -34,7 +32,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "configuration",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public DiscoveryConfigApiModel Configuration { get; set; }
     }
 }

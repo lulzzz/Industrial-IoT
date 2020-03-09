@@ -18,7 +18,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "siteId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SiteId { get; set; }
     }
 }

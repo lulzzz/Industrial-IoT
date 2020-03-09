@@ -19,7 +19,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "applicationType",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public ApplicationType? ApplicationType { get; set; }
 
         /// <summary>
@@ -27,7 +26,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "applicationUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ApplicationUri { get; set; }
 
         /// <summary>
@@ -35,7 +33,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "productUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ProductUri { get; set; }
 
         /// <summary>
@@ -43,7 +40,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "applicationName",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ApplicationName { get; set; }
 
         /// <summary>
@@ -51,7 +47,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "locale",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string Locale { get; set; }
 
         /// <summary>
@@ -59,7 +54,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "capability",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string Capability { get; set; }
 
         /// <summary>
@@ -67,7 +61,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discoveryProfileUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string DiscoveryProfileUri { get; set; }
 
         /// <summary>
@@ -75,7 +68,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "gatewayServerUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string GatewayServerUri { get; set; }
 
         /// <summary>
@@ -83,7 +75,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "siteOrGatewayId",
            EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SiteOrGatewayId { get; set; }
 
         /// <summary>
@@ -91,7 +82,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "includeNotSeenSince",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public bool? IncludeNotSeenSince { get; set; }
 
         /// <summary>

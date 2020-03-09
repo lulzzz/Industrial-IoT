@@ -28,7 +28,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Models {
         /// </summary>
         [DataMember(Name = "abort",
             EmitDefaultValue = false)]
-        [DefaultValue(false)]
         public bool? Abort { get; set; }
 
         /// <summary>
@@ -36,7 +35,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.History.Models {
         /// </summary>
         [DataMember(Name = "header",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public RequestHeaderApiModel Header { get; set; }
     }
 }

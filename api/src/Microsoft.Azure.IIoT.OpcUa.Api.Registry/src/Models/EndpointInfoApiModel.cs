@@ -34,7 +34,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "activationState",
             EmitDefaultValue = false)]
-        [DefaultValue(null), ReadOnly(true)]
         public EndpointActivationState? ActivationState { get; set; }
 
         /// <summary>
@@ -42,7 +41,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "endpointState",
             EmitDefaultValue = false)]
-        [DefaultValue(EndpointConnectivityState.Disconnected), ReadOnly(true)]
         public EndpointConnectivityState? EndpointState { get; set; }
 
         /// <summary>
@@ -50,7 +48,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "outOfSync",
             EmitDefaultValue = false)]
-        [DefaultValue(null), ReadOnly(true)]
         public bool? OutOfSync { get; set; }
 
         /// <summary>
@@ -58,7 +55,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "notSeenSince",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public DateTime? NotSeenSince { get; set; }
 
         /// <summary>

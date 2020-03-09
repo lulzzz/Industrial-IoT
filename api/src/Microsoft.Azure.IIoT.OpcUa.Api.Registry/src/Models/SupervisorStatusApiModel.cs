@@ -34,7 +34,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "siteId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SiteId { get; set; }
 
         /// <summary>
@@ -42,7 +41,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "endpoints",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public List<EndpointActivationStatusApiModel> Endpoints { get; set; }
     }
 }

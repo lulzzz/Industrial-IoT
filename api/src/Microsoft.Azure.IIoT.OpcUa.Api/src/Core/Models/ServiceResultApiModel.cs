@@ -19,7 +19,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         /// </summary>
         [DataMember(Name = "statusCode",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public uint? StatusCode { get; set; }
 
         /// <summary>
@@ -27,7 +26,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         /// </summary>
         [DataMember(Name = "errorMessage",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ErrorMessage { get; set; }
 
         /// <summary>
@@ -35,7 +33,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         /// </summary>
         [DataMember(Name = "diagnostics",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public VariantValue Diagnostics { get; set; }
     }
 }

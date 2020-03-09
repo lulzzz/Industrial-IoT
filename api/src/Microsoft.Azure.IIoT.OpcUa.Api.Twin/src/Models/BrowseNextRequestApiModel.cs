@@ -29,7 +29,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "abort",
             EmitDefaultValue = false)]
-        [DefaultValue(false)]
         public bool? Abort { get; set; }
 
         /// <summary>
@@ -40,7 +39,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "targetNodesOnly",
             EmitDefaultValue = false)]
-        [DefaultValue(false)]
         public bool? TargetNodesOnly { get; set; }
 
         /// <summary>
@@ -49,7 +47,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "readVariableValues",
             EmitDefaultValue = false)]
-        [DefaultValue(false)]
         public bool? ReadVariableValues { get; set; }
 
         /// <summary>

@@ -28,7 +28,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "direction",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public BrowseDirection? Direction { get; set; }
 
         /// <summary>
@@ -37,7 +36,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "view",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public BrowseViewApiModel View { get; set; }
 
         /// <summary>
@@ -46,7 +44,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "referenceTypeId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ReferenceTypeId { get; set; }
 
         /// <summary>
@@ -55,7 +52,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "noSubtypes",
             EmitDefaultValue = false)]
-        [DefaultValue(false)]
         public bool? NoSubtypes { get; set; }
 
         /// <summary>
@@ -67,7 +63,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "maxReferencesToReturn",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public uint? MaxReferencesToReturn { get; set; }
 
         /// <summary>
@@ -78,7 +73,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "targetNodesOnly",
            EmitDefaultValue = false)]
-        [DefaultValue(false)]
         public bool? TargetNodesOnly { get; set; }
 
         /// <summary>
@@ -87,7 +81,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "readVariableValues",
             EmitDefaultValue = false)]
-        [DefaultValue(false)]
         public bool? ReadVariableValues { get; set; }
 
         /// <summary>
@@ -97,7 +90,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "nodeClassFilter",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public List<NodeClass> NodeClassFilter { get; set; }
 
         /// <summary>
@@ -105,7 +97,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "header",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public RequestHeaderApiModel Header { get; set; }
     }
 }

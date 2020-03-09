@@ -27,7 +27,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "version",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public uint? Version { get; set; }
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "timestamp",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public DateTime? Timestamp { get; set; }
     }
 }

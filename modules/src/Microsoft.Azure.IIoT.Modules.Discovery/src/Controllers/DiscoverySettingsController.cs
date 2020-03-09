@@ -21,7 +21,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// Enable or disable discovery on supervisor
         /// </summary>
         public DiscoveryMode? Discovery {
-            set => _discovery.Mode = value ?? DiscoveryMode.Off;
+            set => _mode = value ?? DiscoveryMode.Off;
             get => _discovery.Mode;
         }
 
@@ -29,7 +29,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// Address ranges to scan (null == all wired)
         /// </summary>
         public string AddressRangesToScan {
-            set => _discovery.Configuration.AddressRangesToScan =
+            set => _config.AddressRangesToScan =
                 string.IsNullOrEmpty(value) ? null : value;
             get => _discovery.Configuration.AddressRangesToScan;
         }
@@ -38,7 +38,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// Network probe timeout.
         /// </summary>
         public TimeSpan? NetworkProbeTimeout {
-            set => _discovery.Configuration.NetworkProbeTimeout =
+            set => _config.NetworkProbeTimeout =
                 value;
             get => _discovery.Configuration.NetworkProbeTimeout;
         }
@@ -47,7 +47,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// Max network probes that should ever run.
         /// </summary>
         public int? MaxNetworkProbes {
-            set => _discovery.Configuration.MaxNetworkProbes = 
+            set => _config.MaxNetworkProbes =
                 value;
             get => _discovery.Configuration.MaxNetworkProbes;
         }
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// Port ranges to scan (null == all unassigned)
         /// </summary>
         public string PortRangesToScan {
-            set => _discovery.Configuration.PortRangesToScan =
+            set => _config.PortRangesToScan =
                 string.IsNullOrEmpty(value) ? null : value;
             get => _discovery.Configuration.PortRangesToScan;
         }
@@ -65,7 +65,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// Port probe timeout
         /// </summary>
         public TimeSpan? PortProbeTimeout {
-            set => _discovery.Configuration.PortProbeTimeout =
+            set => _config.PortProbeTimeout =
                 value;
             get => _discovery.Configuration.PortProbeTimeout;
         }
@@ -74,7 +74,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// Max port probes that should ever run.
         /// </summary>
         public int? MaxPortProbes {
-            set => _discovery.Configuration.MaxPortProbes =
+            set => _config.MaxPortProbes =
                 value;
             get => _discovery.Configuration.MaxPortProbes;
         }
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// Probes that must always be there as percent of max.
         /// </summary>
         public int? MinPortProbesPercent {
-            set => _discovery.Configuration.MinPortProbesPercent =
+            set => _config.MinPortProbesPercent =
                 value;
             get => _discovery.Configuration.MinPortProbesPercent;
         }
@@ -92,7 +92,7 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// Delay time between discovery sweeps
         /// </summary>
         public TimeSpan? IdleTimeBetweenScans {
-            set => _discovery.Configuration.IdleTimeBetweenScans =
+            set => _config.IdleTimeBetweenScans =
                 value;
             get => _discovery.Configuration.IdleTimeBetweenScans;
         }
@@ -102,18 +102,24 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Controllers {
         /// </summary>
         /// <param name="discovery"></param>
         public DiscoverySettingsController(IScannerServices discovery) {
-            _discovery = discovery ?? 
+            _discovery = discovery ??
                 throw new ArgumentNullException(nameof(discovery));
+
+            _config = new DiscoveryConfigModel();
+            _mode = DiscoveryMode.Off;
         }
 
         /// <summary>
-        /// Called to update discovery configuration
+        /// Called to update discovery configuration and schedule new scan
         /// </summary>
         /// <returns></returns>
-        public Task ApplyAsync() {
-            return _discovery.ScanAsync();
+        public async Task ApplyAsync() {
+            await _discovery.ConfigureAsync(_mode, _config.Clone());
+            await _discovery.ScanAsync();
         }
 
         private readonly IScannerServices _discovery;
+        private readonly DiscoveryConfigModel _config;
+        private DiscoveryMode _mode;
     }
 }

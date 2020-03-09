@@ -22,7 +22,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "nodeId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string NodeId { get; set; }
 
         /// <summary>
@@ -39,7 +38,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "readVariableValues",
             EmitDefaultValue = false)]
-        [DefaultValue(false)]
         public bool? ReadVariableValues { get; set; }
 
         /// <summary>
@@ -47,7 +45,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
         /// </summary>
         [DataMember(Name = "header",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public RequestHeaderApiModel Header { get; set; }
     }
 }

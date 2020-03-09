@@ -7,7 +7,9 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
     using Microsoft.Azure.IIoT.Exceptions;
     using Microsoft.Azure.IIoT.Serializers;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
+    using Newtonsoft.Json.Serialization;
     using System;
     using System.Buffers;
     using System.Collections.Generic;
@@ -44,7 +46,12 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                     settings.Converters.AddRange(provider.GetConverters());
                 }
             }
+            settings.ContractResolver = new DefaultContractResolver();
             settings.Converters.Add(new JsonVariantConverter(this));
+            settings.Converters.Add(new StringEnumConverter {
+                AllowIntegerValues = true,
+                NamingStrategy = new CamelCaseNamingStrategy()
+            });
             settings.FloatFormatHandling = FloatFormatHandling.String;
             settings.FloatParseHandling = FloatParseHandling.Double;
             settings.DateParseHandling = DateParseHandling.DateTime;
@@ -444,9 +451,15 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                         else if (variant.IsObject) {
                             writer.WriteStartObject();
                             foreach (var key in variant.PropertyNames) {
+                                var item = variant[key];
+                                if (item.IsNull()) {
+                                    if (serializer.NullValueHandling != NullValueHandling.Include ||
+                                        serializer.DefaultValueHandling != DefaultValueHandling.Include) {
+                                        break;
+                                    }
+                                }
                                 writer.WritePropertyName(key);
-                                // Write value
-                                WriteJson(writer, variant[key], serializer);
+                                WriteJson(writer, item, serializer);
                             }
                             writer.WriteEndObject();
                         }

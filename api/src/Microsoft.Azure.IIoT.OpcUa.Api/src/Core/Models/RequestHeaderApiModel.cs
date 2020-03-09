@@ -19,7 +19,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         /// </summary>
         [DataMember(Name = "elevation",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public CredentialApiModel Elevation { get; set; }
 
         /// <summary>
@@ -27,7 +26,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         /// </summary>
         [DataMember(Name = "locales",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public List<string> Locales { get; set; }
 
         /// <summary>
@@ -35,7 +33,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         /// </summary>
         [DataMember(Name = "diagnostics",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public DiagnosticsApiModel Diagnostics { get; set; }
     }
 

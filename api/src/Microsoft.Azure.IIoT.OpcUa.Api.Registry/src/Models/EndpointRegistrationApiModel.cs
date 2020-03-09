@@ -35,7 +35,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "siteId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SiteId { get; set; }
 
         /// <summary>
@@ -43,7 +42,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "supervisorId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SupervisorId { get; set; }
 
         /// <summary>
@@ -51,7 +49,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discovererId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string DiscovererId { get; set; }
 
         /// <summary>
@@ -66,7 +63,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "securityLevel",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public int? SecurityLevel { get; set; }
 
         /// <summary>

@@ -27,7 +27,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "id",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string Id { get; set; }
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "activationFilter",
            EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public EndpointActivationFilterApiModel ActivationFilter { get; set; }
     }
 }

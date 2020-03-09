@@ -40,7 +40,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "productUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ProductUri { get; set; }
 
         /// <summary>
@@ -48,7 +47,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "applicationName",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ApplicationName { get; set; }
 
         /// <summary>
@@ -56,7 +54,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "locale",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string Locale { get; set; }
 
         /// <summary>
@@ -64,7 +61,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "localizedNames",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public Dictionary<string, string> LocalizedNames { get; set; }
 
         /// <summary>
@@ -74,7 +70,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <example>DA</example>
         [DataMember(Name = "capabilities",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public HashSet<string> Capabilities { get; set; }
 
         /// <summary>
@@ -82,7 +77,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discoveryUrls",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public HashSet<string> DiscoveryUrls { get; set; }
 
         /// <summary>
@@ -90,7 +84,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discoveryProfileUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string DiscoveryProfileUri { get; set; }
 
         /// <summary>
@@ -98,7 +91,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "gatewayServerUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string GatewayServerUri { get; set; }
 
         /// <summary>
@@ -106,7 +98,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "hostAddresses",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public HashSet<string> HostAddresses { get; set; }
 
         /// <summary>
@@ -116,7 +107,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// <example>cellB</example>
         [DataMember(Name = "siteId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SiteId { get; set; }
 
         /// <summary>
@@ -124,7 +114,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discovererId",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string DiscovererId { get; set; }
 
         /// <summary>
@@ -132,7 +121,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "notSeenSince",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public DateTime? NotSeenSince { get; set; }
 
         /// <summary>
@@ -140,7 +128,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "created",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public RegistryOperationApiModel Created { get; set; }
 
         /// <summary>
@@ -148,7 +135,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "updated",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public RegistryOperationApiModel Updated { get; set; }
     }
 }

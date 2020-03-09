@@ -23,7 +23,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "trustLists",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public List<string> TrustLists { get; set; }
 
         /// <summary>
@@ -32,7 +31,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "securityPolicies",
            EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public List<string> SecurityPolicies { get; set; }
 
         /// <summary>
@@ -41,7 +39,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "securityMode",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public SecurityMode? SecurityMode { get; set; }
     }
 }

@@ -27,7 +27,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         /// </summary>
         [DataMember(Name = "credentialType",
             EmitDefaultValue = false)]
-        [DefaultValue(Models.CredentialType.None)]
         public CredentialType? CredentialType { get; set; }
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         /// </summary>
         [DataMember(Name = "securityPolicy",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string SecurityPolicy { get; set; }
 
         /// <summary>
@@ -43,7 +41,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
         /// </summary>
         [DataMember(Name = "configuration",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public VariantValue Configuration { get; set; }
     }
 }

@@ -22,11 +22,10 @@ namespace Microsoft.Azure.IIoT.Api.Jobs.Models {
         public string Key { get; set; }
 
         /// <summary>
-        /// Match operator
+        /// Match operator (defaults to equals)
         /// </summary>
         [DataMember(Name = "operator",
             EmitDefaultValue = false)]
-        [DefaultValue(DemandOperators.Equals)]
         public DemandOperators? Operator { get; set; }
 
         /// <summary>
@@ -34,7 +33,6 @@ namespace Microsoft.Azure.IIoT.Api.Jobs.Models {
         /// </summary>
         [DataMember(Name = "value",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string Value { get; set; }
     }
 }

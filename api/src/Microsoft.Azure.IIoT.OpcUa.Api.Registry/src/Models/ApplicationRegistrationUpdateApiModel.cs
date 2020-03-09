@@ -19,7 +19,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "productUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ProductUri { get; set; }
 
         /// <summary>
@@ -27,7 +26,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "applicationName",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string ApplicationName { get; set; }
 
         /// <summary>
@@ -35,7 +33,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "locale",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string Locale { get; set; }
 
         /// <summary>
@@ -44,7 +41,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "localizedNames",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public Dictionary<string, string> LocalizedNames { get; set; }
 
         /// <summary>
@@ -52,7 +48,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "capabilities",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public HashSet<string> Capabilities { get; set; }
 
         /// <summary>
@@ -60,7 +55,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discoveryUrls",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public HashSet<string> DiscoveryUrls { get; set; }
 
         /// <summary>
@@ -68,7 +62,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "discoveryProfileUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string DiscoveryProfileUri { get; set; }
 
         /// <summary>
@@ -76,7 +69,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         /// </summary>
         [DataMember(Name = "gatewayServerUri",
             EmitDefaultValue = false)]
-        [DefaultValue(null)]
         public string GatewayServerUri { get; set; }
     }
 }
