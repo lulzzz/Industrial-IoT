@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.Graph.Beta" Version="0.8.0-preview" />
     <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.2" />
 
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.8.2" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.9.0" />
 
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.2" />
@@ -38,7 +38,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.1.2" />
 
-    <PackageReference Include="Portable.BouncyCastle" Version="1.8.5.2" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.6" />
 
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
 

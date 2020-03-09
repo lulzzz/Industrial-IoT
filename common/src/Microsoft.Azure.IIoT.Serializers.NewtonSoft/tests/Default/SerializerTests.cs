@@ -280,7 +280,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         [Fact]
         public void TestDataContract() {
             var str = Serializer.SerializeToString(new DataContractModel());
-            Assert.Equal("{}", str);
+            Assert.Equal("{\"a\":8}", str);
         }
 
         [DataContract]

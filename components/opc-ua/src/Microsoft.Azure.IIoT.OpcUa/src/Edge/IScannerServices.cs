@@ -29,7 +29,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge {
         /// <param name="config"></param>
         /// <returns></returns>
         Task ConfigureAsync(DiscoveryMode mode,
-            DiscoveryConfigModel config);
+            DiscoveryConfigModel config = null);
 
         /// <summary>
         /// Scan based on configuration

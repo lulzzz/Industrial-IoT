@@ -352,16 +352,16 @@ Operations (Mutually exclusive):
                 new NewtonSoftJsonSerializer(), logger.Logger)) {
                 var rand = new Random();
                 while (true) {
-                    scanner.Configuration = new DiscoveryConfigModel {
+                    var configuration = new DiscoveryConfigModel {
                         IdleTimeBetweenScans = TimeSpan.FromMilliseconds(1),
                         AddressRangesToScan = addressRanges
                     };
-                    scanner.Mode = DiscoveryMode.Scan;
+                    await scanner.ConfigureAsync(DiscoveryMode.Scan, configuration);
                     await scanner.ScanAsync();
                     await Task.Delay(!stress ? TimeSpan.FromMinutes(10) :
                         TimeSpan.FromMilliseconds(rand.Next(0, 120000)));
                     logger.Logger.Information("Stopping discovery!");
-                    scanner.Mode = DiscoveryMode.Off;
+                    await scanner.ConfigureAsync(DiscoveryMode.Off, null);
                     await scanner.ScanAsync();
                     if (!stress) {
                         break;
