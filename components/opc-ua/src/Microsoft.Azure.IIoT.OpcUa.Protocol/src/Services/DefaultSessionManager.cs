@@ -212,7 +212,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
                 securityMode == SecurityMode.Best) {
                 return CoreClientUtils.SelectEndpoint(discoveryUrl, true, operationTimeout);
             }
-            else if (securityMode == SecurityMode.None || securityPolicyUri == kNoneSecurityPolicyUri) {
+            else if (securityMode == SecurityMode.None || securityPolicyUri == SecurityPolicies.None) {
                 return CoreClientUtils.SelectEndpoint(discoveryUrl, false, operationTimeout);
             }
             else {
@@ -228,13 +228,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         /// <param name="messageSecurityMode">The requested message security mode.</param>
         /// <param name="securityPolicyUri">The requested securityPolicyUrl.</param>
         /// <param name="operationTimeout">Operation timeout</param>
-        /// <returns>Endpoint with the selected security settings or null
-        /// of none available.</returns>
-        private static EndpointDescription SelectEndpoint(string discoveryUrl,
-            MessageSecurityMode? messageSecurityMode, string securityPolicyUri,
-            int operationTimeout = -1) {
-            if (messageSecurityMode == MessageSecurityMode.None ||
-                securityPolicyUri == kNoneSecurityPolicyUri) {
+        /// <returns>Endpoint with the selected security settings or null of none available.</returns>
+        private static EndpointDescription SelectEndpoint(string discoveryUrl, 
+            MessageSecurityMode? messageSecurityMode, string securityPolicyUri, int operationTimeout = -1) {
+            if (messageSecurityMode == MessageSecurityMode.None || securityPolicyUri == SecurityPolicies.None) {
                 return CoreClientUtils.SelectEndpoint(discoveryUrl, false, operationTimeout);
             }
 
@@ -325,7 +322,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         private readonly Dictionary<ConnectionIdentifier, SessionWrapper> _sessions =
             new Dictionary<ConnectionIdentifier, SessionWrapper>();
         private readonly SemaphoreSlim _lock;
-        private const string kNoneSecurityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
         private const int kDefaultOperationTimeout = 15000;
     }
 }
