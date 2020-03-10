@@ -35,14 +35,17 @@ namespace Microsoft.Azure.IIoT.Core.Messaging.EventHub {
         public async Task HandleAsync(byte[] eventData, IDictionary<string, string> properties,
             Func<Task> checkpoint) {
 
-            // try to get event's properties
-            properties.TryGetValue(CommonProperties.DeviceId, out var deviceId);
-            properties.TryGetValue(CommonProperties.ModuleId, out var moduleId);
             var handled = false;
-            foreach (var handler in _handlers.Values) {
-                _used.Add(handler.MessageSchema);
-                await handler.HandleAsync(deviceId, moduleId, eventData, properties, checkpoint);
-                handled = true;
+            if (properties.TryGetValue(CommonProperties.EventSchemaType, out var schemaType)) {
+
+                properties.TryGetValue(CommonProperties.DeviceId, out var deviceId);
+                properties.TryGetValue(CommonProperties.ModuleId, out var moduleId);
+
+                if (_handlers.TryGetValue(schemaType, out var handler)) {
+                    _used.Add(handler.MessageSchema);
+                    await handler.HandleAsync(deviceId, moduleId, eventData, properties, checkpoint);
+                    handled = true;
+                }
             }
 
             if (!handled && _unknown != null) {
@@ -54,7 +57,7 @@ namespace Microsoft.Azure.IIoT.Core.Messaging.EventHub {
         /// <inheritdoc/>
         public async Task OnBatchCompleteAsync() {
             foreach (var handler in _used) {
-                await Try.Async(_handlers[handler].OnBatchCompleteAsync);
+                await Try.Async(_handlers[handler]!.OnBatchCompleteAsync);
             }
             _used.Clear();
         }

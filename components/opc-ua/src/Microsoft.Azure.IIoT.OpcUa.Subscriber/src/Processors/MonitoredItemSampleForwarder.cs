@@ -5,16 +5,19 @@
 
 namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
     using Microsoft.Azure.IIoT.OpcUa.Subscriber.Models;
+    using Microsoft.Azure.IIoT.OpcUa.Core;
     using Microsoft.Azure.IIoT.Messaging;
+    using Microsoft.Azure.IIoT.Hub;
     using Microsoft.Azure.IIoT.Serializers;
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Text;
 
     /// <summary>
     /// Forwards samples to another event hub
     /// </summary>
-    public sealed class MonitoredItemSampleForwarder : IMonitoredItemSampleProcessor,
+    public sealed class MonitoredItemSampleForwarder : ISubscriberMessageProcessor,
         IDisposable {
 
         /// <summary>
@@ -37,8 +40,23 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
             // Set timestamp as source timestamp
             // TODO: Make configurable
             sample.Timestamp = sample.SourceTimestamp;
+
+            var properties = new Dictionary<string, string>() {
+                [CommonProperties.EventSchemaType] = 
+                    MessageSchemaTypes.MonitoredItemMessageModelJson
+            };
             return _client.SendAsync(
-                _serializer.SerializeToBytes(sample).ToArray());
+                _serializer.SerializeToBytes(sample).ToArray(), properties);
+        }
+
+        /// <inheritdoc/>
+        public Task HandleMessageAsync(DataSetMessageModel message) {
+            var properties = new Dictionary<string, string>() {
+                [CommonProperties.EventSchemaType] = 
+                    MessageSchemaTypes.NetworkMessageModelJson
+            };
+            return _client.SendAsync(
+                _serializer.SerializeToBytes(message).ToArray(), properties);
         }
 
         /// <inheritdoc/>

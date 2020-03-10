@@ -33,7 +33,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
         /// <param name="handlers"></param>
         /// <param name="logger"></param>
         public PubSubNetworkMessageJsonHandler(IVariantEncoderFactory encoder,
-            IEnumerable<IMonitoredItemSampleProcessor> handlers, ILogger logger) {
+            IEnumerable<ISubscriberMessageProcessor> handlers, ILogger logger) {
             _encoder = encoder ?? throw new ArgumentNullException(nameof(encoder));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _handlers = handlers?.ToList() ?? throw new ArgumentNullException(nameof(handlers));
@@ -44,21 +44,33 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
             byte[] payload, IDictionary<string, string> properties, Func<Task> checkpoint) {
             using (var stream = new MemoryStream(payload)) {
                 var context = new ServiceMessageContext();
-                using (var decoder = new JsonDecoderEx(stream, context)) {
-                    var networkMessage = decoder.ReadEncodeable(null, typeof(NetworkMessage)) as NetworkMessage;
-                    foreach (var message in networkMessage.Messages) {
-                        foreach (var datapoint in message.Payload) {
-                            try {
+                try {
+                    using (var decoder = new JsonDecoderEx(stream, context)) {
+                        var networkMessage = decoder.ReadEncodeable(null, typeof(NetworkMessage)) as NetworkMessage;
+                        foreach (var message in networkMessage.Messages) {
+                            var dataset = new DataSetMessageModel {
+                                PublisherId = networkMessage.PublisherId,
+                                MessageId = networkMessage.MessageId,
+                                DataSetClassId = networkMessage.DataSetClassId,
+                                DataSetWriterId = message.DataSetWriterId,
+                                SequenceNumber = message.SequenceNumber,
+                                Status = StatusCode.LookupSymbolicId(message.Status.Code),
+                                MetaDataVersion = $"{message.MetaDataVersion.MajorVersion}.{message.MetaDataVersion.MinorVersion}",
+                                Timestamp = message.Timestamp,
+                                Payload = new Dictionary<string, DataValueModel>()
+                            };
+                            foreach (var datapoint in message.Payload) {
                                 var codec = _encoder.Create(context);
-                                var sample = new MonitoredItemSampleModel() {
+                                dataset.Payload[datapoint.Key] = new DataValueModel() {
                                     Value = codec.Encode(datapoint.Value),
                                     Status = StatusCode.LookupSymbolicId(datapoint.Value.StatusCode.Code),
                                     TypeId = (datapoint.Value?.WrappedValue.TypeInfo != null) ?
                                         TypeInfo.GetSystemType(
                                             datapoint.Value.WrappedValue.TypeInfo.BuiltInType,
-                                            datapoint.Value.WrappedValue.TypeInfo.ValueRank)?.FullName : null,
+                                            datapoint.Value.WrappedValue.TypeInfo.ValueRank) : null,
+
                                     DataSetId = message.DataSetWriterId,
-                                    Timestamp = DateTime.UtcNow,
+                                    // Timestamp = DateTime.UtcNow,
                                     SubscriptionId = message.DataSetWriterId,
                                     EndpointId = networkMessage.PublisherId,
                                     NodeId = datapoint.Key,
@@ -66,20 +78,15 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
                                     ServerPicoseconds = datapoint.Value.ServerPicoseconds,
                                     SourceTimestamp = datapoint.Value.SourceTimestamp,
                                     ServerTimestamp = datapoint.Value.ServerTimestamp
+                                    Timestamp = datapoint.Value?.SourceTimestamp
                                 };
-                                if (sample == null) {
-                                    continue;
-                                }
-                                await Task.WhenAll(_handlers.Select(h => h.HandleSampleAsync(
-                                    sample)));
                             }
-                            catch (Exception ex) {
-                                _logger.Error(ex,
-                                    "Subscriber message {message} failed with exception - skip",
-                                        message);
-                            }
+                            await Task.WhenAll(_handlers.Select(h => h.HandleMessageAsync(dataset)));
                         }
                     }
+                }
+                catch (Exception ex) {
+                    _logger.Error(ex, "Subscriber json network message handling failed - skip");
                 }
             }
         }
@@ -91,6 +98,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
 
         private readonly IVariantEncoderFactory _encoder;
         private readonly ILogger _logger;
-        private readonly List<IMonitoredItemSampleProcessor> _handlers;
+        private readonly List<ISubscriberMessageProcessor> _handlers;
     }
 }

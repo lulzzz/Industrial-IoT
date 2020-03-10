@@ -46,7 +46,11 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                     settings.Converters.AddRange(provider.GetConverters());
                 }
             }
-            settings.ContractResolver = new DefaultContractResolver();
+            settings.ContractResolver = new DefaultContractResolver {
+                NamingStrategy = new CamelCaseNamingStrategy {
+                    ProcessDictionaryKeys = false
+                }
+            };
             settings.Converters.Add(new JsonVariantConverter(this));
             settings.Converters.Add(new StringEnumConverter {
                 AllowIntegerValues = true,

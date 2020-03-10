@@ -33,7 +33,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
         /// <param name="handlers"></param>
         /// <param name="logger"></param>
         public MonitoredItemSampleBinaryHandler(IVariantEncoderFactory encoder,
-            IEnumerable<IMonitoredItemSampleProcessor> handlers, ILogger logger) {
+            IEnumerable<ISubscriberMessageProcessor> handlers, ILogger logger) {
             _encoder = encoder ?? throw new ArgumentNullException(nameof(encoder));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _handlers = handlers?.ToList() ?? throw new ArgumentNullException(nameof(handlers));
@@ -70,8 +70,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
                         message.DisplayName : message.NodeId.AsString(null),
                     Timestamp = DateTime.UtcNow,
                     SubscriptionId = message.SubscriptionId,
-                    EndpointId = message?.ExtensionFields["EndpointId"],
+                    EndpointId = message?.ExtensionFields?["EndpointId"] ?? message.ApplicationUri,
                     NodeId = message.NodeId.AsString(null),
+                    DisplayName = message.DisplayName,
                     SourcePicoseconds = message.Value.SourcePicoseconds,
                     ServerPicoseconds = message.Value.ServerPicoseconds,
                     SourceTimestamp = message.Value.SourceTimestamp,
@@ -93,6 +94,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
 
         private readonly IVariantEncoderFactory _encoder;
         private readonly ILogger _logger;
-        private readonly List<IMonitoredItemSampleProcessor> _handlers;
+        private readonly List<ISubscriberMessageProcessor> _handlers;
     }
 }

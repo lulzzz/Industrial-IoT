@@ -17,17 +17,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Models {
         /// <summary>
         /// Monitored item samples
         /// </summary>
-        Samples,
-
-        /// <summary>
-        /// PubSub message in binary encoding
-        /// </summary>
-        PubSubBinary,
-
-        /// <summary>
-        /// Monitored item samples in binary encoding 
-        /// </summary>
-        SamplesBinary 
+        Samples
     }
-
 }

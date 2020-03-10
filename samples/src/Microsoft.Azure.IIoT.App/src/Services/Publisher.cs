@@ -67,13 +67,18 @@ namespace Microsoft.Azure.IIoT.App.Services {
         /// <param name="samplingInterval"></param>
         /// <param name="publishingInterval"></param>
         /// <returns>ErrorStatus</returns>
+<<<<<<< HEAD
         public async Task<bool> StartPublishingAsync(string endpointId, string nodeId,
+=======
+        public async Task<bool> StartPublishing(string endpointId, string nodeId, string displayName,
+>>>>>>> 9c5742087f851a248cc02f22e2939515e65e0f0c
             int samplingInterval, int publishingInterval) {
 
             try {
                 var requestApiModel = new PublishStartRequestApiModel() {
                     Item = new PublishedItemApiModel() {
                         NodeId = nodeId,
+                        DisplayName = displayName,
                         SamplingInterval = TimeSpan.FromMilliseconds(samplingInterval),
                         PublishingInterval = TimeSpan.FromMilliseconds(publishingInterval)
                     }

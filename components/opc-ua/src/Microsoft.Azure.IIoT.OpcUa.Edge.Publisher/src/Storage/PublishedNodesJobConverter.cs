@@ -105,13 +105,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
                                 .Select(node => new PublishedDataSetVariableModel {
                                     Id = node.Id,
                                     PublishedVariableNodeId = node.Id,
+                                    PublishedVariableDisplayName = node.DisplayName,
                                     SamplingInterval = node.OpcSamplingIntervalTimespan ?? legacyCliModel.DefaultSamplingInterval ?? (TimeSpan?)null
 
                                     // TODO: Link all to server time sampled at heartbeat interval
                                     // HeartbeatInterval = opcNode.HeartbeatInterval == null ? (TimeSpan?)null :
                                     //    TimeSpan.FromMilliseconds(opcNode.HeartbeatInterval.Value),
                                     // SkipFirst = opcNode.SkipFirst,
-                                    // DisplayName = opcNode.DisplayName
                                 })
                                 .ToList()
                         }
@@ -134,8 +134,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
                                     DataSetFieldContentMask = DataSetFieldContentMask.SourceTimestamp |
                                         DataSetFieldContentMask.ServerTimestamp |
                                         DataSetFieldContentMask.StatusCode |
-                                        DataSetFieldContentMask.NodeId  |
-                                        DataSetFieldContentMask.ApplicationUri,
+                                        DataSetFieldContentMask.NodeId | 
+                                        DataSetFieldContentMask.ApplicationUri |
+                                        DataSetFieldContentMask.DisplayName,
                                     MessageSettings = new DataSetWriterMessageSettingsModel() {
                                         DataSetMessageContentMask = DataSetContentMask.Timestamp |
                                         DataSetContentMask.MetaDataVersion |
