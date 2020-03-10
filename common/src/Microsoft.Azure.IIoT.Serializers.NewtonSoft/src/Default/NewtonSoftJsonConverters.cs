@@ -20,8 +20,14 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
         /// <summary>
         /// Create provider
         /// </summary>
+        public NewtonSoftJsonConverters() : this (false) {
+        }
+
+        /// <summary>
+        /// Create provider
+        /// </summary>
         /// <param name="permissive"></param>
-        public NewtonSoftJsonConverters(bool permissive = false) {
+        protected NewtonSoftJsonConverters(bool permissive = false) {
             _permissive = permissive;
         }
 

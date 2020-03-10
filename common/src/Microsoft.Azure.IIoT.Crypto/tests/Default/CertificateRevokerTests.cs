@@ -17,6 +17,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
     using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
     using Xunit;
+    using Autofac;
 
 
     /// <summary>
@@ -351,24 +352,20 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         private static AutoMock Setup(Func<IEnumerable<IDocumentInfo<VariantValue>>,
             string, IEnumerable<IDocumentInfo<VariantValue>>> provider) {
             var mock = AutoMock.GetLoose(builder => {
-
+                builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
+                builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
+                builder.RegisterInstance(new QueryEngineAdapter(provider)).As<IQueryEngine>();
+                builder.RegisterType<MemoryDatabase>().SingleInstance().As<IDatabaseServer>();
+                builder.RegisterType<ItemContainerFactory>().As<IItemContainerFactory>();
+                builder.RegisterType<KeyDatabase>().As<IKeyStore>().As<IDigestSigner>();
+                builder.RegisterType<KeyHandleSerializer>().As<IKeyHandleSerializer>();
+                builder.RegisterType<CertificateDatabase>().As<ICertificateStore>();
+                builder.RegisterType<CertificateDatabase>().As<ICertificateRepository>();
+                builder.RegisterType<CertificateFactory>().As<ICertificateFactory>();
+                builder.RegisterType<CrlDatabase>().As<ICrlRepository>();
+                builder.RegisterType<CertificateIssuer>().As<ICertificateIssuer>();
+                builder.RegisterType<CrlFactory>().As<ICrlFactory>();
             });
-
-            mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-            mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
-            mock.Provide<IQueryEngine>(new QueryEngineAdapter(provider));
-            mock.Provide<IDatabaseServer, MemoryDatabase>();
-            mock.Provide<IItemContainerFactory, ItemContainerFactory>();
-            mock.Provide<IKeyStore, KeyDatabase>();
-            mock.Provide<IDigestSigner, KeyDatabase>();
-            mock.Provide<IKeyHandleSerializer, KeyHandleSerializer>();
-            mock.Provide<ICertificateStore, CertificateDatabase>();
-            mock.Provide<ICertificateRepository, CertificateDatabase>();
-            mock.Provide<ICertificateFactory, CertificateFactory>();
-            mock.Provide<ICrlRepository, CrlDatabase>();
-            mock.Provide<ICertificateIssuer, CertificateIssuer>();
-            mock.Provide<ICrlFactory, CrlFactory>();
-
             return mock;
         }
     }

@@ -25,6 +25,7 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
     using System.Threading.Tasks;
     using Xunit;
     using Xunit.Sdk;
+    using Autofac;
 
     /// <summary>
     /// Certificate Issuer tests
@@ -514,31 +515,29 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
             Func<IEnumerable<IDocumentInfo<VariantValue>>,
             string, IEnumerable<IDocumentInfo<VariantValue>>> provider,
             out ICertificateIssuer issuer, out Mock<IKeyVaultClient> client) {
-
-            var mock = AutoMock.GetLoose(builder => {
-
-            });
-
-            mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-            mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
-            mock.Provide<IQueryEngine>(new QueryEngineAdapter(provider));
-            mock.Provide<IDatabaseServer, MemoryDatabase>();
-            mock.Provide<IItemContainerFactory, ItemContainerFactory>();
-            mock.Provide<IKeyHandleSerializer, KeyVaultKeyHandleSerializer>();
-
-            client = mock.Mock<IKeyVaultClient>();
-            var config = mock.Mock<IKeyVaultConfig>();
+            var keyVault = client = new Mock<IKeyVaultClient>();
+            var config = new Mock<IKeyVaultConfig>();
             config.SetReturnsDefault(kTestVaultUri);
             config.SetReturnsDefault(true);
 
-            issuer = new KeyVaultServiceClient(
-                    mock.Provide<ICertificateRepository, CertificateDatabase>(),
-                    mock.Provide<ICertificateFactory, CertificateFactory>(),
-                    config.Object,
-                    mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>(),
-                    client.Object);
+            var mock = AutoMock.GetLoose(builder => {
+                builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
+                builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
+                builder.RegisterInstance<IQueryEngine>(new QueryEngineAdapter(provider));
+                builder.RegisterType<MemoryDatabase>().SingleInstance().As<IDatabaseServer>();
+                builder.RegisterType<ItemContainerFactory>().As<IItemContainerFactory>();
+                builder.RegisterType<KeyVaultKeyHandleSerializer>().As<IKeyHandleSerializer>();
+                builder.RegisterType<CertificateDatabase>().As<ICertificateRepository>();
+                builder.RegisterType<CertificateFactory>().As<ICertificateFactory>();
+                builder.RegisterMock(config);
+                builder.RegisterMock(keyVault);
+                builder.RegisterType<KeyVaultServiceClient>().UsingConstructor(
+                    typeof(ICertificateRepository), typeof(ICertificateFactory), typeof(IKeyVaultConfig),
+                    typeof(IJsonSerializer), typeof(IKeyVaultClient))
+                    .As<ICertificateIssuer>();
+            });
 
-            mock.Provide(issuer);
+            issuer = mock.Create<ICertificateIssuer>();
             return mock;
         }
 

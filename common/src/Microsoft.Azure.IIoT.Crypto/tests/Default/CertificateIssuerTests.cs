@@ -20,6 +20,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
     using System.Runtime.InteropServices;
     using Xunit;
     using Xunit.Sdk;
+    using Autofac;
 
     /// <summary>
     /// Certificate Issuer tests
@@ -1020,19 +1021,17 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         private static AutoMock Setup(Func<IEnumerable<IDocumentInfo<VariantValue>>,
             string, IEnumerable<IDocumentInfo<VariantValue>>> provider) {
             var mock = AutoMock.GetLoose(builder => {
-
+                builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
+                builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
+                builder.RegisterInstance(new QueryEngineAdapter(provider)).As<IQueryEngine>();
+                builder.RegisterType<MemoryDatabase>().SingleInstance().As<IDatabaseServer>();
+                builder.RegisterType<ItemContainerFactory>().As<IItemContainerFactory>();
+                builder.RegisterType<KeyDatabase>().As<IKeyStore>();
+                builder.RegisterType<KeyHandleSerializer>().As<IKeyHandleSerializer>();
+                builder.RegisterType<CertificateDatabase>().As<ICertificateStore>();
+                builder.RegisterType<CertificateDatabase>().As<ICertificateRepository>();
+                builder.RegisterType<CertificateFactory>().As<ICertificateFactory>();
             });
-
-            mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-            mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
-            mock.Provide<IQueryEngine>(new QueryEngineAdapter(provider));
-            mock.Provide<IDatabaseServer, MemoryDatabase>();
-            mock.Provide<IItemContainerFactory, ItemContainerFactory>();
-            mock.Provide<IKeyStore, KeyDatabase>();
-            mock.Provide<IKeyHandleSerializer, KeyHandleSerializer>();
-            mock.Provide<ICertificateStore, CertificateDatabase>();
-            mock.Provide<ICertificateRepository, CertificateDatabase>();
-            mock.Provide<ICertificateFactory, CertificateFactory>();
 
             return mock;
         }

@@ -17,6 +17,7 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
     using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
     using Xunit;
+    using Autofac;
 
     /// <summary>
     /// Crl factory tests
@@ -168,18 +169,15 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         /// <param name="mock"></param>
         private static AutoMock Setup() {
             var mock = AutoMock.GetLoose(builder => {
-
+                builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
+                builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
+                builder.RegisterType<MemoryDatabase>().SingleInstance().As<IDatabaseServer>();
+                builder.RegisterType<ItemContainerFactory>().As<IItemContainerFactory>();
+                builder.RegisterType<KeyDatabase>().As<IKeyStore>().As<IDigestSigner>();
+                builder.RegisterType<KeyHandleSerializer>().As<IKeyHandleSerializer>();
+                builder.RegisterType<CertificateIssuer>().As<ICertificateIssuer>();
+                builder.RegisterType<CrlFactory>().As<ICrlFactory>();
             });
-
-            mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-            mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
-            mock.Provide<IDatabaseServer, MemoryDatabase>();
-            mock.Provide<IItemContainerFactory, ItemContainerFactory>();
-            mock.Provide<IKeyStore, KeyDatabase>();
-            mock.Provide<IDigestSigner, KeyDatabase>();
-            mock.Provide<IKeyHandleSerializer, KeyHandleSerializer>();
-            mock.Provide<ICrlFactory, CrlFactory>();
-
             return mock;
         }
     }

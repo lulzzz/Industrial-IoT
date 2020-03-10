@@ -25,6 +25,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
     using System.Threading.Tasks;
     using Xunit;
     using Xunit.Sdk;
+    using Autofac;
 
     public class PublisherJobClientTests {
 
@@ -322,24 +323,26 @@ namespace Microsoft.Azure.IIoT.OpcUa.Publisher.Clients {
             string, IEnumerable<IDocumentInfo<VariantValue>>> provider) {
             var mock = AutoMock.GetLoose(builder => {
 
+                builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
+                builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
+                builder.RegisterInstance(new QueryEngineAdapter(provider)).As<IQueryEngine>();
+                builder.RegisterType<MemoryDatabase>().SingleInstance().As<IDatabaseServer>();
+                builder.RegisterType<MockConfig>().As<IJobDatabaseConfig>();
+                builder.RegisterType<JobDatabase>().As<IJobRepository>();
+                builder.RegisterType<DefaultJobService>().As<IJobScheduler>();
+                builder.RegisterType<PublisherJobSerializer>().As<IJobSerializer>();
+                var registry = new Mock<IEndpointRegistry>();
+                registry
+                    .Setup(e => e.GetEndpointAsync(It.IsAny<string>(), false, CancellationToken.None))
+                    .Returns(Task.FromResult(new EndpointInfoModel {
+                        Registration = new EndpointRegistrationModel {
+                            EndpointUrl = "fakeurl",
+                            Id = "endpoint1"
+                        }
+                    }));
+                builder.RegisterMock(registry);
+                builder.RegisterType<PublisherJobService>().As<IPublishServices<string>>();
             });
-            mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-            mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
-            mock.Provide<IQueryEngine>(new QueryEngineAdapter(provider));
-            mock.Provide<IDatabaseServer, MemoryDatabase>();
-            mock.Provide<IJobDatabaseConfig, MockConfig>();
-            mock.Provide<IJobRepository, JobDatabase>();
-            mock.Provide<IJobScheduler, DefaultJobService>();
-            mock.Provide<IJobSerializer, PublisherJobSerializer>();
-            mock.Mock<IEndpointRegistry>()
-                .Setup(e => e.GetEndpointAsync(It.IsAny<string>(), false, CancellationToken.None))
-                .Returns(Task.FromResult(new EndpointInfoModel {
-                    Registration = new EndpointRegistrationModel {
-                        EndpointUrl = "fakeurl",
-                        Id = "endpoint1"
-                    }
-                }));
-            mock.Provide<IPublishServices<string>, PublisherJobService>();
             return mock;
         }
 

@@ -17,6 +17,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
     using System.Collections.Generic;
     using System.Linq;
     using Xunit;
+    using Autofac;
 
     public class SecurityNotificationTests {
 
@@ -28,11 +29,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 
             CreateEndpointFixtures(mode, "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256", certEncoded, out var endpoints);
 
-            using (var mock = AutoMock.GetLoose()) {
-                mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
-                var mockIotTelemetryService = new IoTHubServices();
-                mock.Provide<IIoTHubTelemetryServices>(mockIotTelemetryService);
+            var mockIotTelemetryService = new IoTHubServices();
+            using (var mock = AutoMock.GetLoose(builder => {
+                builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
+                builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
+                builder.RegisterInstance(mockIotTelemetryService).As<IIoTHubTelemetryServices>();
+            })) {
                 var service = mock.Create<EndpointSecurityAlerter>();
 
                 // Run
@@ -54,11 +56,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 
             CreateEndpointFixtures(mode, "http://opcfoundation.org/UA/SecurityPolicy#None", certEncoded, out var endpoints);
 
-            using (var mock = AutoMock.GetLoose()) {
-                mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
-                var mockIotTelemetryService = new IoTHubServices();
-                mock.Provide<IIoTHubTelemetryServices>(mockIotTelemetryService);
+            var mockIotTelemetryService = new IoTHubServices();
+            using (var mock = AutoMock.GetLoose(builder => {
+                builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
+                builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
+                builder.RegisterInstance(mockIotTelemetryService).As<IIoTHubTelemetryServices>();
+            })) {
                 var service = mock.Create<EndpointSecurityAlerter>();
 
                 // Run
@@ -80,11 +83,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 
             CreateEndpointFixtures(mode, "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256", certEncoded, out var endpoints);
 
-            using (var mock = AutoMock.GetLoose()) {
-                mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
-                var mockIotTelemetryService = new IoTHubServices();
-                mock.Provide<IIoTHubTelemetryServices>(mockIotTelemetryService);
+            var mockIotTelemetryService = new IoTHubServices();
+            using (var mock = AutoMock.GetLoose(builder => {
+                builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
+                builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
+                builder.RegisterInstance(mockIotTelemetryService).As<IIoTHubTelemetryServices>();
+            })) {
                 var service = mock.Create<EndpointSecurityAlerter>();
 
                 // Run
@@ -161,11 +165,12 @@ namespace Microsoft.Azure.IIoT.OpcUa.Security.Services {
 
             CreateEndpointFixtures(mode, "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256", certEncoded, out var endpoints);
 
-            using (var mock = AutoMock.GetLoose()) {
-                var mockIotTelemetryService = new IoTHubServices();
-                mock.Provide<IJsonSerializerConverterProvider, NewtonSoftJsonConverters>();
-                mock.Provide<IJsonSerializer, NewtonSoftJsonSerializer>();
-                mock.Provide<IIoTHubTelemetryServices>(mockIotTelemetryService);
+            var mockIotTelemetryService = new IoTHubServices();
+            using (var mock = AutoMock.GetLoose(builder => {
+                builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
+                builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
+                builder.RegisterInstance(mockIotTelemetryService).As<IIoTHubTelemetryServices>();
+            })) {
                 var service = mock.Create<EndpointSecurityAlerter>();
 
                 // Run
