@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
+    using Microsoft.Azure.IIoT.Crypto;
     using Microsoft.Azure.IIoT.Http;
     using Microsoft.Azure.IIoT.Utils;
     using Microsoft.Azure.IIoT.Serializers;

@@ -154,7 +154,7 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Telemetry {
         /// <summary>
         /// Forwards telemetry not part of the platform for example from other devices
         /// </summary>
-        internal sealed class UnknownTelemetryForwarder : IUnknownEventHandler, IDisposable {
+        internal sealed class UnknownTelemetryForwarder : IUnknownEventProcessor, IDisposable {
 
             /// <summary>
             /// Create forwarder

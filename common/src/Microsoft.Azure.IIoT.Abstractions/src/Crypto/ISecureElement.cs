@@ -3,7 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Microsoft.Azure.IIoT.Module {
+namespace Microsoft.Azure.IIoT.Crypto {
     using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
     using System;

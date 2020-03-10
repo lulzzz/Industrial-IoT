@@ -6,6 +6,7 @@
 namespace Microsoft.Azure.IIoT.Module.Default {
     using Microsoft.Azure.IIoT.Module.Models;
     using Microsoft.Azure.IIoT.Module;
+    using Microsoft.Azure.IIoT.Messaging;
     using Microsoft.Azure.IIoT.Hub;
     using Microsoft.Azure.IIoT.Http;
     using Microsoft.Azure.IIoT.Http.Default;
@@ -17,7 +18,6 @@ namespace Microsoft.Azure.IIoT.Module.Default {
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Collections.Generic;

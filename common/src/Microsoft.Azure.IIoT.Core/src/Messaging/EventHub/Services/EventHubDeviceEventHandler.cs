@@ -5,6 +5,7 @@
 
 namespace Microsoft.Azure.IIoT.Core.Messaging.EventHub {
     using Microsoft.Azure.IIoT.Hub;
+    using Microsoft.Azure.IIoT.Messaging;
     using Microsoft.Azure.IIoT.Utils;
     using System;
     using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Microsoft.Azure.IIoT.Core.Messaging.EventHub {
     /// <summary>
     /// Default Event Hub message handler implementation
     /// </summary>
-    public sealed class EventHubDeviceEventHandler : IEventHandler {
+    public sealed class EventHubDeviceEventHandler : IEventProcessingHandler {
 
         /// <summary>
         /// Create processor factory
@@ -22,7 +23,7 @@ namespace Microsoft.Azure.IIoT.Core.Messaging.EventHub {
         /// <param name="handlers"></param>
         /// <param name="unknown"></param>
         public EventHubDeviceEventHandler(IEnumerable<IDeviceTelemetryHandler> handlers,
-            IUnknownEventHandler unknown = null) {
+            IUnknownEventProcessor unknown = null) {
             if (handlers == null) {
                 throw new ArgumentNullException(nameof(handlers));
             }
@@ -61,6 +62,6 @@ namespace Microsoft.Azure.IIoT.Core.Messaging.EventHub {
         private readonly HashSet<string> _used =
             new HashSet<string>();
         private readonly Dictionary<string, IDeviceTelemetryHandler> _handlers;
-        private readonly IUnknownEventHandler _unknown;
+        private readonly IUnknownEventProcessor _unknown;
     }
 }

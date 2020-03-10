@@ -9,6 +9,7 @@ namespace Microsoft.Azure.IIoT.Module.Default {
     using Microsoft.Azure.IIoT.Serializers;
     using Microsoft.Azure.IIoT.Serializers.NewtonSoft;
     using Microsoft.Azure.IIoT.Hub;
+    using Microsoft.Azure.IIoT.Messaging;
     using AutoFixture;
     using Moq;
     using Serilog;

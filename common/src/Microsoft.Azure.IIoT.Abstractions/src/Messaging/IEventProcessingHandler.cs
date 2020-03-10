@@ -3,8 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Microsoft.Azure.IIoT.Hub {
-    using Microsoft.Azure.IIoT.Messaging;
+namespace Microsoft.Azure.IIoT.Messaging {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -12,7 +11,7 @@ namespace Microsoft.Azure.IIoT.Hub {
     /// <summary>
     /// Handles raw events
     /// </summary>
-    public interface IEventHandler : IHandler {
+    public interface IEventProcessingHandler : IHandler {
 
         /// <summary>
         /// Handle event

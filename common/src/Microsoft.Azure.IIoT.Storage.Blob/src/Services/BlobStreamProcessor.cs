@@ -4,10 +4,11 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.Storage.Blob.Services {
-    using Serilog;
+    using Microsoft.Azure.IIoT.Messaging;
     using Microsoft.Azure.IIoT.Hub;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
+    using Serilog;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -22,7 +23,7 @@ namespace Microsoft.Azure.IIoT.Storage.Blob.Services {
     /// service bus.  No matter what the processor simply processes the
     /// stream it is handed.
     /// </summary>
-    public class BlobStreamProcessor : IDeviceFileUploadHandler, IEventHandler {
+    public class BlobStreamProcessor : IDeviceFileUploadHandler, IEventProcessingHandler {
 
         /// <summary>
         /// Create stream processor
