@@ -4,11 +4,13 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
+    using Microsoft.Azure.IIoT.Messaging.SignalR;
     using Microsoft.Azure.IIoT.Auth;
     using Microsoft.Azure.IIoT.Auth.Models;
     using Microsoft.Azure.IIoT.Utils;
     using Microsoft.Azure.IIoT.Net;
     using Microsoft.Azure.SignalR.Management;
+    using Microsoft.AspNetCore.SignalR;
     using Microsoft.Extensions.Diagnostics.HealthChecks;
     using System;
     using System.Threading;
@@ -20,8 +22,9 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
     /// <summary>
     /// Publish subscriber service built using signalr
     /// </summary>
-    public class SignalRServiceHost : IIdentityTokenGenerator, IEndpoint,
-        ICallbackInvoker, IGroupRegistration, IHostProcess, IHealthCheck, IDisposable {
+    public class SignalRServiceHost<THub> : IEndpoint<THub>, ICallbackInvokerT<THub>,
+        IGroupRegistrationT<THub>, IHostProcess, IHealthCheck, IDisposable
+        where THub : Hub {
 
         /// <inheritdoc/>
         public string Resource { get; }
@@ -43,12 +46,11 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
                 option.ConnectionString = config.SignalRConnString;
                 option.ServiceTransportType = ServiceTransportType.Persistent;
             }).Build();
-            Resource = !string.IsNullOrEmpty(config.SignalRHubName) ?
-                config.SignalRHubName : "default";
-            //   TODO : force hub renew mechanism introduced to workaround a 
-            //      signalR SDK bug. To be removed after the fix is done in the SDK
+
             _renewHubTimer = new Timer(RenewHubTimer_ElapesedAsync);
             _renewHubInterval = TimeSpan.FromMinutes(3);
+
+            Resource = NameAttribute.GetName(typeof(THub));
         }
 
         /// <inheritdoc/>
@@ -122,9 +124,6 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
         /// <inheritdoc/>
         public IdentityTokenModel GenerateIdentityToken(string userId,
             IList<Claim> claims, TimeSpan? lifeTime) {
-            if (string.IsNullOrEmpty(userId)) {
-                throw new ArgumentNullException(nameof(userId));
-            }
             if (lifeTime == null) {
                 lifeTime = TimeSpan.FromMinutes(5);
             }
@@ -181,7 +180,7 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             if (string.IsNullOrEmpty(group)) {
                 throw new ArgumentNullException(nameof(group));
             }
-            return _hub.UserGroups.AddToGroupAsync(client, group, ct);
+            return _hub.Groups.AddToGroupAsync(client, group, ct);
         }
 
         /// <inheritdoc/>
@@ -193,7 +192,7 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             if (string.IsNullOrEmpty(group)) {
                 throw new ArgumentNullException(nameof(group));
             }
-            return _hub.UserGroups.RemoveFromGroupAsync(client, group, ct);
+            return _hub.Groups.RemoveFromGroupAsync(client, group, ct);
         }
 
         private async void RenewHubTimer_ElapesedAsync(object sender) {

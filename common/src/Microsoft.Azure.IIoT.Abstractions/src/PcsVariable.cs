@@ -62,7 +62,7 @@ namespace Microsoft.Azure.IIoT {
         public const string PCS_EVENTHUB_NAME =
             "PCS_EVENTHUB_NAME";
         /// <summary> Event hub consumer group telemetrycdm </summary>
-        public const string PCS_EVENTHUB_CONSUMERGROUP_TELEMETRY_CDM = 
+        public const string PCS_EVENTHUB_CONSUMERGROUP_TELEMETRY_CDM =
             "PCS_EVENTHUB_CONSUMERGROUP_TELEMETRY_CDM";
         /// <summary> Event hub consumer group telemetryux </summary>
         public const string PCS_EVENTHUB_CONSUMERGROUP_TELEMETRY_UX =
@@ -158,8 +158,8 @@ namespace Microsoft.Azure.IIoT {
         public const string PCS_JOB_ORCHESTRATOR_SERVICE_URL =
             "PCS_JOB_ORCHESTRATOR_SERVICE_URL";
         /// <summary> Configuration service endpoint url </summary>
-        public const string PCS_CONFIGURATION_SERVICE_URL =
-            "PCS_CONFIGURATION_SERVICE_URL";
+        public const string PCS_EVENTS_SERVICE_URL =
+            "PCS_EVENTS_SERVICE_URL";
         /// <summary> CORS whitelist </summary>
         public const string PCS_CORS_WHITELIST =
             "PCS_CORS_WHITELIST";

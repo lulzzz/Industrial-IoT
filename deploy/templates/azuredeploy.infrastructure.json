@@ -476,12 +476,12 @@
                                 "get",
                                 "list",
                                 "sign",
-                                "unwrapKey", 
-                                "wrapKey", 
+                                "unwrapKey",
+                                "wrapKey",
                                 "create"
                             ],
                             "secrets": [
-                                "get", 
+                                "get",
                                 "list",
                                 "set",
                                 "delete"
@@ -514,8 +514,8 @@
                         "permissions": {
                             "keys": [
                                 "get",
-                                "unwrapKey", 
-                                "wrapKey", 
+                                "unwrapKey",
+                                "wrapKey",
                                 "create"
                             ],
                             "secrets": [
@@ -941,9 +941,14 @@
                 "features": [
                     {
                         "flag": "ServiceMode",
-                        "value": "Serverless"
+                        "value": "Default"
                     }
-                ]
+                ],
+                "cors": {
+                    "allowedOrigins": [
+                        "*"
+                    ]
+                }    
             },
             "sku": {
                 "name": "[parameters('signalRSkuName')]",

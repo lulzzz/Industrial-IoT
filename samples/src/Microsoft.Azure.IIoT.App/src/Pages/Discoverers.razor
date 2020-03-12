@@ -17,7 +17,6 @@
 @inject NavigationManager NavigationManager
 @inject Registry RegistryHelper
 @inject RegistryServiceEvents RegistryServiceEvents
-@inject SignalRClient SignalRClientHelper
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UICommon CommonHelper
 
@@ -310,8 +309,7 @@
             }
             StateHasChanged();
 
-            var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            _discovererEvent = await RegistryServiceEvents.SubscribeDiscovererEventsAsync(state.User?.Identity?.Name,
+            _discovererEvent = await RegistryServiceEvents.SubscribeDiscovererEventsAsync(
                 ev => InvokeAsync(() => DiscovererEvent(ev)));
         }
     }
@@ -325,9 +323,8 @@
     /// <param name="portRange"></param>
     private async Task SetScanAsync(DiscovererInfo discoverer)
     {
-        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         _discovery = await RegistryServiceEvents.SubscribeDiscoveryProgressByDiscovererIdAsync(
-            discoverer.DiscovererModel.Id, state.User?.Identity?.Name, async data =>
+            discoverer.DiscovererModel.Id, async data =>
             {
                 await InvokeAsync(() => ScanProgress(data));
             });

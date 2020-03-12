@@ -11,21 +11,6 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR {
     public interface ISignalRClientConfig {
 
         /// <summary>
-        /// Endpoint url
-        /// </summary>
-        string SignalREndpointUrl { get; }
-
-        /// <summary>
-        /// SignalR Hub name
-        /// </summary>
-        string SignalRHubName { get; }
-
-        /// <summary>
-        /// Client id
-        /// </summary>
-        string SignalRUserId { get; }
-
-        /// <summary>
         /// Use message pack or json
         /// </summary>
         bool UseMessagePackProtocol { get; }

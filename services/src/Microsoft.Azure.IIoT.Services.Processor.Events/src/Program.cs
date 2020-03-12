@@ -5,10 +5,8 @@
 
 namespace Microsoft.Azure.IIoT.Services.Processor.Events {
     using Microsoft.Azure.IIoT.Services.Processor.Events.Runtime;
-    using Microsoft.Azure.IIoT.Messaging.SignalR.Services;
     using Microsoft.Azure.IIoT.OpcUa.Api.Onboarding;
     using Microsoft.Azure.IIoT.OpcUa.Api.Onboarding.Clients;
-    using Microsoft.Azure.IIoT.OpcUa.Api.Registry.Clients;
     using Microsoft.Azure.IIoT.OpcUa.Registry;
     using Microsoft.Azure.IIoT.OpcUa.Registry.Handlers;
     using Microsoft.Azure.IIoT.Exceptions;
@@ -18,6 +16,7 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Events {
     using Microsoft.Azure.IIoT.Hub.Processor.EventHub;
     using Microsoft.Azure.IIoT.Hub.Processor.Services;
     using Microsoft.Azure.IIoT.Hub.Services;
+    using Microsoft.Azure.IIoT.Hub.Client;
     using Microsoft.Azure.IIoT.Http.Default;
     using Microsoft.Azure.IIoT.Serializers;
     using Microsoft.Azure.IIoT.Utils;
@@ -29,7 +28,6 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Events {
     using System.IO;
     using System.Runtime.Loader;
     using System.Threading.Tasks;
-    using Microsoft.Azure.IIoT.Hub.Client;
 
     /// <summary>
     /// IoT Hub device events event processor host.  Processes all
@@ -122,6 +120,8 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Events {
                 .AsImplementedInterfaces().SingleInstance();
 
             // Handle iot hub telemetry events...
+            builder.RegisterType<IoTHubServiceHttpClient>()
+                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<IoTHubDeviceEventHandler>()
                 .AsImplementedInterfaces().SingleInstance();
             // ... and pass to the following handlers:
@@ -129,6 +129,7 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Events {
             // 1.) Handler for discovery events
             builder.RegisterType<DiscoveryEventHandler>()
                 .AsImplementedInterfaces().SingleInstance();
+
             // ... requires the corresponding services
             // Call onboarder
             builder.RegisterType<OnboardingServicesApiAdapter>()
@@ -141,27 +142,19 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Events {
             builder.RegisterType<AppAuthenticationProvider>()
                 .AsImplementedInterfaces().SingleInstance();
 
-            // 2.) Handler for discovery messages
-            builder.RegisterType<DiscoveryMessageHandler>()
-                .AsImplementedInterfaces().SingleInstance();
-            // ... and forward discovery progress to clients
-            builder.RegisterType<DiscoveryProgressPublisher>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<SignalRServiceHost>()
+            // 2.) Handler for discovery progress
+            builder.RegisterType<DiscoveryProgressHandler>()
                 .AsImplementedInterfaces().SingleInstance();
 
             // 3.) Handlers for twin and device change events ...
             builder.RegisterModule<RegistryTwinEventHandlers>();
 
-            // ... publish to registered event bus
+            // ... publish received events to registered event bus
             builder.RegisterType<EventBusHost>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ServiceBusClientFactory>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ServiceBusEventBus>()
-                .AsImplementedInterfaces().SingleInstance();
-            // Iot hub services
-            builder.RegisterType<IoTHubServiceHttpClient>()
                 .AsImplementedInterfaces().SingleInstance();
 
             return builder;

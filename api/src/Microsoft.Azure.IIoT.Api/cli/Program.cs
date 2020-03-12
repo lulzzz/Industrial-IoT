@@ -64,7 +64,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
             // Register http client module ...
             builder.RegisterModule<HttpClientModule>();
             // ... as well as signalR client (needed for api)
-            builder.RegisterType<SignalRClient>()
+            builder.RegisterType<SignalRHubClient>()
                 .AsImplementedInterfaces().SingleInstance();
 
             // Use bearer authentication
@@ -874,7 +874,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
             Console.WriteLine("Press any key to stop.");
 
             var finish = await events.NodePublishSubscribeByEndpointAsync(
-                endpointId, null, PrintSample);
+                endpointId, PrintSample);
             try {
                 Console.ReadKey();
             }
@@ -1031,7 +1031,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private async Task MonitorPublishersAsync() {
             var events = _scope.Resolve<IRegistryServiceEvents>();
             Console.WriteLine("Press any key to stop.");
-            var complete = await events.SubscribePublisherEventsAsync(null, PrintEvent);
+            var complete = await events.SubscribePublisherEventsAsync(PrintEvent);
             try {
                 Console.ReadKey();
             }
@@ -1149,7 +1149,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private async Task MonitorGatewaysAsync() {
             var events = _scope.Resolve<IRegistryServiceEvents>();
             Console.WriteLine("Press any key to stop.");
-            var complete = await events.SubscribeGatewayEventsAsync(null, PrintEvent);
+            var complete = await events.SubscribeGatewayEventsAsync(PrintEvent);
             try {
                 Console.ReadKey();
             }
@@ -1542,7 +1542,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private async Task MonitorSupervisorsAsync() {
             var events = _scope.Resolve<IRegistryServiceEvents>();
             Console.WriteLine("Press any key to stop.");
-            var complete = await events.SubscribeSupervisorEventsAsync(null, PrintEvent);
+            var complete = await events.SubscribeSupervisorEventsAsync(PrintEvent);
             try {
                 Console.ReadKey();
             }
@@ -1674,10 +1674,10 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
             if (discovererId != null) {
                 // If specified - monitor progress
                 complete = await events.SubscribeDiscoveryProgressByDiscovererIdAsync(
-                    discovererId, null, PrintProgress);
+                    discovererId, PrintProgress);
             }
             else {
-                complete = await events.SubscribeDiscovererEventsAsync(null, PrintEvent);
+                complete = await events.SubscribeDiscovererEventsAsync(PrintEvent);
             }
             try {
                 Console.ReadKey();
@@ -1711,7 +1711,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
             var events = _scope.Resolve<IRegistryServiceEvents>();
             Console.WriteLine("Press any key to stop.");
             var discovery = await events.SubscribeDiscoveryProgressByDiscovererIdAsync(
-                discovererId, null, PrintProgress);
+                discovererId, PrintProgress);
             try {
                 var config = BuildDiscoveryConfig(options);
                 var mode = options.GetValueOrDefault("-d", "--discovery",
@@ -1812,7 +1812,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
                 var tcs = new TaskCompletionSource<bool>();
 
                 var discovery = await events.SubscribeDiscoveryProgressByRequestIdAsync(
-                    id, null, async ev => {
+                    id, async ev => {
                         await PrintProgress(ev);
                         switch (ev.EventType) {
                             case DiscoveryProgressType.Error:
@@ -1860,7 +1860,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
                 events = _scope.Resolve<IRegistryServiceEvents>();
                 var tcs = new TaskCompletionSource<bool>();
                 var discovery = await events.SubscribeDiscoveryProgressByRequestIdAsync(
-                    id, null, async ev => {
+                    id, async ev => {
                         await PrintProgress(ev);
                         switch (ev.EventType) {
                             case DiscoveryProgressType.Error:
@@ -2050,7 +2050,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private async Task MonitorApplicationsAsync() {
             var events = _scope.Resolve<IRegistryServiceEvents>();
             Console.WriteLine("Press any key to stop.");
-            var complete = await events.SubscribeApplicationEventsAsync(null, PrintEvent);
+            var complete = await events.SubscribeApplicationEventsAsync(PrintEvent);
             try {
                 Console.ReadKey();
             }
@@ -2065,20 +2065,20 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private async Task MonitorAllAsync() {
             var events = _scope.Resolve<IRegistryServiceEvents>();
             Console.WriteLine("Press any key to stop.");
-            var apps = await events.SubscribeApplicationEventsAsync(null, PrintEvent);
+            var apps = await events.SubscribeApplicationEventsAsync(PrintEvent);
             try {
-                var endpoint = await events.SubscribeEndpointEventsAsync(null, PrintEvent);
+                var endpoint = await events.SubscribeEndpointEventsAsync(PrintEvent);
                 try {
-                    var supervisor = await events.SubscribeSupervisorEventsAsync(null, PrintEvent);
+                    var supervisor = await events.SubscribeSupervisorEventsAsync(PrintEvent);
                     try {
-                        var publisher = await events.SubscribePublisherEventsAsync(null, PrintEvent);
+                        var publisher = await events.SubscribePublisherEventsAsync(PrintEvent);
                         try {
-                            var discoverers = await events.SubscribeDiscovererEventsAsync(null, PrintEvent);
+                            var discoverers = await events.SubscribeDiscovererEventsAsync(PrintEvent);
                             try {
                                 var supervisors = await _registry.ListAllDiscoverersAsync();
                                 var discovery = await supervisors
                                     .Select(s => events.SubscribeDiscoveryProgressByDiscovererIdAsync(
-                                        s.Id, null, PrintProgress)).AsAsyncDisposable();
+                                        s.Id, PrintProgress)).AsAsyncDisposable();
                                 try {
                                     Console.ReadKey();
                                 }
@@ -2285,7 +2285,7 @@ namespace Microsoft.Azure.IIoT.Api.Cli {
         private async Task MonitorEndpointsAsync() {
             var events = _scope.Resolve<IRegistryServiceEvents>();
             Console.WriteLine("Press any key to stop.");
-            var complete = await events.SubscribeEndpointEventsAsync(null, PrintEvent);
+            var complete = await events.SubscribeEndpointEventsAsync(PrintEvent);
             try {
                 Console.ReadKey();
             }

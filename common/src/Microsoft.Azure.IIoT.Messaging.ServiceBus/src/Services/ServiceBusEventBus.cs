@@ -99,10 +99,9 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
                             Name = eventName
                         });
                     }
-                    catch (ServiceBusException) {
-                        _logger.Warning("The messaging entity {eventName} already exists.",
+                    catch (ServiceBusException ex) {
+                        _logger.Debug(ex, "The messaging entity {eventName} already exists.",
                             eventName);
-                        // TODO: throw?
                     }
                     handlers = new Dictionary<string, Subscription>();
                     _handlers.Add(eventName, handlers);

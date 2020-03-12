@@ -6,6 +6,7 @@
 namespace Microsoft.Azure.IIoT.App {
     using Microsoft.Azure.IIoT.App.Services;
     using Microsoft.Azure.IIoT.App.Runtime;
+    using Microsoft.Azure.IIoT.App.Common;
     using Microsoft.Azure.IIoT.AspNetCore.Auth.Clients;
     using Microsoft.Azure.IIoT.AspNetCore.Auth;
     using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders.Extensions;
@@ -20,16 +21,14 @@ namespace Microsoft.Azure.IIoT.App {
     using Microsoft.Azure.IIoT.OpcUa.Api.Vault.Clients;
     using Microsoft.Azure.IIoT.OpcUa.Api.Registry;
     using Microsoft.Azure.IIoT.OpcUa.Api.Publisher;
-    using Microsoft.Azure.IIoT.App.Common;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.AzureAD.UI;
     using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Rewrite;
-    using Microsoft.AspNetCore.Mvc.Authorization;
+    using Microsoft.AspNetCore.SignalR;
     using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.AspNetCore.Components.Server;
     using Microsoft.Extensions.Configuration;
@@ -203,9 +202,12 @@ namespace Microsoft.Azure.IIoT.App {
             });
 
             services.AddRazorPages();
+            services.AddSignalR()
+                .AddJsonSerializer()
+             //   .AddMessagePackSerializer()
+             //   .AddAzureSignalRService(Config)
+                ;
             services.AddServerSideBlazor();
-          //  services.AddSignalR()
-          //      .AddAzureSignalR(Config.SignalRConnString);
         }
 
         /// <summary>
@@ -224,7 +226,7 @@ namespace Microsoft.Azure.IIoT.App {
 
             // Register http client module (needed for api)...
             builder.RegisterModule<HttpClientModule>();
-            builder.RegisterType<SignalRClient>()
+            builder.RegisterType<SignalRHubClient>()
                 .AsImplementedInterfaces().AsSelf().SingleInstance();
 
             // Use bearer authentication

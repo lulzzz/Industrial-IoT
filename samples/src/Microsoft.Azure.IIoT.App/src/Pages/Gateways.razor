@@ -89,12 +89,12 @@
                 _tableView = "hidden";
             }
             StateHasChanged();
-            _gatewayEvent = await RegistryServiceEvents.SubscribeGatewayEventsAsync(null,
+            _gatewayEvent = await RegistryServiceEvents.SubscribeGatewayEventsAsync(
                 ev => InvokeAsync(() => GatewayEvent(ev)));
         }
     }
 
-    private Task GatewayEvent(GatewayEventApiModel ev) 
+    private Task GatewayEvent(GatewayEventApiModel ev)
     {
         _gatewayList.Results.Update(ev);
         StateHasChanged();
@@ -103,7 +103,7 @@
 
     public async void Dispose()
     {
-        if (_gatewayEvent != null) 
+        if (_gatewayEvent != null)
 	{
             await _gatewayEvent.DisposeAsync();
         }

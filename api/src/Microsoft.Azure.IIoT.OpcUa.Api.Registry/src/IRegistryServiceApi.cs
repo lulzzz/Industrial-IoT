@@ -152,24 +152,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             CancellationToken ct = default);
 
         /// <summary>
-        /// Subscribe client to application events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task SubscribeApplicationEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
-        /// Unsubscribe client from application events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task UnsubscribeApplicationEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
         /// Get endpoint
         /// </summary>
         /// <param name="endpointId"></param>
@@ -232,24 +214,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
         Task<EndpointInfoListApiModel> QueryEndpointsAsync(
             EndpointRegistrationQueryApiModel query,
             bool? onlyServerState = null, int? pageSize = null,
-            CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe client to endpoint events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task SubscribeEndpointEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
-        /// Unsubscribe client from endpoint events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task UnsubscribeEndpointEventsAsync(string userId,
             CancellationToken ct = default);
 
         /// <summary>
@@ -318,24 +282,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
-        /// Subscribe client to supervisor events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task SubscribeSupervisorEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
-        /// Unsubscribe client from supervisor events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task UnsubscribeSupervisorEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
         /// Get discoverer
         /// </summary>
         /// <param name="discovererId"></param>
@@ -382,64 +328,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
         Task<DiscovererListApiModel> QueryDiscoverersAsync(
             DiscovererQueryApiModel query, bool? onlyServerState = null,
             int? pageSize = null, CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe client to discoverer events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task SubscribeDiscovererEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
-        /// Unsubscribe client from discoverer events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task UnsubscribeDiscovererEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe client to discovery progress from discoverer
-        /// </summary>
-        /// <param name="discovererId"></param>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task SubscribeDiscoveryProgressByDiscovererIdAsync(string discovererId,
-            string userId, CancellationToken ct = default);
-
-        /// <summary>
-        /// Unsubscribe client from discovery progress for specified request
-        /// </summary>
-        /// <param name="requestId"></param>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task UnsubscribeDiscoveryProgressByRequestIdAsync(string requestId,
-            string userId, CancellationToken ct = default);
-
-        /// <summary>
-        /// Unsubscribe client from discovery events
-        /// </summary>
-        /// <param name="discovererId"></param>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task UnsubscribeDiscoveryProgressByDiscovererIdAsync(string discovererId,
-            string userId, CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe client to progress on specifiy request
-        /// </summary>
-        /// <param name="requestId"></param>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task SubscribeDiscoveryProgressByRequestIdAsync(string requestId,
-            string userId, CancellationToken ct = default);
 
         /// <summary>
         /// Enable or disable discovery with optional configuration
@@ -502,24 +390,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             int? pageSize = null, CancellationToken ct = default);
 
         /// <summary>
-        /// Subscribe client to publisher events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task SubscribePublisherEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
-        /// Unsubscribe client from publisher events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task UnsubscribePublisherEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
         /// Get gateway
         /// </summary>
         /// <param name="gatewayId"></param>
@@ -561,24 +431,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
         /// <returns></returns>
         Task<GatewayListApiModel> QueryGatewaysAsync(
             GatewayQueryApiModel query, int? pageSize = null,
-            CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe client to gateway events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task SubscribeGatewayEventsAsync(string userId,
-            CancellationToken ct = default);
-
-        /// <summary>
-        /// Unsubscribe client from gateway events
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task UnsubscribeGatewayEventsAsync(string userId,
             CancellationToken ct = default);
     }
 }

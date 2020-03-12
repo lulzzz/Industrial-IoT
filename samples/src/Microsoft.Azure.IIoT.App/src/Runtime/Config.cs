@@ -17,7 +17,8 @@ namespace Microsoft.Azure.IIoT.App.Runtime {
     /// <summary>
     /// Configuration aggregation
     /// </summary>
-    public class Config : ApiConfig, IClientConfig, ISignalRServiceConfig, IHostConfig, IForwardedHeadersConfig {
+    public class Config : ApiConfig, IClientConfig, ISignalRServiceConfig,
+        IHostConfig, IForwardedHeadersConfig {
 
         /// <inheritdoc/>
         public string AppId => _auth.AppId;

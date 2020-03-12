@@ -14,14 +14,14 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Clients {
     /// <summary>
     /// Monitored item sample message progress  publishing
     /// </summary>
-    public sealed class MonitoredItemMessagePublisher : ISubscriberMessageProcessor,
+    public sealed class MonitoredItemMessagePublisher<THub> : ISubscriberMessageProcessor,
         IDisposable {
 
         /// <summary>
         /// Create publisher
         /// </summary>
         /// <param name="callback"></param>
-        public MonitoredItemMessagePublisher(ICallbackInvoker callback) {
+        public MonitoredItemMessagePublisher(ICallbackInvokerT<THub> callback) {
             _callback = callback ?? throw new ArgumentNullException(nameof(callback));
         }
 

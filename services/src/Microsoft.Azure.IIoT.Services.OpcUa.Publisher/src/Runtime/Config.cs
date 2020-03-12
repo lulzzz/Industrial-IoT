@@ -85,8 +85,6 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Publisher.Runtime {
         public string OpenApiServerHost => _openApi.OpenApiServerHost;
 
         /// <inheritdoc/>
-        public string SignalRHubName => _sr.SignalRHubName;
-        /// <inheritdoc/>
         public string SignalRConnString => _sr.SignalRConnString;
 
         /// <inheritdoc/>

@@ -32,6 +32,9 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Runtime {
         ICorsConfig, IClientConfig, IOpenApiConfig, ISignalRServiceConfig,
         IEventProcessorConfig, IEventHubConsumerConfig, IForwardedHeadersConfig {
 
+        private const string kEventHubConsumerGroupTelemetryUxKey =
+            "EventHubConsumerGroupTelemetryUx";
+
         /// <inheritdoc/>
         public string CorsWhitelist => _cors.CorsWhitelist;
         /// <inheritdoc/>
@@ -81,20 +84,17 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Runtime {
 
         /// <inheritdoc/>
         public string SignalRConnString => _sr.SignalRConnString;
-        /// <inheritdoc/>
-        public string SignalRHubName => _sr.SignalRHubName;
-
-        private const string kEventHubConsumerGroupTelemetryUxKey =
-            "EventHubConsumerGroupTelemetryUx";
 
         /// <inheritdoc/>
         public string EventHubConnString => _eh.EventHubConnString;
         /// <inheritdoc/>
         public string EventHubPath => _eh.EventHubPath;
-        /// <summary> Event hub consumer group telemetry ux</summary>
-        public string ConsumerGroup => GetStringOrDefault(kEventHubConsumerGroupTelemetryUxKey,
+        /// <inheritdoc/>
+        public string ConsumerGroup => GetStringOrDefault(
+            kEventHubConsumerGroupTelemetryUxKey,
             GetStringOrDefault(PcsVariable.PCS_EVENTHUB_CONSUMERGROUP_TELEMETRY_UX,
                 "telemetryux"));
+
         /// <inheritdoc/>
         public bool UseWebsockets => _eh.UseWebsockets;
         /// <inheritdoc/>

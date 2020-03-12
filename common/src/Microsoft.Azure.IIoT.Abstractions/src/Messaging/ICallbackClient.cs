@@ -12,10 +12,10 @@ namespace Microsoft.Azure.IIoT.Messaging {
     public interface ICallbackClient {
 
         /// <summary>
-        /// Get callback registration interface for user
+        /// Get callback registration interface for hub at endoint
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="endpointUrl"></param>
         /// <returns></returns>
-        Task<ICallbackRegistrar> GetRegistrarAsync(string userId = null);
+        Task<ICallbackRegistrar> GetHubAsync(string endpointUrl);
     }
 }

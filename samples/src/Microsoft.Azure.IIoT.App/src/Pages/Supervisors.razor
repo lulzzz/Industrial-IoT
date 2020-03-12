@@ -121,7 +121,7 @@
             StateHasChanged();
 
             _supervisorEvent = await RegistryServiceEvents.SubscribeSupervisorEventsAsync(
-                null, async data =>
+                async data =>
                 {
                     await InvokeAsync(() => SupervisorEvent(data));
                 });

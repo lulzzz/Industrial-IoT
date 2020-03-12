@@ -158,7 +158,7 @@
             }
             StateHasChanged();
 
-            _endpointEvents = await RegistryServiceEvents.SubscribeEndpointEventsAsync(null,
+            _endpointEvents = await RegistryServiceEvents.SubscribeEndpointEventsAsync(
                 ev => InvokeAsync(() => EndpointEvent(ev)));
         }
     }

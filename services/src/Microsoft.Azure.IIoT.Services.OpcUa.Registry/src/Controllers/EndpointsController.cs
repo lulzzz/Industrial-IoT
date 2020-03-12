@@ -10,7 +10,6 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Registry.Controllers {
     using Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models;
     using Microsoft.Azure.IIoT.OpcUa.Api.Core.Models;
     using Microsoft.Azure.IIoT.OpcUa.Registry;
-    using Microsoft.Azure.IIoT.Messaging;
     using Microsoft.Azure.IIoT.Http;
     using Microsoft.Azure.IIoT.AspNetCore.OpenApi;
     using Microsoft.AspNetCore.Authorization;
@@ -34,11 +33,8 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Registry.Controllers {
         /// Create controller for endpoints services
         /// </summary>
         /// <param name="endpoints"></param>
-        /// <param name="events"></param>
-        public EndpointsController(IEndpointRegistry endpoints,
-            IGroupRegistration events) {
+        public EndpointsController(IEndpointRegistry endpoints) {
             _endpoints = endpoints;
-            _events = events;
         }
 
         /// <summary>
@@ -205,35 +201,6 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Registry.Controllers {
             await _endpoints.DeactivateEndpointAsync(endpointId);
         }
 
-        /// <summary>
-        /// Subscribe for endpoint events
-        /// </summary>
-        /// <remarks>
-        /// Register a user to receive endpoint events through SignalR.
-        /// </remarks>
-        /// <param name="userId">The user id that will receive endpoint
-        /// events.</param>
-        /// <returns></returns>
-        [HttpPut("events")]
-        public async Task SubscribeAsync([FromBody]string userId) {
-            await _events.SubscribeAsync("endpoints", userId);
-        }
-
-        /// <summary>
-        /// Unsubscribe from endpoint events
-        /// </summary>
-        /// <remarks>
-        /// Unregister a user and stop it from receiving endpoint events.
-        /// </remarks>
-        /// <param name="userId">The user id that will not receive
-        /// any more endpoint events</param>
-        /// <returns></returns>
-        [HttpDelete("events/{userId}")]
-        public async Task UnsubscribeAsync(string userId) {
-            await _events.UnsubscribeAsync("endpoints", userId);
-        }
-
         private readonly IEndpointRegistry _endpoints;
-        private readonly IGroupRegistration _events;
     }
 }

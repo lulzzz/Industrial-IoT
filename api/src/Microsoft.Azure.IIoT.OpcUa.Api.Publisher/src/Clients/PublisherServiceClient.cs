@@ -105,37 +105,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Clients {
             return _serializer.DeserializeResponse<PublishStopResponseApiModel>(response);
         }
 
-        /// <inheritdoc/>
-        public async Task NodePublishSubscribeByEndpointAsync(string endpointId, string userId,
-            CancellationToken ct) {
-            if (string.IsNullOrEmpty(endpointId)) {
-                throw new ArgumentNullException(nameof(endpointId));
-            }
-            if (string.IsNullOrEmpty(userId)) {
-                throw new ArgumentNullException(nameof(userId));
-            }
-            var request = _httpClient.NewRequest(
-                $"{_serviceUri}/v2/monitor/{endpointId}/samples", _resourceId);
-            _serializer.SerializeToRequest(request,  userId);
-            var response = await _httpClient.PutAsync(request, ct).ConfigureAwait(false);
-            response.Validate();
-        }
-
-        /// <inheritdoc/>
-        public async Task NodePublishUnsubscribeByEndpointAsync(string endpointId, string userId,
-            CancellationToken ct) {
-            if (string.IsNullOrEmpty(endpointId)) {
-                throw new ArgumentNullException(nameof(endpointId));
-            }
-            if (string.IsNullOrEmpty(userId)) {
-                throw new ArgumentNullException(nameof(userId));
-            }
-            var request = _httpClient.NewRequest(
-                $"{_serviceUri}/v2/monitor/{endpointId}/samples/{userId}", _resourceId);
-            var response = await _httpClient.DeleteAsync(request, ct).ConfigureAwait(false);
-            response.Validate();
-        }
-
         private readonly IHttpClient _httpClient;
         private readonly ISerializer _serializer;
         private readonly string _serviceUri;

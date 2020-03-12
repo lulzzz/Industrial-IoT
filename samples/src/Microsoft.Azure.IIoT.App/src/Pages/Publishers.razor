@@ -79,7 +79,7 @@
     private PagedResult<PublisherApiModel> _pagedPublisherList = new PagedResult<PublisherApiModel>();
     private IAsyncDisposable _publisherEvent { get; set; }
     private string _tableView { get; set; } = "visible";
-  
+
     /// <summary>
     /// Notify page change
     /// </summary>
@@ -116,7 +116,7 @@
             }
             StateHasChanged();
 
-            _publisherEvent = await RegistryServiceEvents.SubscribePublisherEventsAsync(null,
+            _publisherEvent = await RegistryServiceEvents.SubscribePublisherEventsAsync(
                 ev => InvokeAsync(() => PublisherEvent(ev)));
         }
     }

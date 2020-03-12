@@ -16,19 +16,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
         public const string ApplicationEventTarget = "ApplicationEvent";
 
         /// <summary>
-        /// Application group
-        /// </summary>
-        public const string Applications = "applications";
-
-        /// <summary>
         /// Endpoint event type
         /// </summary>
         public const string EndpointEventTarget = "EndpointEvent";
-
-        /// <summary>
-        /// Endpoint group
-        /// </summary>
-        public const string Endpoints = "endpoints";
 
         /// <summary>
         /// Supervisor event type
@@ -41,34 +31,14 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
         public const string GatewayEventTarget = "GatewayEvent";
 
         /// <summary>
-        /// Gateways group
-        /// </summary>
-        public const string Gateways = "gateways";
-
-        /// <summary>
-        /// Supervisors group
-        /// </summary>
-        public const string Supervisors = "supervisors";
-
-        /// <summary>
         /// Discoverer event type
         /// </summary>
         public const string DiscovererEventTarget = "DiscovererEvent";
 
         /// <summary>
-        /// Discoverers group
-        /// </summary>
-        public const string Discoverers = "discovery";
-
-        /// <summary>
         /// Publisher event type
         /// </summary>
         public const string PublisherEventTarget = "PublisherEvent";
-
-        /// <summary>
-        /// Publishers group
-        /// </summary>
-        public const string Publishers = "publishers";
 
         /// <summary>
         /// Discovery progress event targets

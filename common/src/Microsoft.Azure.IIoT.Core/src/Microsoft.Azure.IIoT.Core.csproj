@@ -22,4 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Microsoft.Azure.IIoT.Abstractions\src\Microsoft.Azure.IIoT.Abstractions.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Messaging\SignalR\Extensions\" />
+  </ItemGroup>
 </Project>

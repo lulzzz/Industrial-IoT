@@ -30,6 +30,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry {
                 .AsImplementedInterfaces();
             builder.RegisterType<EventBrokerStubT<IDiscovererRegistryListener>>()
                 .AsImplementedInterfaces();
+            builder.RegisterType<EventBrokerStubT<IDiscoveryProgressProcessor>>()
+                .AsImplementedInterfaces();
 
             base.Load(builder);
         }

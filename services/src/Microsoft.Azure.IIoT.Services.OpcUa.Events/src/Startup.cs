@@ -5,7 +5,6 @@
 
 namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
     using Microsoft.Azure.IIoT.Services.OpcUa.Events.Runtime;
-    using Microsoft.Azure.IIoT.AspNetCore.Auth;
     using Microsoft.Azure.IIoT.AspNetCore.Cors;
     using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders.Extensions;
     using Microsoft.Azure.IIoT.Core.Messaging.EventHub;
@@ -23,9 +22,9 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
     using Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers;
     using Microsoft.Azure.IIoT.Serializers;
     using Microsoft.Azure.IIoT.Utils;
+    using Microsoft.Azure.EventHubs.Processor;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Azure.EventHubs.Processor;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -118,7 +117,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
             // Add signalr and optionally configure signalr service
             services.AddSignalR()
                 .AddJsonSerializer()
-                .AddMessagePackSerializer()
+              //  .AddMessagePackSerializer()
                 .AddAzureSignalRService(Config);
 
             services.AddSwagger(Config, ServiceInfo.Name, ServiceInfo.Description);
@@ -158,6 +157,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
             app.UseMetricServer();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
+                endpoints.MapHubs();
                 endpoints.MapHealthChecks("/healthz");
             });
 
@@ -184,8 +184,69 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
             // Register metrics logger
             builder.RegisterType<MetricsLogger>()
                 .AsImplementedInterfaces().SingleInstance();
-            // CORS setup
             builder.RegisterType<CorsSetup>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // Application event hub
+            builder.RegisterType<ApplicationEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SignalRHub<ApplicationsHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<
+                ApplicationEventForwarder<ApplicationsHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // Endpoints event hub
+            builder.RegisterType<EndpointEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SignalRHub<EndpointsHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<
+                EndpointEventForwarder<EndpointsHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // Gateways event hub
+            builder.RegisterType<GatewayEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SignalRHub<GatewaysHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<
+                GatewayEventForwarder<GatewaysHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // Twin event hub
+            builder.RegisterType<SupervisorEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SignalRHub<SupervisorsHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<
+                SupervisorEventForwarder<SupervisorsHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // Publishers event hub
+            builder.RegisterType<PublisherEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SignalRHub<PublishersHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<
+                PublisherEventForwarder<PublishersHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<
+                MonitoredItemMessagePublisher<PublishersHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // Discovery event hub
+            builder.RegisterType<DiscovererEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<DiscoveryProgressEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SignalRHub<DiscoveryHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<
+                DiscoveryProgressForwarder<DiscoveryHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<
+                DiscovererEventForwarder<DiscoveryHub>>()
                 .AsImplementedInterfaces().SingleInstance();
 
             // Register http client module
@@ -211,44 +272,15 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
             builder.RegisterType<EventHubDeviceEventHandler>()
                 .AsImplementedInterfaces().SingleInstance();
 
+            // ... and auto start
+            builder.RegisterType<HostAutoStart>()
+                .AutoActivate()
+                .AsImplementedInterfaces().SingleInstance();
 
             // Handle opc-ua pub/sub telemetry subscriptions ...
             builder.RegisterType<MonitoredItemSampleModelHandler>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<NetworkMessageModelHandler>()
-                .AsImplementedInterfaces().SingleInstance();
-
-            // ...
-
-            // ... and event subscriptions
-            builder.RegisterType<ApplicationEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<EndpointEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<GatewayEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<SupervisorEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<PublisherEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<DiscovererEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
-
-            // ...
-
-            // Register signalr forwarders
-            // builder.RegisterType<IoTHubMessagingHttpClient>()
-            //    .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<SignalRServiceHost>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<RegistryEventPublisherHost>()
-                .AsImplementedInterfaces();
-            builder.RegisterType<MonitoredItemMessagePublisher>()
-                .AsImplementedInterfaces().SingleInstance();
-
-            // ... and auto start
-            builder.RegisterType<HostAutoStart>()
-                .AutoActivate()
                 .AsImplementedInterfaces().SingleInstance();
         }
     }

@@ -204,7 +204,7 @@
                 _tableView = "hidden";
             }
             StateHasChanged();
-            _publishEvent = await PublisherServiceEvents.NodePublishSubscribeByEndpointAsync(EndpointId, null, PublishEvent);
+            _publishEvent = await PublisherServiceEvents.NodePublishSubscribeByEndpointAsync(EndpointId, PublishEvent);
         }
     }
 
