@@ -21,6 +21,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
             if (config == null) {
                 return update;
             }
+            if (update == null) {
+                return config;
+            }
             if (!isPatch || update.ActivationFilter != null) {
                 config.ActivationFilter = update.ActivationFilter;
             }

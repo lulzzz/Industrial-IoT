@@ -79,46 +79,5 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
                 DiscovererId = model.DiscovererId
             };
         }
-
-        /// <summary>
-        /// Get security assessment
-        /// </summary>
-        /// <param name="model"></param>
-        public static SecurityAssessment GetSecurityAssessment(
-            this EndpointRegistrationModel model) {
-            if (model.Endpoint.SecurityMode == SecurityMode.None) {
-                return SecurityAssessment.Low;
-            }
-
-            if (model.Endpoint.Certificate == null) {
-                return SecurityAssessment.Low;
-            }
-
-            try {
-                using (var cert = new X509Certificate2(model.Endpoint.Certificate)) {
-                    var securityProfile = model.Endpoint.SecurityPolicy.Remove(0,
-                        model.Endpoint.SecurityPolicy.IndexOf('#') + 1);
-
-                    // TODO
-
-                    var expiryDate = cert.NotAfter;
-                    var issuer = cert.Issuer.Extract("CN=", ",");
-
-                    if ((securityProfile == "None") ||
-                        (securityProfile == "sha1") ||
-                        (cert.PublicKey.Key.KeySize == 1024)) {
-                        return SecurityAssessment.Low;
-                    }
-                    if ((cert.IssuerName.Name == cert.SubjectName.Name) &&
-                        (securityProfile != "None")) {
-                        return SecurityAssessment.High;
-                    }
-                    return SecurityAssessment.Medium;
-                }
-            }
-            catch {
-                return SecurityAssessment.Low;
-            }
-        }
     }
 }

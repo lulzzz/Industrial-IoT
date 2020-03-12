@@ -288,7 +288,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
                 return consolidated;
             }
             if (desired != null) {
-                desired._isInSync = desired.IsInSyncWith(consolidated);
+                desired._isInSync = consolidated.IsInSyncWith(desired);
             }
             return desired;
         }
@@ -384,8 +384,10 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
         /// <returns></returns>
         private static DiscoveryConfigModel ToConfigModel(this DiscovererRegistration registration) {
             return registration.IsNullConfig() ? null : new DiscoveryConfigModel {
-                AddressRangesToScan = registration.AddressRangesToScan,
-                PortRangesToScan = registration.PortRangesToScan,
+                AddressRangesToScan = string.IsNullOrEmpty(registration.AddressRangesToScan) ?
+                    null : registration.AddressRangesToScan,
+                PortRangesToScan = string.IsNullOrEmpty(registration.PortRangesToScan) ?
+                    null : registration.PortRangesToScan,
                 MaxNetworkProbes = registration.MaxNetworkProbes,
                 NetworkProbeTimeout = registration.NetworkProbeTimeout,
                 MaxPortProbes = registration.MaxPortProbes,
@@ -429,30 +431,40 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Models {
         /// <summary>
         /// Flag twin as synchronized - i.e. it matches the other.
         /// </summary>
-        /// <param name="registration"></param>
-        /// <param name="other"></param>
-        internal static bool IsInSyncWith(this DiscovererRegistration registration,
-            DiscovererRegistration other) {
-            if (registration == null) {
-                return other == null;
+        /// <param name="reported"></param>
+        /// <param name="desired"></param>
+        internal static bool IsInSyncWith(this DiscovererRegistration reported,
+            DiscovererRegistration desired) {
+            if (reported == null) {
+                return desired == null;
             }
             return
-                other != null &&
-                registration.SiteId == other.SiteId &&
-                registration.LogLevel == other.LogLevel &&
-                registration.Discovery == other.Discovery &&
-                registration.AddressRangesToScan == other.AddressRangesToScan &&
-                registration.PortRangesToScan == other.PortRangesToScan &&
-                registration.MaxNetworkProbes == other.MaxNetworkProbes &&
-                registration.NetworkProbeTimeout == other.NetworkProbeTimeout &&
-                registration.MaxPortProbes == other.MaxPortProbes &&
-                registration.MinPortProbesPercent == other.MinPortProbesPercent &&
-                registration.PortProbeTimeout == other.PortProbeTimeout &&
-                registration.IdleTimeBetweenScans == other.IdleTimeBetweenScans &&
-                registration.DiscoveryUrls.DecodeAsList().SequenceEqualsSafe(
-                    other.DiscoveryUrls.DecodeAsList()) &&
-                registration.Locales.DecodeAsList().SequenceEqualsSafe(
-                    other.Locales.DecodeAsList());
+                desired != null &&
+                reported.SiteId == desired.SiteId &&
+                reported.LogLevel == desired.LogLevel &&
+                reported.Discovery == desired.Discovery &&
+                (string.IsNullOrEmpty(desired.AddressRangesToScan) ||
+                    reported.AddressRangesToScan == desired.AddressRangesToScan) &&
+                (string.IsNullOrEmpty(desired.PortRangesToScan) ||
+                    reported.PortRangesToScan == desired.PortRangesToScan) &&
+                (desired.MaxNetworkProbes == null ||
+                    reported.MaxNetworkProbes == desired.MaxNetworkProbes) &&
+                (desired.MaxNetworkProbes == null ||
+                    reported.NetworkProbeTimeout == desired.NetworkProbeTimeout) &&
+                (desired.MaxPortProbes == null ||
+                    reported.MaxPortProbes == desired.MaxPortProbes) &&
+                (desired.MinPortProbesPercent == null ||
+                    reported.MinPortProbesPercent == desired.MinPortProbesPercent) &&
+                (desired.PortProbeTimeout == null ||
+                    reported.PortProbeTimeout == desired.PortProbeTimeout) &&
+                (desired.IdleTimeBetweenScans == null ||
+                    reported.IdleTimeBetweenScans == desired.IdleTimeBetweenScans) &&
+                ((desired.DiscoveryUrls.DecodeAsList()?.Count ?? 0) == 0 ||
+                    reported.DiscoveryUrls.DecodeAsList().SequenceEqualsSafe(
+                        desired.DiscoveryUrls.DecodeAsList())) &&
+                ((desired.Locales.DecodeAsList()?.Count ?? 0) == 0 ||
+                    reported.Locales.DecodeAsList().SequenceEqualsSafe(
+                        desired.Locales.DecodeAsList()));
         }
     }
 }

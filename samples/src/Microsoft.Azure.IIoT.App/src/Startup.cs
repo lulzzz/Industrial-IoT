@@ -196,13 +196,10 @@ namespace Microsoft.Azure.IIoT.App {
                     options.Events.OnAuthorizationCodeReceived = OnAuthorizationCodeReceivedAsync;
                 });
 
-            services.AddControllersWithViews(options => {
-                if (!string.IsNullOrEmpty(Config.AppId)) {
-                    options.Filters.Add(new AuthorizeFilter(
-                        new AuthorizationPolicyBuilder()
-                            .RequireAuthenticatedUser()
-                            .Build()));
-                }
+            services.AddControllersWithViews();
+
+            services.AddAuthorization(options => {
+                options.AddPolicy("Auth", c => c.RequireAuthenticatedUser());
             });
 
             services.AddRazorPages();

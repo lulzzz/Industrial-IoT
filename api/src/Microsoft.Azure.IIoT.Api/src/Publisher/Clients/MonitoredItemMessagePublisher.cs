@@ -38,7 +38,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Clients {
         public async Task HandleMessageAsync(DataSetMessageModel message) {
             foreach (var datapoint in message.Payload) {
                 var arguments = new object[] {
-                     new MonitoredItemMessageApiModel() {
+                     new MonitoredItemMessageApiModel {
                         Value = datapoint.Value.TypeId?.IsPrimitive == true ?
                             datapoint.Value.Value : datapoint.Value.Value?.ToString(),
                         TypeId = datapoint.Value.TypeId?.FullName,

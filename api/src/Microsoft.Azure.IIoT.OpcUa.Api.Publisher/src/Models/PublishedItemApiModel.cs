@@ -24,7 +24,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Models {
         /// <summary>
         /// Display name of the node to monitor
         /// </summary>
-        [JsonProperty(PropertyName = "displayName")]
+        [DataMember(Name = "displayName",
+            EmitDefaultValue = false)]
         public string DisplayName { get; set; }
 
         /// <summary>

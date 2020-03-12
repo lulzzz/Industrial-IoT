@@ -152,7 +152,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Registry.Services {
                 Endpoints = endpoints
                     .Select(ep => ep.Registration)
                     .ToList()
-            }.SetSecurityAssessment();
+            };
         }
 
         /// <inheritdoc/>

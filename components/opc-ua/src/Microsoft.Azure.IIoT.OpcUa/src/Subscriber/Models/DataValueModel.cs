@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Models {
+    using Microsoft.Azure.IIoT.Serializers;
     using Newtonsoft.Json;
     using System;
     using System.Runtime.Serialization;
@@ -11,36 +12,35 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Models {
     /// <summary>
     /// Publisher monitored item sample model
     /// </summary>
-    [JsonObject(Id = "dataValue",
-        ItemNullValueHandling = NullValueHandling.Ignore)]
+    [DataContract]
     public class DataValueModel{
 
         /// <summary>
         /// Value
         /// </summary>
-        [JsonProperty(PropertyName = "value",
-            NullValueHandling = NullValueHandling.Ignore)]
-        public dynamic Value {get; set; }
-        
+        [DataMember(Name = "value",
+            EmitDefaultValue = false)]
+        public VariantValue Value {get; set; }
+
         /// <summary>
         /// Type id
         /// </summary>
-        [JsonProperty(PropertyName = "typeId",
-            NullValueHandling = NullValueHandling.Ignore)]
+        [DataMember(Name = "typeId",
+            EmitDefaultValue = false)]
         public Type TypeId { get; set; }
 
         /// <summary>
         /// Status of the value (Quality)
         /// </summary>
-        [JsonProperty(PropertyName = "status",
-            NullValueHandling = NullValueHandling.Ignore)]
+        [DataMember(Name = "status",
+            EmitDefaultValue = false)]
         public string Status { get; set; }
 
         /// <summary>
         /// Sent time stamp
         /// </summary>
-        [JsonProperty(PropertyName = "timestamp",
-            NullValueHandling = NullValueHandling.Ignore)]
+        [DataMember(Name = "timestamp",
+            EmitDefaultValue = false)]
         public DateTime? Timestamp { get; set; }
     }
 }

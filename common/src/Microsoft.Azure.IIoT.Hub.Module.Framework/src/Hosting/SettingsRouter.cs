@@ -40,7 +40,6 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _calltable = new Dictionary<string, CascadingInvoker>();
-            _cache = new Dictionary<string, VariantValue>();
             _lock = new SemaphoreSlim(1, 1);
         }
 
@@ -92,7 +91,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
         }
 
         /// <inheritdoc/>
-        public async Task<IDictionary<string, VariantValue>> GetSettingsChangesAsync() {
+        public async Task<IDictionary<string, VariantValue>> GetSettingsStateAsync() {
             await _lock.WaitAsync();
             try {
                 var reported = new Dictionary<string, VariantValue>();
@@ -131,18 +130,6 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                     if (!handler.Get(key, out var value)) {
                         continue;
                     }
-                    var obj = _serializer.FromObject(value);
-                    _cache.TryGetValue(key.ToLowerInvariant(), out var cached);
-                    if (cached == null && value == null) {
-                        // Do not report - both are null and thus equal
-                        continue;
-                    }
-                    if (cached != null && value != null &&
-                        VariantValue.DeepEquals(cached, obj)) {
-                        // Value is equal - do not report
-                        continue;
-                    }
-                    _cache[key.ToLowerInvariant()] = obj;
                     reported.AddOrUpdate(key, value);
                 }
                 catch (Exception ex) {
@@ -461,7 +448,6 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
         private const string kDefaultProp = "@default";
         private readonly IJsonSerializer _serializer;
         private readonly ILogger _logger;
-        private readonly Dictionary<string, VariantValue> _cache;
         private readonly Dictionary<string, CascadingInvoker> _calltable;
         private readonly SemaphoreSlim _lock;
     }

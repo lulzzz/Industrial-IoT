@@ -66,7 +66,6 @@ namespace Microsoft.Azure.IIoT.Modules.Discovery.Cli {
                         case "--help":
                             throw new ArgumentException("Help");
                     }
-
                 }
                 if (string.IsNullOrEmpty(cs)) {
                     throw new ArgumentException("Missing connection string.");

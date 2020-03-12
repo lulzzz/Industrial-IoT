@@ -28,12 +28,5 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
         [DataMember(Name = "endpoints",
             EmitDefaultValue = false)]
         public List<EndpointRegistrationApiModel> Endpoints { get; set; }
-
-        /// <summary>
-        /// Application security assessment
-        /// </summary>
-        [DataMember(Name = "securityAssessment",
-            EmitDefaultValue = false)]
-        public SecurityAssessment? SecurityAssessment { get; set; }
     }
 }

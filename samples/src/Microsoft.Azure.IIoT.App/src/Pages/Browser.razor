@@ -272,11 +272,7 @@
     {
         if ((bool)ev.Value)
         {
-<<<<<<< HEAD
-            var result = await Publisher.StartPublishingAsync(endpointId, node.Id, 1000, 1000);
-=======
-            var result = await Publisher.StartPublishing(endpointId, node.Id, node.NodeName, 1000, 1000);
->>>>>>> 9c5742087f851a248cc02f22e2939515e65e0f0c
+            var result = await Publisher.StartPublishingAsync(endpointId, node.Id, node.NodeName, 1000, 1000);
             if (result)
             {
                 node.PublishedItem = new OpcUa.Api.Publisher.Models.PublishedItemApiModel()

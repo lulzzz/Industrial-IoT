@@ -118,7 +118,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Publisher {
             // services.AddHttpClient();
 
             // Add controllers as services so they'll be resolved.
-            services.AddControllers().AddNewtonsoftJsonSerializer();
+            services.AddControllers().AddJsonSerializer();
             services.AddSwagger(Config, ServiceInfo.Name, ServiceInfo.Description);
         }
 

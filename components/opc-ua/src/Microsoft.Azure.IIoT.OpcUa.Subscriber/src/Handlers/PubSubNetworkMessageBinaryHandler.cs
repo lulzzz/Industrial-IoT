@@ -44,16 +44,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
             byte[] payload, IDictionary<string, string> properties, Func<Task> checkpoint) {
             using (var stream = new MemoryStream(payload)) {
                 var context = new ServiceMessageContext();
-<<<<<<< HEAD
-                using (var decoder = new BinaryDecoder(stream, context)) {
-                    var networkMessage = decoder.ReadEncodeable(null, typeof(NetworkMessage)) as NetworkMessage;
-                    foreach (var message in networkMessage.Messages) {
-                        foreach (var datapoint in message.Payload) {
-                            try {
-                                var codec = _encoder.Create(context);
-                                var sample = new MonitoredItemSampleModel() {
-                                    Value = codec.Encode(datapoint.Value),
-=======
                 try {
                     using (var decoder = new BinaryDecoder(stream, context)) {
                         var networkMessage = decoder.ReadEncodeable(null, typeof(NetworkMessage)) as NetworkMessage;
@@ -73,22 +63,20 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
                                 var codec = _encoder.Create(context);
                                 dataset.Payload[datapoint.Key] = new DataValueModel {
                                     Value = codec.Encode(datapoint.Value),
-                                dataset.Payload[datapoint.Key] = new DataValueModel() {
-                                    Value = datapoint.Value?.Value,
                                     Status = StatusCode.LookupSymbolicId(datapoint.Value.StatusCode.Code),
                                     TypeId = (datapoint.Value?.WrappedValue.TypeInfo != null) ?
                                         TypeInfo.GetSystemType(
                                             datapoint.Value.WrappedValue.TypeInfo.BuiltInType,
                                             datapoint.Value.WrappedValue.TypeInfo.ValueRank) : null,
-                                    DataSetId = message.DataSetWriterId,
-                                    // Timestamp = DateTime.UtcNow,
-                                    SubscriptionId = message.DataSetWriterId,
-                                    EndpointId = networkMessage.PublisherId,
-                                    NodeId = datapoint.Key,
-                                    SourcePicoseconds = datapoint.Value.SourcePicoseconds,
-                                    ServerPicoseconds = datapoint.Value.ServerPicoseconds,
-                                    SourceTimestamp = datapoint.Value.SourceTimestamp,
-                                    ServerTimestamp = datapoint.Value.ServerTimestamp
+                                   // DataSetId = message.DataSetWriterId,
+                                   // // Timestamp = DateTime.UtcNow,
+                                   // SubscriptionId = message.DataSetWriterId,
+                                   // EndpointId = networkMessage.PublisherId,
+                                   // NodeId = datapoint.Key,
+                                   // SourcePicoseconds = datapoint.Value.SourcePicoseconds,
+                                   // ServerPicoseconds = datapoint.Value.ServerPicoseconds,
+                                   // SourceTimestamp = datapoint.Value.SourceTimestamp,
+                                   // ServerTimestamp = datapoint.Value.ServerTimestamp
                                     Timestamp = datapoint.Value?.SourceTimestamp
                                 };
                             }

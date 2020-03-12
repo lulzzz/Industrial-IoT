@@ -77,7 +77,6 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Registry.Models {
             }
             return new ApplicationRegistrationApiModel {
                 Application = model.Application.ToApiModel(),
-                SecurityAssessment = (IIoT.OpcUa.Api.Registry.Models.SecurityAssessment?)model.SecurityAssessment,
                 Endpoints = model.Endpoints?
                     .Select(e => e.ToApiModel())
                     .ToList()

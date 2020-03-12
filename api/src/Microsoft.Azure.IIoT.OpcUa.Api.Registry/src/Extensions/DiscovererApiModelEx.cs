@@ -21,6 +21,9 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
             if (discoverer == null) {
                 return update;
             }
+            if (update == null) {
+                return discoverer;
+            }
             if (!isPatch || update.Connected != null) {
                 discoverer.Connected = update.Connected;
             }

@@ -160,10 +160,11 @@
     /// action on Supervisor Event
     /// </summary>
     /// <param name="ev"></param>
-    private async void SupervisorEvent(SupervisorEventApiModel ev)
+    private Task SupervisorEvent(SupervisorEventApiModel ev)
     {
-        await UpdateSupervisorAsync();
+        _supervisorList.Results.Update(ev);
         StateHasChanged();
+        return Task.CompletedTask;
     }
 
     /// <summary>

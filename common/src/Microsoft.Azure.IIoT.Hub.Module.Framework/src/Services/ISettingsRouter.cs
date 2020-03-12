@@ -22,9 +22,9 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Services {
             IDictionary<string, VariantValue> desired);
 
         /// <summary>
-        /// Get all setting changes to report.
+        /// Get all settings to report.
         /// </summary>
         /// <returns></returns>
-        Task<IDictionary<string, VariantValue>> GetSettingsChangesAsync();
+        Task<IDictionary<string, VariantValue>> GetSettingsStateAsync();
     }
 }

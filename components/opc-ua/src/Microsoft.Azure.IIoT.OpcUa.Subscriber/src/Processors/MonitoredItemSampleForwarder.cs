@@ -12,7 +12,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using System.Text;
 
     /// <summary>
     /// Forwards samples to another event hub
@@ -42,8 +41,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
             sample.Timestamp = sample.SourceTimestamp;
 
             var properties = new Dictionary<string, string>() {
-                [CommonProperties.EventSchemaType] = 
-                    MessageSchemaTypes.MonitoredItemMessageModelJson
+                [CommonProperties.EventSchemaType] =
+                    Core.MessageSchemaTypes.MonitoredItemMessageModelJson
             };
             return _client.SendAsync(
                 _serializer.SerializeToBytes(sample).ToArray(), properties);
@@ -52,8 +51,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
         /// <inheritdoc/>
         public Task HandleMessageAsync(DataSetMessageModel message) {
             var properties = new Dictionary<string, string>() {
-                [CommonProperties.EventSchemaType] = 
-                    MessageSchemaTypes.NetworkMessageModelJson
+                [CommonProperties.EventSchemaType] =
+                    Core.MessageSchemaTypes.NetworkMessageModelJson
             };
             return _client.SendAsync(
                 _serializer.SerializeToBytes(message).ToArray(), properties);

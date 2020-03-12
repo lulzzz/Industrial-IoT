@@ -61,7 +61,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
                             };
                             foreach (var datapoint in message.Payload) {
                                 var codec = _encoder.Create(context);
-                                dataset.Payload[datapoint.Key] = new DataValueModel() {
+                                dataset.Payload[datapoint.Key] = new DataValueModel {
                                     Value = codec.Encode(datapoint.Value),
                                     Status = StatusCode.LookupSymbolicId(datapoint.Value.StatusCode.Code),
                                     TypeId = (datapoint.Value?.WrappedValue.TypeInfo != null) ?
@@ -69,15 +69,15 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
                                             datapoint.Value.WrappedValue.TypeInfo.BuiltInType,
                                             datapoint.Value.WrappedValue.TypeInfo.ValueRank) : null,
 
-                                    DataSetId = message.DataSetWriterId,
-                                    // Timestamp = DateTime.UtcNow,
-                                    SubscriptionId = message.DataSetWriterId,
-                                    EndpointId = networkMessage.PublisherId,
-                                    NodeId = datapoint.Key,
-                                    SourcePicoseconds = datapoint.Value.SourcePicoseconds,
-                                    ServerPicoseconds = datapoint.Value.ServerPicoseconds,
-                                    SourceTimestamp = datapoint.Value.SourceTimestamp,
-                                    ServerTimestamp = datapoint.Value.ServerTimestamp
+                                   // DataSetId = message.DataSetWriterId,
+                                   // // Timestamp = DateTime.UtcNow,
+                                   // SubscriptionId = message.DataSetWriterId,
+                                   // EndpointId = networkMessage.PublisherId,
+                                   // NodeId = datapoint.Key,
+                                   // SourcePicoseconds = datapoint.Value.SourcePicoseconds,
+                                   // ServerPicoseconds = datapoint.Value.ServerPicoseconds,
+                                   // SourceTimestamp = datapoint.Value.SourceTimestamp,
+                                   // ServerTimestamp = datapoint.Value.ServerTimestamp
                                     Timestamp = datapoint.Value?.SourceTimestamp
                                 };
                             }

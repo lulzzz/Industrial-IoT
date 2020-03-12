@@ -204,9 +204,6 @@ namespace Microsoft.Azure.IIoT.App.Services {
             if (config.IdleTimeBetweenScans != null && config.IdleTimeBetweenScans != TimeSpan.Zero) {
                 model.DiscoveryConfig.IdleTimeBetweenScans = config.IdleTimeBetweenScans;
             }
-            else {
-                model.DiscoveryConfig.IdleTimeBetweenScans = _5MINUTES;
-            }
             if (config.DiscoveryUrls != null) {
                 model.DiscoveryConfig.DiscoveryUrls = config.DiscoveryUrls;
             }
@@ -373,7 +370,6 @@ namespace Microsoft.Azure.IIoT.App.Services {
         }
 
         private readonly IRegistryServiceApi _registryService;
-        private static readonly TimeSpan _5MINUTES = TimeSpan.FromMinutes(5);
         private readonly ILogger _logger;
         public string PathAll = "All";
     }

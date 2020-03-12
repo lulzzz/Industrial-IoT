@@ -14,7 +14,7 @@ namespace Microsoft.Azure.IIoT.AspNetCore.Cors {
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Cors setup extensions
+    /// Mvc setup extensions
     /// </summary>
     public static class MvcBuilderEx {
 
@@ -23,7 +23,7 @@ namespace Microsoft.Azure.IIoT.AspNetCore.Cors {
         /// </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static IMvcBuilder AddNewtonsoftJsonSerializer(this IMvcBuilder builder) {
+        public static IMvcBuilder AddJsonSerializer(this IMvcBuilder builder) {
             if (builder == null) {
                 throw new ArgumentNullException(nameof(builder));
             }

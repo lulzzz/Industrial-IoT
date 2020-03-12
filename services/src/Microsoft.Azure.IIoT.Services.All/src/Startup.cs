@@ -110,11 +110,11 @@ namespace Microsoft.Azure.IIoT.Services.All {
             app.AddStartupBranch<OpcUa.Twin.Gateway.Startup>("/ua");
             app.AddStartupBranch<OpcUa.Twin.History.Startup>("/history");
             app.AddStartupBranch<OpcUa.Publisher.Startup>("/publisher");
+            app.AddStartupBranch<OpcUa.Events.Startup>("/configuration");
             app.AddStartupBranch<Common.Identity.Startup>("/auth");
             app.AddStartupBranch<Common.Users.Startup>("/users");
             app.AddStartupBranch<Common.Jobs.Startup>("/jobs");
             app.AddStartupBranch<Common.Jobs.Edge.Startup>("/edge/jobs");
-            app.AddStartupBranch<Common.Configuration.Startup>("/configuration");
             app.AddStartupBranch<Common.Hub.Edgemanager.Startup>("/edge/manage");
 
             app.UseHealthChecks("/healthz");
@@ -156,20 +156,18 @@ namespace Microsoft.Azure.IIoT.Services.All {
                     Task.Run(() => Processor.Telemetry.Program.Main(args), _cts.Token),
                     Task.Run(() => Processor.Events.Program.Main(args), _cts.Token),
                     Task.Run(() => Processor.Telemetry.Cdm.Program.Main(args), _cts.Token),
-                    Task.Run(() => Processor.Telemetry.Ux.Program.Main(args), _cts.Token),
                     Task.Run(() => Processor.Tunnel.Program.Main(args), _cts.Token),
                     Task.Run(() => Common.Hub.Identity.Program.Main(args), _cts.Token),
                     Task.Run(() => Common.Hub.Fileupload.Program.Main(args), _cts.Token),
-                    Task.Run(() => OpcUa.Registry.Discovery.Program.Main(args), _cts.Token),
-                    Task.Run(() => OpcUa.Registry.Events.Program.Main(args), _cts.Token),
-                    Task.Run(() => OpcUa.Registry.Security.Program.Main(args), _cts.Token)
+                    Task.Run(() => OpcUa.Registry.Discovery.Program.Main(args), _cts.Token)
                 });
             }
 
             /// <inheritdoc/>
-            public Task StartAsync() {
+            public async Task StartAsync() {
+                // Delay processors for several seconds to give rest api time to come up
+                await Task.Delay(TimeSpan.FromSeconds(5), _cts.Token);
                 Start();
-                return Task.CompletedTask;
             }
 
             /// <inheritdoc/>

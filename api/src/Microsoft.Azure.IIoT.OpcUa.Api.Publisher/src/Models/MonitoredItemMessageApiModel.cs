@@ -44,7 +44,8 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Models {
         /// <summary>
         /// Node's display name
         /// </summary>
-        [JsonProperty(PropertyName = "displayName")]
+        [DataMember(Name = "displayName",
+            EmitDefaultValue = false)]
         public string DisplayName { get; set; }
 
         /// <summary>

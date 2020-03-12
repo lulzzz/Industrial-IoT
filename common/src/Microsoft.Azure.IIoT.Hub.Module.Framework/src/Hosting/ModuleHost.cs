@@ -6,7 +6,6 @@
 namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
     using Microsoft.Azure.IIoT.Module.Framework.Client;
     using Microsoft.Azure.IIoT.Module.Framework.Services;
-    using Microsoft.Azure.IIoT.Messaging;
     using Microsoft.Azure.IIoT.Hub;
     using Microsoft.Azure.IIoT.Exceptions;
     using Microsoft.Azure.Devices.Client;
@@ -164,21 +163,20 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             try {
                 await _lock.WaitAsync();
                 if (Client != null) {
-                    _twin = await Client.GetTwinAsync();
+                    var twin = await Client.GetTwinAsync();
                     _reported.Clear();
-                    foreach (KeyValuePair<string, dynamic> property in _twin.Properties.Reported) {
+                    foreach (KeyValuePair<string, dynamic> property in twin.Properties.Reported) {
                         _reported.AddOrUpdate(property.Key,
                             (VariantValue)_serializer.FromObject(property.Value));
-
                     }
-                    var changes = await _settings.GetSettingsChangesAsync();
+                    var reported = new Dictionary<string, VariantValue>();
+                    await ReportControllerStateAsync(twin, reported);
                 }
             }
             finally {
                 _lock.Release();
             }
         }
-
         /// <inheritdoc/>
         public async Task SendEventAsync(IEnumerable<byte[]> batch, string contentType,
             string eventSchema, string contentEncoding) {
@@ -338,13 +336,12 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             System.Diagnostics.Debug.Assert(_lock.CurrentCount == 0);
 
             // Process initial setting snapshot from twin
-            _twin = await Client.GetTwinAsync();
-
-            if (!string.IsNullOrEmpty(_twin.DeviceId)) {
-                DeviceId = _twin.DeviceId;
+            var twin = await Client.GetTwinAsync();
+            if (!string.IsNullOrEmpty(twin.DeviceId)) {
+                DeviceId = twin.DeviceId;
             }
-            if (!string.IsNullOrEmpty(_twin.ModuleId)) {
-                ModuleId = _twin.ModuleId;
+            if (!string.IsNullOrEmpty(twin.ModuleId)) {
+                ModuleId = twin.ModuleId;
             }
             _logger.Information("Initialize device twin for {deviceId} - {moduleId}",
                 DeviceId, ModuleId ?? "standalone");
@@ -354,7 +351,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
 
             // Start with reported values which we desire to be re-applied
             _reported.Clear();
-            foreach (KeyValuePair<string, dynamic> property in _twin.Properties.Reported) {
+            foreach (KeyValuePair<string, dynamic> property in twin.Properties.Reported) {
                 var value = (VariantValue)_serializer.FromObject(property.Value);
                 if (value.IsObject &&
                     value.TryGetProperty("status", out var val) &&
@@ -369,7 +366,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 }
             }
             // Apply desired values on top.
-            foreach (KeyValuePair<string, dynamic> property in _twin.Properties.Desired) {
+            foreach (KeyValuePair<string, dynamic> property in twin.Properties.Desired) {
                 var value = (VariantValue)_serializer.FromObject(property.Value);
                 if (!ProcessEdgeHostSettings(property.Key, value, reported)) {
                     desired[property.Key] = value;
@@ -377,12 +374,27 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             }
 
             // Process settings on controllers
-            _logger.Debug("Applying initial state.");
-            var processed = await _settings.ProcessSettingsAsync(desired);
+            _logger.Information("Applying initial desired state.");
+            await _settings.ProcessSettingsAsync(desired);
+
+            // Synchronize all controllers with reported
+            _logger.Information("Reporting currently initial state.");
+            await ReportControllerStateAsync(twin, reported);
+        }
+
+        /// <summary>
+        /// Synchronize controllers with current reported twin state
+        /// </summary>
+        /// <param name="twin"></param>
+        /// <param name="reported"></param>
+        /// <returns></returns>
+        private async Task ReportControllerStateAsync(Twin twin,
+            Dictionary<string, VariantValue> reported) {
+            var processed = await _settings.GetSettingsStateAsync();
 
             // If there are changes, update what should be reported back.
             foreach (var property in processed) {
-                var exists = _twin.Properties.Reported.Contains(property.Key);
+                var exists = twin.Properties.Reported.Contains(property.Key);
                 if (property.Value == null) {
                     if (exists) {
                         // If exists as reported, remove
@@ -394,7 +406,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                     if (exists) {
                         // If exists and same as property value, continue
                         var r = (VariantValue)_serializer.FromObject(
-                            _twin.Properties.Reported[property.Key]);
+                            twin.Properties.Reported[property.Key]);
                         if (r == property.Value) {
                             continue;
                         }
@@ -409,12 +421,14 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
                 }
             }
             if (reported.Count > 0) {
-                _logger.Debug("Reporting initial state.");
+                _logger.Debug("Reporting controller state...");
                 var collection = new TwinCollection();
                 foreach (var item in reported) {
                     collection[item.Key] = item.Value?.ConvertTo<object>();
                 }
                 await Client.UpdateReportedPropertiesAsync(collection);
+                _logger.Debug("Complete controller state reported (properties: {@settings}).",
+                    reported.Keys);
             }
         }
 
@@ -499,8 +513,6 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             }
             return true;
         }
-
-        private Twin _twin;
 
         private readonly IMethodRouter _router;
         private readonly ISettingsRouter _settings;

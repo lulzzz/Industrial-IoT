@@ -3,31 +3,38 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Microsoft.Azure.IIoT.Services.Common.Users {
-    using Microsoft.Azure.IIoT.Services.Common.Users.Runtime;
-    using Microsoft.Azure.IIoT.Auth.IdentityServer4.Storage;
-    using Microsoft.Azure.IIoT.Auth.IdentityServer4.Models;
-    using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders.Extensions;
-    using Microsoft.Azure.IIoT.AspNetCore.Cors;
-    using Microsoft.Azure.IIoT.AspNetCore.Correlation;
+namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
+    using Microsoft.Azure.IIoT.Services.OpcUa.Events.Runtime;
     using Microsoft.Azure.IIoT.AspNetCore.Auth;
-    using Microsoft.Azure.IIoT.Storage.CosmosDb.Services;
-    using Microsoft.Azure.IIoT.Storage.Default;
+    using Microsoft.Azure.IIoT.AspNetCore.Cors;
+    using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders.Extensions;
+    using Microsoft.Azure.IIoT.Core.Messaging.EventHub;
+    using Microsoft.Azure.IIoT.Diagnostics;
     using Microsoft.Azure.IIoT.Http.Default;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Azure.IIoT.Http.Ssl;
+    using Microsoft.Azure.IIoT.Hub.Processor.Services;
+    using Microsoft.Azure.IIoT.Messaging.Default;
+    using Microsoft.Azure.IIoT.Messaging.ServiceBus.Clients;
+    using Microsoft.Azure.IIoT.Messaging.ServiceBus.Services;
+    using Microsoft.Azure.IIoT.Messaging.SignalR.Services;
+    using Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Clients;
+    using Microsoft.Azure.IIoT.OpcUa.Api.Registry.Clients;
+    using Microsoft.Azure.IIoT.OpcUa.Registry.Events.v2;
+    using Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers;
     using Microsoft.Azure.IIoT.Serializers;
-    using Microsoft.Extensions.Hosting;
+    using Microsoft.Azure.IIoT.Utils;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Azure.EventHubs.Processor;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Microsoft.OpenApi.Models;
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
-    using System;
-    using ILogger = Serilog.ILogger;
     using Prometheus;
+    using System;
 
     /// <summary>
     /// Webservice startup
@@ -95,24 +102,25 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
             services.AddHealthChecks();
             services.AddDistributedMemoryCache();
 
-            // Add authentication
-            services.AddJwtBearerAuthentication(Config,
-                Environment.IsDevelopment());
-
-            // Add authorization
-            services.AddAuthorization(options => {
-                options.AddPolicies(Config.AuthRequired,
-                    Config.UseRoles && !Environment.IsDevelopment());
-            });
-
-            services.AddIdentity<UserModel, RoleModel>()
-                .AddDefaultTokenProviders();
-
-            // TODO: Remove http client factory and use
-            // services.AddHttpClient();
+           // // Add authentication
+           // services.AddJwtBearerAuthentication(Config,
+           //     Environment.IsDevelopment());
+           //
+           // // Add authorization
+           // services.AddAuthorization(options => {
+           //     options.AddPolicies(Config.AuthRequired,
+           //         Config.UseRoles && !Environment.IsDevelopment());
+           // });
 
             // Add controllers as services so they'll be resolved.
             services.AddControllers().AddJsonSerializer();
+
+            // Add signalr and optionally configure signalr service
+            services.AddSignalR()
+                .AddJsonSerializer()
+                .AddMessagePackSerializer()
+                .AddAzureSignalRService(Config);
+
             services.AddSwagger(Config, ServiceInfo.Name, ServiceInfo.Description);
         }
 
@@ -124,7 +132,6 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="appLifetime"></param>
         public void Configure(IApplicationBuilder app, IHostApplicationLifetime appLifetime) {
             var applicationContainer = app.ApplicationServices.GetAutofacRoot();
-            var log = applicationContainer.Resolve<ILogger>();
 
             if (!string.IsNullOrEmpty(Config.ServicePathBase)) {
                 app.UsePathBase(Config.ServicePathBase);
@@ -139,15 +146,14 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
             app.EnableCors();
 
             if (Config.AuthRequired) {
-                app.UseAuthentication();
+                // app.UseAuthentication();
+                // app.UseAuthorization();
             }
-            app.UseAuthorization();
             if (Config.HttpsRedirectPort > 0) {
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
 
-            app.UseCorrelation();
             app.UseSwagger();
             app.UseMetricServer();
             app.UseEndpoints(endpoints => {
@@ -158,10 +164,6 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
             // If you want to dispose of resources that have been resolved in the
             // application container, register for the "ApplicationStopped" event.
             appLifetime.ApplicationStopped.Register(applicationContainer.Dispose);
-
-            // Print some useful information at bootstrap time
-            log.Information("{service} web service started with id {id}", ServiceInfo.Name,
-                Uptime.ProcessId);
         }
 
         /// <summary>
@@ -170,31 +172,83 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
         /// <param name="builder"></param>
         public virtual void ConfigureContainer(ContainerBuilder builder) {
 
-            // Register service info and configuration interfaces
-            builder.RegisterInstance(ServiceInfo)
-                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterInstance(Config)
                 .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterInstance(Config.Configuration)
+                .AsImplementedInterfaces().SingleInstance();
 
-            // Add diagnostics based on configuration
+            // Register logger
             builder.AddDiagnostics(Config);
             builder.RegisterModule<NewtonSoftJsonModule>();
 
+            // Register metrics logger
+            builder.RegisterType<MetricsLogger>()
+                .AsImplementedInterfaces().SingleInstance();
             // CORS setup
             builder.RegisterType<CorsSetup>()
                 .AsImplementedInterfaces().SingleInstance();
 
             // Register http client module
             builder.RegisterModule<HttpClientModule>();
-
-            builder.RegisterType<CosmosDbServiceClient>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<ItemContainerFactory>()
+#if DEBUG
+            builder.RegisterType<NoOpCertValidator>()
                 .AsImplementedInterfaces();
+#endif
 
-            builder.RegisterType<RoleDatabase>()
+            // Register event bus for integration events
+            builder.RegisterType<EventBusHost>()
                 .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<UserDatabase>()
+            builder.RegisterType<ServiceBusClientFactory>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<ServiceBusEventBus>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // Register event processor host for telemetry
+            builder.RegisterType<EventProcessorHost>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<EventProcessorFactory>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<EventHubDeviceEventHandler>()
+                .AsImplementedInterfaces().SingleInstance();
+
+
+            // Handle opc-ua pub/sub telemetry subscriptions ...
+            builder.RegisterType<MonitoredItemSampleModelHandler>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<NetworkMessageModelHandler>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // ...
+
+            // ... and event subscriptions
+            builder.RegisterType<ApplicationEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<EndpointEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<GatewayEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SupervisorEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<PublisherEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<DiscovererEventBusSubscriber>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // ...
+
+            // Register signalr forwarders
+            // builder.RegisterType<IoTHubMessagingHttpClient>()
+            //    .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<SignalRServiceHost>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<RegistryEventPublisherHost>()
+                .AsImplementedInterfaces();
+            builder.RegisterType<MonitoredItemMessagePublisher>()
+                .AsImplementedInterfaces().SingleInstance();
+
+            // ... and auto start
+            builder.RegisterType<HostAutoStart>()
+                .AutoActivate()
                 .AsImplementedInterfaces().SingleInstance();
         }
     }

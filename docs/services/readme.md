@@ -36,7 +36,6 @@ The following Agents are part of the platform:
 * [Datalake and CDM Telemetry Exporter](cdm.md) (Preview)
 * [Http Tunnel Processor](tunnel.md)(Preview)
 * [Identity Service](identity.md) (Preview)
-* [Registry Security Alerting Service](security.md) (Preview)
 * [Registry Eventing Service](registryevents.md) (Preview)
 * [File upload Handler](fileupload.md) (Experimental)
 * [OPC Model Importer](graph.md) (Experimental)

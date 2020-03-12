@@ -26,6 +26,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Publisher {
     using Autofac;
     using Microsoft.Extensions.Configuration;
     using Serilog;
+    using Microsoft.Azure.IIoT.Module;
 
     /// <summary>
     /// Publisher module
@@ -81,6 +82,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Publisher {
                 using (var hostScope = ConfigureContainer(_config)) {
                     _reset = new TaskCompletionSource<bool>();
                     var module = hostScope.Resolve<IModuleHost>();
+                    var events = hostScope.Resolve<IEventEmitter>();
                     var workerSupervisor = hostScope.Resolve<IWorkerSupervisor>();
                     var logger = hostScope.Resolve<ILogger>();
                     try {
