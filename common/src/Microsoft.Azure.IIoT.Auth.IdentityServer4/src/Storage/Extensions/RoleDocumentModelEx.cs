@@ -4,7 +4,6 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.Auth.IdentityServer4.Models {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 

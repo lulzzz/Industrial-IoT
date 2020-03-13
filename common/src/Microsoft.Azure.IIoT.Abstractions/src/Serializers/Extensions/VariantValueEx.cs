@@ -6,8 +6,6 @@
 namespace Microsoft.Azure.IIoT.Serializers {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
-    using System.Numerics;
 
     /// <summary>
     /// Variant extensions

@@ -6,7 +6,6 @@
 namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
     using System.Runtime.Serialization;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System;
 
     /// <summary>

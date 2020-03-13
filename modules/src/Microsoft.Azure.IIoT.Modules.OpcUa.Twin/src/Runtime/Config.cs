@@ -87,28 +87,28 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Runtime {
 
         /// <inheritdoc/>
         public string AppCertStoreType => GetStringOrDefault(kAppCertStoreType,
-            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "X509Store" : "Directory");
+            () => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "X509Store" : "Directory");
         /// <inheritdoc/>
         public string PkiRootPath =>
-            GetStringOrDefault(kPkiRootPath, "pki");
+            GetStringOrDefault(kPkiRootPath, () => "pki");
         /// <inheritdoc/>
         public string OwnCertPath =>
-            GetStringOrDefault(kOwnCertPath, PkiRootPath + "/own");
+            GetStringOrDefault(kOwnCertPath, () => PkiRootPath + "/own");
         /// <inheritdoc/>
         public string TrustedCertPath =>
-            GetStringOrDefault(kTrustedCertPath, PkiRootPath + "/trusted");
+            GetStringOrDefault(kTrustedCertPath, () => PkiRootPath + "/trusted");
         /// <inheritdoc/>
         public string IssuerCertPath =>
-            GetStringOrDefault(kIssuerCertPath, PkiRootPath + "/issuer");
+            GetStringOrDefault(kIssuerCertPath, () => PkiRootPath + "/issuer");
         /// <inheritdoc/>
         public string RejectedCertPath =>
-            GetStringOrDefault(kRejectedCertPath, PkiRootPath + "/rejected");
+            GetStringOrDefault(kRejectedCertPath, () => PkiRootPath + "/rejected");
         /// <inheritdoc/>
         public string OwnCertX509StorePathDefault =>
-            GetStringOrDefault(kOwnCertX509StorePathDefault, "CurrentUser\\UA_MachineDefault");
+            GetStringOrDefault(kOwnCertX509StorePathDefault, () => "CurrentUser\\UA_MachineDefault");
         /// <inheritdoc/>
         bool IClientServicesConfig.AutoAcceptUntrustedCertificates =>
-            GetBoolOrDefault(kAutoAccept, false);
+            GetBoolOrDefault(kAutoAccept, () => false);
         /// <inheritdoc/>
         TimeSpan? IClientServicesConfig.DefaultSessionTimeout =>
             GetDurationOrNull(kSessionTimeout);

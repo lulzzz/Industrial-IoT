@@ -6,7 +6,6 @@
 namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
     using Microsoft.Azure.IIoT.OpcUa.Api.Core.Models;
     using System.Runtime.Serialization;
-    using System.ComponentModel;
 
     /// <summary>
     /// Method metadata request model

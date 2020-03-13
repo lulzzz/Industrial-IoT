@@ -16,7 +16,7 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Runtime {
 
         /// <inheritdoc/>
         public string SignalRConnString => GetStringOrDefault(kSignalRConnectionString,
-            GetStringOrDefault(PcsVariable.PCS_SIGNALR_CONNSTRING));
+            () => GetStringOrDefault(PcsVariable.PCS_SIGNALR_CONNSTRING));
 
         /// <summary>
         /// Configuration constructor

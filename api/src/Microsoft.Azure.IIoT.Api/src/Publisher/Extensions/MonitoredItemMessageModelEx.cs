@@ -17,7 +17,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Models {
         /// <param name="model"></param>
         /// <returns></returns>
         public static MonitoredItemMessageApiModel ToApiModel(
-            this MonitoredItemSampleModel model) {
+            this MonitoredItemMessageModel model) {
             if (model == null) {
                 return null;
             }

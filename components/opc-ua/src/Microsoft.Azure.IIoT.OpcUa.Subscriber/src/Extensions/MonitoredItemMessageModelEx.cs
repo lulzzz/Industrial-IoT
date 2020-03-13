@@ -15,11 +15,11 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Models {
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static MonitoredItemSampleModel Clone(this MonitoredItemSampleModel model) {
+        public static MonitoredItemMessageModel Clone(this MonitoredItemMessageModel model) {
             if (model == null) {
                 return null;
             }
-            return new MonitoredItemSampleModel {
+            return new MonitoredItemMessageModel {
                 SubscriptionId = model.SubscriptionId,
                 EndpointId = model.EndpointId,
                 DataSetId = model.DataSetId,

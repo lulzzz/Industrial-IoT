@@ -212,8 +212,8 @@ namespace Microsoft.Azure.IIoT {
         public const string PCS_EDGE_MANAGER_SERVICE_PATH_BASE =
             "PCS_EDGE_MANAGER_SERVICE_PATH_BASE";
         /// <summary> Service URL path base for configuration service </summary>
-        public const string PCS_CONFIGURATION_SERVICE_PATH_BASE =
-            "PCS_CONFIGURATION_SERVICE_PATH_BASE";
+        public const string PCS_EVENTS_SERVICE_PATH_BASE =
+            "PCS_EVENTS_SERVICE_PATH_BASE";
         /// <summary> Service URL path base for frontend app </summary>
         public const string PCS_FRONTEND_APP_SERVICE_PATH_BASE =
             "PCS_FRONTEND_APP_SERVICE_PATH_BASE";

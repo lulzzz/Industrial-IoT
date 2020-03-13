@@ -4,7 +4,6 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.OpcUa.Vault.Models {
-    using Microsoft.Azure.IIoT.Serializers;
     using System;
 
     /// <summary>

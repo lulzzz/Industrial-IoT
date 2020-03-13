@@ -10,7 +10,6 @@ namespace Microsoft.Azure.IIoT.Auth.IdentityServer4.Storage {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Serilog;
     using global::IdentityServer4.Stores;
     using global::IdentityServer4.Models;
 

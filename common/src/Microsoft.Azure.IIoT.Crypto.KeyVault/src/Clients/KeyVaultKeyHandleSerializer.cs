@@ -8,7 +8,6 @@ namespace Microsoft.Azure.IIoT.Crypto.KeyVault.Clients {
     using Microsoft.Azure.IIoT.Crypto.Models;
     using Microsoft.Azure.IIoT.Serializers;
     using System;
-    using System.Text;
 
     /// <summary>
     /// Keyvault key handle serializer

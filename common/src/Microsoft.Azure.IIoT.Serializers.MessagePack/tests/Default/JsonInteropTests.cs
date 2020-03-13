@@ -11,8 +11,6 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
     using System.Text;
     using System.Linq;
     using Xunit;
-    using Newtonsoft.Json.Linq;
-    using Newtonsoft.Json;
 
     public class JsonInteropTests {
 

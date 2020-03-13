@@ -93,7 +93,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher {
                 throw new ArgumentNullException(nameof(connectionId));
             }
             var request = _httpClient.NewRequest(
-                $"{_serviceUri}/v2/monitor/{endpointId}/samples", _resourceId);
+                $"{_serviceUri}/v2/telemetry/{endpointId}/samples", _resourceId);
             _serializer.SerializeToRequest(request, connectionId);
             var response = await _httpClient.PutAsync(request, ct).ConfigureAwait(false);
             response.Validate();
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher {
                 throw new ArgumentNullException(nameof(connectionId));
             }
             var request = _httpClient.NewRequest(
-                $"{_serviceUri}/v2/monitor/{endpointId}/samples/{connectionId}", _resourceId);
+                $"{_serviceUri}/v2/telemetry/{endpointId}/samples/{connectionId}", _resourceId);
             var response = await _httpClient.DeleteAsync(request, ct).ConfigureAwait(false);
             response.Validate();
         }

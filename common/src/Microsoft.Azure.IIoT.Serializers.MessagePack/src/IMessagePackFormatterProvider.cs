@@ -6,7 +6,6 @@
 namespace Microsoft.Azure.IIoT.Serializers {
     using System.Collections.Generic;
     using global::MessagePack;
-    using global::MessagePack.Formatters;
 
     /// <summary>
     /// Formtter provider

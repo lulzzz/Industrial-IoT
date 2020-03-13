@@ -6,7 +6,6 @@
 namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
     using System.Runtime.Serialization;
     using System;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>

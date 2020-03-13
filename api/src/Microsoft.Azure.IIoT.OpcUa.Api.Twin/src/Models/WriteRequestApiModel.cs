@@ -8,7 +8,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
     using System.Runtime.Serialization;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel;
 
     /// <summary>
     /// Request node attribute write

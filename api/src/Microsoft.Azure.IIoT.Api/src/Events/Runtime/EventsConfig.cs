@@ -22,12 +22,15 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Events.Runtime {
 
         /// <summary>Events configuration endpoint</summary>
         public string OpcUaEventsServiceUrl => GetStringOrDefault(
-            kEventsServiceUrlKey, GetStringOrDefault(
-                PcsVariable.PCS_EVENTS_SERVICE_URL, GetDefaultUrl("9050", "events")));
+            kEventsServiceUrlKey,
+            () => GetStringOrDefault(PcsVariable.PCS_EVENTS_SERVICE_URL,
+                () => GetDefaultUrl("9050", "events")));
         /// <summary>Events service audience</summary>
         public string OpcUaEventsServiceResourceId => GetStringOrDefault(
-            kEventsServiceIdKey, GetStringOrDefault("EVENTS_APP_ID",
-                GetStringOrDefault(PcsVariable.PCS_AUTH_AUDIENCE, null)));
+            kEventsServiceIdKey,
+            () => GetStringOrDefault("EVENTS_APP_ID",
+                () => GetStringOrDefault(PcsVariable.PCS_AUTH_AUDIENCE,
+                    () => null)));
 
         /// <summary> Use message pack </summary>
         public bool UseMessagePackProtocol => false;

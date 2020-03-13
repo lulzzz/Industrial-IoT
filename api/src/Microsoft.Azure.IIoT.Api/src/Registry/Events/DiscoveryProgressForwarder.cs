@@ -24,7 +24,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Clients {
 
         /// <inheritdoc/>
         public async override Task HandleAsync(DiscoveryProgressModel eventData) {
-            var requestId = eventData.Request.Id;
+            var requestId = eventData.Request?.Id;
             var arguments = new object[] { eventData.ToApiModel() };
             if (!string.IsNullOrEmpty(requestId)) {
                 // Send to user

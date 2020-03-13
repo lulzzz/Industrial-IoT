@@ -7,7 +7,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users {
     using Microsoft.Azure.IIoT.Services.Common.Users.Runtime;
     using Microsoft.Azure.IIoT.Auth.IdentityServer4.Storage;
     using Microsoft.Azure.IIoT.Auth.IdentityServer4.Models;
-    using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders.Extensions;
+    using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders;
     using Microsoft.Azure.IIoT.AspNetCore.Cors;
     using Microsoft.Azure.IIoT.AspNetCore.Correlation;
     using Microsoft.Azure.IIoT.AspNetCore.Auth;

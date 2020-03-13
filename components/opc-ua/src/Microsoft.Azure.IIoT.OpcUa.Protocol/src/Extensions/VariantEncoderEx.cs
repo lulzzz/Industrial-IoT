@@ -13,7 +13,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol {
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Variant encoder extensions

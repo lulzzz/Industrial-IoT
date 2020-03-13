@@ -125,7 +125,6 @@ namespace Microsoft.Azure.IIoT.Crypto.Default {
         /// <param name="mock"></param>
         private static AutoMock Setup() {
             var mock = AutoMock.GetLoose(builder => {
-
                 builder.RegisterType<NewtonSoftJsonConverters>().As<IJsonSerializerConverterProvider>();
                 builder.RegisterType<NewtonSoftJsonSerializer>().As<IJsonSerializer>();
                 builder.RegisterType<MemoryDatabase>().SingleInstance().As<IDatabaseServer>();

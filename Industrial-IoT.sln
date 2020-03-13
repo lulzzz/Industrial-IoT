@@ -256,6 +256,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.IIoT.Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.IIoT.AspNetCore.SignalR", "common\src\Microsoft.Azure.IIoT.AspNetCore.SignalR\src\Microsoft.Azure.IIoT.AspNetCore.SignalR.csproj", "{CF79D44A-E79C-42D6-BDCA-1DDFD7108AB5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.IIoT.Services.OpcUa.Events.Tests", "services\src\Microsoft.Azure.IIoT.Services.OpcUa.Events\tests\Microsoft.Azure.IIoT.Services.OpcUa.Events.Tests.csproj", "{6CFFAE7C-5943-4954-B8BF-9C455AF7F071}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -674,6 +676,10 @@ Global
 		{CF79D44A-E79C-42D6-BDCA-1DDFD7108AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF79D44A-E79C-42D6-BDCA-1DDFD7108AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF79D44A-E79C-42D6-BDCA-1DDFD7108AB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CFFAE7C-5943-4954-B8BF-9C455AF7F071}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CFFAE7C-5943-4954-B8BF-9C455AF7F071}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CFFAE7C-5943-4954-B8BF-9C455AF7F071}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CFFAE7C-5943-4954-B8BF-9C455AF7F071}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -799,6 +805,7 @@ Global
 		{4C8ECB9C-81CB-4793-B391-AAA7EA37A397} = {ADB416A3-C375-4362-B2C0-3A35DA4CB5F8}
 		{33BF51DB-08C3-44E3-A701-932C2A71689A} = {ADB416A3-C375-4362-B2C0-3A35DA4CB5F8}
 		{CF79D44A-E79C-42D6-BDCA-1DDFD7108AB5} = {FEE95825-2E34-45AF-BDED-52F9C7412BF5}
+		{6CFFAE7C-5943-4954-B8BF-9C455AF7F071} = {3E7A79D5-045F-49D0-BD29-46D4F2D62E52}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F09EFCEA-59F6-4A16-9CB6-7E865A3F62D8}

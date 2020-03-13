@@ -13,7 +13,6 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Telemetry {
     using Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors;
     using Microsoft.Azure.IIoT.Exceptions;
     using Microsoft.Azure.IIoT.Serializers;
-    using Microsoft.Azure.IIoT.Hub;
     using Microsoft.Azure.IIoT.Hub.Processor.EventHub;
     using Microsoft.Azure.IIoT.Hub.Processor.Services;
     using Microsoft.Azure.IIoT.Hub.Services;

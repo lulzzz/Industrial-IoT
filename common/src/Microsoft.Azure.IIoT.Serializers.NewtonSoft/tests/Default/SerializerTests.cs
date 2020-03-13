@@ -13,7 +13,6 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
     using Newtonsoft.Json.Linq;
     using Newtonsoft.Json;
     using System.Runtime.Serialization;
-    using System.ComponentModel;
 
     public class SerializerTests {
 

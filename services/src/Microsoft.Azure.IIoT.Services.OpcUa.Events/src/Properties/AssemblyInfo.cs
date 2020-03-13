@@ -3,15 +3,6 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
-    using Microsoft.Azure.IIoT.Messaging.SignalR;
-    using Microsoft.AspNetCore.SignalR;
+using System.Runtime.CompilerServices;
 
-    /// <summary>
-    /// Discovery hub
-    /// </summary>
-    [Route("v2/discovery/events")]
-    public class DiscoveryHub : Hub {
-
-    }
-}
+[assembly: InternalsVisibleTo("Microsoft.Azure.IIoT.OpcUa.Events.Tests")]

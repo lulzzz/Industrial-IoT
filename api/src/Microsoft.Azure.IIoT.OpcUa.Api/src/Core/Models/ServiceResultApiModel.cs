@@ -6,7 +6,6 @@
 namespace Microsoft.Azure.IIoT.OpcUa.Api.Core.Models {
     using Microsoft.Azure.IIoT.Serializers;
     using System.Runtime.Serialization;
-    using System.ComponentModel;
 
     /// <summary>
     /// Service result

@@ -8,7 +8,6 @@ namespace Microsoft.Azure.IIoT.Crypto.Storage {
     using Microsoft.Azure.IIoT.Crypto.Models;
     using Microsoft.Azure.IIoT.Serializers;
     using System;
-    using System.Text;
 
     /// <summary>
     /// Key document key handle serializer

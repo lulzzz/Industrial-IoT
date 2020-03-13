@@ -15,7 +15,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Discovery.Services {
     using Microsoft.Azure.IIoT.Module;
     using Microsoft.Azure.IIoT.Exceptions;
     using Microsoft.Azure.IIoT.Utils;
-    using Microsoft.Azure.IIoT.Hub;
     using Microsoft.Azure.IIoT.Serializers;
     using System;
     using System.Collections.Generic;

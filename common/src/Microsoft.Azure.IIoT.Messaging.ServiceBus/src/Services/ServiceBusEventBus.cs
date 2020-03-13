@@ -12,7 +12,6 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -46,13 +45,12 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
 
         /// <inheritdoc/>
         public async Task PublishAsync<T>(T message) {
-
             var body = _serializer.SerializeToBytes(message).ToArray();
             var client = await _factory.CreateOrGetTopicClientAsync();
             await client.SendAsync(new Message {
                 MessageId = Guid.NewGuid().ToString(),
                 Body = body,
-                Label = ToEventName(typeof(T)),
+                Label = typeof(T).GetMoniker(),
             });
         }
 
@@ -89,7 +87,7 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
 
         /// <inheritdoc/>
         public async Task<string> RegisterAsync<T>(IEventHandler<T> handler) {
-            var eventName = ToEventName(typeof(T));
+            var eventName = typeof(T).GetMoniker();
             await _lock.WaitAsync();
             try {
                 if (!_handlers.TryGetValue(eventName, out var handlers)) {
@@ -151,24 +149,6 @@ namespace Microsoft.Azure.IIoT.Messaging.ServiceBus.Services {
             finally {
                 _lock.Release();
             }
-        }
-
-        /// <summary>
-        /// Convert type name to event name - the namespace of the type should
-        /// include versioning information.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        private string ToEventName(Type type) {
-            var name = type.FullName
-                .Replace("Microsoft.Azure.IIoT.", "")
-                .Replace(".", "-")
-                .ToLowerInvariant()
-                .Replace("model", "");
-            if (name.Length >= 50) {
-                name = name.Substring(0, 50);
-            }
-            return name;
         }
 
         /// <summary>

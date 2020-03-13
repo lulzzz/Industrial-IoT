@@ -61,7 +61,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
             }
             try {
                 var codec = _encoder.Create(context);
-                var sample = new MonitoredItemSampleModel() {
+                var sample = new MonitoredItemMessageModel() {
                     Value = codec.Encode(message.Value),
                     Status = StatusCode.LookupSymbolicId(message.Value.StatusCode.Code),
                     TypeId = (message?.Value?.WrappedValue.TypeInfo != null) ?

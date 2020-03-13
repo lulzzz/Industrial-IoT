@@ -20,13 +20,15 @@ namespace Microsoft.Azure.IIoT.Api.Identity.Runtime {
 
         /// <summary>Identitymanager service endpoint url</summary>
         public string IdentityServiceUrl => GetStringOrDefault(
-            kIdentityServiceUrlKey, GetStringOrDefault(
-                PcsVariable.PCS_TWIN_SERVICE_URL,
-                GetDefaultUrl("9048", "identitymanager")));
+            kIdentityServiceUrlKey,
+            () => GetStringOrDefault(PcsVariable.PCS_TWIN_SERVICE_URL,
+                () => GetDefaultUrl("9048", "identitymanager")));
         /// <summary>Identitymanager service audience</summary>
         public string IdentityServiceResourceId => GetStringOrDefault(
-            kIdentityServiceIdKey, GetStringOrDefault("USERS_APP_ID",
-                GetStringOrDefault(PcsVariable.PCS_AUTH_AUDIENCE, null)));
+            kIdentityServiceIdKey,
+            () => GetStringOrDefault("USERS_APP_ID",
+                () => GetStringOrDefault(PcsVariable.PCS_AUTH_AUDIENCE,
+                    () => null)));
 
         /// <inheritdoc/>
         public IdentityConfig(IConfiguration configuration) :

@@ -5,52 +5,36 @@
 
 namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
     using Microsoft.Azure.IIoT.Messaging.SignalR;
-    using Microsoft.Azure.IIoT.Auth;
-    using Microsoft.Azure.IIoT.Auth.Models;
     using Microsoft.Azure.IIoT.Utils;
-    using Microsoft.Azure.IIoT.Net;
     using Microsoft.Azure.SignalR.Management;
     using Microsoft.AspNetCore.SignalR;
     using Microsoft.Extensions.Diagnostics.HealthChecks;
     using System;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Collections.Generic;
-    using System.Security.Claims;
     using Serilog;
 
     /// <summary>
     /// Publish subscriber service built using signalr
     /// </summary>
-    public class SignalRServiceHost<THub> : IEndpoint<THub>, ICallbackInvokerT<THub>,
-        IGroupRegistrationT<THub>, IHostProcess, IHealthCheck, IDisposable
-        where THub : Hub {
-
-        /// <inheritdoc/>
-        public string Resource { get; }
-
-        /// <inheritdoc/>
-        public Uri EndpointUrl => new Uri(_serviceManager.GetClientEndpoint(Resource));
+    public sealed class SignalRServiceHost<THub> : SignalRServiceEndpoint<THub>,
+        ICallbackInvokerT<THub>, IGroupRegistrationT<THub>, IHostProcess,
+        IHealthCheck, IDisposable where THub : Hub {
 
         /// <summary>
         /// Create signalR event bus
         /// </summary>
         /// <param name="config"></param>
         /// <param name="logger"></param>
-        public SignalRServiceHost(ISignalRServiceConfig config, ILogger logger) {
+        public SignalRServiceHost(ISignalRServiceConfig config, ILogger logger)
+            : base (config) {
+
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             if (string.IsNullOrEmpty(config?.SignalRConnString)) {
                 throw new ArgumentNullException(nameof(config.SignalRConnString));
             }
-            _serviceManager = new ServiceManagerBuilder().WithOptions(option => {
-                option.ConnectionString = config.SignalRConnString;
-                option.ServiceTransportType = ServiceTransportType.Persistent;
-            }).Build();
-
             _renewHubTimer = new Timer(RenewHubTimer_ElapesedAsync);
             _renewHubInterval = TimeSpan.FromMinutes(3);
-
-            Resource = NameAttribute.GetName(typeof(THub));
         }
 
         /// <inheritdoc/>
@@ -116,26 +100,6 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
         }
 
         /// <inheritdoc/>
-        public void Dispose() {
-            Try.Op(() => StopAsync().Wait());
-            _renewHubTimer.Dispose();
-        }
-
-        /// <inheritdoc/>
-        public IdentityTokenModel GenerateIdentityToken(string userId,
-            IList<Claim> claims, TimeSpan? lifeTime) {
-            if (lifeTime == null) {
-                lifeTime = TimeSpan.FromMinutes(5);
-            }
-            return new IdentityTokenModel {
-                Identity = userId,
-                Key = _serviceManager.GenerateClientAccessToken(
-                    Resource, userId, claims, lifeTime),
-                Expires = DateTime.UtcNow + lifeTime.Value
-            };
-        }
-
-        /// <inheritdoc/>
         public Task BroadcastAsync(string method, object[] arguments,
             CancellationToken ct) {
             if (string.IsNullOrEmpty(method)) {
@@ -195,6 +159,12 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             return _hub.Groups.RemoveFromGroupAsync(client, group, ct);
         }
 
+        /// <inheritdoc/>
+        public void Dispose() {
+            Try.Op(() => StopAsync().Wait());
+            _renewHubTimer.Dispose();
+        }
+
         private async void RenewHubTimer_ElapesedAsync(object sender) {
             var hub = _hub;
             try {
@@ -209,10 +179,9 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             }
         }
 
+        private IServiceHubContext _hub;
         private readonly Timer _renewHubTimer;
         private readonly TimeSpan _renewHubInterval;
-        private IServiceHubContext _hub;
         private readonly ILogger _logger;
-        private readonly IServiceManager _serviceManager;
     }
 }

@@ -5,8 +5,10 @@
 
 namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
     using Microsoft.Azure.IIoT.Services.OpcUa.Events.Runtime;
+    using Microsoft.Azure.IIoT.AspNetCore.Auth;
     using Microsoft.Azure.IIoT.AspNetCore.Cors;
-    using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders.Extensions;
+    using Microsoft.Azure.IIoT.AspNetCore.Correlation;
+    using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders;
     using Microsoft.Azure.IIoT.Core.Messaging.EventHub;
     using Microsoft.Azure.IIoT.Diagnostics;
     using Microsoft.Azure.IIoT.Http.Default;
@@ -101,15 +103,15 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
             services.AddHealthChecks();
             services.AddDistributedMemoryCache();
 
-           // // Add authentication
-           // services.AddJwtBearerAuthentication(Config,
-           //     Environment.IsDevelopment());
-           //
-           // // Add authorization
-           // services.AddAuthorization(options => {
-           //     options.AddPolicies(Config.AuthRequired,
-           //         Config.UseRoles && !Environment.IsDevelopment());
-           // });
+            // Add authentication
+            services.AddJwtBearerAuthentication(Config,
+                Environment.IsDevelopment());
+
+            // Add authorization
+            services.AddAuthorization(options => {
+                options.AddPolicies(Config.AuthRequired,
+                    Config.UseRoles && !Environment.IsDevelopment());
+            });
 
             // Add controllers as services so they'll be resolved.
             services.AddControllers().AddJsonSerializer();
@@ -145,14 +147,15 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
             app.EnableCors();
 
             if (Config.AuthRequired) {
-                // app.UseAuthentication();
-                // app.UseAuthorization();
+                app.UseAuthentication();
             }
+            app.UseAuthorization();
             if (Config.HttpsRedirectPort > 0) {
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
 
+            app.UseCorrelation();
             app.UseSwagger();
             app.UseMetricServer();
             app.UseEndpoints(endpoints => {
@@ -211,6 +214,9 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
             builder.RegisterType<SignalRHub<GatewaysHub>>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<
+                SignalRServiceEndpoint<GatewaysHub>>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<
                 GatewayEventForwarder<GatewaysHub>>()
                 .AsImplementedInterfaces().SingleInstance();
 
@@ -240,13 +246,13 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<DiscoveryProgressEventBusSubscriber>()
                 .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<SignalRHub<DiscoveryHub>>()
+            builder.RegisterType<SignalRHub<DiscoverersHub>>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<
-                DiscoveryProgressForwarder<DiscoveryHub>>()
+                DiscoveryProgressForwarder<DiscoverersHub>>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<
-                DiscovererEventForwarder<DiscoveryHub>>()
+                DiscovererEventForwarder<DiscoverersHub>>()
                 .AsImplementedInterfaces().SingleInstance();
 
             // Register http client module

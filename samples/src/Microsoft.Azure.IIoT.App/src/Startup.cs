@@ -9,7 +9,7 @@ namespace Microsoft.Azure.IIoT.App {
     using Microsoft.Azure.IIoT.App.Common;
     using Microsoft.Azure.IIoT.AspNetCore.Auth.Clients;
     using Microsoft.Azure.IIoT.AspNetCore.Auth;
-    using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders.Extensions;
+    using Microsoft.Azure.IIoT.AspNetCore.ForwardedHeaders;
     using Microsoft.Azure.IIoT.Auth.Clients;
     using Microsoft.Azure.IIoT.Serializers;
     using Microsoft.Azure.IIoT.Http.Auth;
@@ -28,7 +28,6 @@ namespace Microsoft.Azure.IIoT.App {
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Rewrite;
-    using Microsoft.AspNetCore.SignalR;
     using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.AspNetCore.Components.Server;
     using Microsoft.Extensions.Configuration;

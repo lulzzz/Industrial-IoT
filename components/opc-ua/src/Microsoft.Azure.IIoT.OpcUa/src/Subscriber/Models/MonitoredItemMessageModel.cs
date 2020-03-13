@@ -10,12 +10,13 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Models {
     /// <summary>
     /// Monitored item sample message
     /// </summary>
-    public class MonitoredItemSampleModel {
+    public class MonitoredItemMessageModel {
 
         /// <summary>
         /// Node id
         /// </summary>
         public string NodeId { get; set; }
+
         /// <summary>
         /// Display name
         /// </summary>

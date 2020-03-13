@@ -42,8 +42,8 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Events.Runtime {
         /// <inheritdoc/>
         /// <summary> Event hub events consumer group </summary>
         public string ConsumerGroup => GetStringOrDefault(kEventHubConsumerGroupEventsKey,
-            GetStringOrDefault(PcsVariable.PCS_IOTHUB_EVENTHUB_CONSUMER_GROUP_EVENTS,
-                "events"));
+            () => GetStringOrDefault(PcsVariable.PCS_IOTHUB_EVENTHUB_CONSUMER_GROUP_EVENTS,
+                () => "events"));
         /// <inheritdoc/>
         public bool UseWebsockets => _eh.UseWebsockets;
 

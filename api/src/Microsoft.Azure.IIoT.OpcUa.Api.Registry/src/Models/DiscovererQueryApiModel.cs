@@ -5,7 +5,6 @@
 
 namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry.Models {
     using System.Runtime.Serialization;
-    using System.ComponentModel;
 
     /// <summary>
     /// Discoverer registration query

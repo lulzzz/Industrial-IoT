@@ -10,7 +10,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Handlers {
     using Microsoft.Azure.IIoT.Serializers;
     using Serilog;
     using System;
-    using System.Text;
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using System.Linq;

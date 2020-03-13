@@ -45,7 +45,7 @@ namespace Microsoft.Azure.IIoT.Services.Common.Identity.Runtime {
         /// <inheritdoc/>
         public string ServicePathBase => GetStringOrDefault(
             PcsVariable.PCS_JOBS_SERVICE_PATH_BASE,
-            _host.ServicePathBase);
+            () => _host.ServicePathBase);
 
         /// <summary>
         /// Whether to use role based access

@@ -6,7 +6,6 @@
 namespace Microsoft.Azure.IIoT.Api.Jobs.Models {
     using System.Runtime.Serialization;
     using System.Collections.Generic;
-    using System.ComponentModel;
 
     /// <summary>
     /// Job info list model

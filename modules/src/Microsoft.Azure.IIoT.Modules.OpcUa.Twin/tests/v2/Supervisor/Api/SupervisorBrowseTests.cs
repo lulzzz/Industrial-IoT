@@ -4,9 +4,8 @@
 // ------------------------------------------------------------
 
 namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.v2.Supervisor.Api {
-    using Microsoft.Azure.IIoT.Serializers.NewtonSoft;
-    using Microsoft.Azure.IIoT.Serializers;
     using Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests;
+    using Microsoft.Azure.IIoT.Serializers.NewtonSoft;
     using Microsoft.Azure.IIoT.OpcUa.Core.Models;
     using Microsoft.Azure.IIoT.OpcUa.Api.Core.Models;
     using Microsoft.Azure.IIoT.OpcUa.Testing.Fixtures;

@@ -7,8 +7,6 @@ namespace Microsoft.Azure.IIoT.Services.Common.Users.Models {
     using Microsoft.Azure.IIoT.Auth.IdentityServer4.Models;
     using Microsoft.Azure.IIoT.Api.Identity.Models;
     using System.Security.Claims;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Model conversion extensions

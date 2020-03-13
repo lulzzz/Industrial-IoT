@@ -5,7 +5,6 @@
 
 namespace Microsoft.Azure.IIoT.Api.Jobs.Models {
     using System.Runtime.Serialization;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>

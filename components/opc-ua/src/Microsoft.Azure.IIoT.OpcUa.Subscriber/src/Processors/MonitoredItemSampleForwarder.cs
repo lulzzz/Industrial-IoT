@@ -5,7 +5,6 @@
 
 namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
     using Microsoft.Azure.IIoT.OpcUa.Subscriber.Models;
-    using Microsoft.Azure.IIoT.OpcUa.Core;
     using Microsoft.Azure.IIoT.Messaging;
     using Microsoft.Azure.IIoT.Hub;
     using Microsoft.Azure.IIoT.Serializers;
@@ -35,7 +34,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Processors {
         }
 
         /// <inheritdoc/>
-        public Task HandleSampleAsync(MonitoredItemSampleModel sample) {
+        public Task HandleSampleAsync(MonitoredItemMessageModel sample) {
             // Set timestamp as source timestamp
             // TODO: Make configurable
             sample.Timestamp = sample.SourceTimestamp;

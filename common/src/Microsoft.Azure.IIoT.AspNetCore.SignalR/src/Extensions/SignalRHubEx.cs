@@ -8,7 +8,6 @@ namespace Microsoft.Extensions.DependencyInjection {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Routing;
     using Microsoft.AspNetCore.SignalR;
-    using System;
     using System.Linq;
     using System.Reflection;
 
@@ -21,9 +20,10 @@ namespace Microsoft.Extensions.DependencyInjection {
         /// Map all hubs
         /// </summary>
         /// <param name="endpoints"></param>
+        /// <param name="assembly"></param>
         /// <returns></returns>
-        public static void MapHubs(this IEndpointRouteBuilder endpoints) {
-            foreach (var hub in Assembly.GetExecutingAssembly().GetExportedTypes()
+        public static void MapHubs(this IEndpointRouteBuilder endpoints, Assembly assembly = null) {
+            foreach (var hub in (assembly ?? Assembly.GetCallingAssembly()).GetExportedTypes()
                 .Where(t => typeof(Hub).IsAssignableFrom(t))) {
                 var result = typeof(SignalRHubEx).GetMethod(nameof(MapHub)).MakeGenericMethod(hub)
                     .Invoke(null, new object[] { endpoints });
@@ -46,7 +46,9 @@ namespace Microsoft.Extensions.DependencyInjection {
                 results.Add(NameAttribute.GetName(type));
             }
             foreach (var map in results) {
-                var builder = endpoints.MapHub<THub>("/" + map);
+                var builder = endpoints.MapHub<THub>("/" + map, options => {
+                    // ?
+                });
             }
         }
     }

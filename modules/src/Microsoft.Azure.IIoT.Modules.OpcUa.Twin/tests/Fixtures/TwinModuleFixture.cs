@@ -35,7 +35,6 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
     using System.Text;
     using System.Threading.Tasks;
     using Xunit;
-    using Xunit.Abstractions;
 
     /// <summary>
     /// Harness for opc twin module
@@ -189,7 +188,7 @@ namespace Microsoft.Azure.IIoT.Modules.OpcUa.Twin.Tests {
             Assert.Equal("connected", twin.ConnectionState);
             Assert.Equal(true, twin.Properties.Reported[TwinProperty.Connected]);
             Assert.Equal(IdentityType.Supervisor, twin.Properties.Reported[TwinProperty.Type]);
-            Assert.Equal(VariantValue.Null, twin.Properties.Reported[TwinProperty.SiteId]);
+            Assert.False(twin.Properties.Reported.TryGetValue(TwinProperty.SiteId, out _));
         }
 
         /// <summary>

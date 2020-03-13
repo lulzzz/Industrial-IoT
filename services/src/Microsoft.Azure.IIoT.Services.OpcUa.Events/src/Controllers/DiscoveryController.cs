@@ -10,12 +10,12 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Controllers {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
-    using System.Linq;
 
     /// <summary>
     /// Configure discovery
     /// </summary>
-    [ApiVersion("2")][Route("v{version:apiVersion}/discovery")]
+    [ApiVersion("2")]
+    [Route("v{version:apiVersion}/discovery")]
     [ExceptionsFilter]
     [Produces(ContentMimeType.Json)]
     [Authorize(Policy = Policies.CanWrite)]
@@ -26,28 +26,8 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Controllers {
         /// Create controller for discovery services
         /// </summary>
         /// <param name="events"></param>
-        /// <param name="endpoint"></param>
-        public DiscoveryController(IGroupRegistrationT<DiscoveryHub> events,
-            IEndpoint<DiscoveryHub> endpoint) {
-            _endpoint = endpoint;
+        public DiscoveryController(IGroupRegistrationT<DiscoverersHub> events) {
             _events = events;
-        }
-
-        /// <summary>
-        /// Negotiation method that signalr clients call to get
-        /// access token.
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("events/negotiate")]
-        [ProducesResponseType(typeof(JsonResult), 200)]
-        [ProducesResponseType(typeof(BadRequestObjectResult), 400)]
-        public IActionResult Index() {
-            return new JsonResult(new {
-                url = _endpoint.EndpointUrl,
-                accessToken = _endpoint.GenerateIdentityToken(
-                    HttpContext?.User?.Identity?.Name,
-                    HttpContext?.User?.Claims?.ToList()).Key
-            });
         }
 
         /// <summary>
@@ -58,13 +38,13 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Controllers {
         /// through SignalR from a particular discoverer.
         /// </remarks>
         /// <param name="discovererId">The discoverer to subscribe to</param>
-        /// <param name="userId">The user id that will receive discovery
+        /// <param name="connectionId">The connection that will receive discovery
         /// events.</param>
         /// <returns></returns>
         [HttpPut("{discovererId}/events")]
         public async Task SubscribeByDiscovererIdAsync(string discovererId,
-            [FromBody] string userId) {
-            await _events.SubscribeAsync(discovererId, userId);
+            [FromBody] string connectionId) {
+            await _events.SubscribeAsync(discovererId, connectionId);
         }
 
         /// <summary>
@@ -75,13 +55,13 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Controllers {
         /// through SignalR for a particular request.
         /// </remarks>
         /// <param name="requestId">The request to monitor</param>
-        /// <param name="userId">The user id that will receive discovery
+        /// <param name="connectionId">The connection that will receive discovery
         /// events.</param>
         /// <returns></returns>
         [HttpPut("requests/{requestId}/events")]
         public async Task SubscribeByRequestIdAsync(string requestId,
-            [FromBody] string userId) {
-            await _events.SubscribeAsync(requestId, userId);
+            [FromBody] string connectionId) {
+            await _events.SubscribeAsync(requestId, connectionId);
         }
 
         /// <summary>
@@ -93,13 +73,13 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Controllers {
         /// </remarks>
         /// <param name="requestId">The request to unsubscribe from
         /// </param>
-        /// <param name="userId">The user id that will not receive
+        /// <param name="connectionId">The connection that will not receive
         /// any more discovery progress</param>
         /// <returns></returns>
-        [HttpDelete("requests/{requestId}/events/{userId}")]
+        [HttpDelete("requests/{requestId}/events/{connectionId}")]
         public async Task UnsubscribeByRequestIdAsync(string requestId,
-            string userId) {
-            await _events.UnsubscribeAsync(requestId, userId);
+            string connectionId) {
+            await _events.UnsubscribeAsync(requestId, connectionId);
         }
 
         /// <summary>
@@ -110,16 +90,15 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Controllers {
         /// </remarks>
         /// <param name="discovererId">The discoverer to unsubscribe from
         /// </param>
-        /// <param name="userId">The user id that will not receive
+        /// <param name="connectionId">The connection that will not receive
         /// any more discovery progress</param>
         /// <returns></returns>
-        [HttpDelete("{discovererId}/events/{userId}")]
+        [HttpDelete("{discovererId}/events/{connectionId}")]
         public async Task UnsubscribeByDiscovererIdAsync(string discovererId,
-            string userId) {
-            await _events.UnsubscribeAsync(discovererId, userId);
+            string connectionId) {
+            await _events.UnsubscribeAsync(discovererId, connectionId);
         }
 
-        private readonly IEndpoint<DiscoveryHub> _endpoint;
-        private readonly IGroupRegistrationT<DiscoveryHub> _events;
+        private readonly IGroupRegistrationT<DiscoverersHub> _events;
     }
 }

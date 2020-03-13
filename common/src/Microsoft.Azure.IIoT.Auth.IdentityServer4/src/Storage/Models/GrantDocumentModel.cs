@@ -6,7 +6,6 @@
 namespace Microsoft.Azure.IIoT.Auth.IdentityServer4.Models {
     using System;
     using System.Runtime.Serialization;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// A model for a persisted grant

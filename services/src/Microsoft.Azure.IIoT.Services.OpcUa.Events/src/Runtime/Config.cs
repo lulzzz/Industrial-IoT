@@ -44,8 +44,8 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Runtime {
         public int HttpsRedirectPort => _host.HttpsRedirectPort;
         /// <inheritdoc/>
         public string ServicePathBase => GetStringOrDefault(
-            PcsVariable.PCS_CONFIGURATION_SERVICE_PATH_BASE,
-            _host.ServicePathBase);
+            PcsVariable.PCS_EVENTS_SERVICE_PATH_BASE,
+            () => _host.ServicePathBase);
 
         /// <inheritdoc/>
         public string AppId => _auth.AppId;
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Runtime {
         /// <inheritdoc/>
         public string InstanceUrl => _auth.InstanceUrl;
         /// <inheritdoc/>
-        public bool AuthRequired => _auth.AuthRequired;
+        public bool AuthRequired => false; //  _auth.AuthRequired;
         /// <inheritdoc/>
         public string Audience => _auth.Audience;
         /// <inheritdoc/>
@@ -92,8 +92,8 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events.Runtime {
         /// <inheritdoc/>
         public string ConsumerGroup => GetStringOrDefault(
             kEventHubConsumerGroupTelemetryUxKey,
-            GetStringOrDefault(PcsVariable.PCS_EVENTHUB_CONSUMERGROUP_TELEMETRY_UX,
-                "telemetryux"));
+            () => GetStringOrDefault(PcsVariable.PCS_EVENTHUB_CONSUMERGROUP_TELEMETRY_UX,
+                () => "telemetryux"));
 
         /// <inheritdoc/>
         public bool UseWebsockets => _eh.UseWebsockets;

@@ -47,9 +47,7 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
                 }
             }
             settings.ContractResolver = new DefaultContractResolver {
-                NamingStrategy = new CamelCaseNamingStrategy {
-                    ProcessDictionaryKeys = false
-                }
+                NamingStrategy = new CamelCaseDictionaryKeys()
             };
             settings.Converters.Add(new JsonVariantConverter(this));
             settings.Converters.Add(new StringEnumConverter {
@@ -494,6 +492,24 @@ namespace Microsoft.Azure.IIoT.Serializers.NewtonSoft {
             }
 
             private readonly NewtonSoftJsonSerializer _serializer;
+        }
+
+        /// <summary>
+        /// Strategy to only camel case dictionary keys
+        /// </summary>
+        private class CamelCaseDictionaryKeys : CamelCaseNamingStrategy {
+
+            /// <summary>
+            /// Create strategy
+            /// </summary>
+            public CamelCaseDictionaryKeys() {
+                ProcessDictionaryKeys = true;
+            }
+
+            /// <inheritdoc/>
+            protected override string ResolvePropertyName(string name) {
+                return name;
+            }
         }
     }
 }

@@ -5,7 +5,6 @@
 
 namespace Microsoft.Azure.IIoT.OpcUa.Subscriber.Models {
     using Microsoft.Azure.IIoT.Serializers;
-    using Newtonsoft.Json;
     using System;
     using System.Runtime.Serialization;
 

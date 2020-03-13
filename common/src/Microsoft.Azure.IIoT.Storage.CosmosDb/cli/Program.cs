@@ -11,13 +11,8 @@ namespace Microsoft.Azure.IIoT.Storage.Cli {
     using Microsoft.Extensions.Configuration;
     using Microsoft.Azure.IIoT.Serializers.NewtonSoft;
     using Microsoft.Azure.IIoT.Serializers;
-    using Newtonsoft.Json.Linq;
     using System;
-    using System.IO;
-    using System.Linq;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using System.Diagnostics;
 
     /// <summary>
     /// A slightly better console for queries

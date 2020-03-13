@@ -7,7 +7,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin.Models {
     using Microsoft.Azure.IIoT.OpcUa.Api.Core.Models;
     using System.Runtime.Serialization;
     using System.Collections.Generic;
-    using System.ComponentModel;
 
     /// <summary>
     /// Call request model

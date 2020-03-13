@@ -10,7 +10,6 @@ namespace Microsoft.Azure.IIoT.Agent.Framework.Jobs {
     using System;
     using System.Threading.Tasks;
     using Serilog;
-    using Microsoft.Azure.IIoT.Serializers;
 
     /// <summary>
     /// IoT hub based job event handler

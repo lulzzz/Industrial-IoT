@@ -26,7 +26,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher.Clients {
         }
 
         /// <inheritdoc/>
-        public async Task HandleSampleAsync(MonitoredItemSampleModel sample) {
+        public async Task HandleSampleAsync(MonitoredItemMessageModel sample) {
             var arguments = new object[] { sample.ToApiModel() };
             if (!string.IsNullOrEmpty(sample.EndpointId)) {
                 // Send to endpoint listeners
