@@ -7,6 +7,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
     using Microsoft.Azure.IIoT.OpcUa.Publisher.Models;
     using Microsoft.Azure.IIoT.OpcUa.Publisher;
     using Microsoft.Azure.IIoT.OpcUa.Core.Models;
+    using Microsoft.Azure.IIoT.Module;
     using Microsoft.Azure.IIoT.Crypto;
     using Microsoft.Azure.IIoT.Serializers;
     using Serilog;
@@ -134,7 +135,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
                                     DataSet = new PublishedDataSetModel {
                                         DataSetSource = dataSetSource.Clone()
                                     },
-                                    DataSetFieldContentMask = 
+                                    DataSetFieldContentMask =
                                         DataSetFieldContentMask.StatusCode |
                                         DataSetFieldContentMask.SourceTimestamp |
                                         DataSetFieldContentMask.ServerTimestamp |
