@@ -31,12 +31,15 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
         /// <param name="serializer"></param>
         /// <param name="config"></param>
         /// <param name="cryptoProvider"></param>
-        public PublishedNodesJobConverter(ILogger logger, IJsonSerializer serializer,
+        /// <param name="identity"></param>
+        public PublishedNodesJobConverter(ILogger logger,
+            IJsonSerializer serializer, IIdentity identity,
             IEngineConfiguration config = null, ISecureElement cryptoProvider = null) {
             _config = config;
             _cryptoProvider = cryptoProvider;
             _serializer = serializer ?? throw new ArgumentNullException(nameof(logger));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _identity = identity ?? throw new ArgumentNullException(nameof(identity));
         }
 
         /// <summary>
@@ -124,38 +127,46 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
                             DiagnosticsInterval = _config.DiagnosticsInterval
                         },
                         WriterGroup = new WriterGroupModel {
-                            WriterGroupId = null,
+                            WriterGroupId = _identity.DeviceId + "_"+ _identity.ModuleId,
                             DataSetWriters = new List<DataSetWriterModel> {
                                 new DataSetWriterModel {
-                                    DataSetWriterId = Guid.NewGuid().ToString(),
+                                    DataSetWriterId = _identity.DeviceId + "_"+ _identity.ModuleId,
                                     DataSet = new PublishedDataSetModel {
                                         DataSetSource = dataSetSource.Clone()
                                     },
-                                    DataSetFieldContentMask = DataSetFieldContentMask.SourceTimestamp |
-                                        DataSetFieldContentMask.ServerTimestamp |
+                                    DataSetFieldContentMask = 
                                         DataSetFieldContentMask.StatusCode |
-                                        DataSetFieldContentMask.NodeId | 
+                                        DataSetFieldContentMask.SourceTimestamp |
+                                        DataSetFieldContentMask.ServerTimestamp |
+                                        DataSetFieldContentMask.NodeId |
+                                        DataSetFieldContentMask.DisplayName |
                                         DataSetFieldContentMask.ApplicationUri |
-                                        DataSetFieldContentMask.DisplayName,
+                                        DataSetFieldContentMask.EndpointUrl |
+                                        DataSetFieldContentMask.SubscriptionId |
+                                        DataSetFieldContentMask.ExtraFields,
                                     MessageSettings = new DataSetWriterMessageSettingsModel() {
-                                        DataSetMessageContentMask = DataSetContentMask.Timestamp |
-                                        DataSetContentMask.MetaDataVersion |
-                                        DataSetContentMask.Status |
-                                        DataSetContentMask.DataSetWriterId |
-                                        DataSetContentMask.MajorVersion |
-                                        DataSetContentMask.MinorVersion |
-                                        DataSetContentMask.SequenceNumber
+                                        DataSetMessageContentMask =
+                                            DataSetContentMask.Timestamp |
+                                            DataSetContentMask.MetaDataVersion |
+                                            DataSetContentMask.Status |
+                                            DataSetContentMask.DataSetWriterId |
+                                            DataSetContentMask.MajorVersion |
+                                            DataSetContentMask.MinorVersion |
+                                            DataSetContentMask.SequenceNumber
                                     }
                                 }
                             },
                             MessageSettings = new WriterGroupMessageSettingsModel() {
-                                NetworkMessageContentMask = NetworkMessageContentMask.PublisherId |
-                                NetworkMessageContentMask.WriterGroupId |
-                                NetworkMessageContentMask.SequenceNumber |
-                                NetworkMessageContentMask.PayloadHeader |
-                                NetworkMessageContentMask.NetworkMessageHeader |
-                                NetworkMessageContentMask.Timestamp |
-                                NetworkMessageContentMask.DataSetMessageHeader
+                                NetworkMessageContentMask =
+                                    NetworkMessageContentMask.PublisherId |
+                                    NetworkMessageContentMask.WriterGroupId |
+                                    NetworkMessageContentMask.NetworkMessageNumber |
+                                    NetworkMessageContentMask.SequenceNumber |
+                                    NetworkMessageContentMask.PayloadHeader |
+                                    NetworkMessageContentMask.Timestamp |
+                                    NetworkMessageContentMask.DataSetClassId |
+                                    NetworkMessageContentMask.NetworkMessageHeader |
+                                    NetworkMessageContentMask.DataSetMessageHeader
                             }
                         }
                     }));
@@ -363,5 +374,6 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Publisher.Models {
         private readonly ISecureElement _cryptoProvider;
         private readonly IJsonSerializer _serializer;
         private readonly ILogger _logger;
+        private readonly IIdentity _identity;
     }
 }
