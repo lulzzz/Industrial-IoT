@@ -9,6 +9,7 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Serilog;
 
     /// <summary>
     /// Publish subscriber service built using signalr
@@ -23,23 +24,30 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
         /// Create signalR event bus
         /// </summary>
         /// <param name="hub"></param>
-        public SignalRHub(IHubContext<THub> hub) {
+        /// <param name="logger"></param>
+        public SignalRHub(IHubContext<THub> hub, ILogger logger) {
             _hub = hub ?? throw new ArgumentNullException(nameof(hub));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             Resource = NameAttribute.GetName(typeof(THub));
         }
 
         /// <inheritdoc/>
-        public Task BroadcastAsync(string method, object[] arguments,
+        public async Task BroadcastAsync(string method, object[] arguments,
             CancellationToken ct) {
             if (string.IsNullOrEmpty(method)) {
                 throw new ArgumentNullException(nameof(method));
             }
-            return _hub.Clients.All.SendCoreAsync(method,
-                arguments ?? new object[0], ct);
+            try {
+                await _hub.Clients.All.SendCoreAsync(method,
+                    arguments ?? new object[0], ct);
+            }
+            catch (Exception ex) {
+                _logger.Verbose(ex, "Failed to send broadcast message");
+            }
         }
 
         /// <inheritdoc/>
-        public Task UnicastAsync(string target, string method, object[] arguments,
+        public async Task UnicastAsync(string target, string method, object[] arguments,
             CancellationToken ct) {
             if (string.IsNullOrEmpty(method)) {
                 throw new ArgumentNullException(nameof(method));
@@ -47,12 +55,17 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             if (string.IsNullOrEmpty(target)) {
                 throw new ArgumentNullException(nameof(target));
             }
-            return _hub.Clients.User(target).SendCoreAsync(method,
-                arguments ?? new object[0], ct);
-        }
+            try {
+                await _hub.Clients.User(target).SendCoreAsync(method,
+                    arguments ?? new object[0], ct);
+            }
+            catch (Exception ex) {
+                _logger.Debug(ex, "Failed to send unicast message");
+            }
+         }
 
         /// <inheritdoc/>
-        public Task MulticastAsync(string group, string method, object[] arguments,
+        public async Task MulticastAsync(string group, string method, object[] arguments,
             CancellationToken ct) {
             if (string.IsNullOrEmpty(method)) {
                 throw new ArgumentNullException(nameof(method));
@@ -60,8 +73,13 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             if (string.IsNullOrEmpty(group)) {
                 throw new ArgumentNullException(nameof(group));
             }
-            return _hub.Clients.Group(group).SendCoreAsync(method,
-                arguments ?? new object[0], ct);
+            try {
+                await _hub.Clients.Group(group).SendCoreAsync(method,
+                    arguments ?? new object[0], ct);
+            }
+            catch (Exception ex) {
+                _logger.Verbose(ex, "Failed to send multicast message");
+            }
         }
 
         /// <inheritdoc/>
@@ -94,5 +112,6 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
         }
 
         private readonly IHubContext<THub> _hub;
+        private readonly ILogger _logger;
     }
 }

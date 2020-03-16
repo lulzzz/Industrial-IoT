@@ -14,7 +14,7 @@ namespace System.Linq {
     public static class LinqEx {
 
         /// <summary>
-        /// Creates a hash set from enumerable or null if enumerable == null.
+        /// Creates a hash set from enumerable or null if enumerable is null.
         /// </summary>
         /// <param name="enumerable"></param>
         /// <returns></returns>
@@ -26,7 +26,7 @@ namespace System.Linq {
         }
 
         /// <summary>
-        /// Creates a list from enumerable or null if enumerable == null.
+        /// Creates a list from enumerable or null if enumerable is null.
         /// </summary>
         /// <param name="enumerable"></param>
         /// <returns></returns>
@@ -38,7 +38,7 @@ namespace System.Linq {
         }
 
         /// <summary>
-        /// Creates a sorted set from enumerable or null if enumerable == null.
+        /// Creates a sorted set from enumerable or null if enumerable is null.
         /// </summary>
         /// <param name="enumerable"></param>
         /// <returns></returns>

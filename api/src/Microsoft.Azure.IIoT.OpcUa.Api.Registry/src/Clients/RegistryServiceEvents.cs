@@ -60,7 +60,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
-            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/applications/events");
+            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/applications/events", _resourceId);
             try {
                 var registration = registrar.Register(EventTargets.ApplicationEventTarget, callback);
                 try {
@@ -83,7 +83,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
-            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/endpoints/events");
+            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/endpoints/events", _resourceId);
             try {
                 var registration = registrar.Register(EventTargets.EndpointEventTarget, callback);
                 try {
@@ -106,7 +106,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
-            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/gateways/events");
+            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/gateways/events", _resourceId);
             try {
                 var registration = registrar.Register(EventTargets.GatewayEventTarget, callback);
                 try {
@@ -129,7 +129,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
-            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/supervisors/events");
+            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/supervisors/events", _resourceId);
             try {
                 var registration = registrar.Register(EventTargets.SupervisorEventTarget, callback);
                 try {
@@ -152,7 +152,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
-            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/discovery/events");
+            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/discovery/events", _resourceId);
             try {
                 var registration = registrar.Register(EventTargets.DiscovererEventTarget, callback);
                 try {
@@ -175,7 +175,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
-            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/publishers/events");
+            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/publishers/events", _resourceId);
             try {
                 var registration = registrar.Register(EventTargets.PublisherEventTarget, callback);
                 try {
@@ -198,7 +198,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
-            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/discovery/events");
+            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/discovery/events", _resourceId);
             try {
                 var registration = registrar.Register(EventTargets.DiscoveryProgressTarget, callback);
                 try {
@@ -225,7 +225,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Registry {
             if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
-            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/discovery/events");
+            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/discovery/events", _resourceId);
             try {
                 var registration = registrar.Register(EventTargets.DiscoveryProgressTarget, callback);
                 try {

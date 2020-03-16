@@ -22,23 +22,16 @@ namespace Microsoft.Extensions.DependencyInjection {
         /// <returns></returns>
         public static ISignalRServerBuilder AddAzureSignalRService(this ISignalRServerBuilder builder,
             ISignalRServiceConfig config = null) {
-            if (config != null && string.IsNullOrEmpty(config.SignalRConnString)) {
+            if (config == null) {
+                config = builder.Services.BuildServiceProvider().GetService<ISignalRServiceConfig>();
+            }
+            if (string.IsNullOrEmpty(config?.SignalRConnString)) {
                 // not using signalr service
                 return builder;
             }
-
-            builder = builder.AddAzureSignalR();
-            builder.Services.AddTransient<IConfigureOptions<ServiceOptions>>(services =>
-                new ConfigureNamedOptions<ServiceOptions>(Options.DefaultName, options => {
-                    if (config == null) {
-                        config = services.GetService<ISignalRServiceConfig>();
-                    }
-                    if (config != null) {
-                        options.ConnectionString = config.SignalRConnString;
-                        options.ConnectionCount = 100; // TODO
-                        options.ServerStickyMode = ServerStickyMode.Preferred;
-                    }
-                }));
+            builder.AddAzureSignalR().Services.Configure<ServiceOptions>(options => {
+                 options.ConnectionString = config.SignalRConnString;
+            });
             return builder;
         }
     }

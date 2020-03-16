@@ -16,7 +16,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Twin {
     public static class TwinServiceApiEx {
 
         /// <summary>
-        /// Browse all references if max references == null and user
+        /// Browse all references if max references is null and user
         /// wants all. If user has requested maximum to return uses
         /// <see cref="ITwinServiceApi.NodeBrowseFirstAsync"/>
         /// </summary>

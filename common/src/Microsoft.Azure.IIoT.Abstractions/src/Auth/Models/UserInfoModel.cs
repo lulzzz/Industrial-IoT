@@ -27,13 +27,13 @@ namespace Microsoft.Azure.IIoT.Auth.Models {
 
         /// <summary>
         /// Gets given name of the user if provided.
-        /// If not, the value == null.
+        /// If not, the value is null.
         /// </summary>
         public string GivenName { get; set; }
 
         /// <summary>
         /// Gets family name of the user if provided.
-        /// If not, the value == null.
+        /// If not, the value is null.
         /// </summary>
         public string FamilyName { get; set; }
 
@@ -44,7 +44,7 @@ namespace Microsoft.Azure.IIoT.Auth.Models {
 
         /// <summary>
         /// Gets the time when the password expires.
-        /// Default value == null.
+        /// Default value is null.
         /// </summary>
         public DateTimeOffset? PasswordExpiresOn { get; set; }
 
@@ -56,7 +56,7 @@ namespace Microsoft.Azure.IIoT.Auth.Models {
 
         /// <summary>
         /// Gets identity provider if returned by
-        /// the service. If not, the value == null.
+        /// the service. If not, the value is null.
         /// </summary>
         public string IdentityProvider { get; set; }
     }

@@ -191,8 +191,6 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
                 .AsImplementedInterfaces().SingleInstance();
 
             // Application event hub
-            builder.RegisterType<ApplicationEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<SignalRHub<ApplicationsHub>>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<
@@ -200,8 +198,6 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
                 .AsImplementedInterfaces().SingleInstance();
 
             // Endpoints event hub
-            builder.RegisterType<EndpointEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<SignalRHub<EndpointsHub>>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<
@@ -209,20 +205,13 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
                 .AsImplementedInterfaces().SingleInstance();
 
             // Gateways event hub
-            builder.RegisterType<GatewayEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<SignalRHub<GatewaysHub>>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<
-                SignalRServiceEndpoint<GatewaysHub>>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<
                 GatewayEventForwarder<GatewaysHub>>()
                 .AsImplementedInterfaces().SingleInstance();
 
             // Twin event hub
-            builder.RegisterType<SupervisorEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<SignalRHub<SupervisorsHub>>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<
@@ -230,8 +219,6 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
                 .AsImplementedInterfaces().SingleInstance();
 
             // Publishers event hub
-            builder.RegisterType<PublisherEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<SignalRHub<PublishersHub>>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<
@@ -242,10 +229,6 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
                 .AsImplementedInterfaces().SingleInstance();
 
             // Discovery event hub
-            builder.RegisterType<DiscovererEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<DiscoveryProgressEventBusSubscriber>()
-                .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<SignalRHub<DiscoverersHub>>()
                 .AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<

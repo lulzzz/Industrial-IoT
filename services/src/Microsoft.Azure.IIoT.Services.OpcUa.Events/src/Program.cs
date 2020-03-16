@@ -32,7 +32,7 @@ namespace Microsoft.Azure.IIoT.Services.OpcUa.Events {
                 .UseAutofac()
                 .ConfigureWebHostDefaults(builder => builder
                     .UseUrls("http://*:9050")
-                    .UseSerilog()
+                    //.UseSerilog()
                     .UseStartup<Startup>()
                     .UseKestrel(o => o.AddServerHeader = false));
         }

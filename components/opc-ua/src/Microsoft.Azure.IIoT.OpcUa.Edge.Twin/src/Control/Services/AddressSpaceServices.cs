@@ -279,7 +279,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Control.Services {
                 //
                 // * Specify methodId and optionally objectId node ids with null browse paths.
                 // * Specify an objectBrowsePath to a real object node from the node specified
-                //   with objectId.  If objectId == null, the root node is used.
+                //   with objectId.  If objectId is null, the root node is used.
                 // * Specify a methodBrowsePath from the above object node to the actual
                 //   method node to call on the object. MethodId remains null.
                 // * Like previously, but specify methodId and method browse path from it to a
@@ -306,7 +306,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Edge.Control.Services {
                         request.Header?.Diagnostics, diagnostics);
                 }
                 else if (NodeId.IsNull(methodId)) {
-                    // Method == null and cannot browse to method from object
+                    // Method is null and cannot browse to method from object
                     throw new ArgumentException(nameof(request.MethodId));
                 }
 

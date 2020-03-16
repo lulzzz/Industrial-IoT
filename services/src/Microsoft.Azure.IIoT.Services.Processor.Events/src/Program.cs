@@ -28,6 +28,7 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Events {
     using System.IO;
     using System.Runtime.Loader;
     using System.Threading.Tasks;
+    using Microsoft.Azure.IIoT.OpcUa.Registry.Events.v2;
 
     /// <summary>
     /// IoT Hub device events event processor host.  Processes all
@@ -144,6 +145,8 @@ namespace Microsoft.Azure.IIoT.Services.Processor.Events {
 
             // 2.) Handler for discovery progress
             builder.RegisterType<DiscoveryProgressHandler>()
+                .AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<DiscoveryProgressEventBusPublisher>()
                 .AsImplementedInterfaces().SingleInstance();
 
             // 3.) Handlers for twin and device change events ...

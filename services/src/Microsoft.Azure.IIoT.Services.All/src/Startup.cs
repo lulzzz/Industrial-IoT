@@ -110,7 +110,7 @@ namespace Microsoft.Azure.IIoT.Services.All {
             app.AddStartupBranch<OpcUa.Twin.Gateway.Startup>("/ua");
             app.AddStartupBranch<OpcUa.Twin.History.Startup>("/history");
             app.AddStartupBranch<OpcUa.Publisher.Startup>("/publisher");
-            app.AddStartupBranch<OpcUa.Events.Startup>("/configuration");
+            app.AddStartupBranch<OpcUa.Events.Startup>("/events");
             app.AddStartupBranch<Common.Identity.Startup>("/auth");
             app.AddStartupBranch<Common.Users.Startup>("/users");
             app.AddStartupBranch<Common.Jobs.Startup>("/jobs");
@@ -164,10 +164,9 @@ namespace Microsoft.Azure.IIoT.Services.All {
             }
 
             /// <inheritdoc/>
-            public async Task StartAsync() {
-                // Delay processors for several seconds to give rest api time to come up
-                await Task.Delay(TimeSpan.FromSeconds(5), _cts.Token);
+            public Task StartAsync() {
                 Start();
+                return Task.CompletedTask;
             }
 
             /// <inheritdoc/>

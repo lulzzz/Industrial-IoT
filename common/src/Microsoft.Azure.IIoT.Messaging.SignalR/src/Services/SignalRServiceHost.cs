@@ -13,6 +13,7 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
     using System.Threading;
     using System.Threading.Tasks;
     using Serilog;
+    using Microsoft.Azure.SignalR.Common;
 
     /// <summary>
     /// Publish subscriber service built using signalr
@@ -100,17 +101,26 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
         }
 
         /// <inheritdoc/>
-        public Task BroadcastAsync(string method, object[] arguments,
+        public async Task BroadcastAsync(string method, object[] arguments,
             CancellationToken ct) {
             if (string.IsNullOrEmpty(method)) {
                 throw new ArgumentNullException(nameof(method));
             }
-            return _hub.Clients.All.SendCoreAsync(method,
-                arguments ?? new object[0], ct);
+            try {
+                await _hub.Clients.All.SendCoreAsync(method,
+                    arguments ?? new object[0], ct);
+            }
+            catch (AzureSignalRNotConnectedException e) {
+                _logger.Verbose(e,
+                    "Failed to send broadcast message because hub is not connected");
+            }
+            catch (Exception ex) {
+                _logger.Error(ex, "Failed to send broadcast message");
+            }
         }
 
         /// <inheritdoc/>
-        public Task UnicastAsync(string target, string method, object[] arguments,
+        public async Task UnicastAsync(string target, string method, object[] arguments,
             CancellationToken ct) {
             if (string.IsNullOrEmpty(method)) {
                 throw new ArgumentNullException(nameof(method));
@@ -118,12 +128,21 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             if (string.IsNullOrEmpty(target)) {
                 throw new ArgumentNullException(nameof(target));
             }
-            return _hub.Clients.User(target).SendCoreAsync(method,
-                arguments ?? new object[0], ct);
+            try {
+                await _hub.Clients.User(target).SendCoreAsync(method,
+                    arguments ?? new object[0], ct);
+            }
+            catch (AzureSignalRNotConnectedException e) {
+                _logger.Verbose(e,
+                    "Failed to send unicast message because hub is not connected");
+            }
+            catch (Exception ex) {
+                _logger.Error(ex, "Failed to send unicast message");
+            }
         }
 
         /// <inheritdoc/>
-        public Task MulticastAsync(string group, string method, object[] arguments,
+        public async Task MulticastAsync(string group, string method, object[] arguments,
             CancellationToken ct) {
             if (string.IsNullOrEmpty(method)) {
                 throw new ArgumentNullException(nameof(method));
@@ -131,8 +150,17 @@ namespace Microsoft.Azure.IIoT.Messaging.SignalR.Services {
             if (string.IsNullOrEmpty(group)) {
                 throw new ArgumentNullException(nameof(group));
             }
-            return _hub.Clients.Group(group).SendCoreAsync(method,
-                arguments ?? new object[0], ct);
+            try {
+                await _hub.Clients.Group(group).SendCoreAsync(method,
+                    arguments ?? new object[0], ct);
+            }
+            catch (AzureSignalRNotConnectedException e) {
+                _logger.Verbose(e,
+                    "Failed to send multicast message because hub is not connected");
+            }
+            catch (Exception ex) {
+                _logger.Error(ex, "Failed to send multicast message");
+            }
         }
 
         /// <inheritdoc/>

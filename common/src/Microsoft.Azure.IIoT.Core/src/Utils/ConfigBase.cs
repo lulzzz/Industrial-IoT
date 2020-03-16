@@ -40,7 +40,10 @@ namespace Microsoft.Azure.IIoT.Utils {
         protected string GetStringOrDefault(string key, Func<string> defaultValue = null) {
             var value = Configuration.GetValue<string>(key);
             if (string.IsNullOrEmpty(value)) {
-                return defaultValue?.Invoke() ?? string.Empty;
+                if (defaultValue == null) {
+                    return string.Empty;
+                }
+                return defaultValue.Invoke();
             }
             return value.Trim();
         }

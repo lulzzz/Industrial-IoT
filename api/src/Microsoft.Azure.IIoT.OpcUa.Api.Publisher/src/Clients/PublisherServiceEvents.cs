@@ -62,7 +62,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Api.Publisher {
             if (callback == null) {
                 throw new ArgumentNullException(nameof(callback));
             }
-            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/publishers/events");
+            var registrar = await _client.GetHubAsync($"{_serviceUri}/v2/publishers/events", _resourceId);
             try {
                 var registration = registrar.Register(EventTargets.PublisherSampleTarget, callback);
                 try {

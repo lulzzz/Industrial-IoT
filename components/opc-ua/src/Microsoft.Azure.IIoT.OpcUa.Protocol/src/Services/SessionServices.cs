@@ -198,7 +198,7 @@ namespace Microsoft.Azure.IIoT.OpcUa.Protocol.Services {
         public virtual void CloseSession(NodeId sessionId) {
             var authenticationToken = _sessions.FirstOrDefault(
                 s => s.Value.Id == sessionId);
-            // If not found, key == null
+            // If not found, key is null
             if (_sessions.TryRemove(authenticationToken.Key, out var session)) {
                 // raise session related event.
                 _sessionClosing?.Invoke(session, null);

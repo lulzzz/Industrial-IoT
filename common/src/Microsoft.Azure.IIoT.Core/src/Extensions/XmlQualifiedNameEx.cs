@@ -11,7 +11,7 @@ namespace System.Xml {
     public static class XmlQualifiedNameEx {
 
         /// <summary>
-        /// Returns whether the name == null or empty string
+        /// Returns whether the name is null or empty string
         /// </summary>
         /// <param name="qname"></param>
         /// <returns></returns>
