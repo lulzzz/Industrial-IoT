@@ -215,7 +215,7 @@ namespace Microsoft.Azure.IIoT.Module.Framework.Hosting {
             /// </summary>
             private class DefaultFilter : ExceptionFilterAttribute {
                 public override Exception Filter(Exception exception, out int status) {
-                    status = (int)MethodResponseStatusCode.BadRequest;
+                    status = 400;
                     return exception;
                 }
             }
